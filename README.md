@@ -26,7 +26,7 @@ Feel free to disagree with any of these. We can put it up to a vote.
 
 ### Misc
 
-- Use newline curly brackets.
+- Use sameline curly brackets.
 - Keep stuff indented properly!! Use Ctrl-T to do it automatically.
 - (var) is BANNED except for during for loops.
 - Keep all scene initialisation inside of ApplicationClass if possible.
