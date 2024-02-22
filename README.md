@@ -22,7 +22,7 @@ Feel free to disagree with any of these. We can put it up to a vote.
 - There should be as few comments as possible. Use self-documenting code techniques. Use your best judgement.
 - Avoid nesting statements multiple times. Use guard clauses and methods to break stuff up.
 - Each method should do only a single task and the name should accurately describe what it does. Don’t be afraid of long identifier names.
-- The Main tab should only have 2 functions setup() and draw().
+- The Main tab should have minimal functions like setup() and draw() and getting input.
 
 ### Misc
 
@@ -30,3 +30,4 @@ Feel free to disagree with any of these. We can put it up to a vote.
 - Keep stuff indented properly! Use Ctrl-T to do it automatically.
 - (var) is BANNED except for during for loops.
 - Keep all scene initialisation inside of ApplicationClass if possible.
+- The game should be framerate independant. I'll show how soon (Using deltaTime)
