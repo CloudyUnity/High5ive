@@ -1,15 +1,13 @@
 class InputClass {
-  private boolean[] m_currentFrameKeyboardState = new boolean[255];
-  private boolean[] m_lastFrameKeyboardState = new boolean[255];
-  private int[] m_millisSinceKeyPresses = new int[255];
+  private boolean[] m_currentFrameKeyboardState = new boolean[INPUT_ARRAY_LENGTH];
+  private boolean[] m_lastFrameKeyboardState = new boolean[INPUT_ARRAY_LENGTH];
+  private int[] m_millisSinceKeyPresses = new int[INPUT_ARRAY_LENGTH];
 
-  // When key is being pressed down
   public boolean getKey(char c) {
     char lower = Character.toLowerCase(c);
     return m_currentFrameKeyboardState[lower];
   }
 
-  // When key was pressed this frame
   public boolean getKeyDown(char c) {
     if (m_lastFrameKeyboardState == null)
       return false;
@@ -20,7 +18,6 @@ class InputClass {
     return m_currentFrameKeyboardState[lower] && !m_lastFrameKeyboardState[lower];
   }
 
-  // When key was released this frame
   public boolean getKeyUp(char c) {
     if (m_lastFrameKeyboardState == null)
       return false;

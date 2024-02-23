@@ -2,6 +2,7 @@ class ApplicationClass {
   private ArrayList<GameObjectClass> m_goList = new ArrayList<GameObjectClass>();
   private RenderClass m_renderClass = new RenderClass();
   private int m_timeLastFrame = 0;
+  private int m_fixedFrameCounter = 0;
 
   public ApplicationClass() {
   }
@@ -22,8 +23,18 @@ class ApplicationClass {
     
     for (var go : m_goList)
       go.frame();
+      
+    if (m_fixedFrameCounter < millis()) {
+      fixedFrame();
+      m_fixedFrameCounter += FIXED_FRAME_INCREMENT;
+    }
 
     m_renderClass.render(m_goList);
+  }
+  
+  void fixedFrame() {
+    for (var go : m_goList)
+      go.fixedFrame();
   }
 
   // This will also include all sprites/models/shaders/textures/etc

@@ -3,13 +3,13 @@ class TransformType {
   public PVector Rot;
   public PVector Scale;
 
-  public GameObjectClass Parent;
+  public TransformType Parent = null;
 }
 
 class GameObjectClass {
   private TransformType m_transform;
-  private ColorType m_color = new ColorType(255, 0, 255, 255);
-  private String m_nameIdentifier;
+  private ColorType m_color = DEFAULT_COLOR;
+  private String m_nameIdentifier = DEFAULT_GAMEOBJECT_NAME;
   private boolean m_renderingEnabled = true;
   // PImage or PShape depending on 2D or 3D
 
@@ -30,11 +30,15 @@ class GameObjectClass {
     m_transform.Scale = new PVector(x, y, z);
   }
 
-  public void setParent(GameObjectClass go) {
-    m_transform.Parent = go;
+  public void setParent(TransformType trans) {
+    m_transform.Parent = trans;
   }
 
   public void frame() {
+    // Meant to be overriden
+  }
+
+  public void fixedFrame() {
     // Meant to be overriden
   }
 

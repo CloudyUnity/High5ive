@@ -5,7 +5,7 @@ int s_deltaTime;
 void setup() {
   fullScreen();
   noStroke();
-  frameRate(60);
+  frameRate(FRAME_RATE);
   
   textFont(loadFont("AgencyFB-Bold-48.vlw"));
 
@@ -14,13 +14,7 @@ void setup() {
 
 void draw() {
   s_InputClass.frame();
-  s_ApplicationClass.frame();   
-    
-  pushMatrix();
-  textAlign(CENTER);
-  fill(255, 255, 255, 255);
-  text("DeltaTime: " + s_deltaTime, width/2, height/2, 400f, 200f);
-  popMatrix();
+  s_ApplicationClass.frame();       
 }
 
 void keyPressed() {
