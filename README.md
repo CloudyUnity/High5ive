@@ -22,6 +22,8 @@ Feel free to disagree with any of these. We can put it up to a vote.
 - Avoid nesting statements multiple times. Use guard clauses and methods to break stuff up.  
 - Each method should do only a single task and the name should accurately describe what it does. Don't be afraid of long identifier names.  
 - The Main tab should have minimal functions like setup() and draw() and getting input.  
+- One-line if statements don't need body brackets but the body goes on the next line
+- Multi-line if statements need body brackets and the body goes on the next line
 
 ### Misc
 
