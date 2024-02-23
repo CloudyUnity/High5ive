@@ -19,7 +19,7 @@ void draw() {
 
 void keyPressed() {
   if (!keyPressed)
-    return;
+    return;   
 
   s_InputClass.setKeyState(key, true);
 }

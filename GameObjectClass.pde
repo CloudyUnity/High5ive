@@ -8,7 +8,7 @@ class TransformType {
 
 class GameObjectClass {
   private TransformType m_transform;
-  private ColorType m_color = DEFAULT_COLOR;
+  private color m_color = DEFAULT_COLOR;
   private String m_nameIdentifier = DEFAULT_GAMEOBJECT_NAME;
   private boolean m_renderingEnabled = true;
   // PImage or PShape depending on 2D or 3D
@@ -44,7 +44,7 @@ class GameObjectClass {
 
   public void render() {
     pushMatrix();
-    fill(m_color.R, m_color.G, m_color.B, m_color.A);
+    fill(m_color);
 
     // Render gameobject by applying transform
 

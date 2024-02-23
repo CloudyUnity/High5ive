@@ -10,6 +10,7 @@ Feel free to disagree with any of these. We can put it up to a vote.
 - Constant (final) variables use CONSTANT_SNAKE_CASE.  
 - Non-constant but static/gloabl variables use "s_StaticCase".  
 - Any classes that are acting as structs should have their identifier appended with "Type". See GameObjectClass.TransformType.  
+- All classes should have their identifier appended with "Class".  
 - All interfaces and interface methods should start with "I".  
 - There should be no global variables if possible "Excluding the class instances created in Main".  
 - Keep stuff private whenever possible. The codebase should generally only talk in one direction.  

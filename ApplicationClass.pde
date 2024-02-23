@@ -4,12 +4,9 @@ class ApplicationClass {
   private int m_timeLastFrame = 0;
   private int m_fixedFrameCounter = 0;
 
-  public ApplicationClass() {
-  }
-
   void init() {
     m_renderClass.init();
-    m_renderClass.setBackgroundColor(new ColorType(150, 150, 150, 255));
+    m_renderClass.setBackgroundColor(color(150, 150, 150, 255));
 
     // This is where everything in the game is created and initialised
 
