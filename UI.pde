@@ -64,10 +64,12 @@ class BarChartUI<T> extends Widget {
     int i = 0;
     textAlign(CENTER, CENTER);
     for (Map.Entry<String, Integer> entry : m_map.entrySet()) {
-      System.out.printf("Value: %d\n", entry.getValue());
+      if (DEBUG_MODE)
+        System.out.printf("Value: %d\n", entry.getValue());
 
       int barHeight = (int)(((double)entry.getValue() / (double)m_maxValue) * (double)m_scale.y) - m_bottomPadding;
-      System.out.printf("Bar height: %d\n", barHeight);
+      if (DEBUG_MODE)
+        System.out.printf("Bar height: %d\n", barHeight);
 
       fill(m_foregroundColour);
       rect(m_pos.x + i * m_barWidth, m_pos.y + m_scale.y - barHeight - m_bottomPadding, m_barWidth, barHeight);
@@ -209,11 +211,11 @@ class LabelUI extends Widget {
 
   public LabelUI(int posX, int posY, int scaleX, int scaleY, String text) {
     super(posX, posY, scaleX, scaleY);
-    this.m_text = text;
-    this.m_textSize = 12;
-    this.m_textYOffset = 0;
-    this.m_textXOffset = 5;
-    this.m_centreAligned = false;
+    m_text = text;
+    m_textSize = 12;
+    m_textYOffset = 0;
+    m_textXOffset = 5;
+    m_centreAligned = false;
   }
 
   @ Override

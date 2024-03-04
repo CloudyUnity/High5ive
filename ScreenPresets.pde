@@ -144,12 +144,14 @@ class Screen2 extends Screen {
   }
 
   private void onCheckedRb1() {
-    println("Rb1 checked");
+    if (DEBUG_MODE)
+      println("Rb1 checked");
     m_barChart.addData(m_data, v -> v);
   }
 
   private void onCheckedRb2() {
-    println("Rb2 checked");
+    if (DEBUG_MODE)
+      println("Rb2 checked");
     m_barChart.removeData();
   }
 }

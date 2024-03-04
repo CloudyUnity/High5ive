@@ -5,7 +5,7 @@ final int INPUT_ARRAY_LENGTH = 70000;
 final boolean FULLSCREEN_ENABLED = false;
 
 // Debug Options
-final boolean DEBUG_MODE = true; // Turns on various stats or console logging
+final boolean DEBUG_MODE = false; // Turns on various stats or console logging
 
 // Scene
 final int DEFAULT_FOREGROUND_COLOUR = color(0x000000);

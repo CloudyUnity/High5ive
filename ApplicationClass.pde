@@ -16,7 +16,7 @@ class ApplicationClass {
     m_currentScreen = m_screens.get(0);
     
     PVector windowSize = m_currentScreen.getScale();
-    resizeWindow((int)windowSize.x, (int)windowSize.y);
+    resizeWindow((int)windowSize.x, (int)windowSize.y);   
   }
 
   void frame() {
