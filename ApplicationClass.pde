@@ -1,43 +1,63 @@
 class ApplicationClass {
-  private ArrayList<GameObjectClass> m_goList = new ArrayList<GameObjectClass>();
-  private RenderClass m_renderClass = new RenderClass();
   private int m_timeLastFrame = 0;
   private int m_fixedFrameCounter = 0;
 
+  private ArrayList<Screen> m_screens;
+  private Screen m_currentScreen;
+
   void init() {
-    m_renderClass.init();
-    m_renderClass.setBackgroundColor(color(150, 150, 150, 255));
+    m_screens = new ArrayList<Screen>();
 
-    // This is where everything in the game is created and initialised
+    Screen1 s1 = new Screen1(600, 600, SCREEN_1_ID);
+    Screen2 s2 = new Screen2(700, 700, SCREEN_2_ID);
 
-    GameObjectClass player = initGameObject("Player");
-    player.setPosition(19, 8, 7);
+    m_screens.add(s1);
+    m_screens.add(s2);
+    m_currentScreen = m_screens.get(0);
+    
+    PVector windowSize = m_currentScreen.getScale();
+    resizeWindow((int)windowSize.x, (int)windowSize.y);
   }
 
   void frame() {
     s_deltaTime = millis() - m_timeLastFrame;
     m_timeLastFrame = millis();
-    
-    for (var go : m_goList)
-      go.frame();
-      
+
     if (m_fixedFrameCounter < millis()) {
       fixedFrame();
       m_fixedFrameCounter += FIXED_FRAME_INCREMENT;
     }
-
-    m_renderClass.render(m_goList);
+    
+    m_currentScreen.draw();
   }
-  
+
   void fixedFrame() {
-    for (var go : m_goList)
-      go.fixedFrame();
   }
 
-  // This will also include all sprites/models/shaders/textures/etc
-  GameObjectClass initGameObject(String name) {
-    GameObjectClass go = new GameObjectClass(name);
-    m_goList.add(go);
-    return go;
+  void onMouseMoved() {
+    if (m_currentScreen != null)
+      m_currentScreen.onMouseMoved();
   }
+
+  void onMouseDragged() {
+    if (m_currentScreen != null)
+      m_currentScreen.onMouseDragged();
+  }
+
+  void onMouseClick() {
+    if (m_currentScreen != null)
+      m_currentScreen.onMouseClick();
+  }
+
+  void switchScreen(SwitchScreenEventInfoType e) {
+    e.Widget.getOnMouseExitEvent().raise((EventInfoType)e);
+
+    for (Screen screen : m_screens) {
+      if (e.NewScreenId.compareTo(screen.getScreenId()) == 0) {
+        m_currentScreen = screen;        
+        resizeWindow((int)screen.getScale().x, (int)screen.getScale().y);
+        return;
+      }
+    }      
+  } 
 }

@@ -1,7 +1,17 @@
 import java.util.function.Consumer;
 
 abstract class Widget {
-  
+
+  public final int DEFAULT_FOREGROUND_COLOUR = color(0x000000);
+  public final int DEFAULT_BACKGROUND_COLOUR = color(0xF9F9F9);
+  public final int DEFAULT_OUTLINE_COLOUR = color(0x000000);
+  protected int x, y, width, height;
+  protected color backgroundColour, foregroundColour;
+  private color outlineColour;
+  private boolean drawOutline;
+  private Event<EventInfo> onMouseEnterEvent;
+  private Event<EventInfo> onMouseExitEvent;
+
   public Widget(int x, int y, int width, int height) {
     this.x = x;
     this.y = y;
@@ -14,51 +24,51 @@ abstract class Widget {
     this.onMouseEnterEvent = new Event<EventInfo>();
     this.onMouseExitEvent = new Event<EventInfo>();
   }
-  
+
   public void setDrawOutline(boolean drawOutline) {
     this.drawOutline = drawOutline;
   }
-  
+
   public void setBackgroundColour(color backgroundColour) {
     this.backgroundColour = backgroundColour;
   }
-  
+
   public void setForegroundColour(color foregroundColour) {
     this.foregroundColour = foregroundColour;
   }
-  
+
   public void setOutlineColour(color outlineColour) {
     this.outlineColour = outlineColour;
   }
-  
+
   public color getBackgroundColour() {
     return this.backgroundColour;
   }
-  
+
   public color getForegroundColour() {
     return this.foregroundColour;
   }
-  
+
   public color getOutlineColour() {
     return this.outlineColour;
   }
-  
+
   public int getX() {
     return this.x;
   }
-  
+
   public int getY() {
     return this.y;
   }
-  
+
   public int getWidth() {
     return this.width;
   }
-  
+
   public int getHeight() {
     return this.height;
   }
-  
+
   /**
    * Sets the x position of the widget.
    *
@@ -71,7 +81,7 @@ abstract class Widget {
     else
       this.x = x;
   }
-  
+
   /**
    * Sets the y position of the widget.
    *
@@ -84,7 +94,7 @@ abstract class Widget {
     else
       this.y = y;
   }
-  
+
   /**
    * Sets the width of the widget.
    *
@@ -97,7 +107,7 @@ abstract class Widget {
     else
       this.width = width;
   }
-  
+
   /**
    * Sets the height of the widget.
    *
@@ -110,35 +120,25 @@ abstract class Widget {
     else
       this.height = height;
   }
-  
+
   public boolean isPositionInside(int mx, int my) {
-    return 
-        mx >= this.x && mx <= (this.x + this.width) &&
-        my >= this.y && my <= (this.y + this.height);
+    return
+      mx >= this.x && mx <= (this.x + this.width) &&
+      my >= this.y && my <= (this.y + this.height);
   }
-  
+
   public void draw() {
     if (drawOutline)
       stroke(outlineColour);
     else
       noStroke();
   }
-  
+
   public Event<EventInfo> getOnMouseEnterEvent() {
     return this.onMouseEnterEvent;
   }
-  
+
   public Event<EventInfo> getOnMouseExitEvent() {
     return this.onMouseExitEvent;
   }
-  
-  public final int DEFAULT_FOREGROUND_COLOUR = color(0x000000);
-  public final int DEFAULT_BACKGROUND_COLOUR = color(0xF9F9F9);
-  public final int DEFAULT_OUTLINE_COLOUR = color(0x000000);
-  protected int x, y, width, height;
-  protected color backgroundColour, foregroundColour;
-  private color outlineColour;
-  private boolean drawOutline;
-  private Event<EventInfo> onMouseEnterEvent;
-  private Event<EventInfo> onMouseExitEvent;
 }
