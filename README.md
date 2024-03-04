@@ -14,6 +14,8 @@ Feel free to disagree with any of these. We can put it up to a vote.
 - All interfaces and interface methods should start with "I".  
 - There should be no global variables if possible "Excluding the class instances created in Main".  
 - Keep stuff private whenever possible. The codebase should generally only talk in one direction.  
+- Avoid using this.memberVar when possible
+- Keep all member variables at the top of the class/struct above functions
 
 
 ### Control Flow/Methods
