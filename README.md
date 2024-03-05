@@ -26,6 +26,7 @@ Feel free to disagree with any of these. We can put it up to a vote.
 - Keep stuff private whenever possible. The codebase should generally only talk in one direction.  
 - Avoid using this.memberVar when possible
 - Keep all member variables at the top of the class/struct above functions
+- Store colours as ints, then when needed call `fill(color(m_colour))` as it seems to be unreliable if the `fill` call will work otherwise.
 
 ### Control Flow/Methods
 
