@@ -83,3 +83,11 @@ Note that you might be able to do this using a git extension for processing, cmd
         Successfully rebased and updated refs/heads/master.  
 13. Now that your local repo is synced up it's time to push your changes again
     git push origin master  
+
+
+## Roles
+- preprocess data (Kyara)
+- read data very efficiently (?)
+- manipulate data (?)
+- conjoin data with other dataset (?)
+- display data (Alex)
