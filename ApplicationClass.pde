@@ -5,11 +5,7 @@ class ApplicationClass {
   private ArrayList<Screen> m_screens;
   private Screen m_currentScreen;
 
-  void init() {
-    
-    FlightsManagerClass fm = new FlightsManagerClass();
-    fm.tinyFlights();
-    
+  void init() {    
     m_screens = new ArrayList<Screen>();
 
     Screen1 s1 = new Screen1(600, 600, SCREEN_1_ID);
