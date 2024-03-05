@@ -4,7 +4,7 @@
 
 - Group B, Team 5
 - Finn Wright (CloudyUnity)
-- Alex Robertson (Eavolution, roberta1tcd)
+- Alex Robertson (roberta1tcd)
 - Kyara (Cosmo) McWilliam (Cajm0)
 - Mateusz Orlowski (MO1805)
 - Matthew Poole (Matthew Poole)
@@ -84,10 +84,35 @@ Note that you might be able to do this using a git extension for processing, cmd
 13. Now that your local repo is synced up it's time to push your changes again
     git push origin master  
 
+### Data Preprocessing and reading:
+Type:     FL_DATE    MKT_CARRIER   MKT_CARRIER_FL_NUM  ORIGIN               DEST                 CRS_DEP_TIME         DEP_TIME             CRS_ARR_TIME         ARR_TIME             CANCELLED/DIVERTED  DISTANCE             PADDING
+VarSize:  byte       byte          short               short                short                shorts               short                short                short                byte                short                5 bytes
+Reading:  0001 1111  0000 1001     0000 0001 0111 0001 0000 0001 0111 0001  0000 0001 0111 0001  1111 1111 1111 1111  1111 1111 1111 1111  1111 1111 1111 1111  1111 1111 1111 1111  0000  0010          1111 1111 1111 1111  0000 0000 0000 0000 0000 0000 0000 0000 0000 0000
 
-## Roles
-- preprocess data (Kyara)
-- read data very efficiently (?)
+Max Bytes: 0001 1111 0000 1001 0000 0001 0111 0001 0000 0001 0111 0001 0000 0001 0111 0001 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 0000 0010 1111 1111 1111 1111 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000
+Max Bits:  00011111000010010000000101110001000000010111000100000001011100011111111111111111111111111111111111111111111111111111111111111111000000101111111111111111000000000000000000000000000000000000
+
+MKT_CARRIER:
+AA = 0000
+AS = 0001
+B6 = 0010
+DL = 0011
+F9 = 0100
+G4 = 0101
+HA = 0110
+NK = 0111
+UA = 1000
+WN = 1001
+
+CANCELLED/DIVERTED:
+NONE        = 0000
+CANCELLED   = 0001
+DIVERTED    = 0010
+
+## Roles:
+- preprocess data (Kyara (Cosmo) McWilliam (Cajm0))
+- read data very efficiently (Thomas Creagh (Thomas Creagh))
 - manipulate data (?)
 - conjoin data with other dataset (?)
-- display data (Alex)
+- display data (Alex Robertson (roberta1tcd))
+- design the gui place widgets (?)

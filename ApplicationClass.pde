@@ -6,6 +6,10 @@ class ApplicationClass {
   private Screen m_currentScreen;
 
   void init() {
+    
+    FlightsManagerClass fm = new FlightsManagerClass();
+    fm.tinyFlights();
+    
     m_screens = new ArrayList<Screen>();
 
     Screen1 s1 = new Screen1(600, 600, SCREEN_1_ID);
