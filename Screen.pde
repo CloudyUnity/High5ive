@@ -8,7 +8,7 @@ abstract class Screen extends Widget implements IClickable {
   private Event<MouseDraggedEventInfoType> m_onMouseDraggedEvent;
   private color m_backgroundColor;
 
-  Screen(int scaleX, int scaleY, String screenId, color backgroundColor) {
+  Screen(int scaleX, int scaleY, String screenId, int backgroundColor) {
     super(0, 0, scaleX, scaleY);
     m_children = new ArrayList<Widget>();
     m_groups = new ArrayList<WidgetGroupType>();

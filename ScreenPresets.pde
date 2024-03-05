@@ -50,7 +50,7 @@ class Screen1 extends Screen {
     if (btn.getBackgroundColour() == color(#FF0000))
       btn.setBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
     else
-      btn.setBackgroundColour(color(#FF0000));
+      btn.setBackgroundColour(#FF0000);
   }
 
   private void greenButtonOnClick(EventInfoType e) {
@@ -58,7 +58,7 @@ class Screen1 extends Screen {
     if (btn.getBackgroundColour() == color(#00FF00))
       btn.setBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
     else
-      btn.setBackgroundColour(color(#00FF00));
+      btn.setBackgroundColour(#00FF00);
   }
 
   private void blueButtonOnClick(EventInfoType e) {
@@ -66,7 +66,7 @@ class Screen1 extends Screen {
     if (btn.getBackgroundColour() == color(#0000FF))
       btn.setBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
     else
-      btn.setBackgroundColour(color(#0000FF));
+      btn.setBackgroundColour(#0000FF);
   }
 
   private void switchToScreen2OnClick(EventInfoType e) {
@@ -74,11 +74,11 @@ class Screen1 extends Screen {
   }
 
   private void changeOutlineColourOnExit(EventInfoType e) {
-    e.Widget.setOutlineColour(color(#000000));
+    e.Widget.setOutlineColour(#000000);
   }
 
   private void changeOutlineColourOnEnter(EventInfoType e) {
-    e.Widget.setOutlineColour(color(#FFFFFF));
+    e.Widget.setOutlineColour(#FFFFFF);
   }
 }
 
