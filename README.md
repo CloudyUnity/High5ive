@@ -90,3 +90,4 @@ Note that you might be able to do this using a git extension for processing, cmd
 - manipulate data (?)
 - conjoin data with other dataset (?)
 - display data (Alex Robertson (roberta1tcd))
+- design the gui place widgets (?)
