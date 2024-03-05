@@ -2,7 +2,10 @@
 final int FRAME_RATE = 60;
 final int FIXED_FRAME_INCREMENT = 50;
 final int INPUT_ARRAY_LENGTH = 70000;
+final int LINE_BYTE_SIZE = 24;
 final boolean FULLSCREEN_ENABLED = false;
+final String CURRENT_DIR = "D:\\Documents\\code\\college\\ProgrammingProject\\FATMKM";
+final long NUMBER_OF_LINES = 2;
 
 // Debug Options
 final boolean DEBUG_MODE = false; // Turns on various stats or console logging

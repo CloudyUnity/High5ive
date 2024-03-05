@@ -5,7 +5,12 @@ class ApplicationClass {
   private ArrayList<Screen> m_screens;
   private Screen m_currentScreen;
 
-  void init() {    
+  void init() {
+    
+    FlightsManagerClass fm = new FlightsManagerClass();
+    fm.converFileToRawFlightType("data\\twolines.txt");
+    print(fm.getRawFlightsList());
+
     m_screens = new ArrayList<Screen>();
 
     Screen1 s1 = new Screen1(600, 600, SCREEN_1_ID);

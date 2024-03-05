@@ -1,5 +1,10 @@
 import java.util.Arrays;
 import java.util.List;
+import java.io.FileInputStream;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.io.*;
 
 class DateType {
@@ -26,10 +31,10 @@ class RawFlightType {
   public byte Day;
   public byte CarrierCodeIndex;
   public short FlightNumber;
-  public byte AirportOriginIndex;
-  public byte AirportDestIndex;
+  public short AirportOriginIndex;
+  public short AirportDestIndex;
   public short ScheduledDepartureTime =0, DepartureTime =0, ScheduledArrivalTime =0, ArrivalTime =0;
-  public boolean Cancelled, Diverted;
+  public byte CancelledOrDiverted;
   public short MilesDistance;
 }
 
@@ -40,8 +45,16 @@ class RawFlightType {
 class FlightsManagerClass {
   private boolean m_dataLocked;
   private ArrayList<FlightType> m_flightsList = new ArrayList<FlightType>();
+  private ArrayList<RawFlightType> m_rawFlightsList = new ArrayList<RawFlightType>();
   private List<String> m_carrierCodes = Arrays.asList("AA", "AS", "B6");
   private List<String> m_airportCodes = Arrays.asList("JFK", "DCA");
+
+  public ArrayList<RawFlightType> getRawFlightsList() {
+    if (m_dataLocked)
+      return null;
+
+    return m_rawFlightsList;
+  }
 
   public ArrayList<FlightType> getFlightsList() {
     if (m_dataLocked)
@@ -50,16 +63,44 @@ class FlightsManagerClass {
     return m_flightsList;
   }
 
-  // Should work with both relative and absolute filepaths if possible
+  // Should work with both relative and absolute filepaths if possible 
   // Relative: "./Data/flights2k.csv"
   // Absolute: "C:\Users\finnw\OneDrive\Documents\Trinity\CS\Project\FATMKM\data\flights2k.csv"
-  public void readFile(String filepath) {
+  public void converFileToRawFlightType(String filepath) {
+    MappedByteBuffer buffer;
+    String path = CURRENT_DIR + "\\" + filepath;
+    try {
+      final FileChannel channel = new FileInputStream(path).getChannel();
+      buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
+      channel.close();
+
+      for (int i = 0; i < NUMBER_OF_LINES; i++) {
+        int offset = LINE_BYTE_SIZE * i;
+        RawFlightType temp = new RawFlightType();
+        temp.Day = buffer.get(offset);
+        temp.CarrierCodeIndex = buffer.get(offset+1);
+        temp.FlightNumber = buffer.getShort(offset+2);
+        temp.AirportOriginIndex = buffer.getShort(offset+4);
+        temp.AirportDestIndex = buffer.getShort(offset+6);
+        temp.ScheduledDepartureTime = buffer.getShort(offset+8);
+        temp.DepartureTime = buffer.getShort(offset+10);
+        temp.ScheduledArrivalTime = buffer.getShort(offset+12);
+        temp.ArrivalTime = buffer.getShort(offset+14);
+        temp.CancelledOrDiverted = buffer.get(offset+16);
+        temp.MilesDistance = buffer.getShort(offset+17);
+        m_rawFlightsList.add(temp);
+      }
+    } catch (Exception e) {
+      println("Error: " + e);
+      return;
+    }
+
   }
 
   // The following functions should modify member variables and not return values as they run asynchrously
-
   // Converts the string[] line by line into a ArrayList<FlightType> member variable
-  public void parseFile(String[] data) {
+      // byte flightFlags = 
+  public void convertRawFlightTypeToFlightType() {
   }
 
   // Should work if given airport code or name
@@ -76,3 +117,4 @@ class FlightsManagerClass {
 // Descending code authorship changes:
 // F. Wright, Made DateType, FlightType, FlightsManagerClass and made function headers. Left comments to explain how everything could be implemented, 11pm 04/03/24
 // F. Wright, Started work on storing the FlightType data as raw binary data for efficient data transfer, 1pm 05/03/24
+// T. Creagh, Did the first attempt at reading the binary file and now it very efficiently gets the data into RawFlightType, 9:39pm 05/03/24
