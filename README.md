@@ -4,7 +4,7 @@
 
 - Group B, Team 5
 - Finn Wright (CloudyUnity)
-- Alex Robertson (Eavolution, roberta1tcd)
+- Alex Robertson (roberta1tcd)
 - Kyara (Cosmo) McWilliam (Cajm0)
 - Mateusz Orlowski (MO1805)
 - Matthew Poole (Matthew Poole)
