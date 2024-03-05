@@ -68,7 +68,7 @@ class FlightsManagerClass {
   // Absolute: "C:\Users\finnw\OneDrive\Documents\Trinity\CS\Project\FATMKM\data\flights2k.csv"
   public void converFileToRawFlightType(String filepath) {
     MappedByteBuffer buffer;
-    String path = CURRENT_DIR + "\\" + filepath;
+    String path = sketchPath() + "\\" + filepath;
     try {
       final FileChannel channel = new FileInputStream(path).getChannel();
       buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
