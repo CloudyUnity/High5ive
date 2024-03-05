@@ -1,3 +1,2 @@
-BufferedReader reader = createReader("positions.txt")
+BufferedReader reader = createReader("positions.txt");
 String line;
-
