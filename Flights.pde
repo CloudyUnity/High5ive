@@ -16,6 +16,7 @@ class FlightType {
 // These methods should run asynchrously using thread()
 // If this class is currently writing to any data then m_dataLocked should be on which prevents access
 // Other classes can check every frame after invoking these methods to see if the result has returned
+// Pre-processing the data into files is allowed and may be useful to improve performance!!
 class FlightsManagerClass {
   private boolean m_dataLocked;
   private ArrayList<FlightType> m_flightsList = new ArrayList<FlightType>();
@@ -49,3 +50,6 @@ class FlightsManagerClass {
   public void sortFlightsByLateness() {
   }
 }
+
+// Descending code authorship changes:
+// F. Wright, Made DateType, FlightType, FlightsManagerClass and made function headers. Left comments to explain how everything could be implemented, 11pm 04/03/24

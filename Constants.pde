@@ -22,3 +22,8 @@ final String SCREEN_2_ID = "Screen 2";
 // Color Palette (TODO)
 final color EXAMPLE_COLOR_1 = color(0x000000);
 final color EXAMPLE_COLOR_2 = color(0x000000);
+
+// Descending code authorship changes:
+// F. Wright, Set up constants for the Engine and Debug, 8pm 23/02/24
+// F. Wright, Added InputClass related constants such as INPUT_ARRAY_LENGTH, 9pm 23/02/24
+// F. Wright, Moved some default colour constants from classes to Constants tab, 6pm 04/03/24

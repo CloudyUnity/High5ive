@@ -1,5 +1,15 @@
 # README
 
+## People
+
+- Group B, Team 5
+- Finn Wright (CloudyUnity)
+- Alex Robertson (Eavolution, roberta1tcd)
+- Cosmo McWilliam (Cajm0)
+- Mateusz Orlowski(MO1805)
+- Matthew Poole (Matthew Poole)
+- Thomas Creagh (Thomas Creagh)
+
 ## Coding Standard
 
 Feel free to disagree with any of these. We can put it up to a vote.  

@@ -53,3 +53,7 @@ class SwitchScreenEventInfoType extends EventInfoType {
     NewScreenId = newScreenId;
   }
 }
+
+// Descending code authorship changes:
+// A. Robertson, ___
+// F. Wright, Modified code to fit coding standard, 6pm 04/03/24

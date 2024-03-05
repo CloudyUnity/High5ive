@@ -155,3 +155,7 @@ class Screen2 extends Screen {
     m_barChart.removeData();
   }
 }
+
+// Descending code authorship changes:
+// A. Robertson, ___
+// F. Wright, Modified and simplified code to fit coding standard. Fixed checkbox issues with colours, 6pm 04/03/24

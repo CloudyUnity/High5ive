@@ -126,3 +126,7 @@ abstract class Screen extends Widget implements IClickable {
     m_groups.add(group);
   }
 }
+
+// Descending code authorship changes:
+// A. Robertson, ___
+// F. Wright, Modified and simplified code to fit coding standard, 6pm 04/03/24

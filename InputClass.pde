@@ -39,3 +39,7 @@ class InputClass {
     arrayCopy(m_currentFrameKeyboardState, 0, m_lastFrameKeyboardState, 0, m_currentFrameKeyboardState.length);
   }
 }
+
+// Descending code authorship changes:
+// F. Wright, Made InputClass and implemented full functionality, 9pm 23/02/24
+// F. Wright, Implemented input buffering with getMillisSincePressed(char), 5pm 24/02/24

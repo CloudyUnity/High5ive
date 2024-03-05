@@ -49,3 +49,8 @@ void mouseDragged() {
 void resizeWindow(int w, int h) {
   surface.setSize(w, h);
 }
+
+// Descending code authorship changes:
+// F. Wright, Made setup(), draw(), 8pm 23/02/24
+// F. Wright, Made input functions for use in InputClass such as keyPressed(), 9pm 23/02/24
+// F. Wright, Made mouse related functions for use in ApplicationClass and Widgets. Set up window resizing, 6pm 04/03/24

@@ -61,3 +61,7 @@ class ApplicationClass {
     }      
   } 
 }
+
+// Descending code authorship changes:
+// F. Wright, Made ApplicationClass and set up init(), frame() and fixedFrame(), 8pm 23/02/24
+// F. Wright, Modified onMouse() functions and merged functions from the old UI main into ApplicationClass, 6pm 04/03/24

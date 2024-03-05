@@ -131,3 +131,7 @@ abstract class Widget {
     return m_onMouseExitEvent;
   }
 }
+
+// Descending code authorship changes:
+// A. Robertson, ___
+// F. Wright, Modified and simplified code to fit coding standard. Combined all Widget related classes/structs into the Widget tab, 6pm 04/03/24

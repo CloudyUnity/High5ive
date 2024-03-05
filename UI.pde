@@ -405,7 +405,6 @@ class SliderUI extends Widget implements IDraggable, IClickable {
     m_label.draw();
   }
 
-  // Example: "Value: %.2d"
   public void setLabelText(String text) {
     m_label.setText(text);
   }
@@ -444,3 +443,7 @@ class SliderUI extends Widget implements IDraggable, IClickable {
     return Math.max(min, Math.min(max, val));
   }
 }
+
+// Descending code authorship changes:
+// A. Robertson, ___
+// F. Wright, Modified and simplified code to fit coding standard. Combined all UI elements into the UI tab, 6pm 04/03/24
