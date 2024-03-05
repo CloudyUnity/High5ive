@@ -85,9 +85,12 @@ Note that you might be able to do this using a git extension for processing, cmd
     git push origin master  
 
 ### Data Preprocessing and reading:
-Type:     FL_DATE    MKT_CARRIER             MKT_CARRIER_FL_NUM  ORIGIN               DEST                 CRS_DEP_TIME  DEP_TIME  CRS_ARR_TIME  ARR_TIME  CANCELLED  DIVERTED  DISTANCE
-VarSize:  byte       byte as index w/lookup  short               short                short                shorts                                          bool       bool      short
-Reading:  0001 1111  000 1001                000 0001 0111 0001  0000 0001 0111 0001  0000 0001 0111 0001  
+Type:     FL_DATE    MKT_CARRIER   MKT_CARRIER_FL_NUM  ORIGIN               DEST                 CRS_DEP_TIME         DEP_TIME             CRS_ARR_TIME         ARR_TIME             CANCELLED/DIVERTED  DISTANCE             PADDING
+VarSize:  byte       byte          short               short                short                shorts               short                short                short                byte                short                5 bytes
+Reading:  0001 1111  0000 1001     0000 0001 0111 0001 0000 0001 0111 0001  0000 0001 0111 0001  1111 1111 1111 1111  1111 1111 1111 1111  1111 1111 1111 1111  1111 1111 1111 1111  0000  0010          1111 1111 1111 1111  0000 0000 0000 0000 0000 0000 0000 0000 0000 0000
+
+Max Bytes: 0001 1111 0000 1001 0000 0001 0111 0001 0000 0001 0111 0001 0000 0001 0111 0001 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 0000 0010 1111 1111 1111 1111 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000
+Max Bits:  00011111000010010000000101110001000000010111000100000001011100011111111111111111111111111111111111111111111111111111111111111111000000101111111111111111000000000000000000000000000000000000
 
 MKT_CARRIER:
 AA = 0000
@@ -100,6 +103,11 @@ HA = 0110
 NK = 0111
 UA = 1000
 WN = 1001
+
+CANCELLED/DIVERTED:
+NONE        = 0000
+CANCELLED   = 0001
+DIVERTED    = 0010
 
 ## Roles:
 - preprocess data (Kyara (Cosmo) McWilliam (Cajm0))
