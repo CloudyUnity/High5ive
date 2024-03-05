@@ -89,4 +89,4 @@ Note that you might be able to do this using a git extension for processing, cmd
 - read data very efficiently (Thomas Creagh (Thomas Creagh))
 - manipulate data (?)
 - conjoin data with other dataset (?)
-- display data (Alex Robertson (Eavolution, roberta1tcd))
+- display data (Alex Robertson (roberta1tcd))
