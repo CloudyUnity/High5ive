@@ -1,1 +1,1 @@
-C:/Users/finnw/OneDrive/Documents/Trinity/CS/Project/FATMKM/UI/SliderUI.pde
+./UI/SliderUI.pde

@@ -1,1 +1,1 @@
-C:/Users/finnw/OneDrive/Documents/Trinity/CS/Project/FATMKM/UI/LabelUI.pde
+./UI/LabelUI.pde
