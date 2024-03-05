@@ -26,7 +26,7 @@ Feel free to disagree with any of these. We can put it up to a vote.
 - Keep stuff private whenever possible. The codebase should generally only talk in one direction.  
 - Avoid using this.memberVar when possible
 - Keep all member variables at the top of the class/struct above functions
-
+- Store colours as ints, then when needed call `fill(color(m_colour))` as it seems to be unreliable if the `fill` call will work otherwise.
 
 ### Control Flow/Methods
 
@@ -64,7 +64,8 @@ Note that you might be able to do this using a git extension for processing, cmd
      ! [rejected]        master -> master (fetch first)  
     error: failed to push some refs to 'https://github.com/CloudyUnity/ProcessingFATMKM.git'  
 
-### How to merge your local repo with the master branch:  
+### How to merge your local repo with the master branch:
+
 7. Pull the master branch changes into your local repo  
     git pull --rebase origin master  
 8. You might be asked to resolve some conflicts. If you can get git working with some text editors it can make your life easier.   
@@ -137,9 +138,10 @@ DIVERTED    = 0000 0010
 ```
 
 ## Roles:
+
 - preprocess data (Kyara (Cosmo) McWilliam (Cajm0))
 - read data very efficiently (Thomas Creagh (Thomas Creagh))
 - manipulate data (?)
 - conjoin data with other dataset (?)
-- display data (Alex Robertson (roberta1tcd))
+- Create GUI widgets (Alex Robertson (roberta1tcd))
 - design the gui place widgets (?)

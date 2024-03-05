@@ -16,9 +16,9 @@ abstract class Widget {
   
   protected PVector m_pos, m_scale;
   
-  protected color m_backgroundColour = DEFAULT_BACKGROUND_COLOUR;
-  protected color m_foregroundColour = DEFAULT_FOREGROUND_COLOUR;
-  protected color m_outlineColour = DEFAULT_OUTLINE_COLOUR;
+  protected int m_backgroundColour = DEFAULT_BACKGROUND_COLOUR;
+  protected int m_foregroundColour = DEFAULT_FOREGROUND_COLOUR;
+  protected int m_outlineColour = DEFAULT_OUTLINE_COLOUR;
   
   private boolean m_drawOutlineEnabled = true;
   private Event<EventInfoType> m_onMouseEnterEvent = new Event<EventInfoType>();
@@ -38,27 +38,27 @@ abstract class Widget {
     m_drawOutlineEnabled = drawOutline;
   }
 
-  public void setBackgroundColour(color backgroundColour) {
+  public void setBackgroundColour(int backgroundColour) {
     m_backgroundColour = backgroundColour;
   }
 
-  public void setForegroundColour(color foregroundColour) {
+  public void setForegroundColour(int foregroundColour) {
     m_foregroundColour = foregroundColour;
   }
 
-  public void setOutlineColour(color outlineColour) {
+  public void setOutlineColour(int outlineColour) {
     m_outlineColour = outlineColour;
   }
 
-  public color getBackgroundColour() {
+  public int getBackgroundColour() {
     return this.m_backgroundColour;
   }
 
-  public color getForegroundColour() {
+  public int getForegroundColour() {
     return m_foregroundColour;
   }
 
-  public color getOutlineColour() {
+  public int getOutlineColour() {
     return m_outlineColour;
   }
 
@@ -118,7 +118,7 @@ abstract class Widget {
 
   public void draw() {
     if (m_drawOutlineEnabled)
-      stroke(m_outlineColour);
+      stroke(color(m_outlineColour));
     else
       noStroke();
   }

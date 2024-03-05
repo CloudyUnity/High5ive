@@ -112,65 +112,6 @@ class FlightsManagerClass {
 
   public void sortFlightsByLateness() {
   }
-
-  // DEBUG FUNCTIONS DO NOT USE
-
-  public void tinyFlights() {
-    String[] data = loadStrings("Data/tinyFlights3.csv");
-    RawFlightType[] arr = new RawFlightType[3];
-
-    for (int i = 1; i < data.length; i++) {
-      String[] flightData = data[i].split(",");
-
-      arr[i-1] = new RawFlightType();
-
-      arr[i-1].Day = Byte.parseByte(flightData[0].substring(0, 2));
-      arr[i-1].CarrierCodeIndex = (byte)m_carrierCodes.indexOf(flightData[1]);
-      arr[i-1].FlightNumber = Short.parseShort(flightData[2]);
-      arr[i-1].AirportOriginIndex = (byte)m_airportCodes.indexOf(flightData[3]);
-      arr[i-1].AirportDestIndex = (byte)m_airportCodes.indexOf(flightData[8]);
-
-      if (!flightData[12].isEmpty())
-        arr[i-1].ScheduledDepartureTime = Short.parseShort(flightData[12]);
-      if (!flightData[13].isEmpty())
-        arr[i-1].DepartureTime = Short.parseShort(flightData[13]);
-      if (!flightData[14].isEmpty())
-        arr[i-1].ScheduledArrivalTime = Short.parseShort(flightData[14]);
-      if (!flightData[15].isEmpty())
-        arr[i-1].ArrivalTime = Short.parseShort(flightData[15]);
-
-      arr[i-1].Cancelled = flightData[16] == "1";
-      arr[i-1].Diverted = flightData[17] == "1";
-      arr[i-1].MilesDistance = Short.parseShort(flightData[18]);
-    }
-
-    try {
-      DataOutputStream dos = new DataOutputStream(new FileOutputStream("C:\\Users\\finnw\\OneDrive\\Documents\\Trinity\\CS\\Project\\FATMKM\\data\\tinyFlights3Raw.txt"));
-
-      for (int i = 0; i < arr.length; i++) {
-        dos.writeByte(arr[i].Day);
-        dos.writeByte(arr[i].CarrierCodeIndex);
-        dos.writeShort(arr[i].FlightNumber);
-        dos.writeByte(arr[i].AirportOriginIndex);
-        dos.writeByte(arr[i].AirportDestIndex);
-
-        dos.writeShort(arr[i].ScheduledDepartureTime);
-        dos.writeShort(arr[i].DepartureTime);
-        dos.writeShort(arr[i].ScheduledArrivalTime);
-        dos.writeShort(arr[i].ArrivalTime);
-
-        dos.writeBoolean(arr[i].Cancelled);
-        dos.writeBoolean(arr[i].Diverted);
-        dos.writeShort(arr[i].MilesDistance);
-      }
-      
-      dos.close();
-    }
-    catch (Exception e) {
-      println("Error: " + e);
-      return;
-    }
-  }
 }
 
 // Descending code authorship changes:

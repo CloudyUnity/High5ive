@@ -55,7 +55,7 @@ class BarChartUI<T> extends Widget {
   @ Override
     public void draw() {
     super.draw();
-    fill(m_backgroundColour);
+    fill(color(m_backgroundColour));
     rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y);
 
     if (m_map.size() == 0)
@@ -71,7 +71,7 @@ class BarChartUI<T> extends Widget {
       if (DEBUG_MODE)
         System.out.printf("Bar height: %d\n", barHeight);
 
-      fill(m_foregroundColour);
+      fill(color(m_foregroundColour));
       rect(m_pos.x + i * m_barWidth, m_pos.y + m_scale.y - barHeight - m_bottomPadding, m_barWidth, barHeight);
 
       fill(0);
@@ -100,7 +100,7 @@ class ButtonUI extends Widget implements IClickable {
     public void draw() {
     super.draw();
     
-    fill(m_backgroundColour);
+    fill(color(m_backgroundColour));
     rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y);
     
     m_label.draw();
@@ -167,7 +167,7 @@ class CheckboxUI extends Widget implements IClickable {
     public void draw() {
     super.draw();
 
-    fill(m_checked ? m_checkedColour : m_backgroundColour);
+    fill(color(m_checked ? m_checkedColour : m_backgroundColour));
     rect(m_pos.y, m_pos.y, m_scale.y, m_scale.y);
 
     m_label.draw();
@@ -227,7 +227,7 @@ class LabelUI extends Widget {
 
     textSize(m_textSize);
 
-    fill(m_foregroundColour);
+    fill(color(m_foregroundColour));
     textAlign(this.m_centreAligned ? CENTER : LEFT, CENTER);
     text(m_text, m_pos.x + m_textXOffset, m_pos.y + m_textYOffset, m_scale.x - m_textXOffset, m_scale.y - m_textYOffset);
   }
@@ -309,7 +309,7 @@ class RadioButtonUI extends Widget implements IClickable {
     super.draw();
 
     ellipseMode(RADIUS);
-    fill(m_checked ? m_checkedColour : m_backgroundColour);
+    fill(color(m_checked ? m_checkedColour : m_backgroundColour));
     circle(m_pos.x + m_scale.y / 2, m_pos.y + m_scale.y / 2, m_scale.y / 2);
 
     m_label.draw();
@@ -371,7 +371,7 @@ class SliderUI extends Widget implements IDraggable, IClickable {
   private LabelUI m_label;
   private int m_labelSpace;
   private double m_min, m_max, m_interval, m_value;
-  private color m_filledColour = DEFAULT_SLIDER_FILLED_COLOUR;
+  private int m_filledColour;
   private Event<MouseDraggedEventInfoType> m_onDraggedEvent;
   private Event<EventInfoType> m_onClickEvent;
 
@@ -387,6 +387,7 @@ class SliderUI extends Widget implements IDraggable, IClickable {
     m_label = new LabelUI(posX, posY, scaleX, m_labelSpace, String.format("Value: %.2f", m_value));
     m_label.setCentreAligned(true);
     m_label.setTextSize(15);
+    m_filledColour = DEFAULT_SLIDER_FILLED_COLOUR;
 
     m_onDraggedEvent.addHandler(e -> onDraggedHandler(e));
     m_onClickEvent.addHandler(e -> onClickHandler(e));
@@ -396,10 +397,10 @@ class SliderUI extends Widget implements IDraggable, IClickable {
     public void draw() {
     super.draw();
     
-    fill(m_backgroundColour);
+    fill(color(m_backgroundColour));
     rect(m_pos.x, m_pos.y + m_labelSpace, m_scale.x, m_scale.y - m_labelSpace);
     
-    fill(m_filledColour);
+    fill(color(m_filledColour));
     rect(m_pos.x, m_pos.y + m_labelSpace, (int)(m_scale.x * ((m_value - m_min) / (m_max - m_min))), m_scale.y - m_labelSpace);
     
     m_label.draw();
