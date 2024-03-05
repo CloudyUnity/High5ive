@@ -8,7 +8,8 @@ class ApplicationClass {
   void init() {
     
     FlightsManagerClass fm = new FlightsManagerClass();
-    fm.tinyFlights();
+    fm.converFileToRawFlightType("data\\twolines.txt");
+    print(fm.getRawFlightsList());
     
     m_screens = new ArrayList<Screen>();
 

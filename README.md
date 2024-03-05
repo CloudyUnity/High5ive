@@ -84,16 +84,16 @@ Note that you might be able to do this using a git extension for processing, cmd
 13. Now that your local repo is synced up it's time to push your changes again
     git push origin master  
 
-### Data Preprocessing and reading:
+## Data Preprocessing and reading:
 ```
 _----------------------------------------------------------------------------------------------------------_
 | Type:    | FL_DATE             | MKT_CARRIER         | MKT_CARRIER_FL_NUM  |                             |
 | VarSize: | byte                | byte                | short               |                             |
-| Reading: | 0001 1111           | 0000 1001           | 0000 0001 0111 0001 |                             |
+| Reading: | 0001 1111           | 0000 1001           | 0000 0001 0111 0000 |                             |
 |----------------------------------------------------------------------------------------------------------|
 | Type:    | ORIGIN              | DEST                | CRS_DEP_TIME        | DEP_TIME                    |
 | VarSize: | short               | short               | shorts              | short                       |
-| Reading: | 0000 0001 0111 0001 | 0000 0001 0111 0001 | 1111 1111 1111 1111 | 1111 1111 1111 1111         |
+| Reading: | 0000 0001 0111 0000 | 0000 0001 0111 0000 | 1111 1111 1111 1111 | 1111 1111 1111 1111         |
 |----------------------------------------------------------------------------------------------------------|
 | Type:    | CRS_ARR_TIME        | ARR_TIME            |                                                   |
 | VarSize: | short               | short               |                                                   |         
