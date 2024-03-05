@@ -9,7 +9,7 @@ void setup() {
 
   surface.setTitle("Flight Thing");
   surface.setResizable(true);
-  resizeWindow(700, 700);
+  resizeWindow(700, 700); 
 
   frameRate(FRAME_RATE);
 
@@ -54,3 +54,5 @@ void resizeWindow(int w, int h) {
 // F. Wright, Made setup(), draw(), 8pm 23/02/24
 // F. Wright, Made input functions for use in InputClass such as keyPressed(), 9pm 23/02/24
 // F. Wright, Made mouse related functions for use in ApplicationClass and Widgets. Set up window resizing, 6pm 04/03/24
+// F. Wright, Modified and simplified UI code to fit coding standard. Combined all UI elements into the UI tab, 6pm 04/03/24
+// F. Wright, Used symbolic linking to allow us to put all UI pde files into subfolder, 11pm 05/03/24
