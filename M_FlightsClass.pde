@@ -39,10 +39,10 @@ class RawFlightType { // 24 bytes total
 
 class FlightsManagerClass {
   private ArrayList<FlightType> m_flightsList = new ArrayList<FlightType>();
-  private ArrayList<RawFlightType> m_rawFlightsList = new ArrayList<RawFlightType>();
+  private RawFlightType[] m_rawFlightsList = new RawFlightType[563737];
   private ExecutorService executor;
 
-  public ArrayList<RawFlightType> getRawFlightsList() {
+  public RawFlightType[] getRawFlightsList() {
     return m_rawFlightsList;
   }
 
@@ -68,10 +68,10 @@ class FlightsManagerClass {
         long length = endPosition - startPosition;
 
         executor.execute(() -> processChunk(
-          buffer.slice((int) startPosition * LINE_BYTE_SIZE,
-          (int) length * LINE_BYTE_SIZE), length));
+            buffer.slice((int) startPosition * LINE_BYTE_SIZE, (int) length * LINE_BYTE_SIZE),
+            length, startPosition
+          ));
       }
-
       executor.shutdown();
       try {
         executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
@@ -83,14 +83,14 @@ class FlightsManagerClass {
       println("Error: " + e);
       return;
     }
+    println(m_rawFlightsList.length);
   }
 
-  private void processChunk(MappedByteBuffer buffer, long length) {
+  private void processChunk(MappedByteBuffer buffer, long length, long startPosition) {
     RawFlightType temp = new RawFlightType();
     if (DEBUG_MODE) println("thread ready boss o7");
     for (int i = 0; i < length; i++) {
       int offset = LINE_BYTE_SIZE * i;
-      temp = new RawFlightType();
       // more efficeint with offsets
       temp.Day = buffer.get(offset);
       temp.CarrierCodeIndex = buffer.get(offset+1);
@@ -103,7 +103,7 @@ class FlightsManagerClass {
       temp.ArrivalTime = buffer.getShort(offset+14);
       temp.CancelledOrDiverted = buffer.get(offset+16);
       temp.MilesDistance = buffer.getShort(offset+17);
-      m_rawFlightsList.add(temp);
+      m_rawFlightsList[(int) startPosition + i] = temp;
     }
   }
 
@@ -134,3 +134,4 @@ class FlightsManagerClass {
 // T. Creagh, Did the first attempt at reading the binary file and now it very efficiently gets the data into RawFlightType, 9:39pm 05/03/24
 // F. Wright, Minor code cleanup, 1pm 06/03/24
 // T. Creagh, made threads for the reading and made sure that it works all fine and propper., 2pm 06/03/24
+// T. Creagh, improved performace by adding arrays instead

@@ -2,7 +2,7 @@
 final int FRAME_RATE = 60;
 final int FIXED_FRAME_INCREMENT = 50;
 final int INPUT_ARRAY_LENGTH = 70000;
-final int LINE_BYTE_SIZE = 19;
+final int LINE_BYTE_SIZE = 24;
 final boolean FULLSCREEN_ENABLED = false;
 final long NUMBER_OF_LINES = 563737; // NEEDS NAME CHANGE! (Or just make it a local variable)
 final int THREAD_COUNT = 4;
