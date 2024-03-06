@@ -108,6 +108,7 @@ class Screen2 extends Screen {
     group.addMember(rb1);
     group.addMember(rb2);
 
+
     addWidget(switchToScreen1Btn);
 
     addWidgetGroup(group);
@@ -129,6 +130,8 @@ class Screen2 extends Screen {
     m_data.add("6");
 
     addWidget(m_barChart);
+    
+    rb1.check();
   }
 
   private void switchToScreen1OnClick(EventInfoType e) {

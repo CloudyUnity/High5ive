@@ -2,13 +2,12 @@ import java.util.function.Function;
 import java.util.TreeMap;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.Collection;
 
 class BarChartUI<T> extends Widget {
   private TreeMap<String, Integer> m_map;
   private Integer m_maxValue = null; // Can be null
   private Integer m_barWidth = null; // Can be null
-  private ArrayList<T> m_data; // Can be null
-  private Function<T, String> m_getKey; // Can be null
   private int m_bottomPadding;
 
   public BarChartUI(int posX, int posY, int scaleX, int scaleY) {
@@ -18,7 +17,7 @@ class BarChartUI<T> extends Widget {
     m_foregroundColour = color(#F000CD);
   }
 
-  public void addData(ArrayList<T> data, Function<T, String> getKey) {
+  public <C extends Collection<T>> void addData(C data, Function<T, String> getKey) {
     for (var value : data) {
       String k = getKey.apply(value);
       Integer entryValue = m_map.get(k);
@@ -29,7 +28,7 @@ class BarChartUI<T> extends Widget {
         m_map.replace(k, entryValue + 1);
     }
 
-    m_barWidth = (int)(m_scale.y / (float)m_map.size());
+    m_barWidth = (int)((m_scale.y) / (float)m_map.size());
 
     if (m_map.size() == 0)
       return;
@@ -48,8 +47,6 @@ class BarChartUI<T> extends Widget {
     m_map = new TreeMap<String, Integer>();
     m_maxValue = null;
     m_barWidth = null;
-    m_getKey = null;
-    m_data = null;
   }
 
   @ Override
@@ -61,13 +58,14 @@ class BarChartUI<T> extends Widget {
     if (m_map.size() == 0)
       return;
 
-    int i = 0;
     textAlign(CENTER, CENTER);
+    fill(0);
+    int i = 0;
     for (Map.Entry<String, Integer> entry : m_map.entrySet()) {
       if (DEBUG_MODE)
         System.out.printf("Value: %d\n", entry.getValue());
 
-      int barHeight = (int)(((double)entry.getValue() / (double)m_maxValue) * (double)m_scale.y) - m_bottomPadding;
+      int barHeight = (int)(((double)entry.getValue() / (double)m_maxValue) * (double)(m_scale.y - m_bottomPadding));
       if (DEBUG_MODE)
         System.out.printf("Bar height: %d\n", barHeight);
 
