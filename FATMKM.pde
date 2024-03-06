@@ -1,5 +1,6 @@
 ApplicationClass s_ApplicationClass = new ApplicationClass();
 InputClass s_InputClass = new InputClass();
+DebugProfilerClass s_DebugProfiler = new DebugProfilerClass();
 int s_deltaTime;
 
 void setup() {
@@ -13,7 +14,7 @@ void setup() {
 
   frameRate(FRAME_RATE);
 
-  textFont(loadFont("AgencyFB-Bold-48.vlw"));
+  textFont(loadFont("data/Fonts/AgencyFB-Bold-48.vlw"));
 
   s_ApplicationClass.init();
 }
