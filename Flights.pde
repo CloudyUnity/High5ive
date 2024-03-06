@@ -89,7 +89,9 @@ class FlightsManagerClass {
         long endPosition = (i == THREAD_COUNT - 1) ? NUMBER_OF_LINES : (i + 1) * chunkSize;
         long length = endPosition - startPosition;
 
-        executor.execute(() -> processChunk(buffer.slice((int) startPosition * 24, (int) length * 24), length));
+        executor.execute(() -> processChunk(
+          buffer.slice((int) startPosition * LINE_BYTE_SIZE,
+          (int) length * LINE_BYTE_SIZE), length));
       }
 
       executor.shutdown();
@@ -107,6 +109,7 @@ class FlightsManagerClass {
 
   private void processChunk(MappedByteBuffer buffer, long length) {
     RawFlightType temp = new RawFlightType();
+    if (DEBUG_MODE) println("thread ready boss o7");
     for (int i = 0; i < length; i++) {
       int offset = LINE_BYTE_SIZE * i;
       temp = new RawFlightType();
