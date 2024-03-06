@@ -22,6 +22,20 @@ class BarChartUI<T> extends Widget {
     m_sidePadding = (int)((double)m_scale.x * 0.1);
     m_foregroundColour = color(#F000CD);
   }
+  
+  public void addData(T[] data, Function<T, String> getKey) {
+    for (var value : data) {
+      String k = getKey.apply(value);
+      Integer entryValue = m_map.get(k);
+
+      if (entryValue == null)
+        m_map.put(k, 1);
+      else
+        m_map.replace(k, entryValue + 1);
+    }
+
+    setUpAfterDataAdded();
+  }
 
   public <C extends Iterable<T>> void addData(C data, Function<T, String> getKey) {
     for (var value : data) {
@@ -34,6 +48,10 @@ class BarChartUI<T> extends Widget {
         m_map.replace(k, entryValue + 1);
     }
 
+    setUpAfterDataAdded();
+  }
+
+  private void setUpAfterDataAdded() {
     m_barWidth = (int)((m_scale.y - m_sidePadding) / (float)m_map.size());
 
     if (m_map.size() == 0)
@@ -53,7 +71,6 @@ class BarChartUI<T> extends Widget {
       m_scaleInterval *= 10;
     m_maxScaleValue = m_scaleInterval * ((m_maxValue + m_scaleInterval - 1) / m_scaleInterval); // Round up to the nearest m_scaleInterval.
   }
-
   public void removeData() {
     m_map = new TreeMap<String, Integer>();
     m_maxValue = null;

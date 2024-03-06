@@ -197,9 +197,8 @@ class FlightCodesBarchartDemo extends Screen {
     data.add(ft1);
     data.add(ft2);
     data.add(ft3);
-    
+
     chart = new BarChartUI<FlightType>(100, 100, (int)m_scale.x - 200, (int)m_scale.y - 200);
-    chart.setTitle("Flight destination indicies");
     addWidget(chart);
     
     RadioButtonUI destination = new RadioButtonUI( 100, (int)m_scale.y - 80, 200, 20, "Destination");
@@ -232,7 +231,7 @@ class FlightCodesBarchartDemo extends Screen {
       chart.removeData();
       // When conversion from index to code is implemented use that.
       chart.addData(data, v -> Short.toString(v.AirportDestIndex));
-      chart.setTitle("Flight destinations");
+      chart.setTitle("Flight destination indicies");
     }
   }
 }
