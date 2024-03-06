@@ -28,16 +28,6 @@ class Screen1 extends Screen {
     greenBtn.getOnClickEvent().addHandler(e -> greenButtonOnClick(e));
     blueBtn.getOnClickEvent().addHandler(e -> blueButtonOnClick(e));
 
-    redBtn.getOnMouseEnterEvent().addHandler(e -> changeOutlineColourOnEnter(e));
-    greenBtn.getOnMouseEnterEvent().addHandler(e -> changeOutlineColourOnEnter(e));
-    blueBtn.getOnMouseEnterEvent().addHandler(e -> changeOutlineColourOnEnter(e));
-    switchToScreen2Btn.getOnMouseEnterEvent().addHandler(e -> changeOutlineColourOnEnter(e));
-
-    redBtn.getOnMouseExitEvent().addHandler(e -> changeOutlineColourOnExit(e));
-    greenBtn.getOnMouseExitEvent().addHandler(e -> changeOutlineColourOnExit(e));
-    blueBtn.getOnMouseExitEvent().addHandler(e -> changeOutlineColourOnExit(e));
-    switchToScreen2Btn.getOnMouseExitEvent().addHandler(e -> changeOutlineColourOnExit(e));
-
     CheckboxUI cb = new CheckboxUI(400, 400, 200, 50, "My checkbox");
     cb.setCheckedColour(color(255, 255, 0, 255));
     addWidget(cb);    
@@ -247,6 +237,9 @@ class ScreenFlightMap extends Screen {
     
     FlightMapUI flightmap = new FlightMapUI(0, 0, (int)m_dimensions.x, (int)m_dimensions.y);
     addWidget(flightmap);
+    
+    FlightMap3D flight3D = new FlightMap3D(0,0,0,0);
+    addWidget(flight3D);
   }
   
   public void applyFlightData(FlightType[] flightData){
