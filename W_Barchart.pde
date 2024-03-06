@@ -2,7 +2,7 @@ import java.util.function.Function;
 import java.util.TreeMap;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.Collection;
+import java.util.Iterable;
 
 class BarChartUI<T> extends Widget {
   private TreeMap<String, Integer> m_map;
@@ -17,7 +17,7 @@ class BarChartUI<T> extends Widget {
     m_foregroundColour = color(#F000CD);
   }
 
-  public <C extends Collection<T>> void addData(C data, Function<T, String> getKey) {
+  public <C extends Iterable<T>> void addData(C data, Function<T, String> getKey) {
     for (var value : data) {
       String k = getKey.apply(value);
       Integer entryValue = m_map.get(k);
