@@ -120,7 +120,16 @@ class Screen2 extends Screen {
     addWidget(label);
 
     m_barChart = new BarChartUI(200, 10, 200, 200);
+    m_barChart.setTitle("Numbers");
     m_data = new ArrayList<String>();
+    m_data.add("1");
+    m_data.add("1");
+    m_data.add("1");
+    m_data.add("1");
+    m_data.add("1");
+    m_data.add("1");
+    m_data.add("1");
+    m_data.add("1");
     m_data.add("1");
     m_data.add("1");
     m_data.add("2");

@@ -8,11 +8,18 @@ class BarChartUI<T> extends Widget {
   private Integer m_maxValue = null; // Can be null
   private Integer m_barWidth = null; // Can be null
   private int m_bottomPadding;
+  private int m_topPadding;
+  private int m_sidePadding;
+  private Integer m_maxScaleValue;
+  private Integer m_scaleInterval;
+  private String m_title;
 
   public BarChartUI(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
     m_map = new TreeMap<String, Integer>();
     m_bottomPadding = (int)((double)m_scale.y * 0.1);
+    m_topPadding = (int)((double)m_scale.y * 0.1);
+    m_sidePadding = (int)((double)m_scale.x * 0.1);
     m_foregroundColour = color(#F000CD);
   }
 
@@ -27,7 +34,7 @@ class BarChartUI<T> extends Widget {
         m_map.replace(k, entryValue + 1);
     }
 
-    m_barWidth = (int)((m_scale.y) / (float)m_map.size());
+    m_barWidth = (int)((m_scale.y - m_sidePadding) / (float)m_map.size());
 
     if (m_map.size() == 0)
       return;
@@ -40,6 +47,11 @@ class BarChartUI<T> extends Widget {
       if (value > m_maxValue)
         m_maxValue = value;
     }
+    
+    m_scaleInterval = 1;
+    for (int tmp = m_maxValue; tmp > 1; tmp /= 10)
+      m_scaleInterval *= 10;
+    m_maxScaleValue = m_scaleInterval * ((m_maxValue + m_scaleInterval - 1) / m_scaleInterval); // Round up to the nearest m_scaleInterval.
   }
 
   public void removeData() {
@@ -47,32 +59,44 @@ class BarChartUI<T> extends Widget {
     m_maxValue = null;
     m_barWidth = null;
   }
+  
+  public void setTitle(String title) {
+    m_title = title;
+  }
 
   @ Override
-    public void draw() {
+  public void draw() {
     super.draw();
     fill(color(m_backgroundColour));
     rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y);
-
     if (m_map.size() == 0)
       return;
 
     textAlign(CENTER, CENTER);
     fill(0);
+    
+    if (m_title != null) 
+      text(m_title, m_pos.x + m_sidePadding, m_pos.y, m_scale.x - m_sidePadding, m_topPadding);
+    
+    text("0", m_pos.x, m_pos.y + m_scale.y - m_bottomPadding - m_sidePadding * 0.5, m_sidePadding, m_bottomPadding);
+    for (int i = 1; i <= (m_maxScaleValue / m_scaleInterval); i++) {
+      float numberYPos = m_pos.y + m_scale.y - m_bottomPadding - (m_scale.y - m_topPadding - m_bottomPadding) * ((i * m_scaleInterval) / (float)m_maxScaleValue);
+      text(((Integer)(i * m_scaleInterval)).toString(), m_pos.x, numberYPos, m_sidePadding, m_sidePadding);
+    }
+    
     int i = 0;
     for (Map.Entry<String, Integer> entry : m_map.entrySet()) {
-      if (DEBUG_MODE)
-        System.out.printf("Value: %d\n", entry.getValue());
-
-      int barHeight = (int)(((double)entry.getValue() / (double)m_maxValue) * (double)(m_scale.y - m_bottomPadding));
-      if (DEBUG_MODE)
-        System.out.printf("Bar height: %d\n", barHeight);
+      int barHeight = (int)(((double)entry.getValue() / (double)m_maxScaleValue) * (double)(m_scale.y - m_bottomPadding - m_topPadding));
+      int barTop = (int)(m_pos.y + m_scale.y - m_bottomPadding - barHeight);
+      
+      int valTextYTop = Math.min((int)(m_pos.y + m_scale.y - m_bottomPadding - m_sidePadding), barTop);
 
       fill(color(m_foregroundColour));
-      rect(m_pos.x + i * m_barWidth, m_pos.y + m_scale.y - barHeight - m_bottomPadding, m_barWidth, barHeight);
+      rect(m_pos.x + m_sidePadding + i * m_barWidth, m_pos.y + m_scale.y - barHeight - m_bottomPadding, m_barWidth, barHeight);
 
       fill(0);
-      text(entry.getKey(), m_pos.x + i * m_barWidth, m_pos.y + m_scale.y - m_bottomPadding, m_barWidth, m_bottomPadding);
+      text(entry.getKey(), m_pos.x + m_sidePadding + i * m_barWidth, m_pos.y + m_scale.y - m_bottomPadding, m_barWidth, m_bottomPadding);
+      text(entry.getValue().toString(), m_pos.x + m_sidePadding + i * m_barWidth, valTextYTop, m_barWidth, m_bottomPadding);
 
       i++;
     }
