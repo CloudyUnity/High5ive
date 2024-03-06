@@ -9,7 +9,7 @@ class ApplicationClass {
     
     FlightsManagerClass fm = new FlightsManagerClass();
     long startTime = System.nanoTime();
-    fm.convertFileToRawFlightType("data/all_lines_random.txt");
+    fm.convertFileToRawFlightType("data/hex_flight_data.bin");
     long endTime = System.nanoTime();
 
     long duration = (endTime - startTime)/1000000;  //divide by 1000000 to get milliseconds.
