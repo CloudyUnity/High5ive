@@ -13,13 +13,15 @@ class BarChartUI<T> extends Widget {
   private Integer m_maxScaleValue;
   private Integer m_scaleInterval;
   private String m_title;
+  private int m_numberTextBoxWidth;
+  private int m_numberTextBoxHeight;
 
   public BarChartUI(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
     m_map = new TreeMap<String, Integer>();
-    m_bottomPadding = (int)((double)m_scale.y * 0.1);
+    m_numberTextBoxHeight = m_bottomPadding = (int)((double)m_scale.y * 0.1);
     m_topPadding = (int)((double)m_scale.y * 0.1);
-    m_sidePadding = (int)((double)m_scale.x * 0.1);
+    m_numberTextBoxWidth = m_sidePadding = (int)((double)m_scale.x * 0.1);
     m_foregroundColour = color(#F000CD);
   }
   
@@ -95,10 +97,12 @@ class BarChartUI<T> extends Widget {
     if (m_title != null) 
       text(m_title, m_pos.x + m_sidePadding, m_pos.y, m_scale.x - m_sidePadding, m_topPadding);
     
-    text("0", m_pos.x, m_pos.y + m_scale.y - m_bottomPadding - m_sidePadding * 0.5, m_sidePadding, m_bottomPadding);
+    text("0", m_pos.x, m_pos.y + m_scale.y - m_bottomPadding - m_numberTextBoxHeight * 0.5, m_numberTextBoxWidth, m_numberTextBoxHeight);
     for (int i = 1; i <= (m_maxScaleValue / m_scaleInterval); i++) {
-      float numberYPos = m_pos.y + m_scale.y - m_bottomPadding - (m_scale.y - m_topPadding - m_bottomPadding) * ((i * m_scaleInterval) / (float)m_maxScaleValue);
-      text(((Integer)(i * m_scaleInterval)).toString(), m_pos.x, numberYPos, m_sidePadding, m_sidePadding);
+      float numberYPos = m_pos.y + m_scale.y - m_bottomPadding - // Align to bottom of bar draw section
+        (m_scale.y - m_topPadding - m_bottomPadding) * ((i * m_scaleInterval) / (float)m_maxScaleValue) // Multiply max bar draw height by % of maxScaleValue currently at
+        - m_numberTextBoxHeight * 0.5; // Make centre of number at the value
+      text(((Integer)(i * m_scaleInterval)).toString(), m_pos.x, numberYPos, m_numberTextBoxWidth, m_numberTextBoxHeight);
     }
     
     int i = 0;
@@ -106,14 +110,14 @@ class BarChartUI<T> extends Widget {
       int barHeight = (int)(((double)entry.getValue() / (double)m_maxScaleValue) * (double)(m_scale.y - m_bottomPadding - m_topPadding));
       int barTop = (int)(m_pos.y + m_scale.y - m_bottomPadding - barHeight);
       
-      int valTextYTop = Math.min((int)(m_pos.y + m_scale.y - m_bottomPadding - m_sidePadding), barTop);
+      int valTextYTop = Math.min((int)(m_pos.y + m_scale.y - m_bottomPadding - m_numberTextBoxHeight), barTop); // Write the value of each bar inside it if possible, else just above the bottom
 
       fill(color(m_foregroundColour));
       rect(m_pos.x + m_sidePadding + i * m_barWidth, m_pos.y + m_scale.y - barHeight - m_bottomPadding, m_barWidth, barHeight);
 
       fill(0);
       text(entry.getKey(), m_pos.x + m_sidePadding + i * m_barWidth, m_pos.y + m_scale.y - m_bottomPadding, m_barWidth, m_bottomPadding);
-      text(entry.getValue().toString(), m_pos.x + m_sidePadding + i * m_barWidth, valTextYTop, m_barWidth, m_bottomPadding);
+      text(entry.getValue().toString(), m_pos.x + m_sidePadding + i * m_barWidth, valTextYTop, m_barWidth, m_numberTextBoxHeight);
 
       i++;
     }
