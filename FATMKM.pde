@@ -10,6 +10,7 @@ void setup() {
 
   surface.setTitle("Flight Thing");
   surface.setResizable(true);
+  surface.setLocation(0, 0);
   resizeWindow(700, 700); 
 
   frameRate(FRAME_RATE);

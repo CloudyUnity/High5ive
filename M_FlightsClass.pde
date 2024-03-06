@@ -1,16 +1,9 @@
 import java.util.Arrays;
 import java.util.List;
-import java.io.FileInputStream;
-import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-import java.nio.ByteOrder;
-import java.nio.file.Paths;
-import java.nio.file.Path;
+import java.nio.*;
 import java.io.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.*;
 
 class FlightType { // 19 bytes total
   public byte Day;
@@ -39,6 +32,7 @@ class FlightsManagerClass {
       s_DebugProfiler.startProfileTimer();
       convertFileToFlightTypeAsync(filepath, threadCount);      
       s_DebugProfiler.printTimeTakenMillis("Raw file pre-processing");
+      
       m_working = false;
       onTaskComplete.accept(m_flightsList);
     }
@@ -54,7 +48,7 @@ class FlightsManagerClass {
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
     CountDownLatch latch = new CountDownLatch(threadCount);
 
-    try (FileInputStream fis = new FileInputStream(path)) {
+    try (FileInputStream fis = new FileInputStream(path)) {            
       FileChannel channel = fis.getChannel();
       buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
       long flightCount = channel.size() / 24;
