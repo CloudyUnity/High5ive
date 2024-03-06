@@ -3,6 +3,7 @@ import java.util.List;
 import java.io.FileInputStream;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.ByteOrder;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.io.*;
@@ -72,8 +73,7 @@ class FlightsManagerClass {
     String path = sketchPath() + "/" + filepath;
     MappedByteBuffer buffer;
 
-    try {
-      FileChannel channel = new FileInputStream(path).getChannel();
+    try (FileChannel channel = new FileInputStream(path).getChannel()) {
       buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
       channel.close();
       List<Thread> threads = new ArrayList<>();
@@ -104,9 +104,11 @@ class FlightsManagerClass {
   }
 
   private void processChunk(MappedByteBuffer buffer, long length) {
+    RawFlightType temp = new RawFlightType();
     for (int i = 0; i < length; i++) {
       int offset = LINE_BYTE_SIZE * i;
-      RawFlightType temp = new RawFlightType();
+      temp = new RawFlightType();
+      // more efficeint with offsets
       temp.Day = buffer.get(offset);
       temp.CarrierCodeIndex = buffer.get(offset+1);
       temp.FlightNumber = buffer.getShort(offset+2);
