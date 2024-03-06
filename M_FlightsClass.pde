@@ -34,6 +34,8 @@ class FlightType { // 19 bytes total
     CancelledOrDiverted = cancelledOrDiverted;
     MilesDistance = milesDistance;
   }
+  
+  public FlightType() {}
 }
 
 class FlightsManagerClass {
