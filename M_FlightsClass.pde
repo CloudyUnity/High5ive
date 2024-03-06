@@ -128,3 +128,4 @@ class FlightsManagerClass {
 // F. Wright, Minor code cleanup, 1pm 06/03/24
 // T. Creagh, made threads for the reading and made sure that it works all fine and propper., 2pm 06/03/24
 // T. Creagh, improved performace by adding arrays instead
+// F. Wright, Made it so the file reading happens on a seperate thread. Made code fit coding standard, 4pm 06/03/24
