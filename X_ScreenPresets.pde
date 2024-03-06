@@ -82,14 +82,6 @@ class Screen1 extends Screen {
   private void switchToDemoOnClick(EventInfoType e) {
     s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SWITCH_TO_DEMO_ID, e.Widget));
   }
-
-  private void changeOutlineColourOnExit(EventInfoType e) {
-    e.Widget.setOutlineColour(#000000);
-  }
-
-  private void changeOutlineColourOnEnter(EventInfoType e) {
-    e.Widget.setOutlineColour(#FFFFFF);
-  }
 }
 
 class Screen2 extends Screen {
@@ -188,6 +180,7 @@ class FlightCodesBarchartDemo extends Screen {
     ButtonUI returnBtn = new ButtonUI(20, 20, 50, 50);
     returnBtn.setText("<-");
     returnBtn.setTextSize(25);
+    returnBtn.getOnClickEvent().addHandler(e -> onReturnButtonClicked(e));
     addWidget(returnBtn);
     
     data = new ArrayList<FlightType>();
