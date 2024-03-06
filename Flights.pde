@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.List;
 import java.io.FileInputStream;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -50,7 +51,7 @@ class FlightsManagerClass {
   }
 
   // This file should take in an Consumer that passes back the m_rawFlightsList asynchrously. Finn can explain
-  public void converFileToRawFlightType(String filepath) {
+  public void convertFileToRawFlightType(String filepath) {
     String path = sketchPath() + "/" + filepath;
     MappedByteBuffer buffer;
     executor = Executors.newFixedThreadPool(THREAD_COUNT);
