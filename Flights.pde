@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.io.*;
 
+
 class DateType {
   public int Year, Month, Day;
 }
@@ -70,24 +71,29 @@ class FlightsManagerClass {
     MappedByteBuffer buffer;
     String path = sketchPath() + "\\" + filepath;
     try {
+
       final FileChannel channel = new FileInputStream(path).getChannel();
       buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
       channel.close();
+      // byte[] byteArray = new byte[buffer.slice(0, 24).remaining()];
+      // buffer.slice(0, 24).get(byteArray);
+      // RawFlightType newRawFlightType = (RawFlightType)SerializationUtils.deserialize(byteArray);
+
+      // println(newRawFlightType);
 
       for (int i = 0; i < NUMBER_OF_LINES; i++) {
-        int offset = LINE_BYTE_SIZE * i;
         RawFlightType temp = new RawFlightType();
-        temp.Day = buffer.get(offset);
-        temp.CarrierCodeIndex = buffer.get(offset+1);
-        temp.FlightNumber = buffer.getShort(offset+2);
-        temp.AirportOriginIndex = buffer.getShort(offset+4);
-        temp.AirportDestIndex = buffer.getShort(offset+6);
-        temp.ScheduledDepartureTime = buffer.getShort(offset+8);
-        temp.DepartureTime = buffer.getShort(offset+10);
-        temp.ScheduledArrivalTime = buffer.getShort(offset+12);
-        temp.ArrivalTime = buffer.getShort(offset+14);
-        temp.CancelledOrDiverted = buffer.get(offset+16);
-        temp.MilesDistance = buffer.getShort(offset+17);
+        temp.Day = buffer.get();
+        temp.CarrierCodeIndex = buffer.get();
+        temp.FlightNumber = buffer.getShort();
+        temp.AirportOriginIndex = buffer.getShort();
+        temp.AirportDestIndex = buffer.getShort();
+        temp.ScheduledDepartureTime = buffer.getShort();
+        temp.DepartureTime = buffer.getShort();
+        temp.ScheduledArrivalTime = buffer.getShort();
+        temp.ArrivalTime = buffer.getShort();
+        temp.CancelledOrDiverted = buffer.get();
+        temp.MilesDistance = buffer.getShort();
         m_rawFlightsList.add(temp);
       }
     } catch (Exception e) {
@@ -99,8 +105,12 @@ class FlightsManagerClass {
 
   // The following functions should modify member variables and not return values as they run asynchrously
   // Converts the string[] line by line into a ArrayList<FlightType> member variable
-      // byte flightFlags = 
   public void convertRawFlightTypeToFlightType() {
+    // for (int i = 0; i < m_rawFlightsList.size(); i++) {
+    //   RawFlightType rawTemp = m_rawFlightsList.get(i);
+    //   FlightType temp = new FlightType();
+    //   FlightType.FlightDate = rawTemp
+    // }
   }
 
   // Should work if given airport code or name
