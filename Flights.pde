@@ -70,26 +70,31 @@ class FlightsManagerClass {
   // Absolute: "C:\Users\finnw\OneDrive\Documents\Trinity\CS\Project\FATMKM\data\flights2k.csv"
   public void convertFileToRawFlightType(String filepath) {
     String path = sketchPath() + "/" + filepath;
-    long fileSize = NUMBER_OF_LINES * 24;
+    MappedByteBuffer buffer;
+    File file = new File(path);
+    println(file.length());
 
     try {
-      FileChannel channel = new FileInputStream(file).getChannel()
-
+      FileChannel channel = new FileInputStream(path).getChannel();
+      buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
+      channel.close();
       List<Thread> threads = new ArrayList<>();
-      long chunkSize = fileSize / THREAD_COUNT;
+      long chunkSize = NUMBER_OF_LINES / THREAD_COUNT;
 
       for (int i = 0; i < THREAD_COUNT; i++) {
         long startPosition = i * chunkSize;
-        long endPosition = (i == THREAD_COUNT - 1) ? fileSize : (i + 1) * chunkSize;
+        long endPosition = (i == THREAD_COUNT - 1) ? NUMBER_OF_LINES - 240 : (i + 1) * chunkSize;
 
-        Thread thread = new Thread(() -> processChunk(channel, startPosition, endPosition));
+        Thread thread = new Thread(() -> processChunk(buffer.slice((int) startPosition, (int) endPosition),startPosition, endPosition - startPosition));
         threads.add(thread);
         thread.start();
       }
 
       for (Thread thread : threads) {
         try {
+          println("ok");
           thread.join();
+          println("what");
         } catch (InterruptedException e) {
           println("Error: " + e);
           return;
@@ -101,27 +106,25 @@ class FlightsManagerClass {
     }
   }
 
-  private void processChunk(FileChannel channel, long startPosition, long endPosition) {
-    try {
-      MappedByteBuffer buffer = channel.map(FileChannel.MapMode.READ_ONLY, startPosition, endPosition - startPosition);
-      for (int i = 0; i < endPosition - startPosition; i++) {
-        RawFlightType temp = new RawFlightType();
-        temp.Day = buffer.get();
-        temp.CarrierCodeIndex = buffer.get();
-        temp.FlightNumber = buffer.getShort();
-        temp.AirportOriginIndex = buffer.getShort();
-        temp.AirportDestIndex = buffer.getShort();
-        temp.ScheduledDepartureTime = buffer.getShort();
-        temp.DepartureTime = buffer.getShort();
-        temp.ScheduledArrivalTime = buffer.getShort();
-        temp.ArrivalTime = buffer.getShort();
-        temp.CancelledOrDiverted = buffer.get();
-        temp.MilesDistance = buffer.getShort();
-        m_rawFlightsList.add(temp);
-      }
-    } catch (IOException e) {
-        e.printStackTrace();
+  private void processChunk(MappedByteBuffer buffer, long start, long length) {
+    println(start, length);
+    for (int i = 0; i < length; i++) {
+      int offset = (int) start + LINE_BYTE_SIZE * i;
+      RawFlightType temp = new RawFlightType();
+      temp.Day = buffer.get(offset);
+      temp.CarrierCodeIndex = buffer.get(offset+1);
+      temp.FlightNumber = buffer.getShort(offset+2);
+      temp.AirportOriginIndex = buffer.getShort(offset+4);
+      temp.AirportDestIndex = buffer.getShort(offset+6);
+      temp.ScheduledDepartureTime = buffer.getShort(offset+8);
+      temp.DepartureTime = buffer.getShort(offset+10);
+      temp.ScheduledArrivalTime = buffer.getShort(offset+12);
+      temp.ArrivalTime = buffer.getShort(offset+14);
+      temp.CancelledOrDiverted = buffer.get(offset+16);
+      temp.MilesDistance = buffer.getShort(offset+17);
+      m_rawFlightsList.add(temp);
     }
+    println("ok1");
   }
 
 
