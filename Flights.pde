@@ -2,9 +2,14 @@ import java.util.Arrays;
 import java.io.FileInputStream;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.ByteOrder;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.io.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 
 class DateType { // TO BE REMOVED?
   public int Year, Month, Day;
@@ -35,6 +40,7 @@ class RawFlightType { // 24 bytes total
 class FlightsManagerClass {
   private ArrayList<FlightType> m_flightsList = new ArrayList<FlightType>();
   private ArrayList<RawFlightType> m_rawFlightsList = new ArrayList<RawFlightType>();
+  private ExecutorService executor;
 
   public ArrayList<RawFlightType> getRawFlightsList() {
     return m_rawFlightsList;
@@ -46,37 +52,66 @@ class FlightsManagerClass {
 
   // This file should take in an Consumer that passes back the m_rawFlightsList asynchrously. Finn can explain
   public void converFileToRawFlightType(String filepath) {
+    String path = sketchPath() + "/" + filepath;
     MappedByteBuffer buffer;
-    String path = sketchPath() + "\\" + filepath;
-    try {
-      final FileChannel channel = new FileInputStream(path).getChannel();
+    executor = Executors.newFixedThreadPool(THREAD_COUNT);
+
+    try (FileChannel channel = new FileInputStream(path).getChannel()) {
       buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
       channel.close();
+      List<Thread> threads = new ArrayList<>();
+      long chunkSize = NUMBER_OF_LINES / THREAD_COUNT;
 
-      for (int i = 0; i < NUMBER_OF_LINES; i++) {
-        int offset = LINE_BYTE_SIZE * i;
-        RawFlightType temp = new RawFlightType();
-        temp.Day = buffer.get(offset);
-        temp.CarrierCodeIndex = buffer.get(offset+1);
-        temp.FlightNumber = buffer.getShort(offset+2);
-        temp.AirportOriginIndex = buffer.getShort(offset+4);
-        temp.AirportDestIndex = buffer.getShort(offset+6);
-        temp.ScheduledDepartureTime = buffer.getShort(offset+8);
-        temp.DepartureTime = buffer.getShort(offset+10);
-        temp.ScheduledArrivalTime = buffer.getShort(offset+12);
-        temp.ArrivalTime = buffer.getShort(offset+14);
-        temp.CancelledOrDiverted = buffer.get(offset+16);
-        temp.MilesDistance = buffer.getShort(offset+17);
-        m_rawFlightsList.add(temp);
+      for (int i = 0; i < THREAD_COUNT; i++) {
+        long startPosition = i * chunkSize;
+        long endPosition = (i == THREAD_COUNT - 1) ? NUMBER_OF_LINES : (i + 1) * chunkSize;
+        long length = endPosition - startPosition;
+
+        executor.execute(() -> processChunk(buffer.slice((int) startPosition * 24, (int) length * 24), length));
       }
-    }
-    catch (Exception e) {
+
+      executor.shutdown();
+      try {
+        executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+      } catch (InterruptedException e) {
+        println("Error: " + e);
+        return;
+      }
+    } catch (IOException e) {
       println("Error: " + e);
       return;
     }
   }
-  
+
+  private void processChunk(MappedByteBuffer buffer, long length) {
+    RawFlightType temp = new RawFlightType();
+    for (int i = 0; i < length; i++) {
+      int offset = LINE_BYTE_SIZE * i;
+      temp = new RawFlightType();
+      // more efficeint with offsets
+      temp.Day = buffer.get(offset);
+      temp.CarrierCodeIndex = buffer.get(offset+1);
+      temp.FlightNumber = buffer.getShort(offset+2);
+      temp.AirportOriginIndex = buffer.getShort(offset+4);
+      temp.AirportDestIndex = buffer.getShort(offset+6);
+      temp.ScheduledDepartureTime = buffer.getShort(offset+8);
+      temp.DepartureTime = buffer.getShort(offset+10);
+      temp.ScheduledArrivalTime = buffer.getShort(offset+12);
+      temp.ArrivalTime = buffer.getShort(offset+14);
+      temp.CancelledOrDiverted = buffer.get(offset+16);
+      temp.MilesDistance = buffer.getShort(offset+17);
+      m_rawFlightsList.add(temp);
+    }
+  }
+
+  // The following functions should modify member variables and not return values as they run asynchrously
+  // Converts the string[] line by line into a ArrayList<FlightType> member variable
   public void convertRawFlightTypeToFlightType() {
+    // for (int i = 0; i < m_rawFlightsList.size(); i++) {
+    //   RawFlightType rawTemp = m_rawFlightsList.get(i);
+    //   FlightType temp = new FlightType();
+    //   FlightType.FlightDate = rawTemp
+    // }
   }
 
   // Should work if given airport code or name
