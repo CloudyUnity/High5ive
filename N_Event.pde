@@ -55,5 +55,5 @@ class SwitchScreenEventInfoType extends EventInfoType {
 }
 
 // Descending code authorship changes:
-// A. Robertson, ___
+// A. Robertson, Created an event system including all required classes, 12pm 04/03/24
 // F. Wright, Modified code to fit coding standard, 6pm 04/03/24

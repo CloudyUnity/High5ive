@@ -61,3 +61,6 @@ class CheckboxUI extends Widget implements IClickable {
     m_label.setText(text);
   }
 }
+
+// Code authorship:
+// A. Robertson, Created a checkbox widget, 12pm 04/03/24

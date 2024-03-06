@@ -128,5 +128,5 @@ abstract class Screen extends Widget implements IClickable {
 }
 
 // Descending code authorship changes:
-// A. Robertson, ___
+// A. Robertson, Created screen class to represent an individual screen 12pm 04/03/24
 // F. Wright, Modified and simplified code to fit coding standard, 6pm 04/03/24

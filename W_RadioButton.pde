@@ -93,3 +93,6 @@ class RadioButtonUI extends Widget implements IClickable {
     m_label.setTextSize(textSize);
   }
 }
+
+// Code authorship
+// A. Robertson, Created a radiobutton widget, 12pm 04/03/24
