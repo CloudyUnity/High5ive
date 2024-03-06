@@ -4,13 +4,17 @@ class ApplicationClass {
 
   private ArrayList<Screen> m_screens;
   private Screen m_currentScreen;
+  
+  private FlightsManagerClass m_flightsManager = new FlightsManagerClass();
 
   void init() {
     
-    FlightsManagerClass fm = new FlightsManagerClass();
-    s_DebugProfiler.startProfileTimer();
-    fm.convertFileToRawFlightType("data/Preprocessed Data/all_lines_random.txt");
+    // DEBUG
+    s_DebugProfiler.startProfileTimer();    
+    String filepath = "data/Preprocessed Data/all_lines_random.txt";
+    m_flightsManager.convertFileToRawFlightType(filepath);    
     s_DebugProfiler.printTimeTakenSeconds("Raw file pre-processing");
+    // ===
 
     m_screens = new ArrayList<Screen>();
 
