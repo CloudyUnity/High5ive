@@ -84,8 +84,9 @@ class FlightsManagerClass {
       for (int i = 0; i < THREAD_COUNT; i++) {
         long startPosition = i * chunkSize;
         long endPosition = (i == THREAD_COUNT - 1) ? NUMBER_OF_LINES - 240 : (i + 1) * chunkSize;
+        long length = endPosition - startPosition;
 
-        Thread thread = new Thread(() -> processChunk(buffer.slice((int) startPosition, (int) endPosition),startPosition, endPosition - startPosition));
+        Thread thread = new Thread(() -> processChunk(buffer.slice((int) startPosition, (int) length),startPosition, length));
         threads.add(thread);
         thread.start();
       }
@@ -109,6 +110,7 @@ class FlightsManagerClass {
   private void processChunk(MappedByteBuffer buffer, long start, long length) {
     println(start, length);
     for (int i = 0; i < length; i++) {
+      println(i + start);
       int offset = (int) start + LINE_BYTE_SIZE * i;
       RawFlightType temp = new RawFlightType();
       temp.Day = buffer.get(offset);
