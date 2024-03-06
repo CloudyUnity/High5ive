@@ -10,6 +10,7 @@ import java.io.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.CountDownLatch;
 
 class FlightType { // 19 bytes total
   public byte Day;
@@ -33,23 +34,25 @@ class FlightsManagerClass {
   public boolean convertFileToFlightType(String filepath, int threadCount, Consumer<FlightType[]> onTaskComplete) {
     if (m_working)
       return false;
-    
+
     new Thread(() -> {
       s_DebugProfiler.startProfileTimer();
-      convertFileToFlightTypeAsync(filepath, threadCount);
-      m_working = false;
+      convertFileToFlightTypeAsync(filepath, threadCount);      
       s_DebugProfiler.printTimeTakenMillis("Raw file pre-processing");
+      m_working = false;
       onTaskComplete.accept(m_flightsList);
-    }).start();
-    
+    }
+    ).start();
+
     m_working = true;
     return true;
-  }  
+  }
 
-  public void convertFileToFlightTypeAsync(String filepath, int threadCount) {
+  private void convertFileToFlightTypeAsync(String filepath, int threadCount) {
     String path = sketchPath() + "/" + filepath;
     MappedByteBuffer buffer;
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
+    CountDownLatch latch = new CountDownLatch(threadCount);
 
     try (FileInputStream fis = new FileInputStream(path)) {
       FileChannel channel = fis.getChannel();
@@ -63,23 +66,22 @@ class FlightsManagerClass {
       for (int i = 0; i < threadCount; i++) {
         int startPosition = i * chunkSize;
         long endPosition = (i == threadCount - 1) ? flightCount : (i + 1) * chunkSize;
-        long sliceLength = endPosition - startPosition;
+        long processingSize = endPosition - startPosition;
 
-        executor.execute(() -> {
-          int startSlice = (int) startPosition * LINE_BYTE_SIZE;
-          int endSlice = (int) sliceLength * LINE_BYTE_SIZE;
-          MappedByteBuffer slicedBuffer = buffer.slice(startSlice, endSlice);
-          processChunk(slicedBuffer, sliceLength, startPosition);
+        executor.submit(() -> {
+          processChunk(buffer, processingSize, startPosition);
+          latch.countDown();
         }
         );
       }
-      executor.shutdown();
       try {
-        executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+        latch.await();
       }
       catch (InterruptedException e) {
-        println("Error: " + e);
-        return;
+        e.printStackTrace();
+      }
+      finally {
+        executor.shutdown();
       }
     }
     catch (IOException e) {
@@ -88,13 +90,14 @@ class FlightsManagerClass {
     }
   }
 
-  private void processChunk(MappedByteBuffer buffer, long length, int startPosition) {
-    FlightType temp = new FlightType();
-    if (DEBUG_MODE)
-      println("thread ready boss o7");
-    for (int i = 0; i < length; i++) {
+  private void processChunk(MappedByteBuffer buffer, long processingSize, int startPosition) {
+    s_DebugProfiler.startProfileTimer();
+
+    long maxI = startPosition + processingSize;
+    for (int i = startPosition; i < maxI; i++) {
+      FlightType temp = new FlightType();
       int offset = LINE_BYTE_SIZE * i;
-      // more efficeint with offsets
+
       temp.Day = buffer.get(offset);
       temp.CarrierCodeIndex = buffer.get(offset+1);
       temp.FlightNumber = buffer.getShort(offset+2);
@@ -106,8 +109,9 @@ class FlightsManagerClass {
       temp.ArrivalTime = buffer.getShort(offset+14);
       temp.CancelledOrDiverted = buffer.get(offset+16);
       temp.MilesDistance = buffer.getShort(offset+17);
-      m_flightsList[startPosition + i] = temp;
+      m_flightsList[i] = temp;
     }
+    s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
   }
 
   // Should work if given airport code or name
