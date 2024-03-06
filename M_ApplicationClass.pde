@@ -7,14 +7,14 @@ class ApplicationClass {
   
   private FlightsManagerClass m_flightsManager = new FlightsManagerClass();
 
-  void init() {
-    
-    // DEBUG
-    s_DebugProfiler.startProfileTimer();    
+  void init() {   
     String filepath = "data/Preprocessed Data/all_lines_random.bin";
-    m_flightsManager.convertFileToFlightType(filepath);    
-    s_DebugProfiler.printTimeTakenMillis("Raw file pre-processing");
-    // ===
+    m_flightsManager.convertFileToFlightType(filepath, 4, list -> {
+      println("I'm done! Here's the first flights day: " + list[0].Day);
+      println("I'm done! Here's the second flights day: " + list[1].Day);
+      println("I'm done! Here's the third flights day: " + list[2].Day);
+    });        
+    println("Moving on!");
 
     m_screens = new ArrayList<Screen>();
 

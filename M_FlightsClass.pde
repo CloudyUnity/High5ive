@@ -10,10 +10,7 @@ import java.io.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
-class DateType { // TO BE REMOVED?
-  public int Year, Month, Day;
-}
+import java.util.concurrent.CountDownLatch;
 
 class FlightType { // 19 bytes total
   public byte Day;
@@ -31,53 +28,79 @@ class FlightType { // 19 bytes total
 
 class FlightsManagerClass {
   private FlightType[] m_flightsList = new FlightType[563737];
-  private ExecutorService executor;
+  private boolean m_working;
 
   public FlightType[] getflightsList() {
     return m_flightsList;
   }
 
-  // This file should take in an Consumer that passes back the m_flightsList asynchrously. Finn can explain
-  public void convertFileToFlightType(String filepath) {
+  public boolean convertFileToFlightType(String filepath, int threadCount, Consumer<FlightType[]> onTaskComplete) {
+    if (m_working)
+      return false;
+
+    new Thread(() -> {
+      s_DebugProfiler.startProfileTimer();
+      convertFileToFlightTypeAsync(filepath, threadCount);      
+      s_DebugProfiler.printTimeTakenMillis("Raw file pre-processing");
+      m_working = false;
+      onTaskComplete.accept(m_flightsList);
+    }
+    ).start();
+
+    m_working = true;
+    return true;
+  }
+
+  private void convertFileToFlightTypeAsync(String filepath, int threadCount) {
     String path = sketchPath() + "/" + filepath;
     MappedByteBuffer buffer;
-    executor = Executors.newFixedThreadPool(THREAD_COUNT);
+    ExecutorService executor = Executors.newFixedThreadPool(threadCount);
+    CountDownLatch latch = new CountDownLatch(threadCount);
 
-    try (FileChannel channel = new FileInputStream(path).getChannel()) {
+    try (FileInputStream fis = new FileInputStream(path)) {
+      FileChannel channel = fis.getChannel();
       buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
+      long flightCount = channel.size() / 24;
+      fis.close();
       channel.close();
-      List<Thread> threads = new ArrayList<>();
-      long chunkSize = NUMBER_OF_LINES / THREAD_COUNT;
 
-      for (int i = 0; i < THREAD_COUNT; i++) {
-        long startPosition = i * chunkSize;
-        long endPosition = (i == THREAD_COUNT - 1) ? NUMBER_OF_LINES : (i + 1) * chunkSize;
-        long length = endPosition - startPosition;
+      int chunkSize = (int)flightCount / threadCount;
 
-        executor.execute(() -> processChunk(
-            buffer.slice((int) startPosition * LINE_BYTE_SIZE, (int) length * LINE_BYTE_SIZE),
-            length, startPosition
-          ));
+      for (int i = 0; i < threadCount; i++) {
+        int startPosition = i * chunkSize;
+        long endPosition = (i == threadCount - 1) ? flightCount : (i + 1) * chunkSize;
+        long processingSize = endPosition - startPosition;
+
+        executor.submit(() -> {
+          processChunk(buffer, processingSize, startPosition);
+          latch.countDown();
+        }
+        );
       }
-      executor.shutdown();
       try {
-        executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-      } catch (InterruptedException e) {
-        println("Error: " + e);
-        return;
+        latch.await();
       }
-    } catch (IOException e) {
+      catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      finally {
+        executor.shutdown();
+      }
+    }
+    catch (IOException e) {
       println("Error: " + e);
       return;
     }
   }
 
-  private void processChunk(MappedByteBuffer buffer, long length, long startPosition) {
-    FlightType temp = new FlightType();
-    if (DEBUG_MODE) println("thread ready boss o7");
-    for (int i = 0; i < length; i++) {
+  private void processChunk(MappedByteBuffer buffer, long processingSize, int startPosition) {
+    s_DebugProfiler.startProfileTimer();
+
+    long maxI = startPosition + processingSize;
+    for (int i = startPosition; i < maxI; i++) {
+      FlightType temp = new FlightType();
       int offset = LINE_BYTE_SIZE * i;
-      // more efficeint with offsets
+
       temp.Day = buffer.get(offset);
       temp.CarrierCodeIndex = buffer.get(offset+1);
       temp.FlightNumber = buffer.getShort(offset+2);
@@ -89,8 +112,9 @@ class FlightsManagerClass {
       temp.ArrivalTime = buffer.getShort(offset+14);
       temp.CancelledOrDiverted = buffer.get(offset+16);
       temp.MilesDistance = buffer.getShort(offset+17);
-      m_flightsList[(int) startPosition + i] = temp;
+      m_flightsList[i] = temp;
     }
+    s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
   }
 
   // Should work if given airport code or name
@@ -111,3 +135,4 @@ class FlightsManagerClass {
 // F. Wright, Minor code cleanup, 1pm 06/03/24
 // T. Creagh, made threads for the reading and made sure that it works all fine and propper., 2pm 06/03/24
 // T. Creagh, improved performace by adding arrays instead
+// F. Wright, Made it so the file reading happens on a seperate thread. Made code fit coding standard, 4pm 06/03/24
