@@ -3,9 +3,13 @@ import java.util.List;
 import java.io.FileInputStream;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.ByteOrder;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.io.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 
 class DateType {
@@ -49,6 +53,8 @@ class FlightsManagerClass {
   private ArrayList<RawFlightType> m_rawFlightsList = new ArrayList<RawFlightType>();
   private List<String> m_carrierCodes = Arrays.asList("AA", "AS", "B6");
   private List<String> m_airportCodes = Arrays.asList("JFK", "DCA");
+  private ExecutorService executor;
+
 
   public ArrayList<RawFlightType> getRawFlightsList() {
     if (m_dataLocked)
@@ -67,41 +73,59 @@ class FlightsManagerClass {
   // Should work with both relative and absolute filepaths if possible 
   // Relative: "./Data/flights2k.csv"
   // Absolute: "C:\Users\finnw\OneDrive\Documents\Trinity\CS\Project\FATMKM\data\flights2k.csv"
-  public void converFileToRawFlightType(String filepath) {
+  public void convertFileToRawFlightType(String filepath) {
+    String path = sketchPath() + "/" + filepath;
     MappedByteBuffer buffer;
-    String path = sketchPath() + "\\" + filepath;
-    try {
+    executor = Executors.newFixedThreadPool(THREAD_COUNT);
 
-      final FileChannel channel = new FileInputStream(path).getChannel();
+    try (FileChannel channel = new FileInputStream(path).getChannel()) {
       buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
       channel.close();
-      // byte[] byteArray = new byte[buffer.slice(0, 24).remaining()];
-      // buffer.slice(0, 24).get(byteArray);
-      // RawFlightType newRawFlightType = (RawFlightType)SerializationUtils.deserialize(byteArray);
+      List<Thread> threads = new ArrayList<>();
+      long chunkSize = NUMBER_OF_LINES / THREAD_COUNT;
 
-      // println(newRawFlightType);
+      for (int i = 0; i < THREAD_COUNT; i++) {
+        long startPosition = i * chunkSize;
+        long endPosition = (i == THREAD_COUNT - 1) ? NUMBER_OF_LINES : (i + 1) * chunkSize;
+        long length = endPosition - startPosition;
 
-      for (int i = 0; i < NUMBER_OF_LINES; i++) {
-        RawFlightType temp = new RawFlightType();
-        temp.Day = buffer.get();
-        temp.CarrierCodeIndex = buffer.get();
-        temp.FlightNumber = buffer.getShort();
-        temp.AirportOriginIndex = buffer.getShort();
-        temp.AirportDestIndex = buffer.getShort();
-        temp.ScheduledDepartureTime = buffer.getShort();
-        temp.DepartureTime = buffer.getShort();
-        temp.ScheduledArrivalTime = buffer.getShort();
-        temp.ArrivalTime = buffer.getShort();
-        temp.CancelledOrDiverted = buffer.get();
-        temp.MilesDistance = buffer.getShort();
-        m_rawFlightsList.add(temp);
+        executor.execute(() -> processChunk(buffer.slice((int) startPosition * 24, (int) length * 24), length));
       }
-    } catch (Exception e) {
+
+      executor.shutdown();
+      try {
+        executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+      } catch (InterruptedException e) {
+        println("Error: " + e);
+        return;
+      }
+    } catch (IOException e) {
       println("Error: " + e);
       return;
     }
-
   }
+
+  private void processChunk(MappedByteBuffer buffer, long length) {
+    RawFlightType temp = new RawFlightType();
+    for (int i = 0; i < length; i++) {
+      int offset = LINE_BYTE_SIZE * i;
+      temp = new RawFlightType();
+      // more efficeint with offsets
+      temp.Day = buffer.get(offset);
+      temp.CarrierCodeIndex = buffer.get(offset+1);
+      temp.FlightNumber = buffer.getShort(offset+2);
+      temp.AirportOriginIndex = buffer.getShort(offset+4);
+      temp.AirportDestIndex = buffer.getShort(offset+6);
+      temp.ScheduledDepartureTime = buffer.getShort(offset+8);
+      temp.DepartureTime = buffer.getShort(offset+10);
+      temp.ScheduledArrivalTime = buffer.getShort(offset+12);
+      temp.ArrivalTime = buffer.getShort(offset+14);
+      temp.CancelledOrDiverted = buffer.get(offset+16);
+      temp.MilesDistance = buffer.getShort(offset+17);
+      m_rawFlightsList.add(temp);
+    }
+  }
+
 
   // The following functions should modify member variables and not return values as they run asynchrously
   // Converts the string[] line by line into a ArrayList<FlightType> member variable

@@ -9,11 +9,11 @@ class ApplicationClass {
     
     FlightsManagerClass fm = new FlightsManagerClass();
     long startTime = System.nanoTime();
-    fm.converFileToRawFlightType("data\\all_lines.txt");
+    fm.convertFileToRawFlightType("data/all_lines_random.txt");
     long endTime = System.nanoTime();
 
     long duration = (endTime - startTime)/1000000;  //divide by 1000000 to get milliseconds.
-    println("converFileToRawFlightType took " + duration + "ms");
+    println("converFileToRawFlightType took: " + duration + "ms");
 
     m_screens = new ArrayList<Screen>();
 
