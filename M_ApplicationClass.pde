@@ -9,11 +9,10 @@ class ApplicationClass {
   private DebugFPSClass m_fpsClass = new DebugFPSClass();
 
   void init() {
-    String filepath = "data/Preprocessed Data/all_lines_random.bin";
+    String filepath = "data/Preprocessed Data/hex_flight_data.bin";
     m_flightsManager.convertFileToFlightType(filepath, 4, list -> {
       println("I'm done! Here's the first flights day: " + list[0].Day);
-    }
-    );
+    });
 
     m_screens = new ArrayList<Screen>();
 

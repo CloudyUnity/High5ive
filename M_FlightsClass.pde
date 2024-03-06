@@ -17,6 +17,23 @@ class FlightType { // 19 bytes total
   public short ArrivalTime;
   public byte CancelledOrDiverted;
   public short MilesDistance;
+  public FlightType(
+    byte Day, byte CarrierCodeIndex, short FlightNumber,
+    short AirportOriginIndex, short AirportDestIndex, short ScheduledDepartureTime,
+    short DepartureTime, short ScheduledArrivalTime, short ArrivalTime,
+    byte CancelledOrDiverted, short MilesDistance) {
+      this.Day = Day;
+      this.CarrierCodeIndex = CarrierCodeIndex;
+      this.FlightNumber = FlightNumber;
+      this.AirportOriginIndex = AirportOriginIndex;
+      this.AirportDestIndex = AirportDestIndex;
+      this.ScheduledDepartureTime = ScheduledDepartureTime;
+      this.DepartureTime = DepartureTime;
+      this.ScheduledArrivalTime = ScheduledArrivalTime;
+      this.ArrivalTime = ArrivalTime;
+      this.CancelledOrDiverted = CancelledOrDiverted;
+      this.MilesDistance = MilesDistance;
+  }
 }
 
 class FlightsManagerClass {
@@ -54,7 +71,7 @@ class FlightsManagerClass {
     try (FileInputStream fis = new FileInputStream(path)) {            
       FileChannel channel = fis.getChannel();
       buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
-      long flightCount = channel.size() / 24;
+      long flightCount = channel.size() / LINE_BYTE_SIZE;
       fis.close();
       channel.close();
 
@@ -92,21 +109,19 @@ class FlightsManagerClass {
 
     long maxI = startPosition + processingSize;
     for (int i = startPosition; i < maxI; i++) {
-      FlightType temp = new FlightType();
       int offset = LINE_BYTE_SIZE * i;
-
-      temp.Day = buffer.get(offset);
-      temp.CarrierCodeIndex = buffer.get(offset+1);
-      temp.FlightNumber = buffer.getShort(offset+2);
-      temp.AirportOriginIndex = buffer.getShort(offset+4);
-      temp.AirportDestIndex = buffer.getShort(offset+6);
-      temp.ScheduledDepartureTime = buffer.getShort(offset+8);
-      temp.DepartureTime = buffer.getShort(offset+10);
-      temp.ScheduledArrivalTime = buffer.getShort(offset+12);
-      temp.ArrivalTime = buffer.getShort(offset+14);
-      temp.CancelledOrDiverted = buffer.get(offset+16);
-      temp.MilesDistance = buffer.getShort(offset+17);
-      m_flightsList[i] = temp;
+      m_flightsList[i] = new FlightType(
+        buffer.get(offset),
+        buffer.get(offset+1),
+        buffer.getShort(offset+2),
+        buffer.getShort(offset+4),
+        buffer.getShort(offset+6),
+        buffer.getShort(offset+8),
+        buffer.getShort(offset+10),
+        buffer.getShort(offset+12),
+        buffer.getShort(offset+14),
+        buffer.get(offset+16),
+        buffer.getShort(offset+17));
     }
     s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
   }
@@ -127,6 +142,7 @@ class FlightsManagerClass {
 // F. Wright, Started work on storing the FlightType data as raw binary data for efficient data transfer, 1pm 05/03/24
 // T. Creagh, Did the first attempt at reading the binary file and now it very efficiently gets the data into FlightType, 9:39pm 05/03/24
 // F. Wright, Minor code cleanup, 1pm 06/03/24
-// T. Creagh, made threads for the reading and made sure that it works all fine and propper., 2pm 06/03/24
-// T. Creagh, improved performace by adding arrays instead
+// T. Creagh, made threads for the reading and made sure that it works all fine and propper, 2pm 06/03/24
+// T. Creagh, improved performace by adding arrays instead, 3pm 06/03/24
 // F. Wright, Made it so the file reading happens on a seperate thread. Made code fit coding standard, 4pm 06/03/24
+// T. Creagh, improved performace by having constructor, 8pm 06/03/24
