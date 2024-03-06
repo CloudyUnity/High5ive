@@ -155,3 +155,4 @@ class FlightsManagerClass {
 // F. Wright, Made DateType, FlightType, FlightsManagerClass and made function headers. Left comments to explain how everything could be implemented, 11pm 04/03/24
 // F. Wright, Started work on storing the FlightType data as raw binary data for efficient data transfer, 1pm 05/03/24
 // T. Creagh, Did the first attempt at reading the binary file and now it very efficiently gets the data into RawFlightType, 9:39pm 05/03/24
+// T. Creagh, made threads for the reading and made sure that it works all fine and propper.
