@@ -156,6 +156,23 @@ class Screen2 extends Screen {
   }
 }
 
+class ScreenFlightMap extends Screen {
+  PVector m_dimensions = new PVector(1024, 637);
+  
+  public ScreenFlightMap(int scaleX, int scaleY, String screenId) {
+    super(scaleX, scaleY, screenId, color(255, 255, 255, 255));
+    
+    FlightMapUI flightmap = new FlightMapUI(0, 0, (int)m_dimensions.x, (int)m_dimensions.y);
+    addWidget(flightmap);
+  }
+  
+  public void applyFlightData(FlightType[] flightData){
+    for (int i = 0; i < flightData.length; i++){
+      
+    }
+  }
+}
+
 // Descending code authorship changes:
 // A. Robertson, ___
 // F. Wright, Modified and simplified code to fit coding standard. Fixed checkbox issues with colours, 6pm 04/03/24
