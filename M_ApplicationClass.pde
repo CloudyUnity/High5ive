@@ -13,7 +13,7 @@ class ApplicationClass {
     s_DebugProfiler.startProfileTimer();    
     String filepath = "data/Preprocessed Data/all_lines_random.txt";
     m_flightsManager.convertFileToRawFlightType(filepath);    
-    s_DebugProfiler.printTimeTakenSeconds("Raw file pre-processing");
+    s_DebugProfiler.printTimeTakenMillis("Raw file pre-processing");
     // ===
 
     m_screens = new ArrayList<Screen>();
