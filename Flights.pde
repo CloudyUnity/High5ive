@@ -50,6 +50,7 @@ class FlightsManagerClass {
   private List<String> m_carrierCodes = Arrays.asList("AA", "AS", "B6");
   private List<String> m_airportCodes = Arrays.asList("JFK", "DCA");
 
+
   public ArrayList<RawFlightType> getRawFlightsList() {
     if (m_dataLocked)
       return null;
@@ -67,21 +68,43 @@ class FlightsManagerClass {
   // Should work with both relative and absolute filepaths if possible 
   // Relative: "./Data/flights2k.csv"
   // Absolute: "C:\Users\finnw\OneDrive\Documents\Trinity\CS\Project\FATMKM\data\flights2k.csv"
-  public void converFileToRawFlightType(String filepath) {
-    MappedByteBuffer buffer;
-    String path = sketchPath() + "\\" + filepath;
+  public void convertFileToRawFlightType(String filepath) {
+    String path = sketchPath() + "/" + filepath;
+    long fileSize = NUMBER_OF_LINES * 24;
+
     try {
+      FileChannel channel = new FileInputStream(file).getChannel()
 
-      final FileChannel channel = new FileInputStream(path).getChannel();
-      buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
-      channel.close();
-      // byte[] byteArray = new byte[buffer.slice(0, 24).remaining()];
-      // buffer.slice(0, 24).get(byteArray);
-      // RawFlightType newRawFlightType = (RawFlightType)SerializationUtils.deserialize(byteArray);
+      List<Thread> threads = new ArrayList<>();
+      long chunkSize = fileSize / THREAD_COUNT;
 
-      // println(newRawFlightType);
+      for (int i = 0; i < THREAD_COUNT; i++) {
+        long startPosition = i * chunkSize;
+        long endPosition = (i == THREAD_COUNT - 1) ? fileSize : (i + 1) * chunkSize;
 
-      for (int i = 0; i < NUMBER_OF_LINES; i++) {
+        Thread thread = new Thread(() -> processChunk(channel, startPosition, endPosition));
+        threads.add(thread);
+        thread.start();
+      }
+
+      for (Thread thread : threads) {
+        try {
+          thread.join();
+        } catch (InterruptedException e) {
+          println("Error: " + e);
+          return;
+        }
+      }
+    } catch (IOException e) {
+      println("Error: " + e);
+      return;
+    }
+  }
+
+  private void processChunk(FileChannel channel, long startPosition, long endPosition) {
+    try {
+      MappedByteBuffer buffer = channel.map(FileChannel.MapMode.READ_ONLY, startPosition, endPosition - startPosition);
+      for (int i = 0; i < endPosition - startPosition; i++) {
         RawFlightType temp = new RawFlightType();
         temp.Day = buffer.get();
         temp.CarrierCodeIndex = buffer.get();
@@ -96,12 +119,11 @@ class FlightsManagerClass {
         temp.MilesDistance = buffer.getShort();
         m_rawFlightsList.add(temp);
       }
-    } catch (Exception e) {
-      println("Error: " + e);
-      return;
+    } catch (IOException e) {
+        e.printStackTrace();
     }
-
   }
+
 
   // The following functions should modify member variables and not return values as they run asynchrously
   // Converts the string[] line by line into a ArrayList<FlightType> member variable

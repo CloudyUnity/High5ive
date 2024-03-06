@@ -5,6 +5,7 @@ final int INPUT_ARRAY_LENGTH = 70000;
 final int LINE_BYTE_SIZE = 24;
 final boolean FULLSCREEN_ENABLED = false;
 final long NUMBER_OF_LINES = 563737;
+final int THREAD_COUNT = 4;
 
 // Debug Options
 final boolean DEBUG_MODE = false; // Turns on various stats or console logging
