@@ -7,6 +7,9 @@ import java.nio.ByteOrder;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.io.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 
 class DateType {
@@ -50,6 +53,7 @@ class FlightsManagerClass {
   private ArrayList<RawFlightType> m_rawFlightsList = new ArrayList<RawFlightType>();
   private List<String> m_carrierCodes = Arrays.asList("AA", "AS", "B6");
   private List<String> m_airportCodes = Arrays.asList("JFK", "DCA");
+  private ExecutorService executor;
 
 
   public ArrayList<RawFlightType> getRawFlightsList() {
@@ -72,6 +76,7 @@ class FlightsManagerClass {
   public void convertFileToRawFlightType(String filepath) {
     String path = sketchPath() + "/" + filepath;
     MappedByteBuffer buffer;
+    executor = Executors.newFixedThreadPool(THREAD_COUNT);
 
     try (FileChannel channel = new FileInputStream(path).getChannel()) {
       buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
@@ -84,18 +89,15 @@ class FlightsManagerClass {
         long endPosition = (i == THREAD_COUNT - 1) ? NUMBER_OF_LINES : (i + 1) * chunkSize;
         long length = endPosition - startPosition;
 
-        Thread thread = new Thread(() -> processChunk(buffer.slice((int) startPosition*24, (int) length*24), length));
-        threads.add(thread);
-        thread.start();
+        executor.execute(() -> processChunk(buffer.slice((int) startPosition * 24, (int) length * 24), length));
       }
 
-      for (Thread thread : threads) {
-        try {
-          thread.join();
-        } catch (InterruptedException e) {
-          println("Error: " + e);
-          return;
-        }
+      executor.shutdown();
+      try {
+        executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+      } catch (InterruptedException e) {
+        println("Error: " + e);
+        return;
       }
     } catch (IOException e) {
       println("Error: " + e);
