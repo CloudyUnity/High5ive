@@ -142,6 +142,7 @@ class FlightsManagerClass {
 // F. Wright, Started work on storing the FlightType data as raw binary data for efficient data transfer, 1pm 05/03/24
 // T. Creagh, Did the first attempt at reading the binary file and now it very efficiently gets the data into FlightType, 9:39pm 05/03/24
 // F. Wright, Minor code cleanup, 1pm 06/03/24
-// T. Creagh, made threads for the reading and made sure that it works all fine and propper., 2pm 06/03/24
-// T. Creagh, improved performace by adding arrays instead
+// T. Creagh, made threads for the reading and made sure that it works all fine and propper, 2pm 06/03/24
+// T. Creagh, improved performace by adding arrays instead, 3pm 06/03/24
 // F. Wright, Made it so the file reading happens on a seperate thread. Made code fit coding standard, 4pm 06/03/24
+// T. Creagh, improved performace by having constructor, 8pm 06/03/24
