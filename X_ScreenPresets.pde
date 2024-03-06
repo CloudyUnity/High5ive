@@ -76,11 +76,11 @@ class Screen1 extends Screen {
   }
 
   private void switchToScreen2OnClick(EventInfoType e) {
-    s_ApplicationClass.switchScreen(new SwitchScreenEventInfoType(e.X, e.Y, SCREEN_2_ID, e.Widget));
+    s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SCREEN_2_ID, e.Widget));
   }
   
   private void switchToDemoOnClick(EventInfoType e) {
-    s_ApplicationClass.switchScreen(new SwitchScreenEventInfoType(e.X, e.Y, SWITCH_TO_DEMO_ID, e.Widget));
+    s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SWITCH_TO_DEMO_ID, e.Widget));
   }
 
   private void changeOutlineColourOnExit(EventInfoType e) {
@@ -154,7 +154,7 @@ class Screen2 extends Screen {
   }
 
   private void switchToScreen1OnClick(EventInfoType e) {
-    s_ApplicationClass.switchScreen(new SwitchScreenEventInfoType(e.X, e.Y, SCREEN_1_ID, e.Widget));
+    s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SCREEN_1_ID, e.Widget));
   }
 
   private void changeOutlineColourOnExit(EventInfoType e) {
@@ -184,6 +184,12 @@ class FlightCodesBarchartDemo extends Screen {
   
   public FlightCodesBarchartDemo(int scaleX, int scaleY, String screenId) {
     super(scaleX, scaleY, screenId, color(150, 150, 150, 255));
+    
+    ButtonUI returnBtn = new ButtonUI(20, 20, 50, 50);
+    returnBtn.setText("<-");
+    returnBtn.setTextSize(25);
+    addWidget(returnBtn);
+    
     data = new ArrayList<FlightType>();
     FlightType ft1 = new FlightType();
     ft1.AirportOriginIndex = 1;
@@ -233,6 +239,10 @@ class FlightCodesBarchartDemo extends Screen {
       chart.addData(data, v -> Short.toString(v.AirportDestIndex));
       chart.setTitle("Flight destination indicies");
     }
+  }
+  
+  private void onReturnButtonClicked(EventInfoType e) {
+    s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SCREEN_1_ID, e.Widget)); 
   }
 }
 

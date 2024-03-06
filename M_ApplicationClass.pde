@@ -7,6 +7,8 @@ class ApplicationClass {
 
   private FlightsManagerClass m_flightsManager = new FlightsManagerClass();
   private DebugFPSClass m_fpsClass = new DebugFPSClass();
+  
+  private Event<SwitchScreenEventInfoType> m_onSwitchEvent;
 
   void init() {
     String filepath = "data/Preprocessed Data/all_lines_random.bin";
@@ -14,6 +16,9 @@ class ApplicationClass {
       println("I'm done! Here's the first flights day: " + list[0].Day);
     }
     );
+    
+    m_onSwitchEvent = new Event<SwitchScreenEventInfoType>();
+    m_onSwitchEvent.addHandler(e -> switchScreen(e));
 
     m_screens = new ArrayList<Screen>();
 
@@ -68,7 +73,11 @@ class ApplicationClass {
       m_currentScreen.onMouseClick();
   }
 
-  void switchScreen(SwitchScreenEventInfoType e) {
+  public Event<SwitchScreenEventInfoType> getOnSwitchEvent() {
+    return m_onSwitchEvent;
+  }
+
+  private void switchScreen(SwitchScreenEventInfoType e) {
     e.Widget.getOnMouseExitEvent().raise((EventInfoType)e);
 
     for (Screen screen : m_screens) {
