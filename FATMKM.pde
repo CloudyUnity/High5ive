@@ -13,7 +13,7 @@ void setup() {
 
   frameRate(FRAME_RATE);
 
-  textFont(loadFont("AgencyFB-Bold-48.vlw"));
+  textFont(loadFont("data/Fonts/AgencyFB-Bold-48.vlw"));
 
   s_ApplicationClass.init();
 }
