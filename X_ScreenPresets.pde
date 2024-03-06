@@ -164,6 +164,9 @@ class ScreenFlightMap extends Screen {
     
     FlightMapUI flightmap = new FlightMapUI(0, 0, (int)m_dimensions.x, (int)m_dimensions.y);
     addWidget(flightmap);
+    
+    FlightMap3D flight3D = new FlightMap3D(0,0,0,0);
+    addWidget(flight3D);
   }
   
   public void applyFlightData(FlightType[] flightData){
