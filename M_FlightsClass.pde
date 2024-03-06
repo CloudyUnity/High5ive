@@ -11,10 +11,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-class DateType { // TO BE REMOVED?
-  public int Year, Month, Day;
-}
-
 class FlightType { // 19 bytes total
   public byte Day;
   public byte CarrierCodeIndex;
@@ -94,7 +90,7 @@ class FlightsManagerClass {
   public void queryFlightsWithAirport(String airport) {
   }
 
-  public void queryFlightsWithinDates(DateType startDate, DateType endDate) {
+  public void queryFlightsWithinDates(int startDay, int endDay) {
   }
 
   public void sortFlightsByLateness() {
