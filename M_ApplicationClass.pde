@@ -11,7 +11,7 @@ class ApplicationClass {
     
     // DEBUG
     s_DebugProfiler.startProfileTimer();    
-    String filepath = "data/Preprocessed Data/all_lines_random.txt";
+    String filepath = "data/Preprocessed Data/hex_flight_data.bin";
     m_flightsManager.convertFileToRawFlightType(filepath);    
     s_DebugProfiler.printTimeTakenMillis("Raw file pre-processing");
     // ===

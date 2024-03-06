@@ -67,7 +67,9 @@ class FlightsManagerClass {
         long endPosition = (i == THREAD_COUNT - 1) ? NUMBER_OF_LINES : (i + 1) * chunkSize;
         long length = endPosition - startPosition;
 
-        executor.execute(() -> processChunk(buffer.slice((int) startPosition * 24, (int) length * 24), length));
+        executor.execute(() -> processChunk(
+          buffer.slice((int) startPosition * LINE_BYTE_SIZE,
+          (int) length * LINE_BYTE_SIZE), length));
       }
 
       executor.shutdown();
@@ -85,6 +87,7 @@ class FlightsManagerClass {
 
   private void processChunk(MappedByteBuffer buffer, long length) {
     RawFlightType temp = new RawFlightType();
+    if (DEBUG_MODE) println("thread ready boss o7");
     for (int i = 0; i < length; i++) {
       int offset = LINE_BYTE_SIZE * i;
       temp = new RawFlightType();
@@ -130,3 +133,4 @@ class FlightsManagerClass {
 // F. Wright, Started work on storing the FlightType data as raw binary data for efficient data transfer, 1pm 05/03/24
 // T. Creagh, Did the first attempt at reading the binary file and now it very efficiently gets the data into RawFlightType, 9:39pm 05/03/24
 // F. Wright, Minor code cleanup, 1pm 06/03/24
+// T. Creagh, made threads for the reading and made sure that it works all fine and propper., 2pm 06/03/24
