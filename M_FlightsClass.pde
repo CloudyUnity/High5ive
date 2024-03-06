@@ -102,7 +102,7 @@ class FlightsManagerClass {
       temp.AirportDestIndex = buffer.getShort(offset+6);
       temp.ScheduledDepartureTime = buffer.getShort(offset+8);
       temp.DepartureTime = buffer.getShort(offset+10);
-      temp.ScheduledArrivalTiahhme = buffer.getShort(offset+12);
+      temp.ScheduledArrivalTime = buffer.getShort(offset+12);
       temp.ArrivalTime = buffer.getShort(offset+14);
       temp.CancelledOrDiverted = buffer.get(offset+16);
       temp.MilesDistance = buffer.getShort(offset+17);
