@@ -17,27 +17,27 @@ class FlightType { // 19 bytes total
   public short ArrivalTime;
   public byte CancelledOrDiverted;
   public short MilesDistance;
-  public FlightType(
-    byte Day, byte CarrierCodeIndex, short FlightNumber,
-    short AirportOriginIndex, short AirportDestIndex, short ScheduledDepartureTime,
-    short DepartureTime, short ScheduledArrivalTime, short ArrivalTime,
-    byte CancelledOrDiverted, short MilesDistance) {
-      this.Day = Day;
-      this.CarrierCodeIndex = CarrierCodeIndex;
-      this.FlightNumber = FlightNumber;
-      this.AirportOriginIndex = AirportOriginIndex;
-      this.AirportDestIndex = AirportDestIndex;
-      this.ScheduledDepartureTime = ScheduledDepartureTime;
-      this.DepartureTime = DepartureTime;
-      this.ScheduledArrivalTime = ScheduledArrivalTime;
-      this.ArrivalTime = ArrivalTime;
-      this.CancelledOrDiverted = CancelledOrDiverted;
-      this.MilesDistance = MilesDistance;
+
+  public FlightType(byte day, byte carrierCodeIndex, short flightNumber,
+    short airportOriginIndex, short airportDestIndex, short scheduledDepartureTime,
+    short departureTime, short scheduledArrivalTime, short arrivalTime,
+    byte cancelledOrDiverted, short milesDistance) {
+    Day = day;
+    CarrierCodeIndex = carrierCodeIndex;
+    FlightNumber = flightNumber;
+    AirportOriginIndex = airportOriginIndex;
+    AirportDestIndex = airportDestIndex;
+    ScheduledDepartureTime = scheduledDepartureTime;
+    DepartureTime = departureTime;
+    ScheduledArrivalTime = scheduledArrivalTime;
+    ArrivalTime = arrivalTime;
+    CancelledOrDiverted = cancelledOrDiverted;
+    MilesDistance = milesDistance;
   }
 }
 
 class FlightsManagerClass {
-  private FlightType[] m_flightsList = new FlightType[563737];
+  private FlightType[] m_flightsList;
   private boolean m_working;
 
   public FlightType[] getflightsList() {
@@ -50,9 +50,9 @@ class FlightsManagerClass {
 
     new Thread(() -> {
       s_DebugProfiler.startProfileTimer();
-      convertFileToFlightTypeAsync(filepath, threadCount);      
+      convertFileToFlightTypeAsync(filepath, threadCount);
       s_DebugProfiler.printTimeTakenMillis("Raw file pre-processing");
-      
+
       m_working = false;
       onTaskComplete.accept(m_flightsList);
     }
@@ -68,10 +68,11 @@ class FlightsManagerClass {
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
     CountDownLatch latch = new CountDownLatch(threadCount);
 
-    try (FileInputStream fis = new FileInputStream(path)) {            
+    try (FileInputStream fis = new FileInputStream(path)) {
       FileChannel channel = fis.getChannel();
       buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
       long flightCount = channel.size() / LINE_BYTE_SIZE;
+      m_flightsList = new FlightType[(int)flightCount];
       fis.close();
       channel.close();
 
