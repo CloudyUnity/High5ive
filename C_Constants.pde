@@ -2,11 +2,12 @@
 final int FRAME_RATE = 60;
 final int FIXED_FRAME_INCREMENT = 50;
 final int INPUT_ARRAY_LENGTH = 70000;
-final int LINE_BYTE_SIZE = 24;
+final int LINE_BYTE_SIZE = 19;
 final boolean FULLSCREEN_ENABLED = false;
 
 // Debug Options
-final boolean DEBUG_MODE = false; // Turns on various stats or console logging
+final boolean DEBUG_MODE = true; // Turns on various stats or console logging
+final int DEBUG_FPS_COUNTER_STORAGE = 30;
 
 // Scene
 final int DEFAULT_FOREGROUND_COLOUR = #000000;
@@ -19,6 +20,7 @@ final int DEFAULT_SLIDER_FILLED_COLOUR = #00BCD4;
 // IDs
 final String SCREEN_1_ID = "Screen 1";
 final String SCREEN_2_ID = "Screen 2";
+final String SCREEN_FLIGHT_MAP_ID = "Screen Flight Map";
 
 // Color Palette (TODO)
 final int EXAMPLE_COLOR_1 = #000000;
