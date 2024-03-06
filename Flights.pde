@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.util.List;
 import java.io.FileInputStream;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -12,11 +11,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 
-class DateType {
+class DateType { // TO BE REMOVED?
   public int Year, Month, Day;
 }
 
-class FlightType {
+class FlightType { // TO BE REMOVED?
   public DateType FlightDate;
   public String CarrierCode;
   public int FlightNumber;
@@ -27,12 +26,7 @@ class FlightType {
   public int MilesDistance;
 }
 
-// byte = 1 byte
-// short = 2 bytes
-// boolean = 1 byte
-// int = 4 bytes
-// 5(1) + 2(1) + 5(2) = 17 bytes
-class RawFlightType {
+class RawFlightType { // 24 bytes total
   public byte Day;
   public byte CarrierCodeIndex;
   public short FlightNumber;
@@ -43,37 +37,21 @@ class RawFlightType {
   public short MilesDistance;
 }
 
-// These methods should run asynchrously using thread()
-// If this class is currently writing to any data then m_dataLocked should be on which prevents access
-// Other classes can check every frame after invoking these methods to see if the result has returned
-// Pre-processing the data into files is allowed and may be useful to improve performance!!
 class FlightsManagerClass {
-  private boolean m_dataLocked;
   private ArrayList<FlightType> m_flightsList = new ArrayList<FlightType>();
   private ArrayList<RawFlightType> m_rawFlightsList = new ArrayList<RawFlightType>();
-  private List<String> m_carrierCodes = Arrays.asList("AA", "AS", "B6");
-  private List<String> m_airportCodes = Arrays.asList("JFK", "DCA");
   private ExecutorService executor;
 
-
   public ArrayList<RawFlightType> getRawFlightsList() {
-    if (m_dataLocked)
-      return null;
-
     return m_rawFlightsList;
   }
 
-  public ArrayList<FlightType> getFlightsList() {
-    if (m_dataLocked)
-      return null;
-
+  public ArrayList<FlightType> getFlightsList() {   
     return m_flightsList;
   }
 
-  // Should work with both relative and absolute filepaths if possible 
-  // Relative: "./Data/flights2k.csv"
-  // Absolute: "C:\Users\finnw\OneDrive\Documents\Trinity\CS\Project\FATMKM\data\flights2k.csv"
-  public void convertFileToRawFlightType(String filepath) {
+  // This file should take in an Consumer that passes back the m_rawFlightsList asynchrously. Finn can explain
+  public void converFileToRawFlightType(String filepath) {
     String path = sketchPath() + "/" + filepath;
     MappedByteBuffer buffer;
     executor = Executors.newFixedThreadPool(THREAD_COUNT);
@@ -126,7 +104,6 @@ class FlightsManagerClass {
     }
   }
 
-
   // The following functions should modify member variables and not return values as they run asynchrously
   // Converts the string[] line by line into a ArrayList<FlightType> member variable
   public void convertRawFlightTypeToFlightType() {
@@ -152,3 +129,4 @@ class FlightsManagerClass {
 // F. Wright, Made DateType, FlightType, FlightsManagerClass and made function headers. Left comments to explain how everything could be implemented, 11pm 04/03/24
 // F. Wright, Started work on storing the FlightType data as raw binary data for efficient data transfer, 1pm 05/03/24
 // T. Creagh, Did the first attempt at reading the binary file and now it very efficiently gets the data into RawFlightType, 9:39pm 05/03/24
+// F. Wright, Minor code cleanup, 1pm 06/03/24
