@@ -2,7 +2,6 @@ import java.util.function.Function;
 import java.util.TreeMap;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.Iterable;
 
 class BarChartUI<T> extends Widget {
   private TreeMap<String, Integer> m_map;
