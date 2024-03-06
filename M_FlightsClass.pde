@@ -15,18 +15,7 @@ class DateType { // TO BE REMOVED?
   public int Year, Month, Day;
 }
 
-class FlightType { // TO BE REMOVED?
-  public DateType FlightDate;
-  public String CarrierCode;
-  public int FlightNumber;
-  public String AirportOriginCode, AirportOriginName, AirportOriginState, AirportOriginWAC;
-  public String AirportDestCode, AirportDestName, AirportDestState, AirportDestWAC;
-  public int CRSDepartureTime, DepartureTime, CRSArrivalTime, ArrivalTime;
-  public boolean Cancelled, Diverted;
-  public int MilesDistance;
-}
-
-class RawFlightType { // 24 bytes total
+class FlightType { // 19 bytes total
   public byte Day;
   public byte CarrierCodeIndex;
   public short FlightNumber;
@@ -38,20 +27,15 @@ class RawFlightType { // 24 bytes total
 }
 
 class FlightsManagerClass {
-  private ArrayList<FlightType> m_flightsList = new ArrayList<FlightType>();
-  private ArrayList<RawFlightType> m_rawFlightsList = new ArrayList<RawFlightType>();
+  private FlightType[] m_flightsList = new FlightType[563737];
   private ExecutorService executor;
 
-  public ArrayList<RawFlightType> getRawFlightsList() {
-    return m_rawFlightsList;
-  }
-
-  public ArrayList<FlightType> getFlightsList() {   
+  public FlightType[] getflightsList() {
     return m_flightsList;
   }
 
-  // This file should take in an Consumer that passes back the m_rawFlightsList asynchrously. Finn can explain
-  public void convertFileToRawFlightType(String filepath) {
+  // This file should take in an Consumer that passes back the m_flightsList asynchrously. Finn can explain
+  public void convertFileToFlightType(String filepath) {
     String path = sketchPath() + "/" + filepath;
     MappedByteBuffer buffer;
     executor = Executors.newFixedThreadPool(THREAD_COUNT);
@@ -68,10 +52,10 @@ class FlightsManagerClass {
         long length = endPosition - startPosition;
 
         executor.execute(() -> processChunk(
-          buffer.slice((int) startPosition * LINE_BYTE_SIZE,
-          (int) length * LINE_BYTE_SIZE), length));
+            buffer.slice((int) startPosition * LINE_BYTE_SIZE, (int) length * LINE_BYTE_SIZE),
+            length, startPosition
+          ));
       }
-
       executor.shutdown();
       try {
         executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
@@ -85,12 +69,11 @@ class FlightsManagerClass {
     }
   }
 
-  private void processChunk(MappedByteBuffer buffer, long length) {
-    RawFlightType temp = new RawFlightType();
+  private void processChunk(MappedByteBuffer buffer, long length, long startPosition) {
+    FlightType temp = new FlightType();
     if (DEBUG_MODE) println("thread ready boss o7");
     for (int i = 0; i < length; i++) {
       int offset = LINE_BYTE_SIZE * i;
-      temp = new RawFlightType();
       // more efficeint with offsets
       temp.Day = buffer.get(offset);
       temp.CarrierCodeIndex = buffer.get(offset+1);
@@ -103,18 +86,8 @@ class FlightsManagerClass {
       temp.ArrivalTime = buffer.getShort(offset+14);
       temp.CancelledOrDiverted = buffer.get(offset+16);
       temp.MilesDistance = buffer.getShort(offset+17);
-      m_rawFlightsList.add(temp);
+      m_flightsList[(int) startPosition + i] = temp;
     }
-  }
-
-  // The following functions should modify member variables and not return values as they run asynchrously
-  // Converts the string[] line by line into a ArrayList<FlightType> member variable
-  public void convertRawFlightTypeToFlightType() {
-    // for (int i = 0; i < m_rawFlightsList.size(); i++) {
-    //   RawFlightType rawTemp = m_rawFlightsList.get(i);
-    //   FlightType temp = new FlightType();
-    //   FlightType.FlightDate = rawTemp
-    // }
   }
 
   // Should work if given airport code or name
@@ -131,6 +104,7 @@ class FlightsManagerClass {
 // Descending code authorship changes:
 // F. Wright, Made DateType, FlightType, FlightsManagerClass and made function headers. Left comments to explain how everything could be implemented, 11pm 04/03/24
 // F. Wright, Started work on storing the FlightType data as raw binary data for efficient data transfer, 1pm 05/03/24
-// T. Creagh, Did the first attempt at reading the binary file and now it very efficiently gets the data into RawFlightType, 9:39pm 05/03/24
+// T. Creagh, Did the first attempt at reading the binary file and now it very efficiently gets the data into FlightType, 9:39pm 05/03/24
 // F. Wright, Minor code cleanup, 1pm 06/03/24
 // T. Creagh, made threads for the reading and made sure that it works all fine and propper., 2pm 06/03/24
+// T. Creagh, improved performace by adding arrays instead
