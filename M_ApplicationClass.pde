@@ -4,29 +4,30 @@ class ApplicationClass {
 
   private ArrayList<Screen> m_screens;
   private Screen m_currentScreen;
-  
+
   private FlightsManagerClass m_flightsManager = new FlightsManagerClass();
+  private DebugFPSClass m_fpsClass = new DebugFPSClass();
 
   void init() {
-    
-    // DEBUG
-    s_DebugProfiler.startProfileTimer();    
-    String filepath = "data/Preprocessed Data/all_lines_random.txt";
-    m_flightsManager.convertFileToRawFlightType(filepath);    
-    s_DebugProfiler.printTimeTakenMillis("Raw file pre-processing");
-    // ===
+    String filepath = "data/Preprocessed Data/all_lines_random.bin";
+    m_flightsManager.convertFileToFlightType(filepath, 4, list -> {
+      println("I'm done! Here's the first flights day: " + list[0].Day);
+    }
+    );
 
     m_screens = new ArrayList<Screen>();
 
     Screen1 s1 = new Screen1(600, 600, SCREEN_1_ID);
     Screen2 s2 = new Screen2(700, 700, SCREEN_2_ID);
+    ScreenFlightMap sfm = new ScreenFlightMap(1024, 637, SCREEN_FLIGHT_MAP_ID);
 
     m_screens.add(s1);
     m_screens.add(s2);
+    m_screens.add(sfm);
     m_currentScreen = m_screens.get(0);
-    
+
     PVector windowSize = m_currentScreen.getScale();
-    resizeWindow((int)windowSize.x, (int)windowSize.y);   
+    resizeWindow((int)windowSize.x, (int)windowSize.y);
   }
 
   void frame() {
@@ -37,8 +38,14 @@ class ApplicationClass {
       fixedFrame();
       m_fixedFrameCounter += FIXED_FRAME_INCREMENT;
     }
-    
+
     m_currentScreen.draw();
+
+    if (DEBUG_MODE) {
+      m_fpsClass.addToFrameTimes();
+      fill(0);
+      text("FPS: " + m_fpsClass.calculateFPS(), 10, 10, 100, 100);
+    }
   }
 
   void fixedFrame() {
@@ -64,12 +71,12 @@ class ApplicationClass {
 
     for (Screen screen : m_screens) {
       if (e.NewScreenId.compareTo(screen.getScreenId()) == 0) {
-        m_currentScreen = screen;        
+        m_currentScreen = screen;
         resizeWindow((int)screen.getScale().x, (int)screen.getScale().y);
         return;
       }
-    }      
-  } 
+    }
+  }
 }
 
 // Descending code authorship changes:

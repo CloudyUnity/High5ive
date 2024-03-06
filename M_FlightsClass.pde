@@ -1,94 +1,100 @@
 import java.util.Arrays;
 import java.util.List;
-import java.io.FileInputStream;
-import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-import java.nio.ByteOrder;
-import java.nio.file.Paths;
-import java.nio.file.Path;
+import java.nio.*;
 import java.io.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
-class DateType { // TO BE REMOVED?
-  public int Year, Month, Day;
-}
-
-class FlightType { // TO BE REMOVED?
-  public DateType FlightDate;
-  public String CarrierCode;
-  public int FlightNumber;
-  public String AirportOriginCode, AirportOriginName, AirportOriginState, AirportOriginWAC;
-  public String AirportDestCode, AirportDestName, AirportDestState, AirportDestWAC;
-  public int CRSDepartureTime, DepartureTime, CRSArrivalTime, ArrivalTime;
-  public boolean Cancelled, Diverted;
-  public int MilesDistance;
-}
-
-class RawFlightType { // 24 bytes total
+class FlightType { // 19 bytes total
   public byte Day;
   public byte CarrierCodeIndex;
   public short FlightNumber;
   public short AirportOriginIndex;
   public short AirportDestIndex;
-  public short ScheduledDepartureTime =0, DepartureTime =0, ScheduledArrivalTime =0, ArrivalTime =0;
+  public short ScheduledDepartureTime;
+  public short DepartureTime;
+  public short ScheduledArrivalTime;
+  public short ArrivalTime;
   public byte CancelledOrDiverted;
   public short MilesDistance;
 }
 
 class FlightsManagerClass {
-  private ArrayList<FlightType> m_flightsList = new ArrayList<FlightType>();
-  private ArrayList<RawFlightType> m_rawFlightsList = new ArrayList<RawFlightType>();
-  private ExecutorService executor;
+  private FlightType[] m_flightsList = new FlightType[563737];
+  private boolean m_working;
 
-  public ArrayList<RawFlightType> getRawFlightsList() {
-    return m_rawFlightsList;
-  }
-
-  public ArrayList<FlightType> getFlightsList() {   
+  public FlightType[] getflightsList() {
     return m_flightsList;
   }
 
-  // This file should take in an Consumer that passes back the m_rawFlightsList asynchrously. Finn can explain
-  public void convertFileToRawFlightType(String filepath) {
+  public boolean convertFileToFlightType(String filepath, int threadCount, Consumer<FlightType[]> onTaskComplete) {
+    if (m_working)
+      return false;
+
+    new Thread(() -> {
+      s_DebugProfiler.startProfileTimer();
+      convertFileToFlightTypeAsync(filepath, threadCount);      
+      s_DebugProfiler.printTimeTakenMillis("Raw file pre-processing");
+      
+      m_working = false;
+      onTaskComplete.accept(m_flightsList);
+    }
+    ).start();
+
+    m_working = true;
+    return true;
+  }
+
+  private void convertFileToFlightTypeAsync(String filepath, int threadCount) {
     String path = sketchPath() + "/" + filepath;
     MappedByteBuffer buffer;
-    executor = Executors.newFixedThreadPool(THREAD_COUNT);
+    ExecutorService executor = Executors.newFixedThreadPool(threadCount);
+    CountDownLatch latch = new CountDownLatch(threadCount);
 
-    try (FileChannel channel = new FileInputStream(path).getChannel()) {
+    try (FileInputStream fis = new FileInputStream(path)) {            
+      FileChannel channel = fis.getChannel();
       buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
+      long flightCount = channel.size() / 24;
+      fis.close();
       channel.close();
-      List<Thread> threads = new ArrayList<>();
-      long chunkSize = NUMBER_OF_LINES / THREAD_COUNT;
 
-      for (int i = 0; i < THREAD_COUNT; i++) {
-        long startPosition = i * chunkSize;
-        long endPosition = (i == THREAD_COUNT - 1) ? NUMBER_OF_LINES : (i + 1) * chunkSize;
-        long length = endPosition - startPosition;
+      int chunkSize = (int)flightCount / threadCount;
 
-        executor.execute(() -> processChunk(buffer.slice((int) startPosition * 24, (int) length * 24), length));
+      for (int i = 0; i < threadCount; i++) {
+        int startPosition = i * chunkSize;
+        long endPosition = (i == threadCount - 1) ? flightCount : (i + 1) * chunkSize;
+        long processingSize = endPosition - startPosition;
+
+        executor.submit(() -> {
+          processChunk(buffer, processingSize, startPosition);
+          latch.countDown();
+        }
+        );
       }
-
-      executor.shutdown();
       try {
-        executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-      } catch (InterruptedException e) {
-        println("Error: " + e);
-        return;
+        latch.await();
       }
-    } catch (IOException e) {
+      catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      finally {
+        executor.shutdown();
+      }
+    }
+    catch (IOException e) {
       println("Error: " + e);
       return;
     }
   }
 
-  private void processChunk(MappedByteBuffer buffer, long length) {
-    RawFlightType temp = new RawFlightType();
-    for (int i = 0; i < length; i++) {
+  private void processChunk(MappedByteBuffer buffer, long processingSize, int startPosition) {
+    s_DebugProfiler.startProfileTimer();
+
+    long maxI = startPosition + processingSize;
+    for (int i = startPosition; i < maxI; i++) {
+      FlightType temp = new FlightType();
       int offset = LINE_BYTE_SIZE * i;
-      temp = new RawFlightType();
-      // more efficeint with offsets
+
       temp.Day = buffer.get(offset);
       temp.CarrierCodeIndex = buffer.get(offset+1);
       temp.FlightNumber = buffer.getShort(offset+2);
@@ -100,33 +106,27 @@ class FlightsManagerClass {
       temp.ArrivalTime = buffer.getShort(offset+14);
       temp.CancelledOrDiverted = buffer.get(offset+16);
       temp.MilesDistance = buffer.getShort(offset+17);
-      m_rawFlightsList.add(temp);
+      m_flightsList[i] = temp;
     }
-  }
-
-  // The following functions should modify member variables and not return values as they run asynchrously
-  // Converts the string[] line by line into a ArrayList<FlightType> member variable
-  public void convertRawFlightTypeToFlightType() {
-    // for (int i = 0; i < m_rawFlightsList.size(); i++) {
-    //   RawFlightType rawTemp = m_rawFlightsList.get(i);
-    //   FlightType temp = new FlightType();
-    //   FlightType.FlightDate = rawTemp
-    // }
+    s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
   }
 
   // Should work if given airport code or name
-  public void queryFlightsWithAirport(String airport) {
+  public void queryFlights(FlightType values) {
   }
 
-  public void queryFlightsWithinDates(DateType startDate, DateType endDate) {
+  public void queryFlightsWithinRanges(FlightType startValues, FlightType endValues) {
   }
 
-  public void sortFlightsByLateness() {
+  public void sortFlights(FlightType values) {
   }
 }
 
 // Descending code authorship changes:
 // F. Wright, Made DateType, FlightType, FlightsManagerClass and made function headers. Left comments to explain how everything could be implemented, 11pm 04/03/24
 // F. Wright, Started work on storing the FlightType data as raw binary data for efficient data transfer, 1pm 05/03/24
-// T. Creagh, Did the first attempt at reading the binary file and now it very efficiently gets the data into RawFlightType, 9:39pm 05/03/24
+// T. Creagh, Did the first attempt at reading the binary file and now it very efficiently gets the data into FlightType, 9:39pm 05/03/24
 // F. Wright, Minor code cleanup, 1pm 06/03/24
+// T. Creagh, made threads for the reading and made sure that it works all fine and propper., 2pm 06/03/24
+// T. Creagh, improved performace by adding arrays instead
+// F. Wright, Made it so the file reading happens on a seperate thread. Made code fit coding standard, 4pm 06/03/24
