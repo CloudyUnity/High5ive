@@ -11,6 +11,8 @@ class ApplicationClass {
     String filepath = "data/Preprocessed Data/all_lines_random.bin";
     m_flightsManager.convertFileToFlightType(filepath, 4, list -> {
       println("I'm done! Here's the first flights day: " + list[0].Day);
+      println("I'm done! Here's the second flights day: " + list[1].Day);
+      println("I'm done! Here's the third flights day: " + list[2].Day);
     });        
     println("Moving on!");
 
