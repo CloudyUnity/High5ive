@@ -18,7 +18,10 @@ class FlightType { // 19 bytes total
   public short FlightNumber;
   public short AirportOriginIndex;
   public short AirportDestIndex;
-  public short ScheduledDepartureTime =0, DepartureTime =0, ScheduledArrivalTime =0, ArrivalTime =0;
+  public short ScheduledDepartureTime;
+  public short DepartureTime;
+  public short ScheduledArrivalTime;
+  public short ArrivalTime;
   public byte CancelledOrDiverted;
   public short MilesDistance;
 }
@@ -105,7 +108,7 @@ class FlightsManagerClass {
       temp.AirportDestIndex = buffer.getShort(offset+6);
       temp.ScheduledDepartureTime = buffer.getShort(offset+8);
       temp.DepartureTime = buffer.getShort(offset+10);
-      temp.ScheduledArrivalTime = buffer.getShort(offset+12);
+      temp.ScheduledArrivalTiahhme = buffer.getShort(offset+12);
       temp.ArrivalTime = buffer.getShort(offset+14);
       temp.CancelledOrDiverted = buffer.get(offset+16);
       temp.MilesDistance = buffer.getShort(offset+17);
@@ -115,13 +118,13 @@ class FlightsManagerClass {
   }
 
   // Should work if given airport code or name
-  public void queryFlightsWithAirport(String airport) {
+  public void queryFlights(FlightType values) {
   }
 
-  public void queryFlightsWithinDates(int startDay, int endDay) {
+  public void queryFlightsWithinRanges(FlightType startValues, FlightType endValues) {
   }
 
-  public void sortFlightsByLateness() {
+  public void sortFlights(FlightType values) {
   }
 }
 
