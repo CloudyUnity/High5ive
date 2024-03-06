@@ -8,12 +8,9 @@ class ApplicationClass {
   void init() {
     
     FlightsManagerClass fm = new FlightsManagerClass();
-    long startTime = System.nanoTime();
-    fm.convertFileToRawFlightType("data/all_lines_random.txt");
-    long endTime = System.nanoTime();
-
-    long duration = (endTime - startTime)/1000000;  //divide by 1000000 to get milliseconds.
-    println("converFileToRawFlightType took: " + duration + "ms");
+    s_DebugProfiler.startProfileTimer();
+    fm.convertFileToRawFlightType("data/Preprocessed Data/all_lines_random.txt");
+    s_DebugProfiler.printTimeTakenSeconds("Raw file pre-processing");
 
     m_screens = new ArrayList<Screen>();
 
@@ -74,3 +71,4 @@ class ApplicationClass {
 // Descending code authorship changes:
 // F. Wright, Made ApplicationClass and set up init(), frame() and fixedFrame(), 8pm 23/02/24
 // F. Wright, Modified onMouse() functions and merged functions from the old UI main into ApplicationClass, 6pm 04/03/24
+// F. Wright, Changed manual profiling to use DebugProfilingClass instead, 2pm 06/03/24

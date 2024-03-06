@@ -26,7 +26,12 @@ final String SCREEN_2_ID = "Screen 2";
 final int EXAMPLE_COLOR_1 = #000000;
 final int EXAMPLE_COLOR_2 = #000000;
 
+// Math
+final long MILLI_TO_NANO = 1_000_000;
+final long SECOND_TO_NANO = 1_000_000_000;
+
 // Descending code authorship changes:
 // F. Wright, Set up constants for the Engine and Debug, 8pm 23/02/24
 // F. Wright, Added InputClass related constants such as INPUT_ARRAY_LENGTH, 9pm 23/02/24
 // F. Wright, Moved some default colour constants from classes to Constants tab, 6pm 04/03/24
+// F. Wright, Created time related math constants for conversions, 2pm 06/03/24
