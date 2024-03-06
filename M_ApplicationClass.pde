@@ -19,10 +19,12 @@ class ApplicationClass {
 
     Screen1 s1 = new Screen1(600, 600, SCREEN_1_ID);
     Screen2 s2 = new Screen2(700, 700, SCREEN_2_ID);
+    Screen barchartDemo = new FlightCodesBarchartDemo(700, 700, SWITCH_TO_DEMO_ID);
     ScreenFlightMap sfm = new ScreenFlightMap(1024, 637, SCREEN_FLIGHT_MAP_ID);
 
     m_screens.add(s1);
     m_screens.add(s2);
+    m_screens.add(barchartDemo);
     m_screens.add(sfm);
     m_currentScreen = m_screens.get(0);
 

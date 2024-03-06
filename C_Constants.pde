@@ -20,6 +20,7 @@ final int DEFAULT_SLIDER_FILLED_COLOUR = #00BCD4;
 // IDs
 final String SCREEN_1_ID = "Screen 1";
 final String SCREEN_2_ID = "Screen 2";
+final String SWITCH_TO_DEMO_ID = "Barchart demo screen";
 final String SCREEN_FLIGHT_MAP_ID = "Screen Flight Map";
 
 // Color Palette (TODO)
