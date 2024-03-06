@@ -71,8 +71,6 @@ class FlightsManagerClass {
   public void convertFileToRawFlightType(String filepath) {
     String path = sketchPath() + "/" + filepath;
     MappedByteBuffer buffer;
-    File file = new File(path);
-    println(file.length());
 
     try {
       FileChannel channel = new FileInputStream(path).getChannel();
@@ -83,19 +81,17 @@ class FlightsManagerClass {
 
       for (int i = 0; i < THREAD_COUNT; i++) {
         long startPosition = i * chunkSize;
-        long endPosition = (i == THREAD_COUNT - 1) ? NUMBER_OF_LINES - 240 : (i + 1) * chunkSize;
+        long endPosition = (i == THREAD_COUNT - 1) ? NUMBER_OF_LINES : (i + 1) * chunkSize;
         long length = endPosition - startPosition;
 
-        Thread thread = new Thread(() -> processChunk(buffer.slice((int) startPosition, (int) length),startPosition, length));
+        Thread thread = new Thread(() -> processChunk(buffer.slice((int) startPosition*24, (int) length*24), length));
         threads.add(thread);
         thread.start();
       }
 
       for (Thread thread : threads) {
         try {
-          println("ok");
           thread.join();
-          println("what");
         } catch (InterruptedException e) {
           println("Error: " + e);
           return;
@@ -107,11 +103,9 @@ class FlightsManagerClass {
     }
   }
 
-  private void processChunk(MappedByteBuffer buffer, long start, long length) {
-    println(start, length);
+  private void processChunk(MappedByteBuffer buffer, long length) {
     for (int i = 0; i < length; i++) {
-      println(i + start);
-      int offset = (int) start + LINE_BYTE_SIZE * i;
+      int offset = LINE_BYTE_SIZE * i;
       RawFlightType temp = new RawFlightType();
       temp.Day = buffer.get(offset);
       temp.CarrierCodeIndex = buffer.get(offset+1);
@@ -126,7 +120,6 @@ class FlightsManagerClass {
       temp.MilesDistance = buffer.getShort(offset+17);
       m_rawFlightsList.add(temp);
     }
-    println("ok1");
   }
 
 
