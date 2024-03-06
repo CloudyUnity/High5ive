@@ -123,3 +123,6 @@ class BarChartUI<T> extends Widget {
     }
   }
 }
+
+// Code authorship:
+// A. Robertson, Created a barchart widget. 8pm 06/03/24

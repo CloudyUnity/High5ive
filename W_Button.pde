@@ -85,3 +85,6 @@ class ButtonUI extends Widget implements IClickable {
     m_label.setTextYOffset(textYOffset);
   }
 }
+
+// Code authorship:
+// A. Robertson, Created button widget, 12pm 04/04/24
