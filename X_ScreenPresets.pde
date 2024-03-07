@@ -6,29 +6,35 @@ class Screen1 extends Screen {
     redBtn.getOnClickEvent().addHandler(e -> redButtonOnClick(e));
     redBtn.setText("Red");
     redBtn.setTextSize(30);
+    redBtn.setGrowMode(true);
 
     ButtonUI greenBtn = createButton(50, 200, 200, 100);
     greenBtn.getOnClickEvent().addHandler(e -> greenButtonOnClick(e));
     greenBtn.setText("Green");
     greenBtn.setTextSize(30);
+    greenBtn.setGrowMode(true);
 
     ButtonUI blueBtn = createButton(50, 350, 200, 100);
     blueBtn.getOnClickEvent().addHandler(e -> blueButtonOnClick(e));
     blueBtn.setText("Blue");
     blueBtn.setTextSize(30);
+    blueBtn.setGrowMode(true);
 
     ButtonUI switchToScreen2Btn = createButton(350, 200, 100, 100);
     switchToScreen2Btn.getOnClickEvent().addHandler(e -> switchToScreen2OnClick(e));
     switchToScreen2Btn.setText("Screen 2");
     switchToScreen2Btn.setTextSize(25);
+    switchToScreen2Btn.setGrowMode(true);
 
     ButtonUI switchToDemo = createButton(350, 80, 100, 100);
     switchToDemo.getOnClickEvent().addHandler(e -> switchToDemoOnClick(e));
     switchToDemo.setText("Barchart demo");    
     switchToDemo.setTextSize(25);
+    switchToDemo.setGrowMode(true);
             
     CheckboxUI cb = createCheckbox(400, 400, 200, 50, "My checkbox");
     cb.setCheckedColour(color(255, 255, 0, 255));    
+    cb.setGrowMode(true);
   }
 
   private void redButtonOnClick(EventInfoType e) {
@@ -56,7 +62,6 @@ class Screen1 extends Screen {
   }
 
   private void switchToScreen2OnClick(EventInfoType e) {
-    println(s_ApplicationClass.getOnSwitchEvent());
     s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SCREEN_2_ID, e.Widget));
   }
 
@@ -84,10 +89,12 @@ class Screen2 extends Screen {
 
     RadioButtonUI rb1 = new RadioButtonUI(100, 100, 100, 20, "Show data");
     rb1.getOnCheckedEvent().addHandler(e -> onCheckedRb1());
+    rb1.setGrowMode(true);
     group.addMember(rb1);    
     
     RadioButtonUI rb2 = new RadioButtonUI(100, 200, 100, 20, "Don't show data");    
     rb2.getOnCheckedEvent().addHandler(e -> onCheckedRb2());
+    rb2.setGrowMode(true);
     group.addMember(rb2);    
 
     createSlider(100, 400, 300, 50, 0, 100, 1);
@@ -230,3 +237,4 @@ class ScreenFlightMap extends Screen {
 // Descending code authorship changes:
 // A. Robertson, ___
 // F. Wright, Modified and simplified code to fit coding standard. Fixed checkbox issues with colours, 6pm 04/03/24
+// F. Wright, Refactored screen, presets and applied grow mode to relevant widgets, 1pm 07/03/24

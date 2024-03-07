@@ -27,7 +27,7 @@ class LabelUI extends Widget {
     textSize(m_textSize);
 
     fill(color(m_foregroundColour));
-    textAlign(this.m_centreAligned ? CENTER : LEFT, CENTER);
+    textAlign(m_centreAligned ? CENTER : LEFT, CENTER);
     text(m_text, m_pos.x + m_textXOffset, m_pos.y + m_textYOffset, m_scale.x - m_textXOffset, m_scale.y - m_textYOffset);
   }
 

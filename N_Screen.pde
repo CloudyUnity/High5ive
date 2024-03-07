@@ -130,7 +130,7 @@ abstract class Screen extends Widget implements IClickable {
     ButtonUI bttn = new ButtonUI(posX, posY, scaleX, scaleY);
     addWidget(bttn);
     return bttn;
-  }
+  } 
 
   public CheckboxUI createCheckbox(int posX, int posY, int scaleX, int scaleY, String label) {
     CheckboxUI chk = new CheckboxUI(posX, posY, scaleX, scaleY, label);

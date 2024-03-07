@@ -2,36 +2,50 @@ import java.util.function.Consumer;
 
 class WidgetGroupType {
   protected ArrayList<Widget> Members;
-  
+
   public WidgetGroupType() {
     Members = new ArrayList<Widget>();
   }
-  
+
   public ArrayList<Widget> getMembers() {
     return Members;
-  }  
+  }
 }
 
 abstract class Widget {
-  
+
   protected PVector m_pos, m_scale;
-  
+  protected final PVector m_basePos, m_baseScale;
+
   protected int m_backgroundColour = DEFAULT_BACKGROUND_COLOUR;
   protected int m_foregroundColour = DEFAULT_FOREGROUND_COLOUR;
   protected int m_outlineColour = DEFAULT_OUTLINE_COLOUR;
-  
+
   private boolean m_drawOutlineEnabled = true;
   private Event<EventInfoType> m_onMouseEnterEvent = new Event<EventInfoType>();
   private Event<EventInfoType> m_onMouseExitEvent = new Event<EventInfoType>();
 
+  private boolean m_growMode = false;
+  protected boolean m_mouseHovered = false;
+
   public Widget(PVector pos, PVector scale) {
     m_pos = pos;
     m_scale = scale;
+    m_basePos = m_pos.copy();
+    m_baseScale = m_scale.copy();
+
+    getOnMouseEnterEvent().addHandler(e -> m_mouseHovered = true);
+    getOnMouseExitEvent().addHandler(e -> m_mouseHovered = false);
   }
-  
+
   public Widget(int posX, int posY, int scaleX, int scaleY) {
     m_pos = new PVector(posX, posY);
     m_scale = new PVector(scaleX, scaleY);
+    m_basePos = m_pos.copy();
+    m_baseScale = m_scale.copy();
+
+    getOnMouseEnterEvent().addHandler(e -> m_mouseHovered = true);
+    getOnMouseExitEvent().addHandler(e -> m_mouseHovered = false);
   }
 
   public void setDrawOutline(boolean drawOutline) {
@@ -70,6 +84,10 @@ abstract class Widget {
     return m_scale;
   }
 
+  public void setGrowMode(boolean enabled) {
+    m_growMode = enabled;
+  }
+
   /**
    * Sets the x position of the widget.
    *
@@ -79,15 +97,15 @@ abstract class Widget {
   public void setPos(int x, int y) {
     if (x < 0 || y < 0)
       throw new IllegalArgumentException("Position cannot be negative.");
-      
-     m_pos = new PVector(x, y);
+
+    m_pos = new PVector(x, y);
   }
-  
+
   public void setPos(PVector newPos) {
     if (newPos.x < 0 || newPos.y < 0)
       throw new IllegalArgumentException("Position cannot be negative.");
-      
-     m_pos = newPos;
+
+    m_pos = newPos;
   }
 
   /**
@@ -99,14 +117,14 @@ abstract class Widget {
   public void setScale(int w, int h) {
     if (w < 0 || h < 0)
       throw new IllegalArgumentException("Scale cannot be negative.");
-    
+
     m_scale = new PVector(w, h);
   }
-  
+
   public void setScale(PVector newScale) {
     if (newScale.x < 0 || newScale.y < 0)
       throw new IllegalArgumentException("Scale cannot be negative.");
-    
+
     m_scale = newScale;
   }
 
@@ -121,6 +139,20 @@ abstract class Widget {
       stroke(color(m_outlineColour));
     else
       noStroke();
+
+    if (m_growMode) {
+      float mult = 1.1f;
+      float lerpSpeed = m_mouseHovered ? 0.2 : 0.1;
+
+      PVector baseScaleCopy = m_baseScale.copy();
+      if (m_mouseHovered)
+        baseScaleCopy.mult(mult);
+
+      m_scale = PVector.lerp(m_scale, baseScaleCopy, lerpSpeed);
+
+      PVector extension = m_scale.copy().sub(m_baseScale);
+      m_pos = m_basePos.copy().sub(extension.mult(0.5));
+    }
   }
 
   public Event<EventInfoType> getOnMouseEnterEvent() {
@@ -135,3 +167,4 @@ abstract class Widget {
 // Descending code authorship changes:
 // A. Robertson, Created widget base class and widget group, 12pm 04/03/24
 // F. Wright, Modified and simplified code to fit coding standard. Combined all Widget related classes/structs into the Widget tab, 6pm 04/03/24
+// F. Wright, Implemented new "grow mode" for any widgets which makes them feel jucier when hovered, 1pm 07/03/24
