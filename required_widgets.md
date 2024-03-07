@@ -14,5 +14,11 @@ All should work with data extending `Iteratable`, with an overload for arrays.
 ## General widgets
 
 - [ ] Text box
+- [ ] List box
+
+## Non essential
+
+- [ ] Messagebox
+- [ ] Loading bar
 - [ ] Input Field
 - [ ] Image

@@ -149,11 +149,13 @@ DIVERTED    = 0000 0010
     - Delete "sketch.properties" file.
     - Ensure project directory is named "FATMKM".
 
-## Roles:
+## Jobs:
 
-- preprocess data (Kyara (Cosmo) McWilliam (Cajm0))
-- read data very efficiently (Thomas Creagh (Thomas Creagh))
-- manipulate data (?)
-- conjoin data with other dataset (?)
+- Preprocess data into binary (Kyara (Cosmo) McWilliam (Cajm0))
+- Read data very efficiently (Thomas Creagh (Thomas Creagh))
+- Query data (Thomas Creagh (Thomas Creagh))
+- Manipulate data (?)
+- Conjoin data with other dataset (?)
 - Create GUI widgets (Alex Robertson (roberta1tcd))
-- design the gui place widgets (?)
+- 3D flight map (Finn Wright (CloudyUnity))
+- Design the gui place widgets (?)

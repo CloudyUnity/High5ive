@@ -10,30 +10,30 @@ import java.io.*;
 
 public enum FlightQueryType {
   DAY,
-    CARRIER_CODE_INDEX,
-    FLIGHT_NUMBER,
-    AIRPORT_ORIGIN_INDEX,
-    AIRPORT_DEST_INDEX,
-    SCHEDULED_DEPARTURE_TIME,
-    DEPARTURE_TIME,
-    SCHEDULED_ARRIVAL_TIME,
-    ARRIVAL_TIME,
-    CANCELLED_OR_DIVERTED,
-    MILES_DISTANCE,
+  CARRIER_CODE_INDEX,
+  FLIGHT_NUMBER,
+  AIRPORT_ORIGIN_INDEX,
+  AIRPORT_DEST_INDEX,
+  SCHEDULED_DEPARTURE_TIME,
+  DEPARTURE_TIME,
+  SCHEDULED_ARRIVAL_TIME,
+  ARRIVAL_TIME,
+  CANCELLED_OR_DIVERTED,
+  MILES_DISTANCE,
 }
 
 public enum FlightQueryOperator {
   EQUAL,
-    NOT_EQUAL,
-    LESS_THAN,
-    LESS_THAN_EQUAL,
-    GREATER_THAN,
-    GREATER_THAN_EQUAL,
+  NOT_EQUAL,
+  LESS_THAN,
+  LESS_THAN_EQUAL,
+  GREATER_THAN,
+  GREATER_THAN_EQUAL,
 }
 
 public enum FlightQuerySortDirection {
   ASCENDING,
-    DESCENDING,
+  DESCENDING,
 }
 
 class FlightType { // 19 bytes total
@@ -49,22 +49,23 @@ class FlightType { // 19 bytes total
   public byte CancelledOrDiverted;      // only supports EQUAL or NOT_EQUAL
   public short MilesDistance;           // supports all querys
 
-  public FlightType( // NOTE: It bothers me (Finn) that the parameters here are in PascalCase when all local vars should be camelCase. But I can live with it I guess
-    byte Day, byte CarrierCodeIndex, short FlightNumber,
-    short AirportOriginIndex, short AirportDestIndex, short ScheduledDepartureTime,
-    short DepartureTime, short ScheduledArrivalTime, short ArrivalTime,
-    byte CancelledOrDiverted, short MilesDistance) {
-    this.Day = Day;
-    this.CarrierCodeIndex = CarrierCodeIndex;
-    this.FlightNumber = FlightNumber;
-    this.AirportOriginIndex = AirportOriginIndex;
-    this.AirportDestIndex = AirportDestIndex;
-    this.ScheduledDepartureTime = ScheduledDepartureTime;
-    this.DepartureTime = DepartureTime;
-    this.ScheduledArrivalTime = ScheduledArrivalTime;
-    this.ArrivalTime = ArrivalTime;
-    this.CancelledOrDiverted = CancelledOrDiverted;
-    this.MilesDistance = MilesDistance;
+  public FlightType(
+    byte day, byte carrierCodeIndex, short flightNumber,
+    short airportOriginIndex, short airportDestIndex, short scheduledDepartureTime,
+    short departureTime, short scheduledArrivalTime, short arrivalTime,
+    byte cancelledOrDiverted, short milesDistance) {
+
+    this.Day = day;
+    this.CarrierCodeIndex = carrierCodeIndex;
+    this.FlightNumber = flightNumber;
+    this.AirportOriginIndex = airportOriginIndex;
+    this.AirportDestIndex = airportDestIndex;
+    this.ScheduledDepartureTime = scheduledDepartureTime;
+    this.DepartureTime = departureTime;
+    this.ScheduledArrivalTime = scheduledArrivalTime;
+    this.ArrivalTime = arrivalTime;
+    this.CancelledOrDiverted = cancelledOrDiverted;
+    this.MilesDistance = milesDistance;
   }
 
   public FlightType() {
@@ -73,7 +74,7 @@ class FlightType { // 19 bytes total
 
 class FlightsManagerClass {
   private FlightType[] m_flightsList = new FlightType[563737];
-  // private HashMap<short, String> m_airportCodesToName = new HashMap<short, String>();
+  private String[] m_airportCodesToName = new String[369];
   private boolean m_working;
 
   public void init(String dataDirectory, int threadCount, Consumer<FlightType[]> onTaskComplete) {
@@ -171,8 +172,8 @@ class FlightsManagerClass {
     s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
   }
 
-  // private HashMap<String, String> convertFileToAirportCodesToName(String dir) {
-  // }
+  private String[] convertFileToAirportCodesToName(String dir) {
+  } // TODO Kyara 
 
   public FlightType[] queryFlights(FlightType[] flightsList, FlightQueryType type, FlightQueryOperator operator, int value) {
     if (!checkForIllegalQuery(type, operator)) {
@@ -327,7 +328,7 @@ class FlightsManagerClass {
   }
 
   public String getAirportNameFromCode(short code) {
-    return ""; // TODO
+    return ""; // TODO Kyara 
   }
 
   public void print(FlightType flight) {
