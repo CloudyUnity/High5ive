@@ -24,9 +24,9 @@ abstract class Screen extends Widget implements IClickable {
     m_onMouseDraggedEvent.addHandler(e -> onMouseDragged());
   }
 
-  public void draw() {    
+  public void draw() {
     background(m_backgroundColor);
-    
+
     for (Widget child : m_children)
       child.draw();
 
@@ -124,6 +124,36 @@ abstract class Screen extends Widget implements IClickable {
 
   public void addWidgetGroup(WidgetGroupType group) {
     m_groups.add(group);
+  }
+
+  public ButtonUI createButton(int posX, int posY, int scaleX, int scaleY) {
+    ButtonUI bttn = new ButtonUI(posX, posY, scaleX, scaleY);
+    addWidget(bttn);
+    return bttn;
+  } 
+
+  public CheckboxUI createCheckbox(int posX, int posY, int scaleX, int scaleY, String label) {
+    CheckboxUI chk = new CheckboxUI(posX, posY, scaleX, scaleY, label);
+    addWidget(chk);
+    return chk;
+  }
+  
+  public LabelUI createLabel(int posX, int posY, int scaleX, int scaleY, String text) {
+    LabelUI label = new LabelUI(posX, posY, scaleX, scaleY, text);
+    addWidget(label);
+    return label;
+  }
+
+  public RadioButtonUI createRadioButton(int posX, int posY, int scaleX, int scaleY, String label) {
+    RadioButtonUI radio = new RadioButtonUI(posX, posY, scaleX, scaleY, label);
+    addWidget(radio);
+    return radio;
+  }
+  
+  public SliderUI createSlider(int posX, int posY, int scaleX, int scaleY, double min, double max, double interval) {
+    SliderUI slider = new SliderUI(posX, posY, scaleX, scaleY, min, max, interval);
+    addWidget(slider);
+    return slider;
   }
 }
 

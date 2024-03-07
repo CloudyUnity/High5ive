@@ -10,30 +10,30 @@ import java.io.*;
 
 public enum FlightQueryType {
   DAY,
-  CARRIER_CODE_INDEX,
-  FLIGHT_NUMBER,
-  AIRPORT_ORIGIN_INDEX,
-  AIRPORT_DEST_INDEX,
-  SCHEDULED_DEPARTURE_TIME,
-  DEPARTURE_TIME,
-  SCHEDULED_ARRIVAL_TIME,
-  ARRIVAL_TIME,
-  CANCELLED_OR_DIVERTED,
-  MILES_DISTANCE,
+    CARRIER_CODE_INDEX,
+    FLIGHT_NUMBER,
+    AIRPORT_ORIGIN_INDEX,
+    AIRPORT_DEST_INDEX,
+    SCHEDULED_DEPARTURE_TIME,
+    DEPARTURE_TIME,
+    SCHEDULED_ARRIVAL_TIME,
+    ARRIVAL_TIME,
+    CANCELLED_OR_DIVERTED,
+    MILES_DISTANCE,
 }
 
 public enum FlightQueryOperator {
   EQUAL,
-  NOT_EQUAL,
-  LESS_THAN,
-  LESS_THAN_EQUAL,
-  GREATER_THAN,
-  GREATER_THAN_EQUAL,
+    NOT_EQUAL,
+    LESS_THAN,
+    LESS_THAN_EQUAL,
+    GREATER_THAN,
+    GREATER_THAN_EQUAL,
 }
 
 public enum FlightQuerySortDirection {
   ASCENDING,
-  DESCENDING,
+    DESCENDING,
 }
 
 class FlightType { // 19 bytes total
@@ -48,25 +48,27 @@ class FlightType { // 19 bytes total
   public short ArrivalTime;             // supports all querys
   public byte CancelledOrDiverted;      // only supports EQUAL or NOT_EQUAL
   public short MilesDistance;           // supports all querys
-  public FlightType(
+
+  public FlightType( // NOTE: It bothers me (Finn) that the parameters here are in PascalCase when all local vars should be camelCase. But I can live with it I guess
     byte Day, byte CarrierCodeIndex, short FlightNumber,
     short AirportOriginIndex, short AirportDestIndex, short ScheduledDepartureTime,
     short DepartureTime, short ScheduledArrivalTime, short ArrivalTime,
     byte CancelledOrDiverted, short MilesDistance) {
-      this.Day = Day;
-      this.CarrierCodeIndex = CarrierCodeIndex;
-      this.FlightNumber = FlightNumber;
-      this.AirportOriginIndex = AirportOriginIndex;
-      this.AirportDestIndex = AirportDestIndex;
-      this.ScheduledDepartureTime = ScheduledDepartureTime;
-      this.DepartureTime = DepartureTime;
-      this.ScheduledArrivalTime = ScheduledArrivalTime;
-      this.ArrivalTime = ArrivalTime;
-      this.CancelledOrDiverted = CancelledOrDiverted;
-      this.MilesDistance = MilesDistance;
+    this.Day = Day;
+    this.CarrierCodeIndex = CarrierCodeIndex;
+    this.FlightNumber = FlightNumber;
+    this.AirportOriginIndex = AirportOriginIndex;
+    this.AirportDestIndex = AirportDestIndex;
+    this.ScheduledDepartureTime = ScheduledDepartureTime;
+    this.DepartureTime = DepartureTime;
+    this.ScheduledArrivalTime = ScheduledArrivalTime;
+    this.ArrivalTime = ArrivalTime;
+    this.CancelledOrDiverted = CancelledOrDiverted;
+    this.MilesDistance = MilesDistance;
   }
-  
-  public FlightType() {}
+
+  public FlightType() {
+  }
 }
 
 class FlightsManagerClass {
@@ -76,10 +78,11 @@ class FlightsManagerClass {
 
   public void init(String dataDirectory, int threadCount, Consumer<FlightType[]> onTaskComplete) {
     String trueDataDirectory = sketchPath() + "/" + dataDirectory + "/";
-    boolean a = convertFileToFlightType(trueDataDirectory, threadCount, onTaskComplete);
+    boolean result = convertFileToFlightType(trueDataDirectory, threadCount, onTaskComplete);
+    if (!result)
+      return;
 
     // convertFileToAirportCodesToName(dir);
-
   }
 
   public FlightType[] getFlightsList() {
@@ -109,7 +112,7 @@ class FlightsManagerClass {
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
     CountDownLatch latch = new CountDownLatch(threadCount);
 
-    try (FileInputStream fis = new FileInputStream(directory + "flight_data.bin")) {            
+    try (FileInputStream fis = new FileInputStream(directory + "flight_data.bin")) {
       FileChannel channel = fis.getChannel();
       buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
       long flightCount = channel.size() / LINE_BYTE_SIZE;
@@ -176,31 +179,32 @@ class FlightsManagerClass {
       println("Error: QueryType is illegal with QueryOperator");
       return flightsList;
     }
+
     switch(operator) {
     case EQUAL:
       return Arrays.stream(flightsList)
-            .filter(flight -> getFlightTypeFieldFromQueryType(flight, type) == value)
-            .toArray(FlightType[]::new);
+        .filter(flight -> getFlightTypeFieldFromQueryType(flight, type) == value)
+        .toArray(FlightType[]::new);
     case NOT_EQUAL:
       return Arrays.stream(flightsList)
-            .filter(flight -> getFlightTypeFieldFromQueryType(flight, type) != value)
-            .toArray(FlightType[]::new);
+        .filter(flight -> getFlightTypeFieldFromQueryType(flight, type) != value)
+        .toArray(FlightType[]::new);
     case LESS_THAN:
       return Arrays.stream(flightsList)
-            .filter(flight -> getFlightTypeFieldFromQueryType(flight, type) < value)
-            .toArray(FlightType[]::new);
+        .filter(flight -> getFlightTypeFieldFromQueryType(flight, type) < value)
+        .toArray(FlightType[]::new);
     case LESS_THAN_EQUAL:
       return Arrays.stream(flightsList)
-            .filter(flight -> getFlightTypeFieldFromQueryType(flight, type) <= value)
-            .toArray(FlightType[]::new);
+        .filter(flight -> getFlightTypeFieldFromQueryType(flight, type) <= value)
+        .toArray(FlightType[]::new);
     case GREATER_THAN:
       return Arrays.stream(flightsList)
-            .filter(flight -> getFlightTypeFieldFromQueryType(flight, type) > value)
-            .toArray(FlightType[]::new);
+        .filter(flight -> getFlightTypeFieldFromQueryType(flight, type) > value)
+        .toArray(FlightType[]::new);
     case GREATER_THAN_EQUAL:
       return Arrays.stream(flightsList)
-            .filter(flight -> getFlightTypeFieldFromQueryType(flight, type) >= value)
-            .toArray(FlightType[]::new);
+        .filter(flight -> getFlightTypeFieldFromQueryType(flight, type) >= value)
+        .toArray(FlightType[]::new);
     default:
       println("Error: FlightQueryOperator invalid");
       return flightsList;
@@ -214,7 +218,7 @@ class FlightsManagerClass {
     }
     return Arrays.stream(flightsList)
       .filter(flight -> getFlightTypeFieldFromQueryType(flight, type) >= start &&
-                        getFlightTypeFieldFromQueryType(flight, type) < end)
+      getFlightTypeFieldFromQueryType(flight, type) < end)
       .toArray(FlightType[]::new);
   }
 
@@ -244,7 +248,7 @@ class FlightsManagerClass {
       return (int) flight.MilesDistance;
     default:
       println("Error: FlightQueryType invalid");
-      return 0;
+      return -1;
     }
   }
 
@@ -260,6 +264,8 @@ class FlightsManagerClass {
       } else {
         break;
       }
+    default:
+      return true;
     }
     return true;
   }
@@ -304,6 +310,7 @@ class FlightsManagerClass {
       println("Error: FlightQueryType invalid");
       return flightsList;
     }
+    
     switch(sortDirection) {
     case ASCENDING:
       break;
@@ -314,6 +321,7 @@ class FlightsManagerClass {
       println("Error: FlightQuerySortDirection invalid");
       return flightsList;
     }
+    
     Arrays.sort(flightsList, flightComparator);
     return flightsList;
   }
@@ -353,7 +361,7 @@ class FlightsManagerClass {
       flight.ArrivalTime + "\t\t" +
       flight.CancelledOrDiverted + "\t\t" +
       flight.MilesDistance
-    );
+      );
   }
 
   private void printFlightHeading() {
@@ -369,7 +377,7 @@ class FlightsManagerClass {
       "ArrivalTime\t" +
       "CancelledOrDiverted\t" +
       "MilesDistance"
-    );
+      );
   }
 }
 
@@ -389,4 +397,4 @@ class FlightsManagerClass {
 // T. Creagh, implemented FlightManager.print(),  2pm 06/03/24
 // T. Creagh, implemented queryFlightsWithinRange,  2:15pm 06/03/24
 // T. Creagh, implemented FlightManager.sort(),  2:30pm 06/03/24
-
+// F. Wright, cleaned up code a bit, 11am 07/03/24
