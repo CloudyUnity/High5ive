@@ -27,6 +27,7 @@ class ApplicationClass {
       s_DebugProfiler.printTimeTakenMillis("Flight query-ing");
     }
     );
+    println("\n");
 
     m_screens = new ArrayList<Screen>();
     m_onSwitchEvent.addHandler(e -> switchScreen(e));

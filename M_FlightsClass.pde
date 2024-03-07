@@ -73,7 +73,7 @@ class FlightType { // 19 bytes total
 
 class FlightsManagerClass {
   private FlightType[] m_flightsList = new FlightType[563737];
-  // private HashMap<short, String> m_airportCodesToName = new HashMap<short, String>();
+  // private HashMap<short, String> m_airportCodesToName = new HashMap<short, String>(); // TODO
   private boolean m_working;
 
   public void init(String dataDirectory, int threadCount, Consumer<FlightType[]> onTaskComplete) {
@@ -172,7 +172,7 @@ class FlightsManagerClass {
   }
 
   // private HashMap<String, String> convertFileToAirportCodesToName(String dir) {
-  // }
+  // } // TODO
 
   public FlightType[] queryFlights(FlightType[] flightsList, FlightQueryType type, FlightQueryOperator operator, int value) {
     if (!checkForIllegalQuery(type, operator)) {
