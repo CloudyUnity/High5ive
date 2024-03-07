@@ -173,6 +173,7 @@ class FlightsManagerClass {
   }
 
   private String[] convertFileToAirportCodesToName(String dir) {
+    return null;
   } // TODO Kyara 
 
   public FlightType[] queryFlights(FlightType[] flightsList, FlightQueryType type, FlightQueryOperator operator, int value) {

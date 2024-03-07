@@ -8,7 +8,7 @@ final boolean FULLSCREEN_ENABLED = false;
 // Debug Options
 final boolean DEBUG_MODE = true; // Turns on various stats or console logging
 final int DEBUG_FPS_COUNTER_STORAGE = 30;
-final boolean DEBUG_DATA_LOADING = false;
+final boolean DEBUG_DATA_LOADING = true;
 final boolean DEBUG_FPS_ENABLED = false;
 
 // Scene
