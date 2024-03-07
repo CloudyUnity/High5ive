@@ -65,6 +65,8 @@ class FlightType { // 19 bytes total
       this.CancelledOrDiverted = CancelledOrDiverted;
       this.MilesDistance = MilesDistance;
   }
+  
+  public FlightType() {}
 }
 
 class FlightsManagerClass {
@@ -90,9 +92,9 @@ class FlightsManagerClass {
 
     new Thread(() -> {
       s_DebugProfiler.startProfileTimer();
-      convertFileToFlightTypeAsync(filepath, threadCount);      
+      convertFileToFlightTypeAsync(filepath, threadCount);
       s_DebugProfiler.printTimeTakenMillis("Raw file pre-processing");
-      
+
       m_working = false;
       onTaskComplete.accept(m_flightsList);
     }
@@ -111,6 +113,7 @@ class FlightsManagerClass {
       FileChannel channel = fis.getChannel();
       buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
       long flightCount = channel.size() / LINE_BYTE_SIZE;
+      m_flightsList = new FlightType[(int)flightCount];
       fis.close();
       channel.close();
 

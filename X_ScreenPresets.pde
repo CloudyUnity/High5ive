@@ -6,6 +6,11 @@ class Screen1 extends Screen {
     ButtonUI greenBtn = new ButtonUI(50, 200, 200, 100);
     ButtonUI blueBtn = new ButtonUI(50, 350, 200, 100);
     ButtonUI switchToScreen2Btn = new ButtonUI(350, 200, 100, 100);
+    ButtonUI switchToDemo = new ButtonUI(350, 80, 100, 100);
+    
+    switchToDemo.setText("Barchart demo");
+    switchToDemo.getOnClickEvent().addHandler(e -> switchToDemoOnClick(e));
+    switchToDemo.setTextSize(25);
 
     switchToScreen2Btn.setText("Screen 2");
     switchToScreen2Btn.setTextSize(25);
@@ -23,16 +28,6 @@ class Screen1 extends Screen {
     greenBtn.getOnClickEvent().addHandler(e -> greenButtonOnClick(e));
     blueBtn.getOnClickEvent().addHandler(e -> blueButtonOnClick(e));
 
-    redBtn.getOnMouseEnterEvent().addHandler(e -> changeOutlineColourOnEnter(e));
-    greenBtn.getOnMouseEnterEvent().addHandler(e -> changeOutlineColourOnEnter(e));
-    blueBtn.getOnMouseEnterEvent().addHandler(e -> changeOutlineColourOnEnter(e));
-    switchToScreen2Btn.getOnMouseEnterEvent().addHandler(e -> changeOutlineColourOnEnter(e));
-
-    redBtn.getOnMouseExitEvent().addHandler(e -> changeOutlineColourOnExit(e));
-    greenBtn.getOnMouseExitEvent().addHandler(e -> changeOutlineColourOnExit(e));
-    blueBtn.getOnMouseExitEvent().addHandler(e -> changeOutlineColourOnExit(e));
-    switchToScreen2Btn.getOnMouseExitEvent().addHandler(e -> changeOutlineColourOnExit(e));
-
     CheckboxUI cb = new CheckboxUI(400, 400, 200, 50, "My checkbox");
     cb.setCheckedColour(color(255, 255, 0, 255));
     addWidget(cb);    
@@ -43,6 +38,7 @@ class Screen1 extends Screen {
     addWidget(greenBtn);
     addWidget(blueBtn);
     addWidget(switchToScreen2Btn);
+    addWidget(switchToDemo);
   }
 
   private void redButtonOnClick(EventInfoType e) {
@@ -70,15 +66,11 @@ class Screen1 extends Screen {
   }
 
   private void switchToScreen2OnClick(EventInfoType e) {
-    s_ApplicationClass.switchScreen(new SwitchScreenEventInfoType(e.X, e.Y, SCREEN_2_ID, e.Widget));
+    s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SCREEN_2_ID, e.Widget));
   }
-
-  private void changeOutlineColourOnExit(EventInfoType e) {
-    e.Widget.setOutlineColour(#000000);
-  }
-
-  private void changeOutlineColourOnEnter(EventInfoType e) {
-    e.Widget.setOutlineColour(#FFFFFF);
+  
+  private void switchToDemoOnClick(EventInfoType e) {
+    s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SWITCH_TO_DEMO_ID, e.Widget));
   }
 }
 
@@ -108,6 +100,7 @@ class Screen2 extends Screen {
     group.addMember(rb1);
     group.addMember(rb2);
 
+
     addWidget(switchToScreen1Btn);
 
     addWidgetGroup(group);
@@ -119,7 +112,16 @@ class Screen2 extends Screen {
     addWidget(label);
 
     m_barChart = new BarChartUI(200, 10, 200, 200);
+    m_barChart.setTitle("Numbers");
     m_data = new ArrayList<String>();
+    m_data.add("1");
+    m_data.add("1");
+    m_data.add("1");
+    m_data.add("1");
+    m_data.add("1");
+    m_data.add("1");
+    m_data.add("1");
+    m_data.add("1");
     m_data.add("1");
     m_data.add("1");
     m_data.add("2");
@@ -129,10 +131,12 @@ class Screen2 extends Screen {
     m_data.add("6");
 
     addWidget(m_barChart);
+    
+    rb1.check();
   }
 
   private void switchToScreen1OnClick(EventInfoType e) {
-    s_ApplicationClass.switchScreen(new SwitchScreenEventInfoType(e.X, e.Y, SCREEN_1_ID, e.Widget));
+    s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SCREEN_1_ID, e.Widget));
   }
 
   private void changeOutlineColourOnExit(EventInfoType e) {
@@ -156,6 +160,75 @@ class Screen2 extends Screen {
   }
 }
 
+class FlightCodesBarchartDemo extends Screen {
+  private BarChartUI<FlightType> chart;
+  private ArrayList<FlightType> data;
+  
+  public FlightCodesBarchartDemo(int scaleX, int scaleY, String screenId) {
+    super(scaleX, scaleY, screenId, color(150, 150, 150, 255));
+    
+    ButtonUI returnBtn = new ButtonUI(20, 20, 50, 50);
+    returnBtn.setText("<-");
+    returnBtn.setTextSize(25);
+    returnBtn.getOnClickEvent().addHandler(e -> onReturnButtonClicked(e));
+    addWidget(returnBtn);
+    
+    data = new ArrayList<FlightType>();
+    FlightType ft1 = new FlightType();
+    ft1.AirportOriginIndex = 1;
+    ft1.AirportDestIndex = 20;
+    FlightType ft2 = new FlightType();
+    ft2.AirportOriginIndex = 2;
+    ft2.AirportDestIndex = 32;
+    FlightType ft3 = new FlightType();
+    ft3.AirportOriginIndex = 1;
+    ft3.AirportDestIndex = 19;
+    data.add(ft1);
+    data.add(ft2);
+    data.add(ft3);
+
+    chart = new BarChartUI<FlightType>(100, 100, (int)m_scale.x - 200, (int)m_scale.y - 200);
+    addWidget(chart);
+    
+    RadioButtonUI destination = new RadioButtonUI( 100, (int)m_scale.y - 80, 200, 20, "Destination");
+    RadioButtonUI origin = new RadioButtonUI(400, (int)m_scale.y - 80, 200, 20, "Origin");
+    destination.setTextSize(20);
+    origin.setTextSize(20);
+    
+    destination.getOnClickEvent().addHandler(e -> onDestinationClicked(e));
+    origin.getOnClickEvent().addHandler(e -> onOriginClicked(e));
+    
+    RadioButtonGroupTypeUI group = new RadioButtonGroupTypeUI();
+    group.addMember(destination);
+    group.addMember(origin);
+    addWidgetGroup(group);
+    
+    destination.check();
+  }
+  
+  private void onOriginClicked(EventInfoType e) {
+    if (chart != null && data != null) {
+      chart.removeData();
+      // When conversion from index to code is implemented use that.
+      chart.addData(data, v -> Short.toString(v.AirportOriginIndex));
+      chart.setTitle("Flight origin indicies");
+    }
+  }
+  
+  private void onDestinationClicked(EventInfoType e) {
+    if (chart != null && data != null) {
+      chart.removeData();
+      // When conversion from index to code is implemented use that.
+      chart.addData(data, v -> Short.toString(v.AirportDestIndex));
+      chart.setTitle("Flight destination indicies");
+    }
+  }
+  
+  private void onReturnButtonClicked(EventInfoType e) {
+    s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SCREEN_1_ID, e.Widget)); 
+  }
+}
+
 class ScreenFlightMap extends Screen {
   PVector m_dimensions = new PVector(1024, 637);
   
@@ -164,6 +237,9 @@ class ScreenFlightMap extends Screen {
     
     FlightMapUI flightmap = new FlightMapUI(0, 0, (int)m_dimensions.x, (int)m_dimensions.y);
     addWidget(flightmap);
+    
+    FlightMap3D flight3D = new FlightMap3D(0,0,0,0);
+    addWidget(flight3D);
   }
   
   public void applyFlightData(FlightType[] flightData){

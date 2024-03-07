@@ -1,6 +1,7 @@
 ApplicationClass s_ApplicationClass = new ApplicationClass();
 InputClass s_InputClass = new InputClass();
 DebugProfilerClass s_DebugProfiler = new DebugProfilerClass();
+PGraphics s_3D;
 int s_deltaTime;
 
 void setup() {
@@ -12,6 +13,8 @@ void setup() {
   surface.setResizable(true);
   surface.setLocation(0, 0);
   resizeWindow(700, 700); 
+  
+  //s_3D = createGraphics(width, height, P3D);
 
   frameRate(FRAME_RATE);
 

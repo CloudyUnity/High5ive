@@ -7,6 +7,7 @@ class ButtonUI extends Widget implements IClickable {
   private Event<EventInfoType> m_onClickEvent;
   private int m_textSize, m_textXOffset, m_textYOffset;
   private LabelUI m_label;
+  private boolean m_highlightOutlineOnEnter;
 
   public ButtonUI(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
@@ -15,6 +16,9 @@ class ButtonUI extends Widget implements IClickable {
     m_textXOffset = 5;
     m_textYOffset = 0;
     m_label = new LabelUI(posX, posY, scaleX, scaleY, null);
+    m_highlightOutlineOnEnter = true;
+    getOnMouseEnterEvent().addHandler(e -> changeOutlineColourOnEnter(e));
+    getOnMouseExitEvent().addHandler(e -> changeOutlineColourOnExit(e));
   }
 
   @ Override
@@ -33,6 +37,22 @@ class ButtonUI extends Widget implements IClickable {
 
   public void setText(String text) {
     m_label.setText(text);
+  }
+  
+  public void setHighlightOutlineOnEnter(boolean highlightOutlineOnEnter) {
+    if (!highlightOutlineOnEnter)
+      setOutlineColour(#000000);
+    m_highlightOutlineOnEnter = highlightOutlineOnEnter;
+  }
+  
+  private void changeOutlineColourOnExit(EventInfoType e) {
+    if (m_highlightOutlineOnEnter)
+      e.Widget.setOutlineColour(#000000);
+  }
+
+  private void changeOutlineColourOnEnter(EventInfoType e) {
+    if (m_highlightOutlineOnEnter)
+      e.Widget.setOutlineColour(#FFFFFF);
   }
 
   /**
@@ -65,3 +85,6 @@ class ButtonUI extends Widget implements IClickable {
     m_label.setTextYOffset(textYOffset);
   }
 }
+
+// Code authorship:
+// A. Robertson, Created button widget, 12pm 04/04/24

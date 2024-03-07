@@ -80,3 +80,6 @@ class SliderUI extends Widget implements IDraggable, IClickable {
     return Math.max(min, Math.min(max, val));
   }
 }
+
+// Code authorship:
+// A. Robertson, Created slider widget, 12pm 04/03/24

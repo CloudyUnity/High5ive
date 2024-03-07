@@ -11,11 +11,17 @@ class DebugProfilerClass {
   }
   
   public void printTimeTakenMillis(String name){    
+    for (int i = 1; i < m_timerStack.size(); i++)
+      print("-");
+      
     double millis = (System.nanoTime() - m_timerStack.pop()) / (double)MILLI_TO_NANO;
     println("Milliseconds taken for " + name + " is " + millis);
   }
   
   public void printTimeTakenSeconds(String name){    
+    for (int i = 1; i < m_timerStack.size(); i++)
+      print("-");
+      
     double secs = (System.nanoTime() - m_timerStack.pop()) / (double)SECOND_TO_NANO;
     println("Seconds taken for " + name + " is " + secs);
   }

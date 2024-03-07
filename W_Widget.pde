@@ -133,5 +133,5 @@ abstract class Widget {
 }
 
 // Descending code authorship changes:
-// A. Robertson, ___
+// A. Robertson, Created widget base class and widget group, 12pm 04/03/24
 // F. Wright, Modified and simplified code to fit coding standard. Combined all Widget related classes/structs into the Widget tab, 6pm 04/03/24

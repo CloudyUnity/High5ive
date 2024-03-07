@@ -66,7 +66,11 @@ class RadioButtonUI extends Widget implements IClickable {
   public Event<EventInfoType> getOnCheckedEvent() {
     return m_onCheckedEvent;
   }
-
+  
+  public void check() {
+    m_onClickEvent.raise(new EventInfoType((int)m_pos.x, (int)m_pos.y, this)); 
+  }
+  
   public void setChecked(boolean checked) {
     m_checked = checked;
   }
@@ -89,3 +93,6 @@ class RadioButtonUI extends Widget implements IClickable {
     m_label.setTextSize(textSize);
   }
 }
+
+// Code authorship
+// A. Robertson, Created a radiobutton widget, 12pm 04/03/24

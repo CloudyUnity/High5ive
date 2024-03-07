@@ -78,3 +78,6 @@ class LabelUI extends Widget {
     m_textYOffset = textYOffset;
   }
 }
+
+// Code authorship:
+// A. Robertson, Created a label widget, 12pm 04/03/24

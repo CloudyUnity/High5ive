@@ -9,6 +9,8 @@ class ApplicationClass {
 
   private FlightsManagerClass m_flightsManager = new FlightsManagerClass();
   private DebugFPSClass m_fpsClass = new DebugFPSClass();
+  
+  private Event<SwitchScreenEventInfoType> m_onSwitchEvent;
 
   void init() {
     String dataDirectory = "data/Preprocessed Data";
@@ -32,10 +34,12 @@ class ApplicationClass {
 
     Screen1 s1 = new Screen1(600, 600, SCREEN_1_ID);
     Screen2 s2 = new Screen2(700, 700, SCREEN_2_ID);
+    Screen barchartDemo = new FlightCodesBarchartDemo(700, 700, SWITCH_TO_DEMO_ID);
     ScreenFlightMap sfm = new ScreenFlightMap(1024, 637, SCREEN_FLIGHT_MAP_ID);
 
     m_screens.add(s1);
     m_screens.add(s2);
+    m_screens.add(barchartDemo);
     m_screens.add(sfm);
     m_currentScreen = m_screens.get(0);
 
@@ -79,7 +83,11 @@ class ApplicationClass {
       m_currentScreen.onMouseClick();
   }
 
-  void switchScreen(SwitchScreenEventInfoType e) {
+  public Event<SwitchScreenEventInfoType> getOnSwitchEvent() {
+    return m_onSwitchEvent;
+  }
+
+  private void switchScreen(SwitchScreenEventInfoType e) {
     e.Widget.getOnMouseExitEvent().raise((EventInfoType)e);
 
     for (Screen screen : m_screens) {
