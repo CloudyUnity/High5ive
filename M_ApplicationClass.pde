@@ -10,7 +10,7 @@ class ApplicationClass {
   private FlightsManagerClass m_flightsManager = new FlightsManagerClass();
   private DebugFPSClass m_fpsClass = new DebugFPSClass();
 
-  private Event<SwitchScreenEventInfoType> m_onSwitchEvent;
+  private Event<SwitchScreenEventInfoType> m_onSwitchEvent = new Event<SwitchScreenEventInfoType>();
 
   void init() {
     String dataDirectory = "data/Preprocessed Data";
@@ -23,12 +23,13 @@ class ApplicationClass {
         m_flightsManager.getFlightsList(), FlightQueryType.MILES_DISTANCE, 100, 105),
         FlightQueryType.DEPARTURE_TIME, FlightQuerySortDirection.ASCENDING), 10
         );
-        
+
       s_DebugProfiler.printTimeTakenMillis("Flight query-ing");
     }
     );
 
     m_screens = new ArrayList<Screen>();
+    m_onSwitchEvent.addHandler(e -> switchScreen(e));
 
     Screen1 s1 = new Screen1(600, 600, SCREEN_1_ID);
     Screen2 s2 = new Screen2(700, 700, SCREEN_2_ID);
@@ -89,11 +90,12 @@ class ApplicationClass {
     e.Widget.getOnMouseExitEvent().raise((EventInfoType)e);
 
     for (Screen screen : m_screens) {
-      if (e.NewScreenId.compareTo(screen.getScreenId()) == 0) {
-        m_currentScreen = screen;
-        resizeWindow((int)screen.getScale().x, (int)screen.getScale().y);
-        return;
-      }
+      if (e.NewScreenId.compareTo(screen.getScreenId()) != 0)
+        continue;
+        
+      m_currentScreen = screen;
+      resizeWindow((int)screen.getScale().x, (int)screen.getScale().y);
+      return;
     }
   }
 }
@@ -102,3 +104,4 @@ class ApplicationClass {
 // F. Wright, Made ApplicationClass and set up init(), frame() and fixedFrame(), 8pm 23/02/24
 // F. Wright, Modified onMouse() functions and merged functions from the old UI main into ApplicationClass, 6pm 04/03/24
 // F. Wright, Changed manual profiling to use DebugProfilingClass instead, 2pm 06/03/24
+// F. Wright, Fixed UI errors, 12pm 07/03/24

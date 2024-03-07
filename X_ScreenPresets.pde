@@ -2,43 +2,33 @@ class Screen1 extends Screen {
   public Screen1(int scaleX, int scaleY, String screenId) {
     super(scaleX, scaleY, screenId, color(220, 220, 220, 255));
 
-    ButtonUI redBtn = new ButtonUI(50, 50, 200, 100);
-    ButtonUI greenBtn = new ButtonUI(50, 200, 200, 100);
-    ButtonUI blueBtn = new ButtonUI(50, 350, 200, 100);
-    ButtonUI switchToScreen2Btn = new ButtonUI(350, 200, 100, 100);
-    ButtonUI switchToDemo = new ButtonUI(350, 80, 100, 100);
-    
-    switchToDemo.setText("Barchart demo");
-    switchToDemo.getOnClickEvent().addHandler(e -> switchToDemoOnClick(e));
-    switchToDemo.setTextSize(25);
-
-    switchToScreen2Btn.setText("Screen 2");
-    switchToScreen2Btn.setTextSize(25);
-
+    ButtonUI redBtn = createButton(50, 50, 200, 100);
+    redBtn.getOnClickEvent().addHandler(e -> redButtonOnClick(e));
     redBtn.setText("Red");
     redBtn.setTextSize(30);
 
+    ButtonUI greenBtn = createButton(50, 200, 200, 100);
+    greenBtn.getOnClickEvent().addHandler(e -> greenButtonOnClick(e));
     greenBtn.setText("Green");
     greenBtn.setTextSize(30);
 
+    ButtonUI blueBtn = createButton(50, 350, 200, 100);
+    blueBtn.getOnClickEvent().addHandler(e -> blueButtonOnClick(e));
     blueBtn.setText("Blue");
     blueBtn.setTextSize(30);
 
-    redBtn.getOnClickEvent().addHandler(e -> redButtonOnClick(e));
-    greenBtn.getOnClickEvent().addHandler(e -> greenButtonOnClick(e));
-    blueBtn.getOnClickEvent().addHandler(e -> blueButtonOnClick(e));
-
-    CheckboxUI cb = new CheckboxUI(400, 400, 200, 50, "My checkbox");
-    cb.setCheckedColour(color(255, 255, 0, 255));
-    addWidget(cb);    
-
+    ButtonUI switchToScreen2Btn = createButton(350, 200, 100, 100);
     switchToScreen2Btn.getOnClickEvent().addHandler(e -> switchToScreen2OnClick(e));
+    switchToScreen2Btn.setText("Screen 2");
+    switchToScreen2Btn.setTextSize(25);
 
-    addWidget(redBtn);
-    addWidget(greenBtn);
-    addWidget(blueBtn);
-    addWidget(switchToScreen2Btn);
-    addWidget(switchToDemo);
+    ButtonUI switchToDemo = createButton(350, 80, 100, 100);
+    switchToDemo.getOnClickEvent().addHandler(e -> switchToDemoOnClick(e));
+    switchToDemo.setText("Barchart demo");    
+    switchToDemo.setTextSize(25);
+            
+    CheckboxUI cb = createCheckbox(400, 400, 200, 50, "My checkbox");
+    cb.setCheckedColour(color(255, 255, 0, 255));    
   }
 
   private void redButtonOnClick(EventInfoType e) {
@@ -66,9 +56,10 @@ class Screen1 extends Screen {
   }
 
   private void switchToScreen2OnClick(EventInfoType e) {
+    println(s_ApplicationClass.getOnSwitchEvent());
     s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SCREEN_2_ID, e.Widget));
   }
-  
+
   private void switchToDemoOnClick(EventInfoType e) {
     s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SWITCH_TO_DEMO_ID, e.Widget));
   }
@@ -81,35 +72,27 @@ class Screen2 extends Screen {
   public Screen2(int scaleX, int scaleY, String screenId) {
     super(scaleX, scaleY, screenId, color(150, 150, 150, 255));
 
-    ButtonUI switchToScreen1Btn = new ButtonUI(width / 2 - 50, height / 2 - 50, 100, 100);
-    switchToScreen1Btn.setText("Screen 1");
-    switchToScreen1Btn.setTextSize(25);
-
+    ButtonUI switchToScreen1Btn = createButton(width / 2 - 50, height / 2 - 50, 100, 100);
     switchToScreen1Btn.getOnMouseEnterEvent().addHandler(e -> changeOutlineColourOnEnter(e));
     switchToScreen1Btn.getOnMouseExitEvent().addHandler(e -> changeOutlineColourOnExit(e));
     switchToScreen1Btn.getOnClickEvent().addHandler(e -> switchToScreen1OnClick(e));
+    switchToScreen1Btn.setText("Screen 1");
+    switchToScreen1Btn.setTextSize(25);    
 
     RadioButtonGroupTypeUI group = new RadioButtonGroupTypeUI();
-
-    RadioButtonUI rb1 = new RadioButtonUI(100, 100, 100, 20, "Show data");
-    RadioButtonUI rb2 = new RadioButtonUI(100, 200, 100, 20, "Don't show data");
-
-    rb1.getOnCheckedEvent().addHandler(e -> onCheckedRb1());
-    rb2.getOnCheckedEvent().addHandler(e -> onCheckedRb2());
-
-    group.addMember(rb1);
-    group.addMember(rb2);
-
-
-    addWidget(switchToScreen1Btn);
-
     addWidgetGroup(group);
 
-    SliderUI slider = new SliderUI(100, 400, 300, 50, 0, 100, 1);
-    addWidget(slider);
+    RadioButtonUI rb1 = new RadioButtonUI(100, 100, 100, 20, "Show data");
+    rb1.getOnCheckedEvent().addHandler(e -> onCheckedRb1());
+    group.addMember(rb1);    
+    
+    RadioButtonUI rb2 = new RadioButtonUI(100, 200, 100, 20, "Don't show data");    
+    rb2.getOnCheckedEvent().addHandler(e -> onCheckedRb2());
+    group.addMember(rb2);    
 
-    LabelUI label = new LabelUI(10, 10, 100, 100, "Hello");
-    addWidget(label);
+    createSlider(100, 400, 300, 50, 0, 100, 1);
+
+    createLabel(10, 10, 100, 100, "Hello");
 
     m_barChart = new BarChartUI(200, 10, 200, 200);
     m_barChart.setTitle("Numbers");
@@ -130,7 +113,7 @@ class Screen2 extends Screen {
     m_data.add("3");
     m_data.add("6");
 
-    addWidget(m_barChart);
+    addWidget(m_barChart);    
     
     rb1.check();
   }
@@ -148,14 +131,10 @@ class Screen2 extends Screen {
   }
 
   private void onCheckedRb1() {
-    if (DEBUG_MODE)
-      println("Rb1 checked");
     m_barChart.addData(m_data, v -> v);
   }
 
   private void onCheckedRb2() {
-    if (DEBUG_MODE)
-      println("Rb2 checked");
     m_barChart.removeData();
   }
 }
@@ -163,16 +142,16 @@ class Screen2 extends Screen {
 class FlightCodesBarchartDemo extends Screen {
   private BarChartUI<FlightType> chart;
   private ArrayList<FlightType> data;
-  
+
   public FlightCodesBarchartDemo(int scaleX, int scaleY, String screenId) {
     super(scaleX, scaleY, screenId, color(150, 150, 150, 255));
-    
+
     ButtonUI returnBtn = new ButtonUI(20, 20, 50, 50);
     returnBtn.setText("<-");
     returnBtn.setTextSize(25);
     returnBtn.getOnClickEvent().addHandler(e -> onReturnButtonClicked(e));
     addWidget(returnBtn);
-    
+
     data = new ArrayList<FlightType>();
     FlightType ft1 = new FlightType();
     ft1.AirportOriginIndex = 1;
@@ -189,23 +168,23 @@ class FlightCodesBarchartDemo extends Screen {
 
     chart = new BarChartUI<FlightType>(100, 100, (int)m_scale.x - 200, (int)m_scale.y - 200);
     addWidget(chart);
-    
+
     RadioButtonUI destination = new RadioButtonUI( 100, (int)m_scale.y - 80, 200, 20, "Destination");
     RadioButtonUI origin = new RadioButtonUI(400, (int)m_scale.y - 80, 200, 20, "Origin");
     destination.setTextSize(20);
     origin.setTextSize(20);
-    
+
     destination.getOnClickEvent().addHandler(e -> onDestinationClicked(e));
     origin.getOnClickEvent().addHandler(e -> onOriginClicked(e));
-    
+
     RadioButtonGroupTypeUI group = new RadioButtonGroupTypeUI();
     group.addMember(destination);
     group.addMember(origin);
     addWidgetGroup(group);
-    
+
     destination.check();
   }
-  
+
   private void onOriginClicked(EventInfoType e) {
     if (chart != null && data != null) {
       chart.removeData();
@@ -214,7 +193,7 @@ class FlightCodesBarchartDemo extends Screen {
       chart.setTitle("Flight origin indicies");
     }
   }
-  
+
   private void onDestinationClicked(EventInfoType e) {
     if (chart != null && data != null) {
       chart.removeData();
@@ -223,28 +202,27 @@ class FlightCodesBarchartDemo extends Screen {
       chart.setTitle("Flight destination indicies");
     }
   }
-  
+
   private void onReturnButtonClicked(EventInfoType e) {
-    s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SCREEN_1_ID, e.Widget)); 
+    s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SCREEN_1_ID, e.Widget));
   }
 }
 
 class ScreenFlightMap extends Screen {
   PVector m_dimensions = new PVector(1024, 637);
-  
+
   public ScreenFlightMap(int scaleX, int scaleY, String screenId) {
     super(scaleX, scaleY, screenId, color(255, 255, 255, 255));
-    
+
     FlightMapUI flightmap = new FlightMapUI(0, 0, (int)m_dimensions.x, (int)m_dimensions.y);
     addWidget(flightmap);
-    
-    FlightMap3D flight3D = new FlightMap3D(0,0,0,0);
+
+    FlightMap3D flight3D = new FlightMap3D(0, 0, 0, 0);
     addWidget(flight3D);
   }
-  
-  public void applyFlightData(FlightType[] flightData){
-    for (int i = 0; i < flightData.length; i++){
-      
+
+  public void applyFlightData(FlightType[] flightData) {
+    for (int i = 0; i < flightData.length; i++) {
     }
   }
 }
