@@ -6,34 +6,41 @@ import java.nio.channels.FileChannel;
 import java.nio.*;
 import java.io.*;
 
+class FlightQuery {
+  enum AType {
+    DAY,
+    CARRIER_CODE_INDEX,
+    FLIGHT_NUMBER,
+    AIRPORT_ORIGIN_INDEX,
+    AIRPORT_DEST_INDEX,
+    SCHEDULED_DEPARTURE_TIME,
+    DEPARTURE_TIME,
+    SCHEDULED_ARRIVAL_TIME,
+    ARRIVAL_TIME,
+    CANCELLED_OR_DIVERTED,
+    MILES_DISTANCE,
+  }
 
-public enum FlightQueryType {
-  DAY,
-  CARRIER_CODE_INDEX,
-  FLIGHT_NUMBER,
-  AIRPORT_ORIGIN_INDEX,
-  AIRPORT_DEST_INDEX,
-  SCHEDULED_DEPARTURE_TIME,
-  DEPARTURE_TIME,
-  SCHEDULED_ARRIVAL_TIME,
-  ARRIVAL_TIME,
-  CANCELLED_OR_DIVERTED,
-  MILES_DISTANCE,
+  enum AOperator {
+    EQUAL,
+    NOT_EQUAL,
+    LESS_THAN,
+    LESS_THAN_EQUAL,
+    GREATER_THAN,
+    GREATER_THAN_EQUAL,
+  }
+
+  enum SortDirection {
+    ASCENDING,
+    DESCENDING,
+  }
+
+  enum ASupported {
+    ALL,
+    ONLY_EQUIVALENCE,
+  }
 }
 
-public enum FlightQueryOperator {
-  EQUAL,
-  NOT_EQUAL,
-  LESS_THAN,
-  LESS_THAN_EQUAL,
-  GREATER_THAN,
-  GREATER_THAN_EQUAL,
-}
-
-public enum FlightQuerySortDirection {
-  ASCENDING,
-  DESCENDING,
-}
 
 class FlightType { // 19 bytes total
   public byte Day;                      // supports all querys
@@ -74,12 +81,11 @@ class FlightsManagerClass {
   public void init(String dataDirectory, int threadCount, Consumer<FlightType[]> onTaskComplete) {
     String trueDataDirectory = sketchPath() + "/" + dataDirectory + "/";
     boolean a = convertFileToFlightType(trueDataDirectory, threadCount, onTaskComplete);
-
     // convertFileToAirportCodesToName(dir);
 
   }
 
-  public FlightType[] getFlightsList() {
+  public FlightType[] getflightsList() {
     return m_flightsList;
   }
 
@@ -167,7 +173,7 @@ class FlightsManagerClass {
   // private HashMap<String, String> convertFileToAirportCodesToName(String dir) {
   // }
 
-  public FlightType[] queryFlights(FlightType[] flightsList, FlightQueryType query, FlightQueryOperator operator, int value) {
+  public FlightType[] queryFlights(FlightType[] flightsList, FlightQuery.AType query, FlightQuery.AOperator operator, int value) {
     if (!checkForIllegalQuery(query, operator)) {
       println("Error: QueryType is illegal with QueryOperator");
       return flightsList;
@@ -203,7 +209,7 @@ class FlightsManagerClass {
     }
   }
 
-  private int getFlightTypeFieldFromQueryType(FlightType flight, FlightQueryType query) {
+  private int getFlightTypeFieldFromQueryType(FlightType flight, FlightQuery.AType query) {
     switch(query) {
     case DAY:
       return (int) flight.Day;
@@ -233,14 +239,14 @@ class FlightsManagerClass {
     }
   }
 
-  private boolean checkForIllegalQuery(FlightQueryType query, FlightQueryOperator operator) {
+  private boolean checkForIllegalQuery(FlightQuery.AType query, FlightQuery.AOperator operator) {
     switch(query) {
     case CARRIER_CODE_INDEX:
     case FLIGHT_NUMBER:
     case AIRPORT_ORIGIN_INDEX:
     case AIRPORT_DEST_INDEX:
     case CANCELLED_OR_DIVERTED:
-      if (operator != FlightQueryOperator.EQUAL || operator != FlightQueryOperator.NOT_EQUAL) {
+      if (operator != FlightQueryA.Operator.EQUAL || operator != FlightQuery.AOperator.NOT_EQUAL) {
         return false;
       } else {
         break;
@@ -249,11 +255,11 @@ class FlightsManagerClass {
     return true;
   }
 
-  public FlightType[] queryFlightsWithinRanges(FlightType[] flightsList, FlightQueryType query, int start, int end) {
+  public FlightType[] queryFlightsWithinRanges(FlightType[] flightsList, FlightQuery.AType query, int start, int end) {
     return flightsList;
   }
 
-  public FlightType[] sortFlights(FlightType[] flightsList, FlightQueryType query, FlightQuerySortDirection sortDirection) {
+  public FlightType[] sortFlights(FlightType[] flightsList, FlightQuery.AType query, FlightQuery.SortDirection sortDirection) {
     return flightsList;
   }
 
@@ -262,30 +268,8 @@ class FlightsManagerClass {
   }
 
   public void printFlight(FlightType flight) {
-    println("Day\t
-            CarrierCodeIndex\t
-            FlightNumber\t
-            AirportOriginIndex\t
-            AirportDestIndex\t
-            ScheduledDepartureTime\t
-            DepartureTime\t
-            ScheduledArrivalTime\t
-            ArrivalTime\t
-            CancelledOrDiverted\t
-            MilesDistance\t");
-    println(
-      flight.Day,
-      flight.CarrierCodeIndex,
-      flight.FlightNumber,
-      flight.AirportOriginIndex,
-      flight.AirportDestIndex,
-      flight.ScheduledDepartureTime,
-      flight.DepartureTime,
-      flight.ScheduledArrivalTime,
-      flight.ArrivalTime,
-      flight.CancelledOrDiverted,
-      flight.MilesDistance
-    );
+    println(flight);
+    // make revisions
   }
 }
 
@@ -301,5 +285,3 @@ class FlightsManagerClass {
 // T. Creagh, improved performace by having constructor, 8pm 06/03/24
 // T. Creagh, created enums for querying, 9pm 06/03/24
 // T. Creagh, implemented checkForIllegalQuery and getFlightTypeFieldFromQueryType,  12pm 06/03/24
-// T. Creagh, implemented queryFlights,  1pm 06/03/24
-

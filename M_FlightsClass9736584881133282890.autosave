@@ -74,12 +74,11 @@ class FlightsManagerClass {
   public void init(String dataDirectory, int threadCount, Consumer<FlightType[]> onTaskComplete) {
     String trueDataDirectory = sketchPath() + "/" + dataDirectory + "/";
     boolean a = convertFileToFlightType(trueDataDirectory, threadCount, onTaskComplete);
-
     // convertFileToAirportCodesToName(dir);
 
   }
 
-  public FlightType[] getFlightsList() {
+  public FlightType[] getflightsList() {
     return m_flightsList;
   }
 
@@ -262,30 +261,8 @@ class FlightsManagerClass {
   }
 
   public void printFlight(FlightType flight) {
-    println("Day\t
-            CarrierCodeIndex\t
-            FlightNumber\t
-            AirportOriginIndex\t
-            AirportDestIndex\t
-            ScheduledDepartureTime\t
-            DepartureTime\t
-            ScheduledArrivalTime\t
-            ArrivalTime\t
-            CancelledOrDiverted\t
-            MilesDistance\t");
-    println(
-      flight.Day,
-      flight.CarrierCodeIndex,
-      flight.FlightNumber,
-      flight.AirportOriginIndex,
-      flight.AirportDestIndex,
-      flight.ScheduledDepartureTime,
-      flight.DepartureTime,
-      flight.ScheduledArrivalTime,
-      flight.ArrivalTime,
-      flight.CancelledOrDiverted,
-      flight.MilesDistance
-    );
+    println(flight);
+    // make revisions
   }
 }
 
@@ -302,4 +279,3 @@ class FlightsManagerClass {
 // T. Creagh, created enums for querying, 9pm 06/03/24
 // T. Creagh, implemented checkForIllegalQuery and getFlightTypeFieldFromQueryType,  12pm 06/03/24
 // T. Creagh, implemented queryFlights,  1pm 06/03/24
-

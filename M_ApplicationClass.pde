@@ -1,3 +1,5 @@
+import java.util.concurrent.TimeUnit;
+
 class ApplicationClass {
   private int m_timeLastFrame = 0;
   private int m_fixedFrameCounter = 0;
@@ -10,9 +12,20 @@ class ApplicationClass {
 
   void init() {
     String dataDirectory = "data/Preprocessed Data";
-    m_flightsManager.convertFileToFlightType(dataDirectory, 4, list -> {
+    m_flightsManager.init(dataDirectory, 4, list -> {
       println("I'm done! Here's the first flights day: " + list[0].Day);
     });
+
+    //  * Please Fin help me remove this *
+    try {
+      TimeUnit.MILLISECONDS.sleep(100); // ! WHEN YOU DONT HAVE THIS HERE IT GIVE NULL POINTER BECAUSE ASYNC METHODS ARE NOT DONE
+    } catch (InterruptedException e) {
+      println("BLOW UP: ", e);
+    }
+
+    m_flightsManager.printFlight(m_flightsManager.queryFlights(
+      m_flightsManager.getFlightsList(), FlightQueryType.MILES_DISTANCE, FlightQueryOperator.EQUAL, 100)[0]
+    );
 
     m_screens = new ArrayList<Screen>();
 
