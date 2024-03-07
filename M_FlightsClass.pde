@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 import java.util.concurrent.*;
 import java.util.HashMap;
@@ -198,14 +199,14 @@ class FlightsManagerClass {
             .filter(flight -> getFlightTypeFieldFromQueryType(flight, type) >= value)
             .toArray(FlightType[]::new);
     default:
-      println("Error: QueryOperator invalid");
+      println("Error: FlightQueryOperator invalid");
       return flightsList;
     }
   }
 
   public FlightType[] queryFlightsWithinRange(FlightType[] flightsList, FlightQueryType type, int start, int end) {
     if (!checkForIllegalQuery(type, FlightQueryOperator.GREATER_THAN_EQUAL)) {
-      println("Error: QueryType is illegal with QueryOperator");
+      println("Error: FlightQueryType is illegal to query range");
       return flightsList;
     }
     return Arrays.stream(flightsList)
@@ -239,7 +240,7 @@ class FlightsManagerClass {
     case MILES_DISTANCE:
       return (int) flight.MilesDistance;
     default:
-      println("Error: QueryType invalid");
+      println("Error: FlightQueryType invalid");
       return 0;
     }
   }
@@ -260,12 +261,62 @@ class FlightsManagerClass {
     return true;
   }
 
-  public FlightType[] sortFlights(FlightType[] flightsList, FlightQueryType type, FlightQuerySortDirection sortDirection) {
+  public FlightType[] sort(FlightType[] flightsList, FlightQueryType type, FlightQuerySortDirection sortDirection) {
+    Comparator<FlightType> flightComparator;
+    switch(type) {
+    case DAY:
+      flightComparator = Comparator.comparingInt(flight -> flight.Day);
+      break;
+    case CARRIER_CODE_INDEX:
+      flightComparator = Comparator.comparingInt(flight -> flight.CarrierCodeIndex);
+      break;
+    case FLIGHT_NUMBER:
+      flightComparator = Comparator.comparingInt(flight -> flight.FlightNumber);
+      break;
+    case AIRPORT_ORIGIN_INDEX:
+      flightComparator = Comparator.comparingInt(flight -> flight.AirportOriginIndex);
+      break;
+    case AIRPORT_DEST_INDEX:
+      flightComparator = Comparator.comparingInt(flight -> flight.AirportDestIndex);
+      break;
+    case SCHEDULED_DEPARTURE_TIME:
+      flightComparator = Comparator.comparingInt(flight -> flight.ScheduledDepartureTime);
+      break;
+    case DEPARTURE_TIME:
+      flightComparator = Comparator.comparingInt(flight -> flight.DepartureTime);
+      break;
+    case SCHEDULED_ARRIVAL_TIME:
+      flightComparator = Comparator.comparingInt(flight -> flight.ScheduledArrivalTime);
+      break;
+    case ARRIVAL_TIME:
+      flightComparator = Comparator.comparingInt(flight -> flight.ArrivalTime);
+      break;
+    case CANCELLED_OR_DIVERTED:
+      flightComparator = Comparator.comparingInt(flight -> flight.CancelledOrDiverted);
+      break;
+    case MILES_DISTANCE:
+      flightComparator = Comparator.comparingInt(flight -> flight.MilesDistance);
+      break;
+    default:
+      println("Error: FlightQueryType invalid");
+      return flightsList;
+    }
+    switch(sortDirection) {
+    case ASCENDING:
+      break;
+    case DESCENDING:
+      flightComparator = flightComparator.reversed();
+      break;
+    default:
+      println("Error: FlightQuerySortDirection invalid");
+      return flightsList;
+    }
+    Arrays.sort(flightsList, flightComparator);
     return flightsList;
   }
 
   public String getAirportNameFromCode(short code) {
-    return "";
+    return ""; // TODO
   }
 
   public void print(FlightType flight) {
@@ -333,5 +384,6 @@ class FlightsManagerClass {
 // T. Creagh, implemented checkForIllegalQuery and getFlightTypeFieldFromQueryType,  12pm 06/03/24
 // T. Creagh, implemented queryFlights,  1pm 06/03/24
 // T. Creagh, implemented FlightManager.print(),  2pm 06/03/24
-// T. Creagh, implemented queryFlightsWithinRange,  2pm 06/03/24
+// T. Creagh, implemented queryFlightsWithinRange,  2:15pm 06/03/24
+// T. Creagh, implemented FlightManager.sort(),  2:30pm 06/03/24
 

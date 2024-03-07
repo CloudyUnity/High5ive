@@ -13,7 +13,7 @@ class ApplicationClass {
   void init() {
     String dataDirectory = "data/Preprocessed Data";
     m_flightsManager.init(dataDirectory, 4, list -> {
-      println("I'm done! Here's the first flights day: " + list[0].Day);
+      println("I'm done! Here's the first flights day: " + list[0].Day + "\n\n");
     });
 
     //  * Please Fin help me remove this *
@@ -23,8 +23,9 @@ class ApplicationClass {
       println("BLOW UP: ", e);
     }
 
-    m_flightsManager.print(m_flightsManager.queryFlightsWithinRange(
-      m_flightsManager.getFlightsList(), FlightQueryType.MILES_DISTANCE, 100, 105), 10
+    m_flightsManager.print(m_flightsManager.sort(m_flightsManager.queryFlightsWithinRange(
+      m_flightsManager.getFlightsList(), FlightQueryType.MILES_DISTANCE, 100, 105),
+      FlightQueryType.DEPARTURE_TIME, FlightQuerySortDirection.ASCENDING), 10
     );
 
     m_screens = new ArrayList<Screen>();
