@@ -17,10 +17,14 @@ class ApplicationClass {
     m_flightsManager.init(dataDirectory, 4, list -> {
       println("I'm done! Here's the first flights day: " + list[0].Day + "\n\n");
 
+      s_DebugProfiler.startProfileTimer();
+
       m_flightsManager.print(m_flightsManager.sort(m_flightsManager.queryFlightsWithinRange(
         m_flightsManager.getFlightsList(), FlightQueryType.MILES_DISTANCE, 100, 105),
         FlightQueryType.DEPARTURE_TIME, FlightQuerySortDirection.ASCENDING), 10
         );
+        
+      s_DebugProfiler.printTimeTakenMillis("Flight query-ing");
     }
     );
 
