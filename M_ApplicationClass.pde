@@ -4,7 +4,7 @@ class ApplicationClass {
   private int m_timeLastFrame = 0;
   private int m_fixedFrameCounter = 0;
 
-  private ArrayList<Screen> m_screens;
+  private ArrayList<Screen> m_screens = new ArrayList<Screen>();
   private Screen m_currentScreen;
 
   private FlightsManagerClass m_flightsManager = new FlightsManagerClass();
@@ -13,34 +13,38 @@ class ApplicationClass {
   private Event<SwitchScreenEventInfoType> m_onSwitchEvent = new Event<SwitchScreenEventInfoType>();
 
   void init() {
-    String dataDirectory = "data/Preprocessed Data";
-    m_flightsManager.init(dataDirectory, 4, list -> {
-      println("I'm done! Here's the first flights day: " + list[0].Day + "\n\n");
+    if (DEBUG_DATA_LOADING) {
+      String dataDirectory = "data/Preprocessed Data";
+      m_flightsManager.init(dataDirectory, 4, list -> {
+        println("I'm done! Here's the first flights day: " + list[0].Day + "\n\n");
 
-      s_DebugProfiler.startProfileTimer();
+        s_DebugProfiler.startProfileTimer();
 
-      m_flightsManager.print(m_flightsManager.sort(m_flightsManager.queryFlightsWithinRange(
-        m_flightsManager.getFlightsList(), FlightQueryType.MILES_DISTANCE, 100, 105),
-        FlightQueryType.DEPARTURE_TIME, FlightQuerySortDirection.ASCENDING), 10
-        );
+        m_flightsManager.print(m_flightsManager.sort(m_flightsManager.queryFlightsWithinRange(
+          m_flightsManager.getFlightsList(), FlightQueryType.MILES_DISTANCE, 100, 105),
+          FlightQueryType.DEPARTURE_TIME, FlightQuerySortDirection.ASCENDING), 10
+          );
 
-      s_DebugProfiler.printTimeTakenMillis("Flight query-ing");
+        s_DebugProfiler.printTimeTakenMillis("Flight query-ing");
+      }
+      );
     }
-    );
 
-    m_screens = new ArrayList<Screen>();
     m_onSwitchEvent.addHandler(e -> switchScreen(e));
 
     Screen1 s1 = new Screen1(600, 600, SCREEN_1_ID);
-    Screen2 s2 = new Screen2(700, 700, SCREEN_2_ID);
-    Screen barchartDemo = new FlightCodesBarchartDemo(700, 700, SWITCH_TO_DEMO_ID);
-    ScreenFlightMap sfm = new ScreenFlightMap(1024, 637, SCREEN_FLIGHT_MAP_ID);
-
     m_screens.add(s1);
+
+    Screen2 s2 = new Screen2(700, 700, SCREEN_2_ID);
     m_screens.add(s2);
+
+    Screen barchartDemo = new FlightCodesBarchartDemo(700, 700, SWITCH_TO_DEMO_ID);
     m_screens.add(barchartDemo);
+
+    ScreenFlightMap sfm = new ScreenFlightMap(600, 600, SCREEN_FLIGHT_MAP_ID);
     m_screens.add(sfm);
-    m_currentScreen = m_screens.get(0);
+
+    m_currentScreen = m_screens.get(3);
 
     PVector windowSize = m_currentScreen.getScale();
     resizeWindow((int)windowSize.x, (int)windowSize.y);
@@ -92,7 +96,7 @@ class ApplicationClass {
     for (Screen screen : m_screens) {
       if (e.NewScreenId.compareTo(screen.getScreenId()) != 0)
         continue;
-        
+
       m_currentScreen = screen;
       resizeWindow((int)screen.getScale().x, (int)screen.getScale().y);
       return;

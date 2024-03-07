@@ -20,17 +20,23 @@ class Screen1 extends Screen {
     blueBtn.setTextSize(30);
     blueBtn.setGrowMode(true);
 
-    ButtonUI switchToScreen2Btn = createButton(350, 200, 100, 100);
-    switchToScreen2Btn.getOnClickEvent().addHandler(e -> switchToScreen2OnClick(e));
+    ButtonUI switchToScreen2Btn = createButton(350, 20, 100, 100);
+    switchToScreen2Btn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_2_ID));
     switchToScreen2Btn.setText("Screen 2");
     switchToScreen2Btn.setTextSize(25);
     switchToScreen2Btn.setGrowMode(true);
 
-    ButtonUI switchToDemo = createButton(350, 80, 100, 100);
-    switchToDemo.getOnClickEvent().addHandler(e -> switchToDemoOnClick(e));
+    ButtonUI switchToDemo = createButton(350, 140, 100, 100);
+    switchToDemo.getOnClickEvent().addHandler(e -> switchScreen(e, SWITCH_TO_DEMO_ID));
     switchToDemo.setText("Barchart demo");    
     switchToDemo.setTextSize(25);
     switchToDemo.setGrowMode(true);
+    
+    ButtonUI switchTo3D = createButton(350, 260, 100, 100);
+    switchTo3D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_FLIGHT_MAP_ID));
+    switchTo3D.setText("3D (WIP)");    
+    switchTo3D.setTextSize(25);
+    switchTo3D.setGrowMode(true);
             
     CheckboxUI cb = createCheckbox(400, 400, 200, 50, "My checkbox");
     cb.setCheckedColour(color(255, 255, 0, 255));    
@@ -60,14 +66,6 @@ class Screen1 extends Screen {
     else
       btn.setBackgroundColour(#0000FF);
   }
-
-  private void switchToScreen2OnClick(EventInfoType e) {
-    s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SCREEN_2_ID, e.Widget));
-  }
-
-  private void switchToDemoOnClick(EventInfoType e) {
-    s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SWITCH_TO_DEMO_ID, e.Widget));
-  }
 }
 
 class Screen2 extends Screen {
@@ -80,7 +78,7 @@ class Screen2 extends Screen {
     ButtonUI switchToScreen1Btn = createButton(width / 2 - 50, height / 2 - 50, 100, 100);
     switchToScreen1Btn.getOnMouseEnterEvent().addHandler(e -> changeOutlineColourOnEnter(e));
     switchToScreen1Btn.getOnMouseExitEvent().addHandler(e -> changeOutlineColourOnExit(e));
-    switchToScreen1Btn.getOnClickEvent().addHandler(e -> switchToScreen1OnClick(e));
+    switchToScreen1Btn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
     switchToScreen1Btn.setText("Screen 1");
     switchToScreen1Btn.setTextSize(25);    
 
@@ -125,10 +123,6 @@ class Screen2 extends Screen {
     rb1.check();
   }
 
-  private void switchToScreen1OnClick(EventInfoType e) {
-    s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SCREEN_1_ID, e.Widget));
-  }
-
   private void changeOutlineColourOnExit(EventInfoType e) {
     e.Widget.setOutlineColour(color(#000000));
   }
@@ -156,7 +150,7 @@ class FlightCodesBarchartDemo extends Screen {
     ButtonUI returnBtn = new ButtonUI(20, 20, 50, 50);
     returnBtn.setText("<-");
     returnBtn.setTextSize(25);
-    returnBtn.getOnClickEvent().addHandler(e -> onReturnButtonClicked(e));
+    returnBtn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
     addWidget(returnBtn);
 
     data = new ArrayList<FlightType>();
@@ -209,22 +203,15 @@ class FlightCodesBarchartDemo extends Screen {
       chart.setTitle("Flight destination indicies");
     }
   }
-
-  private void onReturnButtonClicked(EventInfoType e) {
-    s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SCREEN_1_ID, e.Widget));
-  }
 }
 
 class ScreenFlightMap extends Screen {
-  PVector m_dimensions = new PVector(1024, 637);
+  PVector m_dimensions = new PVector(600, 600);
 
   public ScreenFlightMap(int scaleX, int scaleY, String screenId) {
-    super(scaleX, scaleY, screenId, color(255, 255, 255, 255));
+    super(scaleX, scaleY, screenId, color(50, 50, 50, 255));   
 
-    FlightMapUI flightmap = new FlightMapUI(0, 0, (int)m_dimensions.x, (int)m_dimensions.y);
-    addWidget(flightmap);
-
-    FlightMap3D flight3D = new FlightMap3D(0, 0, 0, 0);
+    FlightMap3D flight3D = new FlightMap3D();
     addWidget(flight3D);
   }
 

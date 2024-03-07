@@ -8,6 +8,7 @@ final boolean FULLSCREEN_ENABLED = false;
 // Debug Options
 final boolean DEBUG_MODE = true; // Turns on various stats or console logging
 final int DEBUG_FPS_COUNTER_STORAGE = 30;
+final boolean DEBUG_DATA_LOADING = false;
 
 // Scene
 final int DEFAULT_FOREGROUND_COLOUR = #000000;

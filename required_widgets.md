@@ -15,3 +15,4 @@ All should work with data extending `Iteratable`, with an overload for arrays.
 
 - [ ] Text box
 - [ ] Input Field
+- [ ] Image
