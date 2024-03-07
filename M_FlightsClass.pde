@@ -1,22 +1,58 @@
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.*;
+import java.util.HashMap;
 import java.nio.channels.FileChannel;
 import java.nio.*;
 import java.io.*;
-import java.util.concurrent.*;
+
+
+enum QueryType {
+  DAY,
+  CARRIER_CODE_INDEX,
+  FLIGHT_NUMBER,
+  AIRPORT_ORIGIN_INDEX,
+  AIRPORT_DEST_INDEX,
+  SCHEDULED_DEPARTURE_TIME,
+  DEPARTURE_TIME,
+  SCHEDULED_ARRIVAL_TIME,
+  ARRIVAL_TIME,
+  CANCELLED_OR_DIVERTED,
+  MILES_DISTANCE,
+}
+
+enum QueryOperator {
+  EQUAL,
+  NOT_EQUAL,
+  LESS_THAN,
+  LESS_THAN_EQUAL,
+  GREATER_THAN,
+  GREATER_THAN_EQUAL,
+}
+
+enum QuerySortDirection {
+  ASCENDING,
+  DESCENDING,
+}
+
+enum SupportedQuerys {
+  ALL,
+  ONLY_EQUIVALENCE,
+}
+
 
 class FlightType { // 19 bytes total
-  public byte Day;
-  public byte CarrierCodeIndex;
-  public short FlightNumber;
-  public short AirportOriginIndex;
-  public short AirportDestIndex;
-  public short ScheduledDepartureTime;
-  public short DepartureTime;
-  public short ScheduledArrivalTime;
-  public short ArrivalTime;
-  public byte CancelledOrDiverted;
-  public short MilesDistance;
+  public byte Day;                      // supports all querys
+  public byte CarrierCodeIndex;         // only supports EQUAL or NOT_EQUAL
+  public short FlightNumber;            // only supports EQUAL or NOT_EQUAL
+  public short AirportOriginIndex;      // only supports EQUAL or NOT_EQUAL
+  public short AirportDestIndex;        // only supports EQUAL or NOT_EQUAL
+  public short ScheduledDepartureTime;  // supports all querys
+  public short DepartureTime;           // supports all querys
+  public short ScheduledArrivalTime;    // supports all querys
+  public short ArrivalTime;             // supports all querys
+  public byte CancelledOrDiverted;      // only supports EQUAL or NOT_EQUAL
+  public short MilesDistance;           // supports all querys
   public FlightType(
     byte Day, byte CarrierCodeIndex, short FlightNumber,
     short AirportOriginIndex, short AirportDestIndex, short ScheduledDepartureTime,
@@ -38,13 +74,21 @@ class FlightType { // 19 bytes total
 
 class FlightsManagerClass {
   private FlightType[] m_flightsList = new FlightType[563737];
+  private HashMap<short, String> m_airportCodesToName = new HashMap<short, String>();
   private boolean m_working;
+
+  public void init(String dataDirectory, int threadCount, Consumer<FlightType[]> onTaskComplete) {
+    String trueDataDirectory = sketchPath() + "/" + dataDirectory + "/";
+    convertFileToFlightType(dir);
+    convertFileToAirportCodesToName(dir);
+
+  }
 
   public FlightType[] getflightsList() {
     return m_flightsList;
   }
 
-  public boolean convertFileToFlightType(String filepath, int threadCount, Consumer<FlightType[]> onTaskComplete) {
+  private boolean convertFileToFlightType(String filepath, int threadCount, Consumer<FlightType[]> onTaskComplete) {
     if (m_working)
       return false;
 
@@ -62,20 +106,19 @@ class FlightsManagerClass {
     return true;
   }
 
-  private void convertFileToFlightTypeAsync(String filepath, int threadCount) {
-    String path = sketchPath() + "/" + filepath;
+  private void convertFileToFlightTypeAsync(String dir, int threadCount) {
     MappedByteBuffer buffer;
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
     CountDownLatch latch = new CountDownLatch(threadCount);
 
-    try (FileInputStream fis = new FileInputStream(path)) {            
+    try (FileInputStream fis = new FileInputStream(dir + "flight_data.bin")) {            
       FileChannel channel = fis.getChannel();
       buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
       long flightCount = channel.size() / LINE_BYTE_SIZE;
       fis.close();
       channel.close();
 
-      int chunkSize = (int)flightCount / threadCount;
+      int chunkSize = (int) flightCount / threadCount;
 
       for (int i = 0; i < threadCount; i++) {
         int startPosition = i * chunkSize;
@@ -126,16 +169,81 @@ class FlightsManagerClass {
     s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
   }
 
-  // Should work if given airport code or name
-  public void queryFlights(FlightType values) {
+  private HashMap<String, String> convertFileToAirportCodesToName(String dir) {
   }
 
-  public void queryFlightsWithinRanges(FlightType startValues, FlightType endValues) {
+  public FlightType[] queryFlights(FlightType[] flightsList, QueryType query, QueryOperator, operator, int value) {
+    if (!checkForIllegalQuery) {
+      println("Error: QueryType is illegal with QueryOperator");
+      return;
+    }
+    switch(operator) {
+    case EQUAL:
+
+    case NOT_EQUAL:
+    case LESS_THAN:
+    case LESS_THAN_EQUAL:
+    case GREATER_THAN:
+    GREATER_THAN_EQUAL:
+    }
   }
 
-  public void sortFlights(FlightType values) {
+  private int getFlightTypeFieldFromQueryType(FlightType flight, QueryType query) {
+    switch(query) {
+    case DAY:
+      return (int) flight.Day;
+    case CARRIER_CODE_INDEX:
+      return (int) flight.CarrierCodeIndex;
+    case FLIGHT_NUMBER:
+      return (int) flight.FlightNumber;
+    case AIRPORT_ORIGIN_INDEX:
+      return (int) flight.AirportOriginIndex;
+    case AIRPORT_DEST_INDEX:
+      return (int) flight.AirportDestIndex;
+    case SCHEDULED_DEPARTURE_TIME:
+      return (int) flight.ScheduledDepartureTime;
+    case DEPARTURE_TIME:
+      return (int) flight.DepartureTime;
+    case SCHEDULED_ARRIVAL_TIME:
+      return (int) flight.ScheduledArrivalTime;
+    case ARRIVAL_TIME:
+      return (int) flight.ArrivalTime;
+    case CANCELLED_OR_DIVERTED:
+      return (int) flight.CancelledOrDiverted;
+    case MILES_DISTANCE:
+      return (int) flight.MilesDistance;
+    default:
+      println("Error: QueryType invalid");
+      return;
+    }
+  }
+
+  private boolean checkForIllegalQuery(QueryType query, QueryOperator operator) {
+    switch(query) {
+    case CARRIER_CODE_INDEX:
+    case FLIGHT_NUMBER:
+    case AIRPORT_ORIGIN_INDEX:
+    case AIRPORT_DEST_INDEX:
+    case CANCELLED_OR_DIVERTED:
+      if (operator != QueryOperator.EQUAL || operator != QueryOperator.NOT_EQUAL) {
+        return false;
+      } else {
+        break;
+      }
+    }
+    return true;
+  }
+
+  public FlightType[] queryFlightsWithinRanges(FlightType[] flightsList, QueryType query, int start, int end) {
+  }
+
+  public FlightType[] sortFlights(FlightType[] flightsList, QueryType query, QuerySortDirection, sortDirection) {
+  }
+
+  public String getAirportNameFromCode(short code) {
   }
 }
+
 
 // Descending code authorship changes:
 // F. Wright, Made DateType, FlightType, FlightsManagerClass and made function headers. Left comments to explain how everything could be implemented, 11pm 04/03/24
@@ -146,3 +254,6 @@ class FlightsManagerClass {
 // T. Creagh, improved performace by adding arrays instead, 3pm 06/03/24
 // F. Wright, Made it so the file reading happens on a seperate thread. Made code fit coding standard, 4pm 06/03/24
 // T. Creagh, improved performace by having constructor, 8pm 06/03/24
+// T. Creagh, created enums for querying, 9pm 06/03/24
+// T. Creagh, implemented checkForIllegalQuery,  12pm 06/03/24
+// T. Creagh, implemented getFlightTypeFieldFromQueryType,  12pm 06/03/24
