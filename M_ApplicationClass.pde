@@ -44,7 +44,7 @@ class ApplicationClass {
     ScreenFlightMap sfm = new ScreenFlightMap(600, 600, SCREEN_FLIGHT_MAP_ID);
     m_screens.add(sfm);
 
-    m_currentScreen = m_screens.get(3);
+    m_currentScreen = m_screens.get(0);
 
     PVector windowSize = m_currentScreen.getScale();
     resizeWindow((int)windowSize.x, (int)windowSize.y);
@@ -61,7 +61,7 @@ class ApplicationClass {
 
     m_currentScreen.draw();
 
-    if (DEBUG_MODE) {
+    if (DEBUG_MODE && DEBUG_FPS_ENABLED) {
       m_fpsClass.addToFrameTimes();
       fill(0);
       text("FPS: " + m_fpsClass.calculateFPS(), 10, 10, 100, 100);

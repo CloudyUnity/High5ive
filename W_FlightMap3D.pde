@@ -6,7 +6,7 @@ class FlightMap3D extends Widget implements IDraggable {
   private Event<MouseDraggedEventInfoType> m_onDraggedEvent = new Event<MouseDraggedEventInfoType>();
 
   private PShape m_earthModel;
-  private PImage m_earthTex;
+  private PImage m_earthDayTex, m_earthNightTex;
   private PImage m_earthNormalMap;
   private PShader m_earthShader;
 
@@ -19,18 +19,20 @@ class FlightMap3D extends Widget implements IDraggable {
   private PImage m_backgroundImg;
 
   public FlightMap3D() {
-    super(0, 0, width, height);
+    super(0, 0, width, height);    
 
     new Thread(() -> {
       m_earthModel = s_3D.createShape(SPHERE, 200);
       m_earthModel.disableStyle();
 
-      m_earthTex = loadImage("data/Images/EarthDay2k.jpg");
-      m_earthNormalMap = loadImage("data/Images/EarthNormal2k.tif");
+      m_earthDayTex = loadImage("data/Images/EarthDay2k.jpg");
+      m_earthNightTex = loadImage("data/Images/EarthNight2k.jpg");
+      m_earthNormalMap = loadImage("data/Images/EarthNormal2k.tga");
 
       m_earthShader = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/EarthVert.glsl");
 
-      m_earthShader.set("tex", m_earthTex);
+      m_earthShader.set("texDay", m_earthDayTex);
+      m_earthShader.set("texNight", m_earthNightTex);
       m_earthShader.set("normalMap", m_earthNormalMap);
 
       m_ready = true;
@@ -46,9 +48,6 @@ class FlightMap3D extends Widget implements IDraggable {
     public void draw() {
     super.draw();
 
-    m_earthRotationalVelocity.x %= 2 * PI;
-    m_earthRotationalVelocity.y %= 2 * PI;
-    
     m_earthRotation.add(m_earthRotationalVelocity);
     m_earthRotationalVelocity.mult(m_earthRotationalFriction);
 
@@ -60,6 +59,9 @@ class FlightMap3D extends Widget implements IDraggable {
       return;
     }
 
+    float time = millis() * 0.0005f;
+    m_earthShader.set("lightDir", cos(time), 0, sin(time));
+
     s_3D.beginDraw();
     s_3D.pushMatrix();
 
@@ -70,7 +72,7 @@ class FlightMap3D extends Widget implements IDraggable {
 
     s_3D.translate(width/2, height/2, -20);
     s_3D.rotateY(m_earthRotation.y);
-    s_3D.rotateX(m_earthRotation.x);
+
     s_3D.shape(m_earthModel);
 
     s_3D.resetShader();
@@ -91,3 +93,6 @@ class FlightMap3D extends Widget implements IDraggable {
     m_earthRotationalVelocity.add(deltaDrag);
   }
 }
+
+// Descending code authorship changes:
+// F. Wright, Created 3D flight map screen using OpenGL GLSL shaders and P3D features. Implemented light shading and day-night cycle, 9pm 07/03/24

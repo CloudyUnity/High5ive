@@ -3,15 +3,16 @@ precision mediump float;
 precision mediump int;
 #endif
 
-uniform sampler2D tex;
+uniform sampler2D texDay;
+uniform sampler2D texNight;
 uniform sampler2D normalMap;
+uniform vec3 lightDir;
 
 varying vec4 vertTexCoord;
 varying vec3 fragNormal;
 varying vec3 fragTangent;
 varying vec3 fragBinormal;
 
-const vec3 lightDir = normalize(vec3(1, 0, 1));
 const vec3 diffuseCol = vec3(1,1,1);
 
 void main() {
@@ -20,9 +21,11 @@ void main() {
   vec3 bump = (norm.x * fragNormal) + (norm.y * fragTangent) + (norm.z * fragBinormal);
   bump = normalize(bump);
 
-  float diffuse = max(normalize(dot(bump, -lightDir)), 0);
+  float diffuse = clamp(dot(fragNormal, -lightDir), 0, 1);
 
-  vec3 col = texture2D(tex, vertTexCoord.st).xyz + diffuse * diffuseCol;
+  vec3 day = texture2D(texDay, vertTexCoord.st).xyz;
+  vec3 night = texture2D(texNight, vertTexCoord.st).xyz;
+  vec3 col = day * diffuse + night * (1-diffuse);
 
   gl_FragColor = vec4(col, 1.0);
 }
