@@ -20,20 +20,26 @@ class Screen1 extends Screen {
     blueBtn.setTextSize(30);
     blueBtn.setGrowMode(true);
 
-    ButtonUI switchToScreen2Btn = createButton(350, 200, 100, 100);
-    switchToScreen2Btn.getOnClickEvent().addHandler(e -> switchToScreen2OnClick(e));
+    ButtonUI switchToScreen2Btn = createButton(350, 20, 100, 100);
+    switchToScreen2Btn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_2_ID));
     switchToScreen2Btn.setText("Screen 2");
     switchToScreen2Btn.setTextSize(25);
     switchToScreen2Btn.setGrowMode(true);
 
-    ButtonUI switchToDemo = createButton(350, 80, 100, 100);
-    switchToDemo.getOnClickEvent().addHandler(e -> switchToDemoOnClick(e));
-    switchToDemo.setText("Barchart demo");    
+    ButtonUI switchToDemo = createButton(350, 140, 100, 100);
+    switchToDemo.getOnClickEvent().addHandler(e -> switchScreen(e, SWITCH_TO_DEMO_ID));
+    switchToDemo.setText("Barchart demo");
     switchToDemo.setTextSize(25);
     switchToDemo.setGrowMode(true);
-            
+
+    ButtonUI switchTo3D = createButton(350, 260, 100, 100);
+    switchTo3D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_FLIGHT_MAP_ID));
+    switchTo3D.setText("3D (WIP)");
+    switchTo3D.setTextSize(25);
+    switchTo3D.setGrowMode(true);
+
     CheckboxUI cb = createCheckbox(400, 400, 200, 50, "My checkbox");
-    cb.setCheckedColour(color(255, 255, 0, 255));    
+    cb.setCheckedColour(color(255, 255, 0, 255));
     cb.setGrowMode(true);
   }
 
@@ -60,14 +66,6 @@ class Screen1 extends Screen {
     else
       btn.setBackgroundColour(#0000FF);
   }
-
-  private void switchToScreen2OnClick(EventInfoType e) {
-    s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SCREEN_2_ID, e.Widget));
-  }
-
-  private void switchToDemoOnClick(EventInfoType e) {
-    s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SWITCH_TO_DEMO_ID, e.Widget));
-  }
 }
 
 class Screen2 extends Screen {
@@ -80,9 +78,9 @@ class Screen2 extends Screen {
     ButtonUI switchToScreen1Btn = createButton(width / 2 - 50, height / 2 - 50, 100, 100);
     switchToScreen1Btn.getOnMouseEnterEvent().addHandler(e -> changeOutlineColourOnEnter(e));
     switchToScreen1Btn.getOnMouseExitEvent().addHandler(e -> changeOutlineColourOnExit(e));
-    switchToScreen1Btn.getOnClickEvent().addHandler(e -> switchToScreen1OnClick(e));
+    switchToScreen1Btn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
     switchToScreen1Btn.setText("Screen 1");
-    switchToScreen1Btn.setTextSize(25);    
+    switchToScreen1Btn.setTextSize(25);
 
     RadioButtonGroupTypeUI group = new RadioButtonGroupTypeUI();
     addWidgetGroup(group);
@@ -90,12 +88,12 @@ class Screen2 extends Screen {
     RadioButtonUI rb1 = new RadioButtonUI(100, 100, 100, 20, "Show data");
     rb1.getOnCheckedEvent().addHandler(e -> onCheckedRb1());
     rb1.setGrowMode(true);
-    group.addMember(rb1);    
-    
-    RadioButtonUI rb2 = new RadioButtonUI(100, 200, 100, 20, "Don't show data");    
+    group.addMember(rb1);
+
+    RadioButtonUI rb2 = new RadioButtonUI(100, 200, 100, 20, "Don't show data");
     rb2.getOnCheckedEvent().addHandler(e -> onCheckedRb2());
     rb2.setGrowMode(true);
-    group.addMember(rb2);    
+    group.addMember(rb2);
 
     createSlider(100, 400, 300, 50, 0, 100, 1);
 
@@ -120,13 +118,9 @@ class Screen2 extends Screen {
     m_data.add("3");
     m_data.add("6");
 
-    addWidget(m_barChart);    
-    
-    rb1.check();
-  }
+    addWidget(m_barChart);
 
-  private void switchToScreen1OnClick(EventInfoType e) {
-    s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SCREEN_1_ID, e.Widget));
+    rb1.check();
   }
 
   private void changeOutlineColourOnExit(EventInfoType e) {
@@ -156,7 +150,7 @@ class FlightCodesBarchartDemo extends Screen {
     ButtonUI returnBtn = new ButtonUI(20, 20, 50, 50);
     returnBtn.setText("<-");
     returnBtn.setTextSize(25);
-    returnBtn.getOnClickEvent().addHandler(e -> onReturnButtonClicked(e));
+    returnBtn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
     addWidget(returnBtn);
 
     data = new ArrayList<FlightType>();
@@ -209,23 +203,25 @@ class FlightCodesBarchartDemo extends Screen {
       chart.setTitle("Flight destination indicies");
     }
   }
-
-  private void onReturnButtonClicked(EventInfoType e) {
-    s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, SCREEN_1_ID, e.Widget));
-  }
 }
 
 class ScreenFlightMap extends Screen {
-  PVector m_dimensions = new PVector(1024, 637);
-
   public ScreenFlightMap(int scaleX, int scaleY, String screenId) {
-    super(scaleX, scaleY, screenId, color(255, 255, 255, 255));
+    super(scaleX, scaleY, screenId, color(0, 0, 0, 255));
 
-    FlightMapUI flightmap = new FlightMapUI(0, 0, (int)m_dimensions.x, (int)m_dimensions.y);
-    addWidget(flightmap);
-
-    FlightMap3D flight3D = new FlightMap3D(0, 0, 0, 0);
+    FlightMap3D flight3D = new FlightMap3D();
     addWidget(flight3D);
+
+    ButtonUI returnBttn = createButton(20, 20, 25, 25);
+    returnBttn.setBackgroundColour(color(255, 255, 255, 255));
+    returnBttn.setGrowMode(true);
+    returnBttn.setText("<-");
+    returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
+    
+    LabelUI label = createLabel(0, 30, width, 50, "Finn's Cosmic Globe Adventure!");
+    label.setForegroundColour(color(255,255,255,255));
+    label.setCentreAligned(true);
+    label.setTextSize(20);
   }
 
   public void applyFlightData(FlightType[] flightData) {
@@ -238,3 +234,4 @@ class ScreenFlightMap extends Screen {
 // A. Robertson, ___
 // F. Wright, Modified and simplified code to fit coding standard. Fixed checkbox issues with colours, 6pm 04/03/24
 // F. Wright, Refactored screen, presets and applied grow mode to relevant widgets, 1pm 07/03/24
+// F. Wright, Created 3D flight map screen using OpenGL GLSL shaders and P3D features. Implemented light shading and day-night cycle, 9pm 07/03/24

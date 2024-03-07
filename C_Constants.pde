@@ -8,6 +8,8 @@ final boolean FULLSCREEN_ENABLED = false;
 // Debug Options
 final boolean DEBUG_MODE = true; // Turns on various stats or console logging
 final int DEBUG_FPS_COUNTER_STORAGE = 30;
+final boolean DEBUG_DATA_LOADING = false;
+final boolean DEBUG_FPS_ENABLED = false;
 
 // Scene
 final int DEFAULT_FOREGROUND_COLOUR = #000000;
@@ -30,6 +32,9 @@ final int EXAMPLE_COLOR_2 = #000000;
 // Math
 final long MILLI_TO_NANO = 1_000_000;
 final long SECOND_TO_NANO = 1_000_000_000;
+final PVector UP_VECTOR = new PVector(0, 1, 0);
+final PVector RIGHT_VECTOR = new PVector(1, 0, 0);
+final PVector FORWARD_VECTOR = new PVector(0, 0, 1);
 
 // Descending code authorship changes:
 // F. Wright, Set up constants for the Engine and Debug, 8pm 23/02/24
