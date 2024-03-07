@@ -20,3 +20,6 @@ for (TableRow row : dataTable.rows()) {
 saveTable(dataTable, "binary_flight_data.csv");
 println("ended");
 exit();
+
+// Descending code authorship changes:
+// K. McWilliam, ___
