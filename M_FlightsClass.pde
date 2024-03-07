@@ -261,30 +261,62 @@ class FlightsManagerClass {
     return "";
   }
 
-  public void printFlight(FlightType flight) {
-    println("Day\t
-            CarrierCodeIndex\t
-            FlightNumber\t
-            AirportOriginIndex\t
-            AirportDestIndex\t
-            ScheduledDepartureTime\t
-            DepartureTime\t
-            ScheduledArrivalTime\t
-            ArrivalTime\t
-            CancelledOrDiverted\t
-            MilesDistance\t");
+  public void print(FlightType flight) {
+    printFlightHeading();
+    printFlight(flight);
+  }
+
+  public void print(FlightType[] flights) {
+    printFlightHeading();
+    for (FlightType flight : flights)
+      printFlight(flight);
+  }
+
+  private void printFlight(FlightType flight) {
     println(
-      flight.Day,
-      flight.CarrierCodeIndex,
-      flight.FlightNumber,
-      flight.AirportOriginIndex,
-      flight.AirportDestIndex,
-      flight.ScheduledDepartureTime,
-      flight.DepartureTime,
-      flight.ScheduledArrivalTime,
-      flight.ArrivalTime,
-      flight.CancelledOrDiverted,
+      flight.Day + "\t" +
+      flight.CarrierCodeIndex + "\t\t" +
+      flight.FlightNumber + "\t\t" +
+      flight.AirportOriginIndex + "\t\t" +
+      flight.AirportDestIndex + "\t\t" +
+      flight.ScheduledDepartureTime + "\t\t\t" +
+      flight.DepartureTime + "\t\t" +
+      flight.ScheduledArrivalTime + "\t\t\t" +
+      flight.ArrivalTime + "\t\t" +
+      flight.CancelledOrDiverted + "\t\t" +
       flight.MilesDistance
+    );
+  }
+  public void printFlight(FlightType flight) {
+    printFlightHeading();
+    println(
+      flight.Day + "\t" +
+      flight.CarrierCodeIndex + "\t\t" +
+      flight.FlightNumber + "\t\t" +
+      flight.AirportOriginIndex + "\t\t" +
+      flight.AirportDestIndex + "\t\t" +
+      flight.ScheduledDepartureTime + "\t\t\t" +
+      flight.DepartureTime + "\t\t" +
+      flight.ScheduledArrivalTime + "\t\t\t" +
+      flight.ArrivalTime + "\t\t" +
+      flight.CancelledOrDiverted + "\t\t" +
+      flight.MilesDistance
+    );
+  }
+
+  private void printFlightHeading() {
+    println(
+      "Day\t" +
+      "CarrierCodeIndex\t" +
+      "FlightNumber\t" +
+      "AirportOriginIndex\t" +
+      "AirportDestIndex\t" +
+      "ScheduledDepartureTime\t" +
+      "DepartureTime\t" +
+      "ScheduledArrivalTime\t\t" +
+      "ArrivalTime\t" +
+      "CancelledOrDiverted\t" +
+      "MilesDistance"
     );
   }
 }
