@@ -29,6 +29,7 @@ class ApplicationClass {
       m_flightsManager.getFlightsList(), FlightQueryType.MILES_DISTANCE, 100, 105),
       FlightQueryType.DEPARTURE_TIME, FlightQuerySortDirection.ASCENDING), 10
     );
+    println("\n");
 
     m_screens = new ArrayList<Screen>();
 
