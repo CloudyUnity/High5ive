@@ -167,35 +167,35 @@ class FlightsManagerClass {
   // private HashMap<String, String> convertFileToAirportCodesToName(String dir) {
   // }
 
-  public FlightType[] queryFlights(FlightType[] flightsList, FlightQueryType query, FlightQueryOperator operator, int value) {
-    if (!checkForIllegalQuery(query, operator)) {
+  public FlightType[] queryFlights(FlightType[] flightsList, FlightQueryType type, FlightQueryOperator operator, int value) {
+    if (!checkForIllegalQuery(type, operator)) {
       println("Error: QueryType is illegal with QueryOperator");
       return flightsList;
     }
     switch(operator) {
     case EQUAL:
       return Arrays.stream(flightsList)
-            .filter(flight -> getFlightTypeFieldFromQueryType(flight, query) == value)
+            .filter(flight -> getFlightTypeFieldFromQueryType(flight, type) == value)
             .toArray(FlightType[]::new);
     case NOT_EQUAL:
       return Arrays.stream(flightsList)
-            .filter(flight -> getFlightTypeFieldFromQueryType(flight, query) != value)
+            .filter(flight -> getFlightTypeFieldFromQueryType(flight, type) != value)
             .toArray(FlightType[]::new);
     case LESS_THAN:
       return Arrays.stream(flightsList)
-            .filter(flight -> getFlightTypeFieldFromQueryType(flight, query) < value)
+            .filter(flight -> getFlightTypeFieldFromQueryType(flight, type) < value)
             .toArray(FlightType[]::new);
     case LESS_THAN_EQUAL:
       return Arrays.stream(flightsList)
-            .filter(flight -> getFlightTypeFieldFromQueryType(flight, query) <= value)
+            .filter(flight -> getFlightTypeFieldFromQueryType(flight, type) <= value)
             .toArray(FlightType[]::new);
     case GREATER_THAN:
       return Arrays.stream(flightsList)
-            .filter(flight -> getFlightTypeFieldFromQueryType(flight, query) > value)
+            .filter(flight -> getFlightTypeFieldFromQueryType(flight, type) > value)
             .toArray(FlightType[]::new);
     case GREATER_THAN_EQUAL:
       return Arrays.stream(flightsList)
-            .filter(flight -> getFlightTypeFieldFromQueryType(flight, query) >= value)
+            .filter(flight -> getFlightTypeFieldFromQueryType(flight, type) >= value)
             .toArray(FlightType[]::new);
     default:
       println("Error: QueryOperator invalid");
@@ -203,8 +203,19 @@ class FlightsManagerClass {
     }
   }
 
-  private int getFlightTypeFieldFromQueryType(FlightType flight, FlightQueryType query) {
-    switch(query) {
+  public FlightType[] queryFlightsWithinRange(FlightType[] flightsList, FlightQueryType type, int start, int end) {
+    if (!checkForIllegalQuery(type, FlightQueryOperator.GREATER_THAN_EQUAL)) {
+      println("Error: QueryType is illegal with QueryOperator");
+      return flightsList;
+    }
+    return Arrays.stream(flightsList)
+      .filter(flight -> getFlightTypeFieldFromQueryType(flight, type) >= start &&
+                        getFlightTypeFieldFromQueryType(flight, type) < end)
+      .toArray(FlightType[]::new);
+  }
+
+  private int getFlightTypeFieldFromQueryType(FlightType flight, FlightQueryType type) {
+    switch(type) {
     case DAY:
       return (int) flight.Day;
     case CARRIER_CODE_INDEX:
@@ -233,8 +244,8 @@ class FlightsManagerClass {
     }
   }
 
-  private boolean checkForIllegalQuery(FlightQueryType query, FlightQueryOperator operator) {
-    switch(query) {
+  private boolean checkForIllegalQuery(FlightQueryType type, FlightQueryOperator operator) {
+    switch(type) {
     case CARRIER_CODE_INDEX:
     case FLIGHT_NUMBER:
     case AIRPORT_ORIGIN_INDEX:
@@ -249,11 +260,7 @@ class FlightsManagerClass {
     return true;
   }
 
-  public FlightType[] queryFlightsWithinRanges(FlightType[] flightsList, FlightQueryType query, int start, int end) {
-    return flightsList;
-  }
-
-  public FlightType[] sortFlights(FlightType[] flightsList, FlightQueryType query, FlightQuerySortDirection sortDirection) {
+  public FlightType[] sortFlights(FlightType[] flightsList, FlightQueryType type, FlightQuerySortDirection sortDirection) {
     return flightsList;
   }
 
@@ -279,7 +286,6 @@ class FlightsManagerClass {
     }
   }
 
-
   private void printFlight(FlightType flight) {
     println(
       flight.Day + "\t" +
@@ -295,22 +301,6 @@ class FlightsManagerClass {
       flight.MilesDistance
     );
   }
-  // public void printFlight(FlightType flight) {
-  //   printFlightHeading();
-  //   println(
-  //     flight.Day + "\t" +
-  //     flight.CarrierCodeIndex + "\t\t" +
-  //     flight.FlightNumber + "\t\t" +
-  //     flight.AirportOriginIndex + "\t\t" +
-  //     flight.AirportDestIndex + "\t\t" +
-  //     flight.ScheduledDepartureTime + "\t\t\t" +
-  //     flight.DepartureTime + "\t\t" +
-  //     flight.ScheduledArrivalTime + "\t\t\t" +
-  //     flight.ArrivalTime + "\t\t" +
-  //     flight.CancelledOrDiverted + "\t\t" +
-  //     flight.MilesDistance
-  //   );
-  // }
 
   private void printFlightHeading() {
     println(
@@ -342,4 +332,6 @@ class FlightsManagerClass {
 // T. Creagh, created enums for querying, 9pm 06/03/24
 // T. Creagh, implemented checkForIllegalQuery and getFlightTypeFieldFromQueryType,  12pm 06/03/24
 // T. Creagh, implemented queryFlights,  1pm 06/03/24
+// T. Creagh, implemented FlightManager.print(),  2pm 06/03/24
+// T. Creagh, implemented queryFlightsWithinRange,  2pm 06/03/24
 

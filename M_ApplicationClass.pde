@@ -23,8 +23,8 @@ class ApplicationClass {
       println("BLOW UP: ", e);
     }
 
-    m_flightsManager.print(m_flightsManager.queryFlights(
-      m_flightsManager.getFlightsList(), FlightQueryType.MILES_DISTANCE, FlightQueryOperator.EQUAL, 100), 10
+    m_flightsManager.print(m_flightsManager.queryFlightsWithinRange(
+      m_flightsManager.getFlightsList(), FlightQueryType.MILES_DISTANCE, 100, 105), 10
     );
 
     m_screens = new ArrayList<Screen>();
