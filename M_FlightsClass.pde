@@ -306,15 +306,12 @@ class FlightsManagerClass {
       );
     }
     try {
-      println("bug1");
       latch.await();
     }
     catch (InterruptedException e) {
-      println("bug2");
       e.printStackTrace();
     }
     finally {
-      println("bug3"); // ! Why does it not print this?
       executor.shutdown();
       FlightType[] joinedFlightArray = listOfFlightsLists.stream()
         .flatMap(Arrays::stream)
