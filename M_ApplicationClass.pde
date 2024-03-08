@@ -8,20 +8,23 @@ class ApplicationClass {
   private Screen m_currentScreen;
 
   private FlightsManagerClass m_flightsManager = new FlightsManagerClass();
+  private DataPreprocessor m_dataPreprocessor = new DataPreprocessor();
   private DebugFPSClass m_fpsClass = new DebugFPSClass();
 
   private Event<SwitchScreenEventInfoType> m_onSwitchEvent = new Event<SwitchScreenEventInfoType>();
 
   void init() {
-    String dataDirectory = "data/Preprocessed Data";
-    m_flightsManager.init(dataDirectory, 4, list -> {
+    // m_dataPreprocessor.init();
+    // m_dataPreprocessor.convertCsvToBinaryFile("flights_full.csv", "flights_full.bin");
+
+    m_flightsManager.init(4, list -> {
       println("I'm done! Here's the first flights day: " + list[0].Day + "\n\n");
 
       s_DebugProfiler.startProfileTimer();
 
-      m_flightsManager.print(m_flightsManager.sort(m_flightsManager.queryFlightsWithinRange(
-        m_flightsManager.getFlightsList(), FlightQueryType.MILES_DISTANCE, 100, 105),
-        FlightQueryType.DEPARTURE_TIME, FlightQuerySortDirection.ASCENDING), 10
+      m_flightsManager.print(m_flightsManager.sort(m_flightsManager.queryFlights(
+        m_flightsManager.getFlightsList(), FlightQueryType.MILES_DISTANCE, FlightQueryOperator.EQUAL, 2475),
+        FlightQueryType.FLIGHT_NUMBER, FlightQuerySortDirection.ASCENDING), 10
         );
 
       s_DebugProfiler.printTimeTakenMillis("Flight query-ing");
