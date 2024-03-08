@@ -21,16 +21,16 @@ class ApplicationClass {
       String dataDirectory = "data/Preprocessed Data";
       m_flightsManager.init(4, list -> {
         println("I'm done! Here's the first flights day: " + list[0].Day + "\n\n");
-
+        m_flightsManager.queryFlightsWithinRange(list, FlightQueryType.SCHEDULED_DEPARTURE_TIME, 700, 900, 4, flightsQuery2 -> {
+          m_flightsManager.print(flightsQuery2, 10);
+        }
+        );
         m_flightsManager.queryFlights(
-          m_flightsManager.getFlightsList(), FlightQueryType.MILES_DISTANCE, FlightQueryOperator.EQUAL, 2475, 4, flightsQuery1 -> {
-            m_flightsManager.queryFlightsWithinRange(flightsQuery1, FlightQueryType.SCHEDULED_DEPARTURE_TIME, 700, 900, 4, flightsQuery2 -> {
-              m_flightsManager.print(flightsQuery2, 10);
-              println("what");
-            });
+          list, FlightQueryType.MILES_DISTANCE, FlightQueryOperator.EQUAL, 2475, 4, flightsQuery1 -> {
             m_flightsManager.print(flightsQuery1, 10);
           }
         );
+        // bug, cant do both or one doesnt happen
       }
       );
     }
