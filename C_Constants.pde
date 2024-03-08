@@ -4,7 +4,7 @@ final int FIXED_FRAME_INCREMENT = 50;
 final int INPUT_ARRAY_LENGTH = 70000;
 final boolean FULLSCREEN_ENABLED = false;
 
-// Data / Files
+// Data/Files
 final int LINE_BYTE_SIZE = 19;
 final int NUMBER_OF_FLIGHT_FULL_LINES = 563737;
 final int NUMBER_OF_AIRPORTS = 369;

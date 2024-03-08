@@ -22,14 +22,15 @@ class ApplicationClass {
       m_flightsManager.init(4, list -> {
         println("I'm done! Here's the first flights day: " + list[0].Day + "\n\n");
 
-        s_DebugProfiler.startProfileTimer();
-
-      m_flightsManager.print(m_flightsManager.sort(m_flightsManager.queryFlights(
-        m_flightsManager.getFlightsList(), FlightQueryType.MILES_DISTANCE, FlightQueryOperator.EQUAL, 2475),
-        FlightQueryType.FLIGHT_NUMBER, FlightQuerySortDirection.ASCENDING), 10
+        m_flightsManager.queryFlights(
+          m_flightsManager.getFlightsList(), FlightQueryType.MILES_DISTANCE, FlightQueryOperator.EQUAL, 2475, 4, flightsQuery1 -> {
+            m_flightsManager.queryFlightsWithinRange(flightsQuery1, FlightQueryType.SCHEDULED_DEPARTURE_TIME, 700, 900, 4, flightsQuery2 -> {
+              m_flightsManager.print(flightsQuery2, 10);
+              println("what");
+            });
+            m_flightsManager.print(flightsQuery1, 10);
+          }
         );
-
-        s_DebugProfiler.printTimeTakenMillis("Flight query-ing");
       }
       );
     }
