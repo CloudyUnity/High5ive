@@ -14,12 +14,13 @@ class FlightMap3D extends Widget implements IDraggable {
   private PVector m_earthRotationalVelocity = new PVector(0, 0, 0);
   private final float m_earthRotationalFriction = 0.99;
 
-  private boolean m_ready = false;
+  private boolean m_assetsLoaded = false;
+  private boolean m_drawnLoadingScreen = false;
 
   private PImage m_backgroundImg;
 
   public FlightMap3D() {
-    super(0, 0, width, height);    
+    super(0, 0, width, height);
 
     new Thread(() -> {
       m_earthModel = s_3D.createShape(SPHERE, 200);
@@ -29,14 +30,14 @@ class FlightMap3D extends Widget implements IDraggable {
       m_earthNightTex = loadImage("data/Images/EarthNight2k.jpg");
       m_earthNormalMap = loadImage("data/Images/EarthNormal2k.tga");
 
-      m_earthShader = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/EarthVert.glsl");
+      m_earthShader = s_3D.loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/EarthVert.glsl");
 
       m_earthShader.set("texDay", m_earthDayTex);
       m_earthShader.set("texNight", m_earthNightTex);
       m_earthShader.set("normalMap", m_earthNormalMap);
 
-      m_ready = true;
-      println("3D READY!");
+      m_assetsLoaded = true;
+      println("Loading 3D assets complete!");
     }
     ).start();
 
@@ -51,11 +52,14 @@ class FlightMap3D extends Widget implements IDraggable {
     m_earthRotation.add(m_earthRotationalVelocity);
     m_earthRotationalVelocity.mult(m_earthRotationalFriction);
 
-    image(m_backgroundImg, 0, 0, width, height);
-
-    if (!m_ready) {
+    image(m_backgroundImg, 0, 0, width, height);     
+    
+    if (!m_assetsLoaded || !m_drawnLoadingScreen) {
       textAlign(CENTER);
+      fill(255,255,255,255);
+      textSize(50);
       text("Loading...", width/2, height/2);
+      m_drawnLoadingScreen = true;
       return;
     }
 

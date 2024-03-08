@@ -54,6 +54,9 @@ void resizeWindow(int w, int h) {
   surface.setSize(w, h);
 }
 
+void init3DRendering(){
+}
+
 // Descending code authorship changes:
 // F. Wright, Made setup(), draw(), 8pm 23/02/24
 // F. Wright, Made input functions for use in InputClass such as keyPressed(), 9pm 23/02/24
