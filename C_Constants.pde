@@ -2,8 +2,13 @@
 final int FRAME_RATE = 60;
 final int FIXED_FRAME_INCREMENT = 50;
 final int INPUT_ARRAY_LENGTH = 70000;
-final int LINE_BYTE_SIZE = 19;
 final boolean FULLSCREEN_ENABLED = false;
+
+// Data / Files
+final int LINE_BYTE_SIZE = 19;
+final int NUMBER_OF_FLIGHT_FULL_LINES = 563737;
+final int NUMBER_OF_AIRPORTS = 369;
+final String DATA_DIRECTOR_PATH = "/data/Preprocessed Data/";
 
 // Debug Options
 final boolean DEBUG_MODE = true; // Turns on various stats or console logging

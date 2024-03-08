@@ -73,30 +73,28 @@ class FlightType { // 19 bytes total
 }
 
 class FlightsManagerClass {
-  private FlightType[] m_flightsList = new FlightType[563737];
-  private String[] m_airportCodesToName = new String[369];
+  private FlightType[] m_flightsList = new FlightType[NUMBER_OF_FLIGHT_FULL_LINES];
+  private String[] m_airportCodesToName = new String[NUMBER_OF_AIRPORTS];
   private boolean m_working;
 
-  public void init(String dataDirectory, int threadCount, Consumer<FlightType[]> onTaskComplete) {
-    String trueDataDirectory = sketchPath() + "/" + dataDirectory + "/";
-    boolean result = convertFileToFlightType(trueDataDirectory, threadCount, onTaskComplete);
+  public void init(int threadCount, Consumer<FlightType[]> onTaskComplete) {
+    boolean result = convertBinaryFileToFlightType("flights_full.bin", threadCount, onTaskComplete);
     if (!result)
       return;
-
-    // convertFileToAirportCodesToName(dir);
+    // convertFileToAirportCodesToName();
   }
 
   public FlightType[] getFlightsList() {
     return m_flightsList;
   }
 
-  private boolean convertFileToFlightType(String filepath, int threadCount, Consumer<FlightType[]> onTaskComplete) {
+  private boolean convertBinaryFileToFlightType(String filename, int threadCount, Consumer<FlightType[]> onTaskComplete) {
     if (m_working)
       return false;
 
     new Thread(() -> {
       s_DebugProfiler.startProfileTimer();
-      convertFileToFlightTypeAsync(filepath, threadCount);
+      convertBinaryFileToFlightTypeAsync(filename, threadCount);
       s_DebugProfiler.printTimeTakenMillis("Raw file pre-processing");
 
       m_working = false;
@@ -108,12 +106,12 @@ class FlightsManagerClass {
     return true;
   }
 
-  private void convertFileToFlightTypeAsync(String directory, int threadCount) {
+  private void convertBinaryFileToFlightTypeAsync(String filename, int threadCount) {
     MappedByteBuffer buffer;
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
     CountDownLatch latch = new CountDownLatch(threadCount);
 
-    try (FileInputStream fis = new FileInputStream(directory + "flight_data.bin")) {
+    try (FileInputStream fis = new FileInputStream(sketchPath() + DATA_DIRECTOR_PATH + filename)) {
       FileChannel channel = fis.getChannel();
       buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
       long flightCount = channel.size() / LINE_BYTE_SIZE;
@@ -121,7 +119,7 @@ class FlightsManagerClass {
       fis.close();
       channel.close();
 
-      int chunkSize = (int) flightCount / threadCount;
+      int chunkSize = (int)flightCount / threadCount;
 
       for (int i = 0; i < threadCount; i++) {
         int startPosition = i * chunkSize;
@@ -172,9 +170,8 @@ class FlightsManagerClass {
     s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
   }
 
-  private String[] convertFileToAirportCodesToName(String dir) {
-    return null;
-  } // TODO Kyara 
+  private String[] convertFileToAirportCodesToName(String dir) { // ? Rename
+    return new String[]{""};
 
   public FlightType[] queryFlights(FlightType[] flightsList, FlightQueryType type, FlightQueryOperator operator, int value) {
     if (!checkForIllegalQuery(type, operator)) {
@@ -227,27 +224,27 @@ class FlightsManagerClass {
   private int getFlightTypeFieldFromQueryType(FlightType flight, FlightQueryType type) {
     switch(type) {
     case DAY:
-      return (int) flight.Day;
+      return (int)flight.Day;
     case CARRIER_CODE_INDEX:
-      return (int) flight.CarrierCodeIndex;
+      return (int)flight.CarrierCodeIndex;
     case FLIGHT_NUMBER:
-      return (int) flight.FlightNumber;
+      return (int)flight.FlightNumber;
     case AIRPORT_ORIGIN_INDEX:
-      return (int) flight.AirportOriginIndex;
+      return (int)flight.AirportOriginIndex;
     case AIRPORT_DEST_INDEX:
-      return (int) flight.AirportDestIndex;
+      return (int)flight.AirportDestIndex;
     case SCHEDULED_DEPARTURE_TIME:
-      return (int) flight.ScheduledDepartureTime;
+      return (int)flight.ScheduledDepartureTime;
     case DEPARTURE_TIME:
-      return (int) flight.DepartureTime;
+      return (int)flight.DepartureTime;
     case SCHEDULED_ARRIVAL_TIME:
-      return (int) flight.ScheduledArrivalTime;
+      return (int)flight.ScheduledArrivalTime;
     case ARRIVAL_TIME:
-      return (int) flight.ArrivalTime;
+      return (int)flight.ArrivalTime;
     case CANCELLED_OR_DIVERTED:
-      return (int) flight.CancelledOrDiverted;
+      return (int)flight.CancelledOrDiverted;
     case MILES_DISTANCE:
-      return (int) flight.MilesDistance;
+      return (int)flight.MilesDistance;
     default:
       println("Error: FlightQueryType invalid");
       return -1;
