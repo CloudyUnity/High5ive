@@ -5,3 +5,6 @@ interface IChart<T> {
   public <I extends Iterable<T>> void addData(I data, Function<T, String> getKey);
   public void removeData();
 }
+
+// Code authorship:
+// A. Robertson, Added IChart<T> interface for charts, 12am 08/03/2024
