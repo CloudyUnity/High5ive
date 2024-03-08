@@ -17,7 +17,7 @@ void setup() {
 
   textFont(loadFont("data/Fonts/AgencyFB-Bold-48.vlw"));
 
-  s_3D = createGraphics(width, height, P3D);  
+  s_3D = createGraphics(width, height, P3D);    
 
   s_ApplicationClass.init();
 }
@@ -52,9 +52,6 @@ void mouseDragged() {
 
 void resizeWindow(int w, int h) {
   surface.setSize(w, h);
-}
-
-void init3DRendering(){
 }
 
 // Descending code authorship changes:
