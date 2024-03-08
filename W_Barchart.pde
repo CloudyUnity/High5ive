@@ -3,7 +3,7 @@ import java.util.TreeMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-class BarChartUI<T> extends Widget {
+class BarChartUI<T> extends Widget implements IChart<T> {
   private TreeMap<String, Integer> m_map;
   private Integer m_maxValue = null; // Can be null
   private Integer m_barWidth = null; // Can be null
@@ -39,7 +39,7 @@ class BarChartUI<T> extends Widget {
     setUpAfterDataAdded();
   }
 
-  public <C extends Iterable<T>> void addData(C data, Function<T, String> getKey) {
+  public <I extends Iterable<T>> void addData(I data, Function<T, String> getKey) {
     for (var value : data) {
       String k = getKey.apply(value);
       Integer entryValue = m_map.get(k);
