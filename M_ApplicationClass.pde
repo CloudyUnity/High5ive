@@ -19,7 +19,7 @@ class ApplicationClass {
 
     if (DEBUG_DATA_LOADING) {
       String dataDirectory = "data/Preprocessed Data";
-      m_flightsManager.init(dataDirectory, 4, list -> {
+      m_flightsManager.init(4, list -> {
         println("I'm done! Here's the first flights day: " + list[0].Day + "\n\n");
 
         s_DebugProfiler.startProfileTimer();
