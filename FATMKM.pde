@@ -17,7 +17,7 @@ void setup() {
 
   textFont(loadFont("data/Fonts/AgencyFB-Bold-48.vlw"));
 
-  s_3D = createGraphics(width, height, P3D);  
+  s_3D = createGraphics(width, height, P3D);    
 
   s_ApplicationClass.init();
 }

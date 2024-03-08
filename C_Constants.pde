@@ -23,6 +23,7 @@ final int DEFAULT_OUTLINE_COLOUR = #000000;
 final int DEFAULT_CHECKBOX_CHECKED_COLOUR = #FF0000;
 final int DEFAULT_RADIOBUTTON_CHECKED_COLOUR = #00BCD4;
 final int DEFAULT_SLIDER_FILLED_COLOUR = #00BCD4;
+final int EARTH_SPHERE_SIZE = 200;
 
 // IDs
 final String SCREEN_1_ID = "Screen 1";
@@ -40,6 +41,16 @@ final long SECOND_TO_NANO = 1_000_000_000;
 final PVector UP_VECTOR = new PVector(0, 1, 0);
 final PVector RIGHT_VECTOR = new PVector(1, 0, 0);
 final PVector FORWARD_VECTOR = new PVector(0, 0, 1);
+
+// 3D Flight Map
+final int EARTH_Z = -20;
+final float DAY_CYCLE_SPEED = 0.0005f;
+final float VERTICAL_SCROLL_LIMIT = 0.0f;
+final int ARC_SEGMENTS = 15;
+final float ARC_HEIGHT_MULT = 0.5f;
+final int ARC_SIZE = 3;
+final float MARKER_SIZE = 2;
+final boolean MOUSE_ARC_GROW_MODE = false;
 
 // Descending code authorship changes:
 // F. Wright, Set up constants for the Engine and Debug, 8pm 23/02/24
