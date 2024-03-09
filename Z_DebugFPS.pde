@@ -13,15 +13,15 @@ class DebugFPSClass {
     m_timeAtLastFrame = time;
   }
   
-  public double calculateFPS(){
+  public float calculateFPS(){
     int total = 0;
     for (var frameTime : m_frameTimes){
       total += frameTime;
     }
     total /= DEBUG_FPS_COUNTER_STORAGE;
     
-    double fps = 1.0 / (total / 1000.0);
-    return Math.round(fps * 100) / 100.0;
+    float fps = 1.0 / (total / 1000.0);
+    return round(fps * 100.0f) / 100.0f;
   }
 }
 

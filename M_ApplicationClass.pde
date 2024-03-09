@@ -68,8 +68,8 @@ class ApplicationClass {
 
     if (DEBUG_MODE && DEBUG_FPS_ENABLED) {
       m_fpsClass.addToFrameTimes();
-      fill(0);
-      text("FPS: " + m_fpsClass.calculateFPS(), 10, 10, 100, 100);
+      fill(255, 0, 0, 255);
+      text("FPS: " + m_fpsClass.calculateFPS(), width - 100, 10, 100, 100);
     }
   }
 

@@ -59,3 +59,4 @@ final boolean MOUSE_ARC_GROW_MODE = false;
 // F. Wright, Added InputClass related constants such as INPUT_ARRAY_LENGTH, 9pm 23/02/24
 // F. Wright, Moved some default colour constants from classes to Constants tab, 6pm 04/03/24
 // F. Wright, Created time related math constants for conversions, 2pm 06/03/24
+// F. Wright, Added a lot of 3D flight map related constants, 2pm 09/03/24 
