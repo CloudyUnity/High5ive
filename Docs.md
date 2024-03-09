@@ -10,14 +10,14 @@ Try to look through these tabs as I'm explaining them to get the best understand
 ### Why do the tabs start with weird letters?
 
 This is because Processing is not an IDE for humans and doesn't have proper project structure. We are stuck with tabs that are ordered alphabetically. For this reason all tabs start with different letters to group similar ones together.
-- FATMKM should always be the first tab
-- C_ is more global/misc/important stuff
-- D_ is a special one just for DataPreprocessor. Should probably be changed to M_
-- M_ is for managers. The classes in charge
-- N_ is for more general classes which have multiple instances across the program
-- W_ is for Widget UI elements including Widget itself
-- X_ is for more front-end design kinda stuff
-- Z_ is for debug classes 
+- FATMKM should always be the first tab  
+- C_ is more global/misc/important stuff  
+- D_ is a special one just for DataPreprocessor. Should probably be changed to M_  
+- M_ is for managers. The classes in charge  
+- N_ is for more general classes which have multiple instances across the program  
+- W_ is for Widget UI elements including Widget itself  
+- X_ is for more front-end design kinda stuff   
+- Z_ is for debug classes   
 
 ## FATMKM
 
@@ -86,19 +86,19 @@ This class uses a stack so you can nest multiple profilers and it will still wor
 ### What else is in this project?
 
 Inside the project files we have some interesting things to note
-- README.md
-    You should have already read this
-Docs.md
-    Hey, that's me!
-Helper Scripts
-    Contains random scripts from other languages generally used for pre-processing data.
-CSV_Modifier
-    Used for converting CSV files to raw binary data
-data
-    Fonts
-    Images
-        Mostly just 3D related textures and maps in there right now
-    Preprocessed Data
-        Contains lookup tables and raw binary data used by FlightManagerClass and DataPreprocessorClass
-    Shaders
-        Vertex and Fragment scripts run by the GPU to render triangles using matrix math. Unless you're in the 3D turbo team you don't need to understand what I just said.
+- README.md  
+    You should have already read this  
+Docs.md  
+    Hey, that's me!  
+Helper Scripts  
+    Contains random scripts from other languages generally used for pre-processing data.  
+CSV_Modifier  
+    Used for converting CSV files to raw binary data  
+data  
+    Fonts  
+    Images  
+        Mostly just 3D related textures and maps in there right now  
+    Preprocessed Data  
+        Contains lookup tables and raw binary data used by FlightManagerClass and DataPreprocessorClass  
+    Shaders  
+        Vertex and Fragment scripts run by the GPU to render triangles using matrix math. Unless you're in the 3D turbo team you don't need to understand what I just said.  
