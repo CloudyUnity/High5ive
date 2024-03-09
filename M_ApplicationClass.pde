@@ -46,7 +46,7 @@ class ApplicationClass {
     Screen barchartDemo = new FlightCodesBarchartDemo(700, 700, SWITCH_TO_DEMO_ID);
     m_screens.add(barchartDemo);
 
-    ScreenFlightMap sfm = new ScreenFlightMap(600, 600, SCREEN_FLIGHT_MAP_ID);
+    ScreenFlightMap sfm = new ScreenFlightMap((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, SCREEN_FLIGHT_MAP_ID);
     m_screens.add(sfm);
 
     m_currentScreen = m_screens.get(0);
@@ -68,8 +68,8 @@ class ApplicationClass {
 
     if (DEBUG_MODE && DEBUG_FPS_ENABLED) {
       m_fpsClass.addToFrameTimes();
-      fill(0);
-      text("FPS: " + m_fpsClass.calculateFPS(), 10, 10, 100, 100);
+      fill(255, 0, 0, 255);
+      text("FPS: " + m_fpsClass.calculateFPS(), width - 100, 10, 100, 100);
     }
   }
 
