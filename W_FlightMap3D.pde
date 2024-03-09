@@ -46,6 +46,8 @@ class FlightMap3D extends Widget implements IDraggable {
   private float m_arcFraction = 1.0f;
   private float m_arcGrowMillis = 1.0f;
   private int m_arcStartGrowMillis = 0;
+  private boolean m_connectionsEnabled = true;
+  private boolean m_textEnabled = true;
 
   private boolean m_assetsLoaded = false;
   private boolean m_drawnLoadingScreen = false;
@@ -56,8 +58,8 @@ class FlightMap3D extends Widget implements IDraggable {
 
   private PVector m_earthPos;
 
-  public FlightMap3D() {
-    super(0, 0, (int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y);
+  public FlightMap3D(int posX, int posY, int scaleX, int scaleY) {
+    super(posX, posY, scaleX, scaleY);
 
     new Thread(() -> {
       m_earthModel = s_3D.createShape(SPHERE, EARTH_SPHERE_SIZE);
@@ -72,8 +74,9 @@ class FlightMap3D extends Widget implements IDraggable {
       m_earthShader.set("texDay", m_earthDayTex);
       m_earthShader.set("texNight", m_earthNightTex);
       m_earthShader.set("specularMap", m_earthSpecularMap);
+      setPermaDay(false);
 
-      m_earthPos = new PVector(WINDOW_SIZE_3D_FLIGHT_MAP.x * 0.5f, WINDOW_SIZE_3D_FLIGHT_MAP.y * 0.5f, EARTH_Z);
+      m_earthPos = new PVector(WINDOW_SIZE_3D_FLIGHT_MAP.x * 0.5f + posX, WINDOW_SIZE_3D_FLIGHT_MAP.y * 0.5f + posY, EARTH_Z);
 
       manualAddPoint(40.641766f, 73.780968f, "JFK");
       manualAddPoint(30.11983333f, -31.40333056f, "CAI");
@@ -81,9 +84,9 @@ class FlightMap3D extends Widget implements IDraggable {
       manualAddPoint(90, 0, "North Pole");
 
       // DEBUG RANDOM PLACEMENT
-      for (int i = 0; i < 369; i++) {
+      for (int i = 0; i < 100; i++) {
         var p = manualAddPoint(random(-180.0f, 180.0f), random(-180.0f, 180.0f), i + "");
-        
+
         for (int j = 0; j < 1; j++) {
           p.Connections.add(m_allAirportPoints.get((int)random(0, i-1)));
           p.ConnectionArcPoints.add(cacheArcPoints(p.Pos, p.Connections.get(j).Pos));
@@ -123,6 +126,7 @@ class FlightMap3D extends Widget implements IDraggable {
 
     float time = millis() * DAY_CYCLE_SPEED;
     m_earthShader.set("lightDir", cos(time), 0, sin(time));
+    // m_earthShader.set("mousePos", (float)mouseX, (float)mouseY);
 
     s_3D.beginDraw();
     s_3D.clear();
@@ -141,7 +145,8 @@ class FlightMap3D extends Widget implements IDraggable {
     s_3D.popMatrix();
 
     drawMarkersAndConnections();
-    drawMarkerText();
+    if (m_textEnabled)
+      drawMarkerText();
 
     s_3D.endDraw();
 
@@ -165,8 +170,10 @@ class FlightMap3D extends Widget implements IDraggable {
       s_3D.stroke(point.Color);
       s_3D.line(point.Pos.x, point.Pos.y, point.Pos.z, endline.x, endline.y, endline.z);
 
-      s_3D.stroke(255, 255, 255, 255);
-      drawGreatCircleArcFast(point);
+      if (m_connectionsEnabled) {
+        s_3D.stroke(255, 255, 255, 255);
+        drawGreatCircleArcFast(point);
+      }
     }
 
     s_3D.fill(255);
@@ -250,13 +257,15 @@ class FlightMap3D extends Widget implements IDraggable {
   }
 
   ArrayList<PVector> cacheArcPoints(PVector p1, PVector p2) {
+    float distance = p1.dist(p2);
+    float distMult = lerp(0.1f, 1.0f, distance / 700);
     ArrayList<PVector> cacheResult = new ArrayList<PVector>();
     cacheResult.ensureCapacity(ARC_SEGMENTS+1);
     cacheResult.add(p1);
 
     for (int i = 1; i < ARC_SEGMENTS; i++) {
       float t = i / (float)ARC_SEGMENTS;
-      float bonusHeight = ARC_HEIGHT_MULT * t * (1-t) + 1;
+      float bonusHeight = distMult * ARC_HEIGHT_MULT * t * (1-t) + 1;
       PVector pointOnArc = slerp(p1, p2, t).mult(EARTH_SPHERE_SIZE * bonusHeight);
       cacheResult.add(pointOnArc);
     }
@@ -268,6 +277,18 @@ class FlightMap3D extends Widget implements IDraggable {
   public void setArcGrowMillis(float timeTakenMillis, int delay) {
     m_arcStartGrowMillis = millis() + delay;
     m_arcGrowMillis = timeTakenMillis;
+  }
+
+  public void setPermaDay(boolean enabled) {
+    m_earthShader.set("permaDay", enabled ? 10.0f : 0.0f);
+  }
+
+  public void setConnectionsEnabled(boolean enabled) {
+    m_connectionsEnabled = enabled;
+  }
+  
+  public void setTextEnabled(boolean enabled) {
+    m_textEnabled = enabled;
   }
 }
 

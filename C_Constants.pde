@@ -45,14 +45,13 @@ final PVector FORWARD_VECTOR = new PVector(0, 0, 1);
 final PVector WINDOW_SIZE_3D_FLIGHT_MAP = new PVector(1200, 800);
 final int EARTH_Z = -20;
 final int EARTH_SPHERE_SIZE = 300;
-final float DAY_CYCLE_SPEED = 0.0005f;
+final float DAY_CYCLE_SPEED = 0.00005f;
 final float VERTICAL_SCROLL_LIMIT = 0.5f;
 final float VERTICAL_DRAG_SPEED = 0.000003f;
-final int ARC_SEGMENTS = 10;
+final int ARC_SEGMENTS = 15;
 final float ARC_HEIGHT_MULT = 0.5f;
-final int ARC_SIZE = 2;
-final float MARKER_SIZE = 2;
-final boolean MOUSE_ARC_GROW_MODE = false;
+final int ARC_SIZE = 3;
+final float MARKER_SIZE = 1.5f;
 
 // Descending code authorship changes:
 // F. Wright, Set up constants for the Engine and Debug, 8pm 23/02/24

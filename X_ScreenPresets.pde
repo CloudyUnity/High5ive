@@ -209,19 +209,112 @@ class ScreenFlightMap extends Screen {
   public ScreenFlightMap(int scaleX, int scaleY, String screenId) {
     super(scaleX, scaleY, screenId, color(0, 0, 0, 255));
 
-    FlightMap3D flight3D = new FlightMap3D();
+    int currentUIPosY = 20;
+    int textSize = 20;
+
+    FlightMap3D flight3D = new FlightMap3D(100, 0, 800, 800);
     addWidget(flight3D);
 
-    ButtonUI returnBttn = createButton(20, 20, 25, 25);
-    returnBttn.setBackgroundColour(color(255, 255, 255, 255));
-    returnBttn.setGrowMode(true);
-    returnBttn.setText("<-");
+    ButtonUI uiBackground = createButton(0, 0, 200, 800);
+    uiBackground.setHighlightOutlineOnEnter(false);
+    uiBackground.setBackgroundColour(color(150, 150, 150, 255));
+
+    ButtonUI returnBttn = createButton(20, currentUIPosY, 50, 50);
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
-    
-    LabelUI label = createLabel(0, 30, width, 50, "Finn's Cosmic Globe Adventure!");
-    label.setForegroundColour(color(255,255,255,255));
-    label.setCentreAligned(true);
-    label.setTextSize(20);
+    returnBttn.setGrowMode(true);
+    returnBttn.setText("Return");
+    returnBttn.setTextXOffset(70);
+    returnBttn.setTextSize(textSize);
+    returnBttn.getLabel().setCentreAligned(true);
+    returnBttn.getLabel().setScale(130, 50);
+
+    currentUIPosY += 60;
+
+    CheckboxUI dayNightCB = createCheckbox(20, currentUIPosY, 50, 50, "Perma-Day");
+    dayNightCB.setGrowMode(true);
+    dayNightCB.getOnClickEvent().addHandler(e -> flight3D.setPermaDay(dayNightCB.getChecked()));
+    dayNightCB.getLabel().setTextXOffset(0);
+    dayNightCB.setTextSize(textSize);
+    dayNightCB.getLabel().setCentreAligned(true);
+    dayNightCB.getLabel().setScale(130, 50);
+
+    currentUIPosY += 60;
+
+    RadioButtonGroupTypeUI dataSelectedGroup = new RadioButtonGroupTypeUI();
+    addWidgetGroup(dataSelectedGroup);
+
+    int radioButtonSize = 20;
+
+    RadioButtonUI flights2kRB = new RadioButtonUI(20, currentUIPosY, radioButtonSize, radioButtonSize, "2k");
+    // flights2kRB.getOnCheckedEvent().addHandler(e -> );
+    flights2kRB.setGrowMode(true);
+    dataSelectedGroup.addMember(flights2kRB);
+    flights2kRB.setTextSize(20);
+    flights2kRB.getLabel().setScale(40, 20);
+    flights2kRB.getLabel().setPos(15, currentUIPosY + radioButtonSize + 5);
+
+    RadioButtonUI flights10kRB = new RadioButtonUI(70, currentUIPosY, radioButtonSize, radioButtonSize, "10k");
+    // flights10kRB.getOnCheckedEvent().addHandler(e -> onCheckedRb2());
+    flights10kRB.setGrowMode(true);
+    dataSelectedGroup.addMember(flights10kRB);
+    flights10kRB.getLabel().setTextSize(20);
+    flights10kRB.getLabel().setScale(70, 20);
+    flights10kRB.getLabel().setPos(60, currentUIPosY + radioButtonSize + 5);
+
+    RadioButtonUI flights100kRB = new RadioButtonUI(120, currentUIPosY, radioButtonSize, radioButtonSize, "100k");
+    // flights100kRB.getOnCheckedEvent().addHandler(e -> onCheckedRb2());
+    flights100kRB.setGrowMode(true);
+    dataSelectedGroup.addMember(flights100kRB);
+    flights100kRB.getLabel().setTextSize(20);
+    flights100kRB.getLabel().setScale(50, 20);
+    flights100kRB.getLabel().setPos(105, currentUIPosY + radioButtonSize + 5);
+
+    RadioButtonUI flights500kRB = new RadioButtonUI(170, currentUIPosY, radioButtonSize, radioButtonSize, "500k");
+    // flights100kRB.getOnCheckedEvent().addHandler(e -> onCheckedRb2());
+    flights500kRB.setGrowMode(true);
+    dataSelectedGroup.addMember(flights500kRB);
+    flights500kRB.getLabel().setTextSize(20);
+    flights500kRB.getLabel().setScale(50, 20);
+    flights500kRB.getLabel().setPos(155, currentUIPosY + radioButtonSize + 5);
+
+    currentUIPosY += 30 + radioButtonSize;
+
+    CheckboxUI connectionsEnabledCB = createCheckbox(20, currentUIPosY, 50, 50, "Connections");
+    connectionsEnabledCB.getOnClickEvent().addHandler(e -> flight3D.setConnectionsEnabled(connectionsEnabledCB.getChecked()));
+    connectionsEnabledCB.setGrowMode(true);
+    connectionsEnabledCB.setChecked(true);
+    connectionsEnabledCB.getLabel().setTextXOffset(0);
+    connectionsEnabledCB.setTextSize(textSize);
+    connectionsEnabledCB.getLabel().setCentreAligned(true);
+    connectionsEnabledCB.getLabel().setScale(130, 50);
+
+    currentUIPosY += 60;
+
+    ButtonUI resetArcGrow = createButton(20, currentUIPosY, 50, 50);
+    resetArcGrow.getOnClickEvent().addHandler(e -> flight3D.setArcGrowMillis(10_000, 0));
+    resetArcGrow.setGrowMode(true);
+    resetArcGrow.setText("Reset Arcs");
+    resetArcGrow.getLabel().setTextXOffset(70);
+    resetArcGrow.setTextSize(textSize);
+    resetArcGrow.getLabel().setCentreAligned(true);
+    resetArcGrow.getLabel().setScale(130, 50);
+
+    currentUIPosY += 60;
+
+    CheckboxUI airportTextCB = createCheckbox(20, currentUIPosY, 50, 50, "Text Enabled");
+    airportTextCB.getOnClickEvent().addHandler(e -> flight3D.setTextEnabled(airportTextCB.getChecked()));
+    airportTextCB.setGrowMode(true);
+    airportTextCB.setChecked(true);
+    airportTextCB.getLabel().setTextXOffset(0);
+    airportTextCB.setTextSize(textSize);
+    airportTextCB.getLabel().setCentreAligned(true);
+    airportTextCB.getLabel().setScale(130, 50);
+
+    currentUIPosY += 60;
+
+    LabelUI label = createLabel(200, 30, 150, 40, "3D Flight Map");
+    label.setForegroundColour(color(255, 255, 255, 255));
+    label.setTextSize(30);
   }
 
   public void applyFlightData(FlightType[] flightData) {
@@ -231,7 +324,7 @@ class ScreenFlightMap extends Screen {
 }
 
 // Descending code authorship changes:
-// A. Robertson, ___
+// A. Robertson, Wrote Screen1 and Screen2 presets
 // F. Wright, Modified and simplified code to fit coding standard. Fixed checkbox issues with colours, 6pm 04/03/24
 // F. Wright, Refactored screen, presets and applied grow mode to relevant widgets, 1pm 07/03/24
 // F. Wright, Created 3D flight map screen using OpenGL GLSL shaders and P3D features. Implemented light shading and day-night cycle, 9pm 07/03/24

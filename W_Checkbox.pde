@@ -26,7 +26,7 @@ class CheckboxUI extends Widget implements IClickable {
     super.draw();
 
     fill(color(m_checked ? m_checkedColour : m_backgroundColour));
-    rect(m_pos.y, m_pos.y, m_scale.y, m_scale.y);
+    rect(m_pos.x, m_pos.y, m_scale.y, m_scale.y);
 
     m_label.draw();
   }
@@ -59,6 +59,10 @@ class CheckboxUI extends Widget implements IClickable {
 
   public void setText(String text) {
     m_label.setText(text);
+  }
+  
+  public LabelUI getLabel(){
+    return m_label;
   }
 }
 
