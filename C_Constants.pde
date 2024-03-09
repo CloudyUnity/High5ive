@@ -23,7 +23,6 @@ final int DEFAULT_OUTLINE_COLOUR = #000000;
 final int DEFAULT_CHECKBOX_CHECKED_COLOUR = #FF0000;
 final int DEFAULT_RADIOBUTTON_CHECKED_COLOUR = #00BCD4;
 final int DEFAULT_SLIDER_FILLED_COLOUR = #00BCD4;
-final int EARTH_SPHERE_SIZE = 200;
 
 // IDs
 final String SCREEN_1_ID = "Screen 1";
@@ -44,6 +43,7 @@ final PVector FORWARD_VECTOR = new PVector(0, 0, 1);
 
 // 3D Flight Map
 final int EARTH_Z = -20;
+final int EARTH_SPHERE_SIZE = 200;
 final float DAY_CYCLE_SPEED = 0.0005f;
 final float VERTICAL_SCROLL_LIMIT = 0.0f;
 final int ARC_SEGMENTS = 15;

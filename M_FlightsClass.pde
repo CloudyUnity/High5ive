@@ -453,7 +453,7 @@ class FlightsManagerClass {
     }
   }
 
-  private void printFlight(FlightType flight) {
+  private void printFlight(FlightType flight) { // Can be changed to a toString() override
     println(
       flight.Day + "\t" +
       flight.CarrierCodeIndex + "\t\t" +
