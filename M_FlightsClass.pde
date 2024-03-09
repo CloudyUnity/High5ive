@@ -292,7 +292,6 @@ class FlightsManagerClass {
 
     int chunkSize = NUMBER_OF_FLIGHT_FULL_LINES / threadCount;
     ArrayList<FlightType[]> listOfFlightsLists = new ArrayList<>();
-    // Stream.Builder<FlightType> m_queryFlightsList = Stream.builder();
 
     for (int i = 0; i < threadCount; i++) {
       int startPosition = i * chunkSize;
@@ -507,3 +506,4 @@ class FlightsManagerClass {
 // T. Creagh, implemented processQueryFlightsChunk.sort(), 3:30am 08/03/24
 // T. Creagh, implemented query with threads, 4:00am 08/03/24
 // T. Creagh, implemented queryFlightsWithinRangeAysnc, 4:30am 08/03/24
+// T. Creagh, cleaned up code a bit, 7pm 0/03/24
