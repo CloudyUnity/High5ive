@@ -90,9 +90,10 @@ class FlightsManagerClass {
   }
 
   private boolean convertBinaryFileToFlightType(String filename, int threadCount, Consumer<FlightType[]> onTaskComplete) {
-    if (m_working)
-      print("Warning: m_working is true, convertBinaryFileToFlightType did not process correctly");
+    if (m_working) {
+      println("Warning: m_working is true, convertBinaryFileToFlightType did not process correctly");
       return false;
+    }
 
     new Thread(() -> {
       s_DebugProfiler.startProfileTimer();
@@ -177,9 +178,10 @@ class FlightsManagerClass {
   } // TODO Kyara
 
   public void queryFlights(FlightType[] flightsList, FlightQueryType queryType, FlightQueryOperator queryOperator, int queryValue, int threadCount, Consumer<FlightType[]> onTaskComplete) {
-    if (m_working)
-      print("Warning: m_working is true, queryFlights did not process correctly");
+    if (m_working) {
+      println("Warning: m_working is true, queryFlights did not process correctly");
       return;
+    }
 
     new Thread(() -> {
       s_DebugProfiler.startProfileTimer();
@@ -266,9 +268,10 @@ class FlightsManagerClass {
   }
 
   public void queryFlightsWithinRange(FlightType[] flightsList, FlightQueryType queryType, int start, int end, int threadCount, Consumer<FlightType[]> onTaskComplete) {
-    if (m_working)
-      print("Warning: m_working is true, queryFlightsWithinRange did not process correctly");
+    if (m_working) {
+      println("Warning: m_working is true, queryFlightsWithinRange did not process correctly");
       return;
+    }
 
     new Thread(() -> {
       s_DebugProfiler.startProfileTimer();
