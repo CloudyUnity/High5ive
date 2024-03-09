@@ -244,7 +244,7 @@ class FlightMap3D extends Widget implements IDraggable {
         }
 
         s_3D.line(lastPos.x, lastPos.y, lastPos.z, pointOnArc.x, pointOnArc.y, pointOnArc.z);
-        lastPos = pointOnArc.copy();
+        lastPos = pointOnArc;
       }
     }
   }

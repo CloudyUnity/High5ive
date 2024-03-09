@@ -1,4 +1,5 @@
-
+// I need to comment out the setup() and draw() functions otherwise the program won't run
+/*
 ArrayList<TEXTBOX> textboxes = new ArrayList<TEXTBOX>();
 String TransferText;
 TEXTBOX receiver;
@@ -45,3 +46,4 @@ void keyPressed() {
     message.SETINPUTTEXT(TransferText);
   }
 }
+*/
