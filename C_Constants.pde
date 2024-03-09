@@ -42,6 +42,7 @@ final PVector RIGHT_VECTOR = new PVector(1, 0, 0);
 final PVector FORWARD_VECTOR = new PVector(0, 0, 1);
 
 // 3D Flight Map
+final PVector WINDOW_SIZE_3D_FLIGHT_MAP = new PVector(1200, 800);
 final int EARTH_Z = -20;
 final int EARTH_SPHERE_SIZE = 200;
 final float DAY_CYCLE_SPEED = 0.0005f;

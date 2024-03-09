@@ -34,12 +34,16 @@ class FlightMap3D extends Widget implements IDraggable {
 
   private PShape m_earthModel;
   private PImage m_earthDayTex, m_earthNightTex;
-  private PImage m_earthNormalMap;
+  private PImage m_earthNormalMap, m_earthSpecularMap;
   private PShader m_earthShader;
 
   private PVector m_earthRotation = new PVector(0, 0, 0);
   private PVector m_earthRotationalVelocity = new PVector(0, 0, 0);
   private final float m_earthRotationalFriction = 0.99;
+
+  private float m_arcFraction = 1.0f;
+  private float m_arcGrowMillis = 1.0f;
+  private int m_arcStartGrowMillis = 0;
 
   private boolean m_assetsLoaded = false;
   private boolean m_drawnLoadingScreen = false;
@@ -59,20 +63,20 @@ class FlightMap3D extends Widget implements IDraggable {
 
       m_earthDayTex = loadImage("data/Images/EarthDay2k.jpg");
       m_earthNightTex = loadImage("data/Images/EarthNight2k.jpg");
-      m_earthNormalMap = loadImage("data/Images/EarthNormal2k.tga");
+      // m_earthNormalMap = loadImage("data/Images/EarthNormal2k.tga");
+      m_earthSpecularMap = loadImage("data/Images/EarthSpecular2k.tif");
 
       m_earthShader = s_3D.loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/EarthVert.glsl");
 
       m_earthShader.set("texDay", m_earthDayTex);
       m_earthShader.set("texNight", m_earthNightTex);
-      m_earthShader.set("normalMap", m_earthNormalMap);
+      // m_earthShader.set("normalMap", m_earthNormalMap);
 
       manualAddPoint(40.641766f, 73.780968f, "JFK");
-      manualAddPoint(30.11983333f, -31.40333056f, "Cairo");
-      manualAddPoint(0, 0, "Origin");
-      manualAddPoint(0, 180, "The Flip Side");
-      manualAddPoint(90, 0, "Santa");
-      manualAddPoint(-90, 0, "Penguins");
+      manualAddPoint(30.11983333f, -31.40333056f, "CAI");
+      manualAddPoint(51.509865f, -0.118092f, "LHR");
+      manualAddPoint(90, 0, "North Pole");
+      manualAddPoint(-90, 0, "South Pole");
 
       m_earthPos = new PVector(300, 300, EARTH_Z);
 
@@ -92,6 +96,7 @@ class FlightMap3D extends Widget implements IDraggable {
     m_earthRotation.add(m_earthRotationalVelocity);
     m_earthRotationalVelocity.mult(m_earthRotationalFriction);
     m_earthRotation.x = clamp(m_earthRotation.x, -VERTICAL_SCROLL_LIMIT, VERTICAL_SCROLL_LIMIT);
+    m_arcFraction = (millis() - m_arcStartGrowMillis) / m_arcGrowMillis;
 
     image(m_backgroundImg, 0, 0, width, height);
 
@@ -101,6 +106,8 @@ class FlightMap3D extends Widget implements IDraggable {
       textSize(50);
       text("Loading...", width/2, height/2);
       m_drawnLoadingScreen = true;
+
+      setArcGrowMillis(10_000.0f, 5000);
       return;
     }
 
@@ -175,7 +182,7 @@ class FlightMap3D extends Widget implements IDraggable {
 
         drawGreatCircleArc(rotP1, rotP2);
       }
-      
+
       s_3D.fill(255);
       s_3D.noStroke();
     }
@@ -220,11 +227,17 @@ class FlightMap3D extends Widget implements IDraggable {
 
     for (int i = 1; i < ARC_SEGMENTS; i++) {
       float t = i / (float)ARC_SEGMENTS;
-      if (MOUSE_ARC_GROW_MODE && t > (mouseX / (float)width))
-        return;
 
       float bonusHeight = ARC_HEIGHT_MULT * t * (1-t) + 1;
       PVector pointOnArc = slerp(p1, p2, t).mult(EARTH_SPHERE_SIZE * bonusHeight).add(m_earthPos);
+
+      if (t > m_arcFraction) {
+        float lastT = (i-1) / (float)ARC_SEGMENTS;
+        float frac = (m_arcFraction - lastT) / (t - lastT);
+        pointOnArc = PVector.lerp(lastPos, pointOnArc, frac);
+        s_3D.line(lastPos.x, lastPos.y, lastPos.z, pointOnArc.x, pointOnArc.y, pointOnArc.z);
+        return;
+      }
 
       s_3D.line(lastPos.x, lastPos.y, lastPos.z, pointOnArc.x, pointOnArc.y, pointOnArc.z);
       lastPos = pointOnArc.copy();
@@ -232,6 +245,11 @@ class FlightMap3D extends Widget implements IDraggable {
 
     PVector finalPos = p2.copy().add(m_earthPos);
     s_3D.line(lastPos.x, lastPos.y, lastPos.z, finalPos.x, finalPos.y, finalPos.z);
+  }
+
+  public void setArcGrowMillis(float timeTakenMillis, int delay) {
+    m_arcStartGrowMillis = millis() + delay;
+    m_arcGrowMillis = timeTakenMillis;
   }
 }
 
