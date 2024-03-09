@@ -80,7 +80,7 @@ public class TEXTBOX {
          } 
          else if (KEYCODE == (int)ENTER) {
          
-            TransferText = ENTER();
+            // TransferText = ENTER(); ERROR
             return true;
             
          } 

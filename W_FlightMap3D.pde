@@ -15,6 +15,8 @@ class AirportPointType {
   public PVector Pos;
   public String Name;
   public color Color = color(0, 255, 0, 255);
+  public ArrayList<AirportPointType> Connections = new ArrayList<AirportPointType>();
+  public ArrayList<ArrayList<PVector>> ConnectionArcPoints = new ArrayList<ArrayList<PVector>>();
 
   public AirportPointType(PVector pos, String name) {
     Pos = pos;
@@ -71,12 +73,22 @@ class FlightMap3D extends Widget implements IDraggable {
       m_earthShader.set("texNight", m_earthNightTex);
       m_earthShader.set("specularMap", m_earthSpecularMap);
 
+      m_earthPos = new PVector(WINDOW_SIZE_3D_FLIGHT_MAP.x * 0.5f, WINDOW_SIZE_3D_FLIGHT_MAP.y * 0.5f, EARTH_Z);
+
       manualAddPoint(40.641766f, 73.780968f, "JFK");
       manualAddPoint(30.11983333f, -31.40333056f, "CAI");
       manualAddPoint(51.509865f, -0.118092f, "LHR");
       manualAddPoint(90, 0, "North Pole");
 
-      m_earthPos = new PVector(WINDOW_SIZE_3D_FLIGHT_MAP.x * 0.5f, WINDOW_SIZE_3D_FLIGHT_MAP.y * 0.5f, EARTH_Z);
+      // DEBUG RANDOM PLACEMENT
+      for (int i = 0; i < 369; i++) {
+        var p = manualAddPoint(random(-180.0f, 180.0f), random(-180.0f, 180.0f), i + "");
+        
+        for (int j = 0; j < 1; j++) {
+          p.Connections.add(m_allAirportPoints.get((int)random(0, i-1)));
+          p.ConnectionArcPoints.add(cacheArcPoints(p.Pos, p.Connections.get(j).Pos));
+        }
+      }
 
       m_assetsLoaded = true;
       println("Loading 3D assets complete!");
@@ -116,82 +128,72 @@ class FlightMap3D extends Widget implements IDraggable {
     s_3D.clear();
     s_3D.noStroke();
 
-    // EARTH SPHERE
-
     s_3D.pushMatrix();
     s_3D.shader(m_earthShader);
 
     s_3D.fill(255);
     s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
     s_3D.rotateX(m_earthRotation.x);
-    s_3D.rotateY(m_earthRotation.y);    
-    s_3D.shape(m_earthModel);
+    s_3D.rotateY(m_earthRotation.y);
 
+    s_3D.shape(m_earthModel);
     s_3D.resetShader();
     s_3D.popMatrix();
 
-    // Points
+    drawMarkersAndConnections();
+    drawMarkerText();
+
+    s_3D.endDraw();
+
+    image(s_3D, 0, 0);
+  }
+
+  void drawMarkersAndConnections() {
+    s_3D.strokeWeight(ARC_SIZE);
+    s_3D.noFill();
+    float count = m_allAirportPoints.size();
+
+    s_3D.pushMatrix();
+    s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
+    s_3D.rotateX(m_earthRotation.x);
+    s_3D.rotateY(m_earthRotation.y);
+
+    for (int i = 0; i < count; i++) {
+      AirportPointType point = m_allAirportPoints.get(i);
+      PVector endline = point.Pos.copy().mult(1.05f);
+
+      s_3D.stroke(point.Color);
+      s_3D.line(point.Pos.x, point.Pos.y, point.Pos.z, endline.x, endline.y, endline.z);
+
+      s_3D.stroke(255, 255, 255, 255);
+      drawGreatCircleArcFast(point);
+    }
+
+    s_3D.fill(255);
+    s_3D.noStroke();
+    s_3D.popMatrix();
+  }
+
+  void drawMarkerText() {
+    s_3D.fill(255, 255, 255, 255);
+    s_3D.textAlign(CENTER);
+    s_3D.textSize(10);
 
     float count = m_allAirportPoints.size();
     for (int i = 0; i < count; i++) {
       AirportPointType point1 = m_allAirportPoints.get(i);
-
-      // Point Marker
-
-      s_3D.pushMatrix();
-      s_3D.fill(point1.Color);
-
-      s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
-      s_3D.rotateX(m_earthRotation.x);
-      s_3D.rotateY(m_earthRotation.y);
-      s_3D.translate(point1.Pos.x, point1.Pos.y, point1.Pos.z);
-
-      s_3D.sphere(MARKER_SIZE);
-      s_3D.popMatrix();
-
-      // Point Text
-
-      s_3D.pushMatrix();
-      s_3D.fill(255, 255, 255, 255);
-      s_3D.textAlign(CENTER);
-      s_3D.textSize(10);
-
       int verticalDisplacement = point1.Pos.y > 0 ? 15 : -15;
-      s_3D.translate(0, verticalDisplacement, 10);
-      s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
+
+      s_3D.pushMatrix();
+      s_3D.translate(m_earthPos.x, m_earthPos.y + verticalDisplacement, m_earthPos.z + 10);
       s_3D.rotateX(m_earthRotation.x);
       s_3D.rotateY(m_earthRotation.y);
       s_3D.translate(point1.Pos.x, point1.Pos.y, point1.Pos.z);
       s_3D.rotateY(-m_earthRotation.y);
 
       s_3D.text(point1.Name, 0, 0);
-
       s_3D.popMatrix();
-
-      // Connections
-
-      s_3D.noFill();
-      s_3D.stroke(255, 255, 255, 255);
-      s_3D.strokeWeight(ARC_SIZE);
-
-      for (int j = i+1; j < count; j++) {
-        AirportPointType point2 = m_allAirportPoints.get(j);
-        
-        PVector rotP1 = rotateY(point1.Pos, -m_earthRotation.y);
-        PVector rotP2 = rotateY(point2.Pos, -m_earthRotation.y);
-        rotP1 = rotateX(rotP1, m_earthRotation.x);
-        rotP2 = rotateX(rotP2, m_earthRotation.x);
-
-        drawGreatCircleArc(rotP1, rotP2);
-      }
-
-      s_3D.fill(255);
-      s_3D.noStroke();
     }
-
-    s_3D.endDraw();
-
-    image(s_3D, 0, 0);
   }
 
   public Event<MouseDraggedEventInfoType> getOnDraggedEvent() {
@@ -224,29 +226,43 @@ class FlightMap3D extends Widget implements IDraggable {
     return new PVector(x, y, z);
   }
 
-  void drawGreatCircleArc(PVector p1, PVector p2) { // Can optimize slerps a lot using symmetry and caching data
-    PVector lastPos = p1.copy().add(m_earthPos);
+  void drawGreatCircleArcFast(AirportPointType point) {
+    for (var connection : point.ConnectionArcPoints) {
+      PVector lastPos = connection.get(0);
+
+      float connectionSize = connection.size();
+      for (int i = 1; i < connection.size(); i++) {
+        PVector pointOnArc = connection.get(i);
+        float t = i / connectionSize;
+
+        if (t > m_arcFraction) {
+          float lastT = (i-1) / connectionSize;
+          float frac = (m_arcFraction - lastT) / (t - lastT);
+          pointOnArc = PVector.lerp(lastPos, pointOnArc, frac);
+          s_3D.line(lastPos.x, lastPos.y, lastPos.z, pointOnArc.x, pointOnArc.y, pointOnArc.z);
+          return;
+        }
+
+        s_3D.line(lastPos.x, lastPos.y, lastPos.z, pointOnArc.x, pointOnArc.y, pointOnArc.z);
+        lastPos = pointOnArc;
+      }
+    }
+  }
+
+  ArrayList<PVector> cacheArcPoints(PVector p1, PVector p2) {
+    ArrayList<PVector> cacheResult = new ArrayList<PVector>();
+    cacheResult.ensureCapacity(ARC_SEGMENTS+1);
+    cacheResult.add(p1);
 
     for (int i = 1; i < ARC_SEGMENTS; i++) {
       float t = i / (float)ARC_SEGMENTS;
-
       float bonusHeight = ARC_HEIGHT_MULT * t * (1-t) + 1;
-      PVector pointOnArc = slerp(p1, p2, t).mult(EARTH_SPHERE_SIZE * bonusHeight).add(m_earthPos);
-
-      if (t > m_arcFraction) {
-        float lastT = (i-1) / (float)ARC_SEGMENTS;
-        float frac = (m_arcFraction - lastT) / (t - lastT);
-        pointOnArc = PVector.lerp(lastPos, pointOnArc, frac);
-        s_3D.line(lastPos.x, lastPos.y, lastPos.z, pointOnArc.x, pointOnArc.y, pointOnArc.z);
-        return;
-      }
-
-      s_3D.line(lastPos.x, lastPos.y, lastPos.z, pointOnArc.x, pointOnArc.y, pointOnArc.z);
-      lastPos = pointOnArc.copy();
+      PVector pointOnArc = slerp(p1, p2, t).mult(EARTH_SPHERE_SIZE * bonusHeight);
+      cacheResult.add(pointOnArc);
     }
 
-    PVector finalPos = p2.copy().add(m_earthPos);
-    s_3D.line(lastPos.x, lastPos.y, lastPos.z, finalPos.x, finalPos.y, finalPos.z);
+    cacheResult.add(p2);
+    return cacheResult;
   }
 
   public void setArcGrowMillis(float timeTakenMillis, int delay) {
