@@ -44,9 +44,10 @@ final PVector FORWARD_VECTOR = new PVector(0, 0, 1);
 // 3D Flight Map
 final PVector WINDOW_SIZE_3D_FLIGHT_MAP = new PVector(1200, 800);
 final int EARTH_Z = -20;
-final int EARTH_SPHERE_SIZE = 200;
+final int EARTH_SPHERE_SIZE = 300;
 final float DAY_CYCLE_SPEED = 0.0005f;
-final float VERTICAL_SCROLL_LIMIT = 0.0f;
+final float VERTICAL_SCROLL_LIMIT = 0.5f;
+final float VERTICAL_DRAG_SPEED = 0.000003f;
 final int ARC_SEGMENTS = 15;
 final float ARC_HEIGHT_MULT = 0.5f;
 final int ARC_SIZE = 3;

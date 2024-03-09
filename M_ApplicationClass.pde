@@ -46,7 +46,7 @@ class ApplicationClass {
     Screen barchartDemo = new FlightCodesBarchartDemo(700, 700, SWITCH_TO_DEMO_ID);
     m_screens.add(barchartDemo);
 
-    ScreenFlightMap sfm = new ScreenFlightMap(600, 600, SCREEN_FLIGHT_MAP_ID);
+    ScreenFlightMap sfm = new ScreenFlightMap((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, SCREEN_FLIGHT_MAP_ID);
     m_screens.add(sfm);
 
     m_currentScreen = m_screens.get(0);

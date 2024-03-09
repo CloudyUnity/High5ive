@@ -8,6 +8,12 @@ boolean approx(float val, float checkAgainst){
   return abs(val - checkAgainst) < 0.0001f;
 }
 
+int sign(float val){
+  return val == 0 ? 0 
+  : val < 0 ? -1 
+  : 1;
+}
+
 // PVector Math
 
 PVector slerp(PVector a, PVector b, float t) {
@@ -32,5 +38,13 @@ PVector rotateY(PVector v, float angle) {
   return new PVector(x, v.y, z);
 }
 
+PVector rotateX(PVector v, float angle) {
+  float y = v.y * cos(angle) - v.z * sin(angle);
+  float z = v.y * sin(angle) + v.z * cos(angle);
+  return new PVector(v.x, y, z);
+}
+
+
 // Descending code authorship changes:
 // F. Wright, Created C_Math tab, clamp(), slerp(), approx() and rotateY() for global use, 3pm 08/03/24
+// F. Wright, Created sign(), rotateX(), 2pm 09/03/24
