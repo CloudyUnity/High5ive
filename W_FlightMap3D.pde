@@ -34,12 +34,16 @@ class FlightMap3D extends Widget implements IDraggable {
 
   private PShape m_earthModel;
   private PImage m_earthDayTex, m_earthNightTex;
-  private PImage m_earthNormalMap;
+  private PImage m_earthSpecularMap;
   private PShader m_earthShader;
 
   private PVector m_earthRotation = new PVector(0, 0, 0);
   private PVector m_earthRotationalVelocity = new PVector(0, 0, 0);
   private final float m_earthRotationalFriction = 0.99;
+
+  private float m_arcFraction = 1.0f;
+  private float m_arcGrowMillis = 1.0f;
+  private int m_arcStartGrowMillis = 0;
 
   private boolean m_assetsLoaded = false;
   private boolean m_drawnLoadingScreen = false;
@@ -51,7 +55,7 @@ class FlightMap3D extends Widget implements IDraggable {
   private PVector m_earthPos;
 
   public FlightMap3D() {
-    super(0, 0, width, height);
+    super(0, 0, (int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y);
 
     new Thread(() -> {
       m_earthModel = s_3D.createShape(SPHERE, EARTH_SPHERE_SIZE);
@@ -59,22 +63,20 @@ class FlightMap3D extends Widget implements IDraggable {
 
       m_earthDayTex = loadImage("data/Images/EarthDay2k.jpg");
       m_earthNightTex = loadImage("data/Images/EarthNight2k.jpg");
-      m_earthNormalMap = loadImage("data/Images/EarthNormal2k.tga");
+      m_earthSpecularMap = loadImage("data/Images/EarthSpecular2k.tif");
 
       m_earthShader = s_3D.loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/EarthVert.glsl");
 
       m_earthShader.set("texDay", m_earthDayTex);
       m_earthShader.set("texNight", m_earthNightTex);
-      m_earthShader.set("normalMap", m_earthNormalMap);
+      m_earthShader.set("specularMap", m_earthSpecularMap);
 
       manualAddPoint(40.641766f, 73.780968f, "JFK");
-      manualAddPoint(30.11983333f, -31.40333056f, "Cairo");
-      manualAddPoint(0, 0, "Origin");
-      manualAddPoint(0, 180, "The Flip Side");
-      manualAddPoint(90, 0, "Santa");
-      manualAddPoint(-90, 0, "Penguins");
+      manualAddPoint(30.11983333f, -31.40333056f, "CAI");
+      manualAddPoint(51.509865f, -0.118092f, "LHR");
+      manualAddPoint(90, 0, "North Pole");
 
-      m_earthPos = new PVector(300, 300, EARTH_Z);
+      m_earthPos = new PVector(WINDOW_SIZE_3D_FLIGHT_MAP.x * 0.5f, WINDOW_SIZE_3D_FLIGHT_MAP.y * 0.5f, EARTH_Z);
 
       m_assetsLoaded = true;
       println("Loading 3D assets complete!");
@@ -92,6 +94,7 @@ class FlightMap3D extends Widget implements IDraggable {
     m_earthRotation.add(m_earthRotationalVelocity);
     m_earthRotationalVelocity.mult(m_earthRotationalFriction);
     m_earthRotation.x = clamp(m_earthRotation.x, -VERTICAL_SCROLL_LIMIT, VERTICAL_SCROLL_LIMIT);
+    m_arcFraction = (millis() - m_arcStartGrowMillis) / m_arcGrowMillis;
 
     image(m_backgroundImg, 0, 0, width, height);
 
@@ -101,6 +104,8 @@ class FlightMap3D extends Widget implements IDraggable {
       textSize(50);
       text("Loading...", width/2, height/2);
       m_drawnLoadingScreen = true;
+
+      setArcGrowMillis(10_000.0f, 5000);
       return;
     }
 
@@ -118,8 +123,8 @@ class FlightMap3D extends Widget implements IDraggable {
 
     s_3D.fill(255);
     s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
-    s_3D.rotateY(m_earthRotation.y);
     s_3D.rotateX(m_earthRotation.x);
+    s_3D.rotateY(m_earthRotation.y);    
     s_3D.shape(m_earthModel);
 
     s_3D.resetShader();
@@ -137,6 +142,7 @@ class FlightMap3D extends Widget implements IDraggable {
       s_3D.fill(point1.Color);
 
       s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
+      s_3D.rotateX(m_earthRotation.x);
       s_3D.rotateY(m_earthRotation.y);
       s_3D.translate(point1.Pos.x, point1.Pos.y, point1.Pos.z);
 
@@ -153,6 +159,7 @@ class FlightMap3D extends Widget implements IDraggable {
       int verticalDisplacement = point1.Pos.y > 0 ? 15 : -15;
       s_3D.translate(0, verticalDisplacement, 10);
       s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
+      s_3D.rotateX(m_earthRotation.x);
       s_3D.rotateY(m_earthRotation.y);
       s_3D.translate(point1.Pos.x, point1.Pos.y, point1.Pos.z);
       s_3D.rotateY(-m_earthRotation.y);
@@ -169,13 +176,15 @@ class FlightMap3D extends Widget implements IDraggable {
 
       for (int j = i+1; j < count; j++) {
         AirportPointType point2 = m_allAirportPoints.get(j);
-
+        
         PVector rotP1 = rotateY(point1.Pos, -m_earthRotation.y);
         PVector rotP2 = rotateY(point2.Pos, -m_earthRotation.y);
+        rotP1 = rotateX(rotP1, m_earthRotation.x);
+        rotP2 = rotateX(rotP2, m_earthRotation.x);
 
         drawGreatCircleArc(rotP1, rotP2);
       }
-      
+
       s_3D.fill(255);
       s_3D.noStroke();
     }
@@ -190,8 +199,8 @@ class FlightMap3D extends Widget implements IDraggable {
   }
 
   private void onDraggedHandler(MouseDraggedEventInfoType e) {
-    PVector deltaDrag = new PVector( -(e.Y - e.PreviousPos.y), e.X - e.PreviousPos.x);
-    deltaDrag.mult(s_deltaTime).mult(0.000003f);
+    PVector deltaDrag = new PVector( -(e.Y - e.PreviousPos.y) * 2, e.X - e.PreviousPos.x);
+    deltaDrag.mult(s_deltaTime).mult(VERTICAL_DRAG_SPEED);
     m_earthRotationalVelocity.add(deltaDrag);
   }
 
@@ -220,11 +229,17 @@ class FlightMap3D extends Widget implements IDraggable {
 
     for (int i = 1; i < ARC_SEGMENTS; i++) {
       float t = i / (float)ARC_SEGMENTS;
-      if (MOUSE_ARC_GROW_MODE && t > (mouseX / (float)width))
-        return;
 
       float bonusHeight = ARC_HEIGHT_MULT * t * (1-t) + 1;
       PVector pointOnArc = slerp(p1, p2, t).mult(EARTH_SPHERE_SIZE * bonusHeight).add(m_earthPos);
+
+      if (t > m_arcFraction) {
+        float lastT = (i-1) / (float)ARC_SEGMENTS;
+        float frac = (m_arcFraction - lastT) / (t - lastT);
+        pointOnArc = PVector.lerp(lastPos, pointOnArc, frac);
+        s_3D.line(lastPos.x, lastPos.y, lastPos.z, pointOnArc.x, pointOnArc.y, pointOnArc.z);
+        return;
+      }
 
       s_3D.line(lastPos.x, lastPos.y, lastPos.z, pointOnArc.x, pointOnArc.y, pointOnArc.z);
       lastPos = pointOnArc.copy();
@@ -233,9 +248,15 @@ class FlightMap3D extends Widget implements IDraggable {
     PVector finalPos = p2.copy().add(m_earthPos);
     s_3D.line(lastPos.x, lastPos.y, lastPos.z, finalPos.x, finalPos.y, finalPos.z);
   }
+
+  public void setArcGrowMillis(float timeTakenMillis, int delay) {
+    m_arcStartGrowMillis = millis() + delay;
+    m_arcGrowMillis = timeTakenMillis;
+  }
 }
 
 // Descending code authorship changes:
 // F. Wright, Created 3D flight map screen using OpenGL GLSL shaders and P3D features. Implemented light shading and day-night cycle, 9pm 07/03/24
 // F. Wright, Fixed loading screen, 10am, 08/03/24
 // F. Wright, Created latitude/longitude coords to 3D point converter and used geometric slerping to create arcs around the planet for connections between airports, 3pm 08/03/24
+// F. Wright, Specular maps, vertical scrolling, bigger window, more constants, growing arcs over time, 3pm 09/03/24
