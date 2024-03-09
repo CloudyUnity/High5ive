@@ -88,17 +88,17 @@ This class uses a stack so you can nest multiple profilers and it will still wor
 Inside the project files we have some interesting things to note
 - README.md  
     You should have already read this  
-Docs.md  
+- Docs.md  
     Hey, that's me!  
-Helper Scripts  
+- Helper Scripts  
     Contains random scripts from other languages generally used for pre-processing data.  
-CSV_Modifier  
+- CSV_Modifier  
     Used for converting CSV files to raw binary data  
-data  
-    Fonts  
-    Images  
+- data  
+    - Fonts  
+    - Images  
         Mostly just 3D related textures and maps in there right now  
-    Preprocessed Data  
+    - Preprocessed Data  
         Contains lookup tables and raw binary data used by FlightManagerClass and DataPreprocessorClass  
-    Shaders  
+    - Shaders  
         Vertex and Fragment scripts run by the GPU to render triangles using matrix math. Unless you're in the 3D turbo team you don't need to understand what I just said.  
