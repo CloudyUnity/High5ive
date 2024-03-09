@@ -21,3 +21,5 @@ void main() {
   fragTangent = normalize(cross(vec3(0, 1, 0), normal));
   fragBinormal = normalize(cross(normal, fragTangent));
 }
+
+// Shaders written by Finn Wright
