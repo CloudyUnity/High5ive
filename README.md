@@ -19,14 +19,14 @@ Feel free to disagree with any of these. We can put it up to a vote.
 - All member variables look like "m_varName".  
 - Constant (final) variables use CONSTANT_SNAKE_CASE.  
 - Non-constant but static/gloabl variables use "s_StaticCase".  
-- Any classes that are acting as structs should have their identifier appended with "Type". See GameObjectClass.TransformType.  
+- Any classes that are acting as structs should have their identifier appended with "Type".  
 - All classes should have their identifier appended with "Class".  
 - All interfaces and interface methods should start with "I".  
-- There should be no global variables if possible "Excluding the class instances created in Main".  
+- There should be no global variables if possible (Excluding the class instances created in Main).    
 - Keep stuff private whenever possible. The codebase should generally only talk in one direction.  
-- Avoid using this.memberVar when possible
-- Keep all member variables at the top of the class/struct above functions
-- Store colours as ints, then when needed call `fill(color(m_colour))` as it seems to be unreliable if the `fill` call will work otherwise.
+- Avoid using this.memberVar when possible  
+- Keep all member variables at the top of the class/struct above functions  
+- Store colours as ints, then when needed call `fill(color(m_colour))` as it seems to be unreliable if the `fill` call will work otherwise.  
 
 ### Control Flow/Methods
 
@@ -41,11 +41,7 @@ Feel free to disagree with any of these. We can put it up to a vote.
 
 - Use sameline curly brackets.  
 - Keep stuff indented properly! Use Ctrl-T to do it automatically.  
-- "var" is BANNED except for during for loops.  
-- Keep all scene initialisation inside of ApplicationClass if possible.  
-- The game should be framerate independant. Use the static variable s_deltaTime like this:  
-    WRONG:   player.position.x += speed;  
-    CORRECT: player.position.x += speed * s_deltaTime;  
+- "var" is BANNED except for during foreach loops.  
 
 ## How to commit your changes to github using Git Bash  
 
