@@ -14,7 +14,7 @@ final String DATA_DIRECTOR_PATH = "/data/Preprocessed Data/";
 final boolean DEBUG_MODE = true; // Turns on various stats or console logging
 final int DEBUG_FPS_COUNTER_STORAGE = 30;
 final boolean DEBUG_DATA_LOADING = true;
-final boolean DEBUG_FPS_ENABLED = false;
+final boolean DEBUG_FPS_ENABLED = true;
 
 // Scene
 final int DEFAULT_FOREGROUND_COLOUR = #000000;
@@ -48,9 +48,9 @@ final int EARTH_SPHERE_SIZE = 300;
 final float DAY_CYCLE_SPEED = 0.0005f;
 final float VERTICAL_SCROLL_LIMIT = 0.5f;
 final float VERTICAL_DRAG_SPEED = 0.000003f;
-final int ARC_SEGMENTS = 15;
+final int ARC_SEGMENTS = 10;
 final float ARC_HEIGHT_MULT = 0.5f;
-final int ARC_SIZE = 3;
+final int ARC_SIZE = 2;
 final float MARKER_SIZE = 2;
 final boolean MOUSE_ARC_GROW_MODE = false;
 
