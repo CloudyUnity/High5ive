@@ -26,10 +26,10 @@ void main() {
   diffuse = clamp(diffuse, 0, 1);
 
   vec3 day = texture2D(texDay, vertTexCoord.st).xyz;
-  vec3 night = texture2D(texNight, vertTexCoord.st).xyz * 1.6f;
+  vec3 night = texture2D(texNight, vertTexCoord.st).xyz;
   vec3 specular = texture2D(specularMap, vertTexCoord.st).xyz;
 
-  float strength = max(specular.r, 0.05);
+  float strength = max(specular.r, 0.01);
   vec3 viewDir = -(fragPos.xyz / fragPos.w);
   vec3 reflection = reflect(lightDir, fragNormal);
   float spec = pow(max(dot(viewDir, reflection), 0.0), specularShininess);
