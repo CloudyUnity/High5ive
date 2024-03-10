@@ -1,6 +1,6 @@
-public class TEXTBOX {
+public class Textbox {
    private int X = 0, Y = 0, H = 35, W = 200;
-   private int TEXTSIZE = 24;
+   private int fontSize = 24;
    
    // COLORS
    private color Background = color(255);
@@ -19,17 +19,17 @@ public class TEXTBOX {
    private boolean changable = true;
    private boolean isOutputBox = false;
    
-   TEXTBOX() {
+   public Textbox() {
       // CREATE OBJECT DEFAULT TEXTBOX NOT REALLY USEFUL UNTIL SEARCH IS IMPLEMENTED
    }
    
-   TEXTBOX(int x, int y, int w, int h) {
+   public Textbox(int x, int y, int w, int h) {
    
      X = x; Y = y; W = w; H = h; 
 
    }
    
-   TEXTBOX(int x, int y, int w, int h, boolean changable, boolean isOutputBox) {
+   public Textbox(int x, int y, int w, int h, boolean changable, boolean isOutputBox) {
      X = x; Y = y; W = w; H = h; 
      this.changable = changable;
      this.isOutputBox = isOutputBox;
@@ -56,8 +56,8 @@ public class TEXTBOX {
       
       // DRAWING THE TEXT ITSELF
       fill(Foreground);
-      textSize(TEXTSIZE);
-      text(Text, X + (textWidth("a") / 2), Y + TEXTSIZE);
+      textSize(fontSize);
+      text(Text, X + (textWidth("a") / 2), Y + fontSize);
      
       if (isOutputBox && InputText != null){
        //PLACED IN HERE TO INSTANTLY SEND TEXT IN THE EVENT OF A TRANSFER AS OPPOSED TO WAITING FOR AN ADDITIONAL KEYPRESS
