@@ -22,12 +22,12 @@ class ApplicationClass {
       m_flightsManager.init(4, list -> {
         println("I'm done! Here's the first flights day: " + list[0].Day + "\n\n");
         m_flightsManager.queryFlightsWithinRange(list, FlightQueryType.SCHEDULED_DEPARTURE_TIME, 700, 900, 4, flightsQuery2 -> {
-          m_flightsManager.print(m_flightsManager.sort(flightsQuery2, FlightQueryType.FLIGHT_NUMBER, FlightQuerySortDirection.ASCENDING), 10);
+          // m_flightsManager.print(m_flightsManager.sort(flightsQuery2, FlightQueryType.FLIGHT_NUMBER, FlightQuerySortDirection.ASCENDING), 10);
         }
         );
         m_flightsManager.queryFlights(
           list, FlightQueryType.MILES_DISTANCE, FlightQueryOperator.EQUAL, 2475, 4, flightsQuery1 -> {
-            m_flightsManager.print(flightsQuery1, 10);
+            // m_flightsManager.print(flightsQuery1, 10);
           }
         );
         // bug, cant do both or one doesnt happen

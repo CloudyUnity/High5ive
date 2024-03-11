@@ -75,14 +75,12 @@ class FlightType { // 19 bytes total
 
 class FlightsManagerClass {
   private FlightType[] m_flightsList = new FlightType[NUMBER_OF_FLIGHT_FULL_LINES];
-  private String[] m_airportCodesToName = new String[NUMBER_OF_AIRPORTS];
   private boolean m_working;
 
   public void init(int threadCount, Consumer<FlightType[]> onTaskComplete) {
     boolean result = convertBinaryFileToFlightType("flights_full.bin", threadCount, onTaskComplete);
     if (!result)
       return;
-    // convertFileToAirportCodesToName();
   }
 
   public FlightType[] getFlightsList() {
@@ -173,10 +171,6 @@ class FlightsManagerClass {
     s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
   }
 
-  private String[] convertFileToAirportCodesNames() {
-    return new String[]{""};
-  } // TODO Kyara
-
   public void queryFlights(FlightType[] flightsList, FlightQueryType queryType, FlightQueryOperator queryOperator, int queryValue, int threadCount, Consumer<FlightType[]> onTaskComplete) {
     if (m_working) {
       println("Warning: m_working is true, queryFlights did not process correctly");
@@ -207,7 +201,6 @@ class FlightsManagerClass {
     }
     int chunkSize = NUMBER_OF_FLIGHT_FULL_LINES / threadCount;
     ArrayList<FlightType[]> listOfFlightsLists = new ArrayList<>();
-    // Stream.Builder<FlightType> m_queryFlightsList = Stream.builder();
 
     for (int i = 0; i < threadCount; i++) {
       int startPosition = i * chunkSize;
@@ -436,9 +429,29 @@ class FlightsManagerClass {
     return flightsList;
   }
 
-  public String getAirportNameFromCode(short code) {
-    return ""; // TODO Kyara 
+  public int queryFrequency(FlightType[] flightsList, FlightQueryType queryType, FlightQueryOperator queryOperator, int queryValue, int threadCount) {
+    queryFlights(flightList, queryType, queryOperator, queryValue, theardCount, returnedList -> {
+      return (int)returnedList.lenght;
+    });
   }
+
+  // public int queryRangeFrequency(FlightType[] flightsList, FlightQueryType queryType, int start, int end, int threadCount) {
+  //   queryFlightsWithinRange(flightList, queryType, start, end, threadCount, returnedList -> {
+  //     return (int)returnedList.lenght;
+  //   });
+  // }
+
+  // public FlightType[] getHead(FlightType[] flightList, int numberOfItems) {
+  //   return Arrays.copyOfRange(flightList, 0, numberOfItems);
+  // }
+
+  // public FlightType[] getFoot(FlightType[] flightList, int numberOfItems) {
+  //   return Arrays.copyOfRange(flightList, numberOfItems, flightsList.lenght);
+  // }
+
+  // public FlightType[] getWithinRange(FlightType[] flightList, int start, int end) {
+  //   return Arrays.copyOfRange(flightList, start, end);
+  // }
 
   public void print(FlightType flight) {
     printFlightHeading();
@@ -458,7 +471,8 @@ class FlightsManagerClass {
     }
   }
 
-  private void printFlight(FlightType flight) { // Can be changed to a toString() override
+  @Override
+  private void toString(FlightType flight) { // Can be changed to a toString() override
     println(
       flight.Day + "\t" +
       flight.CarrierCodeIndex + "\t\t" +
@@ -512,4 +526,8 @@ class FlightsManagerClass {
 // T. Creagh, implemented processQueryFlightsChunk.sort(), 3:30am 08/03/24
 // T. Creagh, implemented query with threads, 4:00am 08/03/24
 // T. Creagh, implemented queryFlightsWithinRangeAysnc, 4:30am 08/03/24
-// T. Creagh, cleaned up code a bit, 7pm 0/03/24
+// T. Creagh, implemented queryFrequency, 2:30pm 11/03/24
+// T. Creagh, implemented queryRangeFrequency, 3pm 11/03/24
+// T. Creagh, implemented getHead, 3:30pm 11/03/24
+// T. Creagh, implemented getFoot, 4pm 11/03/24
+// T. Creagh, implemented getWithinRange, 4:30pm 11/03/24
