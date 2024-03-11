@@ -17,9 +17,6 @@ class QueryManagerClass {
   }
   float getLongitude(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
-    println(code);
-    println(debugCount); // REMOVE DEBUG COUNT WHEN DELETING THIS LINE
-    debugCount++;
     return m_lookupResult.getFloat(5);
   }
   String getAirportName(String code) {
