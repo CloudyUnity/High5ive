@@ -5,20 +5,19 @@ PGraphics s_3D;
 int s_deltaTime;
 
 void setup() {
-  size(600, 600);
+  size(600, 600, P2D);
   if (FULLSCREEN_ENABLED)
     fullScreen();
 
   surface.setTitle("Flight Thing");
   surface.setResizable(true);
   surface.setLocation(0, 0);
-  resizeWindow(700, 700); 
-  
-  //s_3D = createGraphics(width, height, P3D);
 
   frameRate(FRAME_RATE);
 
   textFont(loadFont("data/Fonts/AgencyFB-Bold-48.vlw"));
+
+  s_3D = createGraphics((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, P3D);    
 
   s_ApplicationClass.init();
 }
@@ -30,7 +29,7 @@ void draw() {
 
 void keyPressed() {
   if (!keyPressed)
-  return;
+    return;
 
   s_InputClass.setKeyState(key, true);
 }

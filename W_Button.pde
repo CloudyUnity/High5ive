@@ -63,6 +63,10 @@ class ButtonUI extends Widget implements IClickable {
   public void setTextYOffset(int textYOffset) {
     m_label.setTextYOffset(textYOffset);
   }
+
+  public LabelUI getLabel() {
+    return m_label;
+  }
 }
 
 // Code authorship:

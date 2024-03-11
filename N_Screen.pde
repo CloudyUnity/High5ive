@@ -130,14 +130,14 @@ abstract class Screen extends Widget implements IClickable {
     ButtonUI bttn = new ButtonUI(posX, posY, scaleX, scaleY);
     addWidget(bttn);
     return bttn;
-  } 
+  }
 
   public CheckboxUI createCheckbox(int posX, int posY, int scaleX, int scaleY, String label) {
     CheckboxUI chk = new CheckboxUI(posX, posY, scaleX, scaleY, label);
     addWidget(chk);
     return chk;
   }
-  
+
   public LabelUI createLabel(int posX, int posY, int scaleX, int scaleY, String text) {
     LabelUI label = new LabelUI(posX, posY, scaleX, scaleY, text);
     addWidget(label);
@@ -149,11 +149,15 @@ abstract class Screen extends Widget implements IClickable {
     addWidget(radio);
     return radio;
   }
-  
+
   public SliderUI createSlider(int posX, int posY, int scaleX, int scaleY, double min, double max, double interval) {
     SliderUI slider = new SliderUI(posX, posY, scaleX, scaleY, min, max, interval);
     addWidget(slider);
     return slider;
+  }
+
+  public void switchScreen(EventInfoType e, String screenId) {
+    s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, screenId, e.Widget));
   }
 }
 
