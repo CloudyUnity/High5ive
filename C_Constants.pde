@@ -5,9 +5,9 @@ final int INPUT_ARRAY_LENGTH = 70000;
 final boolean FULLSCREEN_ENABLED = false;
 
 // Data/Files
-final int LINE_BYTE_SIZE = 19;
-final int NUMBER_OF_FLIGHT_FULL_LINES = 563737;
-final int NUMBER_OF_AIRPORTS = 369;
+final int LINE_BYTE_SIZE = 23;
+final int NUMBER_OF_FLIGHT_FULL_LINES = 638995;
+final int NUMBER_OF_AIRPORTS = 374;
 final String DATA_DIRECTOR_PATH = "/data/Preprocessed Data/";
 
 // Debug Options
