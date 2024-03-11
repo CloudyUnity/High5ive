@@ -441,9 +441,9 @@ class FlightsManagerClass {
     });
   }
 
-  // public FlightType[] getHead(FlightType[] flightList, int numberOfItems) {
-  //   return Arrays.copyOfRange(flightList, 0, numberOfItems);
-  // }
+  public FlightType[] getHead(FlightType[] flightList, int numberOfItems) {
+    return Arrays.copyOfRange(flightList, 0, numberOfItems);
+  }
 
   // public FlightType[] getFoot(FlightType[] flightList, int numberOfItems) {
   //   return Arrays.copyOfRange(flightList, numberOfItems, flightsList.lenght);
