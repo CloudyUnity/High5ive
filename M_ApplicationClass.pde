@@ -91,6 +91,11 @@ class ApplicationClass {
     if (m_currentScreen != null)
       m_currentScreen.onMouseClick();
   }
+  
+  public void onKeyPressed(char k) {
+    if (m_currentScreen != null)
+      m_currentScreen.getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(mouseX, mouseY, k, m_currentScreen));
+  }
 
   public Event<SwitchScreenEventInfoType> getOnSwitchEvent() {
     return m_onSwitchEvent;
