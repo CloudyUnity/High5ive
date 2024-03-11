@@ -10,6 +10,10 @@
 - Matthew Poole (Matthew Poole)
 - Thomas Creagh (Thomas Creagh)
 
+## Attributions
+
+Data from openflights (https://openflights.org/faq) and the US Bureau of Transportation Statistics (https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FGK&QO_fu146_anzr=b0-gvzr)
+
 ## Coding Standard
 
 Feel free to disagree with any of these. We can put it up to a vote.  
