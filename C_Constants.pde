@@ -52,6 +52,7 @@ final int ARC_SEGMENTS = 15;
 final float ARC_HEIGHT_MULT = 0.5f;
 final int ARC_SIZE = 3;
 final float MARKER_SIZE = 1.5f;
+final boolean DITHER_MODE = false;
 
 // Descending code authorship changes:
 // F. Wright, Set up constants for the Engine and Debug, 8pm 23/02/24

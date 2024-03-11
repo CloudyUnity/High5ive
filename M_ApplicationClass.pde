@@ -8,12 +8,14 @@ class ApplicationClass {
   private Screen m_currentScreen;
 
   private FlightsManagerClass m_flightsManager = new FlightsManagerClass();
+  private QueryManagerClass m_queryManager = new QueryManagerClass();
   private DataPreprocessor m_dataPreprocessor = new DataPreprocessor();
   private DebugFPSClass m_fpsClass = new DebugFPSClass();
 
   private Event<SwitchScreenEventInfoType> m_onSwitchEvent = new Event<SwitchScreenEventInfoType>();
 
   void init() {
+    m_queryManager.init();
     // m_dataPreprocessor.init();
     // m_dataPreprocessor.convertCsvToBinaryFile("flights_full.csv", "flights_full.bin");
 
@@ -46,7 +48,7 @@ class ApplicationClass {
     Screen barchartDemo = new FlightCodesBarchartDemo(700, 700, SWITCH_TO_DEMO_ID);
     m_screens.add(barchartDemo);
 
-    ScreenFlightMap sfm = new ScreenFlightMap((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, SCREEN_FLIGHT_MAP_ID);
+    ScreenFlightMap sfm = new ScreenFlightMap((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, SCREEN_FLIGHT_MAP_ID, m_flightsManager, m_queryManager);
     m_screens.add(sfm);
 
     m_currentScreen = m_screens.get(0);

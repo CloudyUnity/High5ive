@@ -3,6 +3,7 @@ InputClass s_InputClass = new InputClass();
 DebugProfilerClass s_DebugProfiler = new DebugProfilerClass();
 PGraphics s_3D;
 int s_deltaTime;
+int debugCount;
 
 void setup() {
   size(600, 600, P2D);

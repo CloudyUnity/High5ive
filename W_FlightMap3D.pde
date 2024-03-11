@@ -34,10 +34,11 @@ class FlightMap3D extends Widget implements IDraggable {
 
   private Event<MouseDraggedEventInfoType> m_onDraggedEvent = new Event<MouseDraggedEventInfoType>();
 
-  private PShape m_earthModel;
-  private PImage m_earthDayTex, m_earthNightTex;
-  private PImage m_earthSpecularMap;
-  private PShader m_earthShader;
+  private PShape m_earthModel, m_sunModel, m_skySphere;
+  private PImage m_earthDayTex, m_earthNightTex, m_sunTex;
+  private PImage m_earthSpecularMap, m_noiseImg;
+  private PShader m_earthShader, m_sunShader, m_postProcessingShader, m_skyboxShader;
+  private PImage m_skyFront, m_skyBack, m_skyTop, m_skyBottom, m_skyLeft, m_skyRight;
 
   private PVector m_earthRotation = new PVector(0, 0, 0);
   private PVector m_earthRotationalVelocity = new PVector(0, 0, 0);
@@ -52,28 +53,44 @@ class FlightMap3D extends Widget implements IDraggable {
   private boolean m_assetsLoaded = false;
   private boolean m_drawnLoadingScreen = false;
 
-  private PImage m_backgroundImg;
-
   private ArrayList<AirportPointType> m_allAirportPoints = new ArrayList<AirportPointType>();
 
   private PVector m_earthPos;
 
   public FlightMap3D(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
+    
+    m_skyBack = loadImage("data/Images/Stars2k_Back.jpg");
+    m_skyFront = loadImage("data/Images/Stars2k.jpg");
+    m_skyLeft = loadImage("data/Images/Stars2k_Left.jpg");
+    m_skyRight = loadImage("data/Images/Stars2k_Right.jpg");
+    m_skyTop = loadImage("data/Images/Stars2k_Top.jpg");
+    m_skyBottom = loadImage("data/Images/Stars2k_Bottom.jpg");
 
     new Thread(() -> {
       m_earthModel = s_3D.createShape(SPHERE, EARTH_SPHERE_SIZE);
+      m_sunModel = s_3D.createShape(SPHERE, 120);
+      m_skySphere = s_3D.createShape(SPHERE, 2000);
       m_earthModel.disableStyle();
+      m_sunModel.disableStyle();
 
       m_earthDayTex = loadImage("data/Images/EarthDay2k.jpg");
       m_earthNightTex = loadImage("data/Images/EarthNight2k.jpg");
       m_earthSpecularMap = loadImage("data/Images/EarthSpecular2k.tif");
+      m_sunTex = loadImage("data/Images/Sun2k.jpg");
+      m_noiseImg = loadImage("data/Images/noise.png");          
 
-      m_earthShader = s_3D.loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/EarthVert.glsl");
+      m_earthShader = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
+      m_sunShader = loadShader("data/Shaders/SunFrag.glsl", "data/Shaders/BaseVert.glsl");
+      m_postProcessingShader = loadShader("data/Shaders/PostProcessing.glsl");
+      m_skyboxShader = loadShader("data/Shaders/SkyboxFrag.glsl", "data/Shaders/SkyboxVert.glsl");
 
       m_earthShader.set("texDay", m_earthDayTex);
       m_earthShader.set("texNight", m_earthNightTex);
       m_earthShader.set("specularMap", m_earthSpecularMap);
+      m_sunShader.set("tex", m_sunTex);
+      m_postProcessingShader.set("noise", m_noiseImg);
+      m_skyboxShader.set("texFront", m_skyFront);
       setPermaDay(false);
 
       m_earthPos = new PVector(WINDOW_SIZE_3D_FLIGHT_MAP.x * 0.5f + posX, WINDOW_SIZE_3D_FLIGHT_MAP.y * 0.5f + posY, EARTH_Z);
@@ -84,7 +101,7 @@ class FlightMap3D extends Widget implements IDraggable {
       manualAddPoint(90, 0, "North Pole");
 
       // DEBUG RANDOM PLACEMENT
-      for (int i = 0; i < 100; i++) {
+      for (int i = 0; i < 0; i++) {
         var p = manualAddPoint(random(-180.0f, 180.0f), random(-180.0f, 180.0f), i + "");
 
         for (int j = 0; j < 1; j++) {
@@ -98,7 +115,6 @@ class FlightMap3D extends Widget implements IDraggable {
     }
     ).start();
 
-    m_backgroundImg = loadImage("data/Images/Stars2k.jpg");
     m_onDraggedEvent.addHandler(e -> onDraggedHandler(e));
   }
 
@@ -111,9 +127,9 @@ class FlightMap3D extends Widget implements IDraggable {
     m_earthRotation.x = clamp(m_earthRotation.x, -VERTICAL_SCROLL_LIMIT, VERTICAL_SCROLL_LIMIT);
     m_arcFraction = (millis() - m_arcStartGrowMillis) / m_arcGrowMillis;
 
-    image(m_backgroundImg, 0, 0, width, height);
-
     if (!m_assetsLoaded || !m_drawnLoadingScreen) {
+      image(m_skyBack, 0, 0, width, height);
+
       textAlign(CENTER);
       fill(255, 255, 255, 255);
       textSize(50);
@@ -125,17 +141,20 @@ class FlightMap3D extends Widget implements IDraggable {
     }
 
     float time = millis() * DAY_CYCLE_SPEED;
-    m_earthShader.set("lightDir", cos(time), 0, sin(time));
+    PVector lightDir = new PVector(cos(time), 0, sin(time));
+    m_earthShader.set("lightDir", lightDir);
     // m_earthShader.set("mousePos", (float)mouseX, (float)mouseY);
+    m_sunShader.set("texTranslation", time, time);
 
     s_3D.beginDraw();
     s_3D.clear();
     s_3D.noStroke();
+    s_3D.fill(255);
 
     s_3D.pushMatrix();
     s_3D.shader(m_earthShader);
+    s_3D.textureWrap(CLAMP);
 
-    s_3D.fill(255);
     s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
     s_3D.rotateX(m_earthRotation.x);
     s_3D.rotateY(m_earthRotation.y);
@@ -144,9 +163,37 @@ class FlightMap3D extends Widget implements IDraggable {
     s_3D.resetShader();
     s_3D.popMatrix();
 
+    PVector sunTranslation = lightDir.copy().mult(-3000);
+    s_3D.shader(m_sunShader);
+    s_3D.textureWrap(REPEAT);
+
+    s_3D.pushMatrix();
+    s_3D.rotateX(m_earthRotation.x);
+    s_3D.rotateY(m_earthRotation.y);
+    s_3D.translate(sunTranslation.x, sunTranslation.y, sunTranslation.z);
+    s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
+
+    s_3D.shape(m_sunModel);
+    s_3D.popMatrix();
+    s_3D.resetShader();
+    s_3D.textureWrap(CLAMP);
+
     drawMarkersAndConnections();
     if (m_textEnabled)
       drawMarkerText();
+
+    if (DITHER_MODE)
+      s_3D.filter(m_postProcessingShader);
+
+    s_3D.pushMatrix();
+    // s_3D.shader(m_skyboxShader);
+    s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
+    s_3D.rotateX(m_earthRotation.x);
+    s_3D.rotateY(m_earthRotation.y - time);
+    
+    s_3D.shape(m_skySphere);
+    s_3D.resetShader();
+    s_3D.popMatrix();
 
     s_3D.endDraw();
 
@@ -286,9 +333,21 @@ class FlightMap3D extends Widget implements IDraggable {
   public void setConnectionsEnabled(boolean enabled) {
     m_connectionsEnabled = enabled;
   }
-  
+
   public void setTextEnabled(boolean enabled) {
     m_textEnabled = enabled;
+  }
+  
+  // MAJOR TODO
+  public void loadFlights(FlightType[] flights, QueryManagerClass queries){
+    for (int i = 0; i < flights.length; i++){
+      s_ApplicationClass.m_flightsManager.printFlight(flights[i]);
+      String code = queries.getCode(flights[i].AirportOriginIndex);
+      float latitude = queries.getLatitude(code);
+      float longitude = queries.getLongitude(code);
+      AirportPointType point = manualAddPoint(latitude, longitude, code);
+      // TODO CONNECTIONS
+    }
   }
 }
 
