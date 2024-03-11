@@ -15,6 +15,7 @@ class ApplicationClass {
   private Event<SwitchScreenEventInfoType> m_onSwitchEvent = new Event<SwitchScreenEventInfoType>();
 
   void init() {
+    m_queryManager.init();
     // m_dataPreprocessor.init();
     // m_dataPreprocessor.convertCsvToBinaryFile("flights_full.csv", "flights_full.bin");
 

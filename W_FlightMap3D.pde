@@ -101,7 +101,7 @@ class FlightMap3D extends Widget implements IDraggable {
       manualAddPoint(90, 0, "North Pole");
 
       // DEBUG RANDOM PLACEMENT
-      for (int i = 0; i < 100; i++) {
+      for (int i = 0; i < 0; i++) {
         var p = manualAddPoint(random(-180.0f, 180.0f), random(-180.0f, 180.0f), i + "");
 
         for (int j = 0; j < 1; j++) {
@@ -341,7 +341,7 @@ class FlightMap3D extends Widget implements IDraggable {
   // MAJOR TODO
   public void loadFlights(FlightType[] flights, QueryManagerClass queries){
     for (int i = 0; i < flights.length; i++){
-      String code = "QUERIES GET COD£";
+      String code = queries.getCode(flights[i].AirportOriginIndex);
       float latitude = queries.getLatitude(code);
       float longitude = queries.getLongitude(code);
       AirportPointType point = manualAddPoint(latitude, longitude, code);
