@@ -4,15 +4,15 @@ uniform mat4 texMatrix;
 attribute vec4 position;
 attribute vec2 texCoord;
 
-varying vec4 vertTexCoord;
 varying vec4 fragPos;
+varying vec3 texPos;
 
 void main() {
   fragPos = transformMatrix * position;    
-  // fragPos.z = fragPos.w;
+  fragPos.z = fragPos.w;
   gl_Position = fragPos;
 
-  vertTexCoord = texMatrix * vec4(texCoord, 1.0, 1.0);
+  texPos = position.xyz;
 }
 
 // Shaders written by Finn Wright

@@ -39,7 +39,7 @@ class FlightMap3D extends Widget implements IDraggable {
   private PImage m_earthDayTex, m_earthNightTex, m_sunTex;
   private PImage m_earthSpecularMap, m_noiseImg;
   private PShader m_earthShader, m_sunShader, m_postProcessingShader, m_skyboxShader;
-  private PImage m_skyFront, m_skyBack, m_skyTop, m_skyBottom, m_skyLeft, m_skyRight;
+  private PImage m_starsTex;
 
   private PVector m_earthRotation = new PVector(0, 0, 0);
   private PVector m_earthRotationalVelocity = new PVector(0, 0, 0);
@@ -61,42 +61,42 @@ class FlightMap3D extends Widget implements IDraggable {
 
   public FlightMap3D(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
+    
+    m_starsTex = loadImage("data/Images/Stars2k.jpg");
 
-    m_skyBack = loadImage("data/Images/Stars2k_Back.jpg");
-    m_skyFront = loadImage("data/Images/Stars2k.jpg");
-    m_skyLeft = loadImage("data/Images/Stars2k_Left.jpg");
-    m_skyRight = loadImage("data/Images/Stars2k_Right.jpg");
-    m_skyTop = loadImage("data/Images/Stars2k_Top.jpg");
-    m_skyBottom = loadImage("data/Images/Stars2k_Bottom.jpg");
+    new Thread(() -> {
+      m_earthModel = s_3D.createShape(SPHERE, EARTH_SPHERE_SIZE);
+      m_sunModel = s_3D.createShape(SPHERE, 120);
+      m_skySphere = s_3D.createShape(SPHERE, 1000);
+      m_earthModel.disableStyle();
+      m_sunModel.disableStyle();
+      m_skySphere.disableStyle();
 
-    m_earthModel = s_3D.createShape(SPHERE, EARTH_SPHERE_SIZE);
-    m_sunModel = s_3D.createShape(SPHERE, 120);
-    m_skySphere = s_3D.createShape(SPHERE, 2000);
-    m_earthModel.disableStyle();
-    m_sunModel.disableStyle();
+      m_earthDayTex = loadImage("data/Images/EarthDay2k.jpg");
+      m_earthNightTex = loadImage("data/Images/EarthNight2k.jpg");
+      m_earthSpecularMap = loadImage("data/Images/EarthSpecular2k.tif");
+      m_sunTex = loadImage("data/Images/Sun2k.jpg");
+      m_noiseImg = loadImage("data/Images/noise.png");      
 
-    m_earthDayTex = loadImage("data/Images/EarthDay2k.jpg");
-    m_earthNightTex = loadImage("data/Images/EarthNight2k.jpg");
-    m_earthSpecularMap = loadImage("data/Images/EarthSpecular2k.tif");
-    m_sunTex = loadImage("data/Images/Sun2k.jpg");
-    m_noiseImg = loadImage("data/Images/noise.png");
+      m_earthShader = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
+      m_sunShader = loadShader("data/Shaders/SunFrag.glsl", "data/Shaders/BaseVert.glsl");
+      m_postProcessingShader = loadShader("data/Shaders/PostProcessing.glsl");
+      m_skyboxShader = loadShader("data/Shaders/SkyboxFrag.glsl", "data/Shaders/SkyboxVert.glsl");
 
-    m_earthShader = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
-    m_sunShader = loadShader("data/Shaders/SunFrag.glsl", "data/Shaders/BaseVert.glsl");
-    m_postProcessingShader = loadShader("data/Shaders/PostProcessing.glsl");
-    m_skyboxShader = loadShader("data/Shaders/SkyboxFrag.glsl", "data/Shaders/SkyboxVert.glsl");
-
-    m_earthShader.set("texDay", m_earthDayTex);
-    m_earthShader.set("texNight", m_earthNightTex);
-    m_earthShader.set("specularMap", m_earthSpecularMap);
-    m_sunShader.set("tex", m_sunTex);
-    m_postProcessingShader.set("noise", m_noiseImg);
-    m_skyboxShader.set("texFront", m_skyFront);
-    setPermaDay(false);
+      m_earthShader.set("texDay", m_earthDayTex);
+      m_earthShader.set("texNight", m_earthNightTex);
+      m_earthShader.set("specularMap", m_earthSpecularMap);
+      m_sunShader.set("tex", m_sunTex);
+      m_postProcessingShader.set("noise", m_noiseImg);
+      m_skyboxShader.set("tex", m_starsTex);
+      setPermaDay(false);
+      
+      m_assetsLoaded = true;
+    }
+    ).start();
 
     m_earthPos = new PVector(WINDOW_SIZE_3D_FLIGHT_MAP.x * 0.5f + posX, WINDOW_SIZE_3D_FLIGHT_MAP.y * 0.5f + posY, EARTH_Z);
     
-    m_assetsLoaded = true;
     m_onDraggedEvent.addHandler(e -> onDraggedHandler(e));
   }
 
@@ -110,7 +110,7 @@ class FlightMap3D extends Widget implements IDraggable {
     m_arcFraction = (millis() - m_arcStartGrowMillis) / m_arcGrowMillis;
 
     if (!m_assetsLoaded || !m_drawnLoadingScreen || !m_flightDataLoaded) {
-      image(m_skyBack, 0, 0, width, height);
+      image(m_starsTex, 0, 0, width, height);
 
       textAlign(CENTER);
       fill(255, 255, 255, 255);
@@ -167,6 +167,7 @@ class FlightMap3D extends Widget implements IDraggable {
 
     s_3D.pushMatrix();
     s_3D.shader(m_skyboxShader);
+    
     s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
     s_3D.rotateX(m_earthRotation.x);
     s_3D.rotateY(m_earthRotation.y - time);
@@ -314,14 +315,14 @@ class FlightMap3D extends Widget implements IDraggable {
     m_textEnabled = enabled;
   }
 
-  public void loadFlights(FlightType[] flights, QueryManagerClass queries) {    
+  public void loadFlights(FlightType[] flights, QueryManagerClass queries) {
     m_flightDataLoaded = false;
     int count = min(MAX_DATA_LOADED, flights.length);
-    
+
     for (int i = 0; i < count; i++) {
       if (DEBUG_MODE && DEBUG_PRINT_3D_LOADING)
         println("Flight " + i + " / " + flights.length);
-      
+
       String originCode = queries.getCode(flights[i].AirportOriginIndex);
       String destCode = queries.getCode(flights[i].AirportDestIndex);
       AirportPointType origin, dest;
