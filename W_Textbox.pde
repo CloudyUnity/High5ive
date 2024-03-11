@@ -6,12 +6,17 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
    private Event<EventInfoType> m_onClickEvent;
    private Event<StringEnteredEventInfoType> m_onStringEnteredEvent;
    
+   private int m_timer;
+   private boolean m_drawBar;
+   
    public TextboxUI(int x, int y, int width, int height) {
      super(x, y, width, height);
      m_text = new StringBuilder();
      m_onKeyPressedEvent = new Event<KeyPressedEventInfoType>();
      m_onClickEvent = new Event<EventInfoType>();
      m_onStringEnteredEvent = new Event<StringEnteredEventInfoType>();
+     m_timer = 30;
+     m_drawBar = true;
      
      m_onKeyPressedEvent.addHandler(e -> onKeyPressed(e));
    }
@@ -29,7 +34,16 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
       textAlign(LEFT, CENTER);
       fill(m_foregroundColour);
       textSize(fontSize);
-      text(m_text.toString(), m_pos.x, m_pos.y, m_scale.x, m_scale.y);
+      if (!isFocused())
+        text(m_text.toString(), m_pos.x, m_pos.y, m_scale.x, m_scale.y);
+      else {
+        m_timer -= 1;
+        if (m_timer == 0) {
+          m_timer = 30;
+          m_drawBar = !m_drawBar;
+        }
+        text(m_text.toString() + (m_drawBar ? "|" : ""), m_pos.x, m_pos.y, m_scale.x, m_scale.y);
+      }
    }
 
    public void setText(String text) {
