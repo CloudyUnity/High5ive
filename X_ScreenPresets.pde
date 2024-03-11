@@ -210,14 +210,21 @@ class FlightCodesBarchartDemo extends Screen {
 }
 
 class ScreenFlightMap extends Screen {
-  public ScreenFlightMap(int scaleX, int scaleY, String screenId) {
+  FlightsManagerClass m_flightManager;
+  QueryManagerClass m_queryManager;
+  
+  public ScreenFlightMap(int scaleX, int scaleY, String screenId, FlightsManagerClass fm, QueryManagerClass query) {
     super(scaleX, scaleY, screenId, color(0, 0, 0, 255));
+    
+    m_flightManager = fm;
+    m_queryManager = query;
 
     int currentUIPosY = 20;
     int textSize = 20;
 
     FlightMap3D flight3D = new FlightMap3D(100, 0, 800, 800);
     addWidget(flight3D);
+    flight3D.loadFlights(m_flightManager.getFlightsList(), m_queryManager);
 
     ButtonUI uiBackground = createButton(0, 0, 200, 800);
     uiBackground.setHighlightOutlineOnEnter(false);

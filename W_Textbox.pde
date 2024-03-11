@@ -1,69 +1,173 @@
-public class TextboxUI extends Widget implements IKeyInput, IClickable {
-   private int fontSize = 24;
-   private StringBuilder m_text;
+public class TEXTBOX {
+   private int X = 0, Y = 0, H = 35, W = 200;
+   private int TEXTSIZE = 24;
    
-   private Event<KeyPressedEventInfoType> m_onKeyPressedEvent;
-   private Event<EventInfoType> m_onClickEvent;
-   private Event<StringEnteredEventInfoType> m_onStringEnteredEvent;
+   // COLORS
+   private color Background = color(255);
+   private color Foreground = color(0, 0, 0);
+   private color BackgroundSelected = color(230);
+   private color Border = color(30, 30, 30);
    
-   public TextboxUI(int x, int y, int width, int height) {
-     super(x, y, width, height);
-     m_text = new StringBuilder();
-     m_onKeyPressedEvent = new Event<KeyPressedEventInfoType>();
-     m_onClickEvent = new Event<EventInfoType>();
-     m_onStringEnteredEvent = new Event<StringEnteredEventInfoType>();
-     
-     m_onKeyPressedEvent.addHandler(e -> onKeyPressed(e));
+   private boolean BorderEnable = true;
+   private int BorderWeight = 1;
+   
+   private String InputText; 
+   private String Text = "";
+   private int TextLength = 0;
+   private int numOfLines = 0;
+   private boolean selected = false;
+   private boolean changable = true;
+   private boolean isOutputBox = false;
+   
+   TEXTBOX() {
+      // CREATE OBJECT DEFAULT TEXTBOX NOT REALLY USEFUL UNTIL SEARCH IS IMPLEMENTED
    }
    
-   @ Override
-   public void draw() {
+   TEXTBOX(int x, int y, int w, int h) {
+   
+     X = x; Y = y; W = w; H = h; 
+
+   }
+   
+   TEXTBOX(int x, int y, int w, int h, boolean changable, boolean isOutputBox) {
+     X = x; Y = y; W = w; H = h; 
+     this.changable = changable;
+     this.isOutputBox = isOutputBox;
+   }
+   
+   void DRAW() {
       // DRAWING THE BACKGROUND
-      super.draw();
       
-      fill(m_backgroundColour);
-
-      rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y);
-            
+      if (selected) {
+         fill(BackgroundSelected);
+         
+      } else {
+         fill(Background);
+      }
+      
+      if (BorderEnable && selected == true) {
+         strokeWeight(BorderWeight);
+         stroke(Border);
+      } else {
+         noStroke();
+      }
+      
+      rect(X, Y, W, H);
+      
       // DRAWING THE TEXT ITSELF
-      textAlign(LEFT);
-      fill(m_foregroundColour);
-      textSize(fontSize);
-      text(m_text.toString(), m_pos.x, m_pos.y, m_scale.x, m_scale.y);
+      fill(Foreground);
+      textSize(TEXTSIZE);
+      text(Text, X + (textWidth("a") / 2), Y + TEXTSIZE);
+     
+      if (isOutputBox && InputText != null){
+       //PLACED IN HERE TO INSTANTLY SEND TEXT IN THE EVENT OF A TRANSFER AS OPPOSED TO WAITING FOR AN ADDITIONAL KEYPRESS
+         OBTAINSTRING(InputText);
+         InputText = null;
+         
+       }
    }
+   
+   // IF THE KEYCODE IS ENTER RETURN 1
+   // ELSE RETURN 0
+   boolean KEYPRESSED(char KEY, int KEYCODE) {
+      if (selected && changable && isOutputBox == false) {
+         if (KEYCODE == (int)BACKSPACE) {
+            BACKSPACE();
+         } 
+         else if (KEYCODE == 32) {
+            // SPACE
+            addText(' ');
+         } 
+         else if (KEYCODE == (int)ENTER) {
+         
+            // TransferText = ENTER(); ERROR
+            return true;
+            
+         } 
+         else {
+            // CHECK IF THE KEY IS A LETTER OR A NUMBER
+            boolean isKeyCapitalLetter = (KEY >= 'A' && KEY <= 'Z');
+            boolean isKeySmallLetter = (KEY >= 'a' && KEY <= 'z');
+            boolean isKeyNumber = (KEY >= '0' && KEY <= '9');
+      
+            if (isKeyCapitalLetter || isKeySmallLetter || isKeyNumber) {
+               addText(KEY);
+            }
+         }
+     
+       
+      }
+       
+     
+      return false;
+   }
+   
+   private void addText(char text) {
+      // IF THE TEXT WIDTH IS IN BOUNDARIES OF THE TEXTBOX
+      if (textWidth(Text + text) < W - 10) {
+         Text += text;
+         TextLength++;
+      }
+   }
+   
 
-   public void setText(String text) {
-      m_text.setLength(0);
-      m_text.append(text);
+   
+   private void BACKSPACE() {
+     //BACKSPACE PROGRAM
+      if (TextLength - 1 >= 0) {
+         Text = Text.substring(0, TextLength - 1);
+         TextLength--;
+      }
    }
    
-   public String getText() {
-     return m_text.toString();
+   private String ENTER(){
+   // FUNCTION FOR SENDING TEXT CURRENTLY IN BOX TO OUTSIDE LIST/VAR
+     String tempText = Text;
+     Text = "";
+     TextLength = 0; 
+     return tempText;
+   
    }
    
-   public Event<KeyPressedEventInfoType> getOnKeyPressedEvent() {
-     return m_onKeyPressedEvent; 
+   public void SETINPUTTEXT(String input){
+     //SETS INPUT TEXT PRIVATE VARIBLE
+     InputText = input;
+   
    }
    
-   public Event<EventInfoType> getOnClickEvent() {
-     return m_onClickEvent;
-   }
    
-   public Event<StringEnteredEventInfoType> getOnStringEnteredEvent() {
-     return m_onStringEnteredEvent;
-   }
    
-   private void onKeyPressed(KeyPressedEventInfoType e) {
-     if (e.pressedKey == BACKSPACE && m_text.length() > 0) {
-       m_text.deleteCharAt(m_text.length() - 1);
-     } else if (e.pressedKey == RETURN || e.pressedKey == ENTER) {
-       m_onStringEnteredEvent.raise(new StringEnteredEventInfoType((int)m_pos.x, (int)m_pos.y, m_text.toString(), this));
-     } else {
-       m_text.append(e.pressedKey);
+   public void OBTAINSTRING(String InputText){
+     //TAKES AN OUTSIDE STRING AND PLACES IT IN TEXTBOX ONLY USED IF ISOUTPUTBOX IS TRUE
+     if (numOfLines * 10 < Y){
+     Text += InputText;
+     Text += "\n";
+     numOfLines += 1;
      }
+   
+   }
+   
+   // FUNCTION FOR TESTING IS THE POINT
+   // OVER THE TEXTBOX
+   private boolean OVERBOX(int x, int y) {
+      if (x >= X && x <= X + W) {
+         if (y >= Y && y <= Y + H) {
+            return true;
+         }
+      }
+      
+      return false;
+   }
+   
+   void PRESSED(int x, int y) { 
+     //FUNCTION TO CHECK IF A BOX SHOULD BE SELECTED 
+      if (OVERBOX(x, y)) {
+         selected = true;
+      } else {
+         selected = false;
+      }
    }
 }
 
 // Code authorship:
 // M.Poole, Created textbox widget, 4:15pm 09/03/24
-// A. Robertson, Adapted textbox to fit in with the event system, 15:00 11/03/2024
