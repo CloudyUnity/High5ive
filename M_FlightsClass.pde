@@ -449,9 +449,9 @@ class FlightsManagerClass {
     return Arrays.copyOfRange(flightList, numberOfItems, flightsList.lenght);
   }
 
-  // public FlightType[] getWithinRange(FlightType[] flightList, int start, int end) {
-  //   return Arrays.copyOfRange(flightList, start, end);
-  // }
+  public FlightType[] getWithinRange(FlightType[] flightList, int start, int end) {
+    return Arrays.copyOfRange(flightList, start, end);
+  }
 
   public void print(FlightType flight) {
     printFlightHeading();
