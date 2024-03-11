@@ -7,35 +7,35 @@ class QueryManagerClass {
   TableRow m_lookupResult;
 
   void init() {
-    m_airportTable = loadTable("data/Preprocessed Data/airports.csv");
-    m_usaAirportIndexes = loadTable("data/Preprocessed Data/airport_lookup_table.csv");
+    m_airportTable = loadTable("data/Preprocessed Data/airports.csv", "header");
+    m_usaAirportIndexes = loadTable("data/Preprocessed Data/airport_lookup_table.csv", "header");
   }
 
   float getLatitude(String code) {
-    m_lookupResult = m_airportTable.findRow(code, 3);
-    return m_lookupResult.getFloat(4);
+    lookupResult = airportTable.findRow(code, "IATA");
+    return lookupResult.getFloat("Latitude");
   }
   float getLongitude(String code) {
-    m_lookupResult = m_airportTable.findRow(code, 3);
+    lookupResult = airportTable.findRow(code, "IATA");
     println(code);
     println(debugCount); // REMOVE DEBUG COUNT WHEN DELETING THIS LINE
     debugCount++;
     return m_lookupResult.getFloat(5);
   }
   String getAirportName(String code) {
-    m_lookupResult = m_airportTable.findRow(code, 3);
-    return m_lookupResult.getString(0);
+    lookupResult = airportTable.findRow(code, "IATA");
+    return lookupResult.getString("Name");
   }
   String getCity(String code) {
-    m_lookupResult = m_airportTable.findRow(code, 3);
-    return m_lookupResult.getString(1);
+    lookupResult = airportTable.findRow(code, "IATA");
+    return lookupResult.getString("City");
   }
   String getCountry(String code) {
-    m_lookupResult = m_airportTable.findRow(code, 3);
-    return m_lookupResult.getString(2);
+    lookupResult = airportTable.findRow(code, "IATA");
+    return lookupResult.getString("Country");
   }
   String getCode(int index) {
-    m_lookupResult = m_usaAirportIndexes.findRow(String.valueOf(index), 1);
-    return m_lookupResult.getString(0);
+    m_lookupResult = m_usaAirportIndexes.findRow(String.valueOf(index), "Index");
+    return m_lookupResult.getString("IATA");
   }
 }
