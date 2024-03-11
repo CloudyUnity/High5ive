@@ -8,7 +8,7 @@ void setup() {
   size(600, 600, P2D);
   if (FULLSCREEN_ENABLED)
     fullScreen();
-
+  
   surface.setTitle("Flight Thing");
   surface.setResizable(true);
   surface.setLocation(0, 0);
@@ -32,6 +32,7 @@ void keyPressed() {
     return;
 
   s_InputClass.setKeyState(key, true);
+  s_ApplicationClass.onKeyPressed(key);
 }
 
 void keyReleased() {

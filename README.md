@@ -10,6 +10,10 @@
 - Matthew Poole (Matthew Poole)
 - Thomas Creagh (Thomas Creagh)
 
+## Attributions
+
+Data from openflights (https://openflights.org/faq) and the US Bureau of Transportation Statistics (https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FGK&QO_fu146_anzr=b0-gvzr)
+
 ## Coding Standard
 
 Feel free to disagree with any of these. We can put it up to a vote.  
@@ -19,14 +23,14 @@ Feel free to disagree with any of these. We can put it up to a vote.
 - All member variables look like "m_varName".  
 - Constant (final) variables use CONSTANT_SNAKE_CASE.  
 - Non-constant but static/gloabl variables use "s_StaticCase".  
-- Any classes that are acting as structs should have their identifier appended with "Type". See GameObjectClass.TransformType.  
+- Any classes that are acting as structs should have their identifier appended with "Type".  
 - All classes should have their identifier appended with "Class".  
 - All interfaces and interface methods should start with "I".  
-- There should be no global variables if possible "Excluding the class instances created in Main".  
+- There should be no global variables if possible (Excluding the class instances created in Main).    
 - Keep stuff private whenever possible. The codebase should generally only talk in one direction.  
-- Avoid using this.memberVar when possible
-- Keep all member variables at the top of the class/struct above functions
-- Store colours as ints, then when needed call `fill(color(m_colour))` as it seems to be unreliable if the `fill` call will work otherwise.
+- Avoid using this.memberVar when possible  
+- Keep all member variables at the top of the class/struct above functions  
+- Store colours as ints, then when needed call `fill(color(m_colour))` as it seems to be unreliable if the `fill` call will work otherwise.  
 
 ### Control Flow/Methods
 
@@ -41,11 +45,7 @@ Feel free to disagree with any of these. We can put it up to a vote.
 
 - Use sameline curly brackets.  
 - Keep stuff indented properly! Use Ctrl-T to do it automatically.  
-- "var" is BANNED except for during for loops.  
-- Keep all scene initialisation inside of ApplicationClass if possible.  
-- The game should be framerate independant. Use the static variable s_deltaTime like this:  
-    WRONG:   player.position.x += speed;  
-    CORRECT: player.position.x += speed * s_deltaTime;  
+- "var" is BANNED except for during foreach loops.  
 
 ## How to commit your changes to github using Git Bash  
 
@@ -86,7 +86,7 @@ Note that you might be able to do this using a git extension for processing, cmd
     git push origin master  
 14. Once committed to master, delete your branch or local repo to prevent it getting behind.
 
-### Data Preprocessing and reading:
+### Data Preprocessing [US Dataset]:
 
 ```
 _----------------------------------------------------------------------------------------------------------_
@@ -137,6 +137,12 @@ CANCELLED/DIVERTED:
 NONE        = 0000 0000
 CANCELLED   = 0000 0001
 DIVERTED    = 0000 0010
+```
+###Data Preprocessing [World Version]:
+```
+routes.csv: Contains a code for the operating airline, the origin airport IATA code and the destination airport IATA code
+airlines.csv: Contains the IATA code and name of every airline in the dataset
+airports.csv: Contains the IATA code, name and coordinates of 8k airports around the world
 ```
 
 ## Troubleshooting

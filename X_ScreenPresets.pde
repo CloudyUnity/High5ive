@@ -41,6 +41,7 @@ class Screen1 extends Screen {
     CheckboxUI cb = createCheckbox(400, 400, 200, 50, "My checkbox");
     cb.setCheckedColour(color(255, 255, 0, 255));
     cb.setGrowMode(true);
+    
   }
 
   private void redButtonOnClick(EventInfoType e) {
@@ -94,6 +95,9 @@ class Screen2 extends Screen {
     rb2.getOnCheckedEvent().addHandler(e -> onCheckedRb2());
     rb2.setGrowMode(true);
     group.addMember(rb2);
+    
+    Image i1 = new Image(50, 50, 300, 300);  
+    addWidget(i1);
 
     createSlider(100, 400, 300, 50, 0, 100, 1);
 
