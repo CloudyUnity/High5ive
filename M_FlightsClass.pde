@@ -445,9 +445,9 @@ class FlightsManagerClass {
     return Arrays.copyOfRange(flightList, 0, numberOfItems);
   }
 
-  // public FlightType[] getFoot(FlightType[] flightList, int numberOfItems) {
-  //   return Arrays.copyOfRange(flightList, numberOfItems, flightsList.lenght);
-  // }
+  public FlightType[] getFoot(FlightType[] flightList, int numberOfItems) {
+    return Arrays.copyOfRange(flightList, numberOfItems, flightsList.lenght);
+  }
 
   // public FlightType[] getWithinRange(FlightType[] flightList, int start, int end) {
   //   return Arrays.copyOfRange(flightList, start, end);
