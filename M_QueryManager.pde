@@ -1,3 +1,4 @@
+import java.util.Arrays;
 //CKM: code to return details about airports
 
 class QueryManagerClass {
@@ -290,13 +291,13 @@ class QueryManagerClass {
   //   });
   //   return frequency;
   // }
-  // public int queryRangeFrequency(FlightType[] flightsList, FlightQueryType queryType, int start, int end, int threadCount) {
-  //   int frequency = 0;
-  //   queryFlightsWithinRange(flightList, queryType, start, end, threadCount, returnedList -> {
-  //     frequency = (int)returnedList.length;
-  //   });
-  //   return frequency;
-  // }
+  public int queryRangeFrequency(FlightType[] flightsList, FlightQueryType queryType, int start, int end, int threadCount) {
+    int frequency = 0;
+    queryFlightsWithinRange(flightList, queryType, start, end, threadCount, returnedList -> {
+      frequency = (int)returnedList.length;
+    });
+    return frequency;
+  }
   public FlightType[] getHead(FlightType[] flightList, int numberOfItems) {
     return Arrays.copyOfRange(flightList, 0, numberOfItems);
   }
