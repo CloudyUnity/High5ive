@@ -1,10 +1,8 @@
 class Screen1 extends Screen {
-  private ButtonUI redBtn;
-  private TextboxUI box;
   public Screen1(int scaleX, int scaleY, String screenId) {
     super(scaleX, scaleY, screenId, color(220, 220, 220, 255));
 
-    redBtn = createButton(50, 50, 200, 100);
+    ButtonUI redBtn = createButton(50, 50, 200, 100);
     redBtn.getOnClickEvent().addHandler(e -> redButtonOnClick(e));
     redBtn.setText("Red");
     redBtn.setTextSize(30);
@@ -21,14 +19,6 @@ class Screen1 extends Screen {
     blueBtn.setText("Blue");
     blueBtn.setTextSize(30);
     blueBtn.setGrowMode(true);
-    
-    box = new TextboxUI(50, 500, 200, 50);
-    addWidget(box);
-    
-    ButtonUI setTextBtn = createButton(300, 500, 50, 50);
-    setTextBtn.setText("Set");
-    setTextBtn.getOnClickEvent().addHandler(e -> setButtonOnClick(e));
-    setTextBtn.setGrowMode(true);
 
     ButtonUI switchToScreen2Btn = createButton(350, 20, 100, 100);
     switchToScreen2Btn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_2_ID));
@@ -51,10 +41,7 @@ class Screen1 extends Screen {
     CheckboxUI cb = createCheckbox(400, 400, 200, 50, "My checkbox");
     cb.setCheckedColour(color(255, 255, 0, 255));
     cb.setGrowMode(true);
-  }
-  
-  private void setButtonOnClick(EventInfoType e) {
-    redBtn.setText(box.getText());
+    
   }
 
   private void redButtonOnClick(EventInfoType e) {
@@ -108,6 +95,9 @@ class Screen2 extends Screen {
     rb2.getOnCheckedEvent().addHandler(e -> onCheckedRb2());
     rb2.setGrowMode(true);
     group.addMember(rb2);
+    
+    Image i1 = new Image(50, 50, 300, 300);  
+    addWidget(i1);
 
     createSlider(100, 400, 300, 50, 0, 100, 1);
 
