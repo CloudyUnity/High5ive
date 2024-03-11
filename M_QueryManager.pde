@@ -3,6 +3,7 @@
 class QueryManagerClass {
 
   Table m_airportTable = loadTable("data/airports.csv");
+  Table m_usaAirportIndexes = loadTable("data/airport_lookup_table.csv")
   TableRow m_lookupResult;
 
   float getLatitude(String code) {
@@ -24,5 +25,9 @@ class QueryManagerClass {
   String getCountry(String code) {
     m_lookupResult = m_airportTable.findRow(code, 3);
     return m_lookupResult.getString(2);
+  }
+  String getCode(int index) {
+    m_lookupResult = m_usaAirportIndexes.findRow(index, 1);
+    return m_lookupResult.getString(0);
   }
 }
