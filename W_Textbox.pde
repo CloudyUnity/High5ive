@@ -26,7 +26,7 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
       rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y);
             
       // DRAWING THE TEXT ITSELF
-      textAlign(LEFT);
+      textAlign(LEFT, CENTER);
       fill(m_foregroundColour);
       textSize(fontSize);
       text(m_text.toString(), m_pos.x, m_pos.y, m_scale.x, m_scale.y);
