@@ -11,30 +11,30 @@ import java.io.*;
 
 public enum FlightQueryType {
   DAY,
-  CARRIER_CODE_INDEX,
-  FLIGHT_NUMBER,
-  AIRPORT_ORIGIN_INDEX,
-  AIRPORT_DEST_INDEX,
-  SCHEDULED_DEPARTURE_TIME,
-  DEPARTURE_TIME,
-  SCHEDULED_ARRIVAL_TIME,
-  ARRIVAL_TIME,
-  CANCELLED_OR_DIVERTED,
-  MILES_DISTANCE,
+    CARRIER_CODE_INDEX,
+    FLIGHT_NUMBER,
+    AIRPORT_ORIGIN_INDEX,
+    AIRPORT_DEST_INDEX,
+    SCHEDULED_DEPARTURE_TIME,
+    DEPARTURE_TIME,
+    SCHEDULED_ARRIVAL_TIME,
+    ARRIVAL_TIME,
+    CANCELLED_OR_DIVERTED,
+    MILES_DISTANCE,
 }
 
 public enum FlightQueryOperator {
   EQUAL,
-  NOT_EQUAL,
-  LESS_THAN,
-  LESS_THAN_EQUAL,
-  GREATER_THAN,
-  GREATER_THAN_EQUAL,
+    NOT_EQUAL,
+    LESS_THAN,
+    LESS_THAN_EQUAL,
+    GREATER_THAN,
+    GREATER_THAN_EQUAL,
 }
 
 public enum FlightQuerySortDirection {
   ASCENDING,
-  DESCENDING,
+    DESCENDING,
 }
 
 class FlightType { // 19 bytes total
@@ -200,7 +200,7 @@ class FlightsManagerClass {
   private FlightType[] queryFlightsAysnc(FlightType[] flightsList, FlightQueryType queryType, FlightQueryOperator queryOperator, int queryValue, int threadCount) {
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
     CountDownLatch latch = new CountDownLatch(threadCount);
-    
+
     if (!checkForIllegalQuery(queryType, queryOperator)) {
       println("Error: QueryType is illegal with QueryOperator");
       return flightsList;
@@ -290,7 +290,7 @@ class FlightsManagerClass {
   private FlightType[] queryFlightsWithinRangeAysnc(FlightType[] flightsList, FlightQueryType queryType, int start, int end, int threadCount) {
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
     CountDownLatch latch = new CountDownLatch(threadCount);
-    
+
     if (!checkForIllegalQuery(queryType, FlightQueryOperator.GREATER_THAN_EQUAL)) {
       println("Error: FlightQueryType is illegal to query range");
       return flightsList;
@@ -420,7 +420,7 @@ class FlightsManagerClass {
       println("Error: FlightQueryType invalid");
       return flightsList;
     }
-    
+
     switch(sortDirection) {
     case ASCENDING:
       break;
@@ -431,13 +431,13 @@ class FlightsManagerClass {
       println("Error: FlightQuerySortDirection invalid");
       return flightsList;
     }
-    
+
     Arrays.sort(flightsList, flightComparator);
     return flightsList;
   }
 
   public String getAirportNameFromCode(short code) {
-    return ""; // TODO Kyara 
+    return ""; // TODO Kyara
   }
 
   public void print(FlightType flight) {

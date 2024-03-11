@@ -3,30 +3,23 @@ precision mediump float;
 precision mediump int;
 #endif
 
-uniform sampler2D texBack;
-uniform sampler2D texFront;
-uniform sampler2D texLeft;
-uniform sampler2D texRight;
-uniform sampler2D texTop;
-uniform sampler2D texBottom;
-
-varying vec4 vertTexCoord;
+uniform sampler2D tex;
 varying vec4 fragPos;
-varying vec3 fragNormal;
-varying vec3 fragTangent;
-varying vec3 fragBinormal;
+varying vec3 texPos;
 
-void main() {
-  vec3 viewDir = -(fragPos.xyz / fragPos.w);
+const float PI = 3.14159265358979323846f;
 
-  vec3 back = texture2D(texBack, vertTexCoord.st).xyz;
-  vec3 front = texture2D(texFront, vertTexCoord.st).xyz;
-  vec3 left = texture2D(texLeft, vertTexCoord.st).xyz;
-  vec3 right = texture2D(texRight, vertTexCoord.st).xyz;
-  vec3 top = texture2D(texTop, vertTexCoord.st).xyz;
-  vec3 bottom = texture2D(texBottom, vertTexCoord.st).xyz;
+void main() {  
+  vec3 sphericalCoords = normalize(texPos.xyz);
+  // gl_FragColor = vec4(texPos.xyz, 1);
+  // return;
 
-  gl_FragColor = vec4(1,0,0, 1);
+  vec2 texCoords;
+  texCoords.x = 0.5 + atan(sphericalCoords.z, sphericalCoords.x) / (2.0 * PI);
+  texCoords.y = 0.5 - asin(sphericalCoords.y) / PI;
+
+  vec3 col = texture2D(tex, texCoords.xy).xyz;
+  gl_FragColor = vec4(col, 1);
 }
 
 // Shaders written by Finn Wright
