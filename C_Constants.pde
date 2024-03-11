@@ -42,6 +42,17 @@ final PVector UP_VECTOR = new PVector(0, 1, 0);
 final PVector RIGHT_VECTOR = new PVector(1, 0, 0);
 final PVector FORWARD_VECTOR = new PVector(0, 0, 1);
 
+// 2D Flight Map
+final int NORTHERN_LOWER_48 = 50;
+final int SOUTHERN_LOWER_48 = 24;
+final int EASTERN_LOWER_48 = -66;
+final int WESTERN_LOWER_48 = -125;
+final int NORTHERN_ALL_50 = 72;
+final int SOUTHERN_ALL_50 = -14;
+final int EASTERN_ALL_50 = -64;
+final int WESTERN_ALL_50 = 144;
+final int WESTERN_ALL_50_ALT = 216;
+
 // 3D Flight Map
 final PVector WINDOW_SIZE_3D_FLIGHT_MAP = new PVector(1200, 800);
 final int EARTH_Z = -20;
@@ -64,3 +75,5 @@ final int MAX_DATA_LOADED = 600000;
 // F. Wright, Moved some default colour constants from classes to Constants tab, 6pm 04/03/24
 // F. Wright, Created time related math constants for conversions, 2pm 06/03/24
 // F. Wright, Added a lot of 3D flight map related constants, 2pm 09/03/24 
+// CKM, Updated dataset constants, 23:00 11/03
+// CKM, Added datasets for 2D map, 00:00 12/03
