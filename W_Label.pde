@@ -58,7 +58,7 @@ class LabelUI extends Widget {
    * @param  textXOffset The offset from the left edge of the button.
    * @throws IllegalArgumentException when the textXOffset argument is negative.
    **/
-  public void setTextXOffset(int textXOffset) {
+  public void setTextXOffset(int textXOffset) { // NOTE: Should this throw an exception here? It seems fine to me to have a negative offset
     if (textXOffset < 0)
       throw new IllegalArgumentException("Text X offset cannot be less than 0.");
 

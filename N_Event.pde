@@ -27,6 +27,22 @@ class Event<T extends EventInfoType> {
   }
 }
 
+class StringEnteredEventInfoType extends EventInfoType {
+  public String data;
+  public StringEnteredEventInfoType(int x, int y, String data, Widget widget) {
+    super(x, y, widget);
+    this.data = data;
+  }
+}
+
+class KeyPressedEventInfoType extends EventInfoType {
+   public char pressedKey;
+   public KeyPressedEventInfoType(int x, int y, char k, Widget widget) {
+     super(x, y, widget);
+     pressedKey = k;
+   }
+}
+
 class MouseDraggedEventInfoType extends EventInfoType {
   public PVector PreviousPos;
 

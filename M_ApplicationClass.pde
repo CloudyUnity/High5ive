@@ -69,6 +69,7 @@ class ApplicationClass {
     if (DEBUG_MODE && DEBUG_FPS_ENABLED) {
       m_fpsClass.addToFrameTimes();
       fill(255, 0, 0, 255);
+      textSize(15);
       text("FPS: " + m_fpsClass.calculateFPS(), width - 100, 10, 100, 100);
     }
   }
@@ -89,6 +90,11 @@ class ApplicationClass {
   void onMouseClick() {
     if (m_currentScreen != null)
       m_currentScreen.onMouseClick();
+  }
+  
+  public void onKeyPressed(char k) {
+    if (m_currentScreen != null)
+      m_currentScreen.getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(mouseX, mouseY, k, m_currentScreen));
   }
 
   public Event<SwitchScreenEventInfoType> getOnSwitchEvent() {
