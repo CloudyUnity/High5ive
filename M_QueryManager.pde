@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 //CKM: code to return details about airports
 
 class QueryManagerClass {
@@ -284,19 +285,19 @@ class QueryManagerClass {
     Arrays.sort(flightsList, flightComparator);
     return flightsList;
   }
-  // public int queryFrequency(FlightType[] flightsList, FlightQueryType queryType, FlightQueryOperator queryOperator, int queryValue, int threadCount) {
-  //   int frequency = 0;
-  //   queryFlights(flightsList, queryType, queryOperator, queryValue, threadCount, returnedList -> {
-  //     return returnedList.length;
-  //   });
-  //   return frequency;
-  // }
-  public int queryRangeFrequency(FlightType[] flightsList, FlightQueryType queryType, int start, int end, int threadCount) {
-    int frequency = 0;
-    queryFlightsWithinRange(flightList, queryType, start, end, threadCount, returnedList -> {
-      frequency = (int)returnedList.length;
+  public int queryFrequency(FlightType[] flightsList, FlightQueryType queryType, FlightQueryOperator queryOperator, int queryValue, int threadCount) {
+    AtomicInteger frequency = new AtomicInteger(0);
+    queryFlights(flightsList, queryType, queryOperator, queryValue, threadCount, returnedList -> {
+      frequency.set(returnedList.length);
     });
-    return frequency;
+    return frequency.get();
+  }
+  public int queryRangeFrequency(FlightType[] flightsList, FlightQueryType queryType, int start, int end, int threadCount) {
+    AtomicInteger frequency = new AtomicInteger(0);
+    queryFlightsWithinRange(flightsList, queryType, start, end, threadCount, returnedList -> {
+      frequency.set(returnedList.length);
+    });
+    return frequency.get();
   }
   public FlightType[] getHead(FlightType[] flightList, int numberOfItems) {
     return Arrays.copyOfRange(flightList, 0, numberOfItems);
