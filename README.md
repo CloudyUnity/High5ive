@@ -82,7 +82,7 @@ Note that you might be able to do this using a git extension for processing, cmd
     git push origin master  
 14. Once committed to master, delete your branch or local repo to prevent it getting behind.
 
-### Data Preprocessing and reading:
+### Data Preprocessing [US Dataset]:
 
 ```
 _----------------------------------------------------------------------------------------------------------_
@@ -133,6 +133,12 @@ CANCELLED/DIVERTED:
 NONE        = 0000 0000
 CANCELLED   = 0000 0001
 DIVERTED    = 0000 0010
+```
+###Data Preprocessing [World Version]:
+```
+routes.csv: Contains a code for the operating airline, the origin airport IATA code and the destination airport IATA code
+airlines.csv: Contains the IATA code and name of every airline in the dataset
+airports.csv: Contains the IATA code, name and coordinates of 8k airports around the world
 ```
 
 ## Troubleshooting
