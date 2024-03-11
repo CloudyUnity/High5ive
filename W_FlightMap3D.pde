@@ -54,6 +54,8 @@ class FlightMap3D extends Widget implements IDraggable {
   private boolean m_assetsLoaded = false;
   private boolean m_drawnLoadingScreen = false;
   private boolean m_flightDataLoaded = false;
+  
+  private float m_rotationYModified = 0;
 
   private HashMap<String, AirportPointType> m_airportHashmap = new HashMap<String, AirportPointType>();
 
@@ -120,11 +122,11 @@ class FlightMap3D extends Widget implements IDraggable {
       return;
     }
 
-    float time = millis() * DAY_CYCLE_SPEED;
+    float time = millis() * DAY_CYCLE_SPEED;    
     PVector lightDir = new PVector(cos(time), 0, sin(time));
     m_earthShader.set("lightDir", lightDir);
-    // m_earthShader.set("mousePos", (float)mouseX, (float)mouseY);
-    m_sunShader.set("texTranslation", time, time);
+    m_sunShader.set("texTranslation", 0, time * 0.5f);
+    m_rotationYModified = m_earthRotation.y + time;
 
     s_3D.beginDraw();
     s_3D.clear();
@@ -137,7 +139,7 @@ class FlightMap3D extends Widget implements IDraggable {
 
     s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
     s_3D.rotateX(m_earthRotation.x);
-    s_3D.rotateY(m_earthRotation.y);
+    s_3D.rotateY(m_rotationYModified);
 
     s_3D.shape(m_earthModel);
     s_3D.resetShader();
@@ -148,10 +150,10 @@ class FlightMap3D extends Widget implements IDraggable {
     s_3D.textureWrap(REPEAT);
 
     s_3D.pushMatrix();
-    s_3D.rotateX(m_earthRotation.x);
-    s_3D.rotateY(m_earthRotation.y);
-    s_3D.translate(sunTranslation.x, sunTranslation.y, sunTranslation.z);
     s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
+    s_3D.rotateX(m_earthRotation.x);
+    s_3D.rotateY(m_rotationYModified);
+    s_3D.translate(sunTranslation.x, sunTranslation.y, sunTranslation.z);    
 
     s_3D.shape(m_sunModel);
     s_3D.popMatrix();
@@ -170,7 +172,7 @@ class FlightMap3D extends Widget implements IDraggable {
     
     s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
     s_3D.rotateX(m_earthRotation.x);
-    s_3D.rotateY(m_earthRotation.y - time);
+    s_3D.rotateY(m_rotationYModified - time);
 
     s_3D.shape(m_skySphere);
     s_3D.resetShader();
@@ -188,7 +190,7 @@ class FlightMap3D extends Widget implements IDraggable {
     s_3D.pushMatrix();
     s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
     s_3D.rotateX(m_earthRotation.x);
-    s_3D.rotateY(m_earthRotation.y);
+    s_3D.rotateY(m_rotationYModified);
 
     for (AirportPointType point : m_airportHashmap.values()) {
       PVector endline = point.Pos.copy().mult(1.05f);
@@ -218,9 +220,9 @@ class FlightMap3D extends Widget implements IDraggable {
       s_3D.pushMatrix();
       s_3D.translate(m_earthPos.x, m_earthPos.y + verticalDisplacement, m_earthPos.z + TEXT_DISPLACEMENT_3D.z);
       s_3D.rotateX(m_earthRotation.x);
-      s_3D.rotateY(m_earthRotation.y);
+      s_3D.rotateY(m_rotationYModified);
       s_3D.translate(point.Pos.x, point.Pos.y, point.Pos.z);
-      s_3D.rotateY(-m_earthRotation.y);
+      s_3D.rotateY(-m_rotationYModified);
 
       s_3D.text(point.Name, 0, 0);
       s_3D.popMatrix();
