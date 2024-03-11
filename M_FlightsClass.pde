@@ -55,7 +55,7 @@ class FlightsManagerClass {
   private boolean m_working;
 
   public void init(int threadCount, Consumer<FlightType[]> onTaskComplete) {
-    boolean result = convertBinaryFileToFlightType("flights_full.bin", threadCount, onTaskComplete);
+    boolean result = convertBinaryFileToFlightType("hex_flight_data.bin", threadCount, onTaskComplete);
     if (!result)
       return;
   }

@@ -283,21 +283,25 @@ class QueryManagerClass {
     Arrays.sort(flightsList, flightComparator);
     return flightsList;
   }
-  public int queryFrequency(FlightType[] flightsList, FlightQueryType queryType, FlightQueryOperator queryOperator, int queryValue, int threadCount) {
-    queryFlights(flightsList, queryType, queryOperator, queryValue, theardCount, returnedList -> {
-      return (int)returnedList.lenght;
-    });
-  }
-  public int queryRangeFrequency(FlightType[] flightsList, FlightQueryType queryType, int start, int end, int threadCount) {
-    queryFlightsWithinRange(flightList, queryType, start, end, threadCount, returnedList -> {
-      return (int)returnedList.lenght;
-    });
-  }
+  // public int queryFrequency(FlightType[] flightsList, FlightQueryType queryType, FlightQueryOperator queryOperator, int queryValue, int threadCount) {
+  //   int frequency = 0;
+  //   queryFlights(flightsList, queryType, queryOperator, queryValue, threadCount, returnedList -> {
+  //     return returnedList.length;
+  //   });
+  //   return frequency;
+  // }
+  // public int queryRangeFrequency(FlightType[] flightsList, FlightQueryType queryType, int start, int end, int threadCount) {
+  //   int frequency = 0;
+  //   queryFlightsWithinRange(flightList, queryType, start, end, threadCount, returnedList -> {
+  //     frequency = (int)returnedList.length;
+  //   });
+  //   return frequency;
+  // }
   public FlightType[] getHead(FlightType[] flightList, int numberOfItems) {
     return Arrays.copyOfRange(flightList, 0, numberOfItems);
   }
   public FlightType[] getFoot(FlightType[] flightList, int numberOfItems) {
-    return Arrays.copyOfRange(flightList, numberOfItems, flightsList.lenght);
+    return Arrays.copyOfRange(flightList, numberOfItems, flightList.length);
   }
   public FlightType[] getWithinRange(FlightType[] flightList, int start, int end) {
     return Arrays.copyOfRange(flightList, start, end);
