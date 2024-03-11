@@ -17,8 +17,10 @@ public enum FlightQueryType {
   AIRPORT_DEST_INDEX,
   SCHEDULED_DEPARTURE_TIME,
   DEPARTURE_TIME,
+  DEPARTURE_DELAY,
   SCHEDULED_ARRIVAL_TIME,
   ARRIVAL_TIME,
+  ARRIVAL_DELAY,
   CANCELLED_OR_DIVERTED,
   MILES_DISTANCE,
 }
@@ -37,7 +39,7 @@ public enum FlightQuerySortDirection {
   DESCENDING,
 }
 
-class FlightType { // 19 bytes total
+class FlightType { // 23 bytes total
   public byte Day;                      // supports all querys
   public byte CarrierCodeIndex;         // only supports EQUAL or NOT_EQUAL
   public short FlightNumber;            // only supports EQUAL or NOT_EQUAL
@@ -45,16 +47,19 @@ class FlightType { // 19 bytes total
   public short AirportDestIndex;        // only supports EQUAL or NOT_EQUAL
   public short ScheduledDepartureTime;  // supports all querys
   public short DepartureTime;           // supports all querys
+  public short DepartureDelay;          // supports all querys
   public short ScheduledArrivalTime;    // supports all querys
   public short ArrivalTime;             // supports all querys
+  public short ArrivalDelay;            // supports all querys
   public byte CancelledOrDiverted;      // only supports EQUAL or NOT_EQUAL
   public short MilesDistance;           // supports all querys
 
   public FlightType(
     byte day, byte carrierCodeIndex, short flightNumber,
     short airportOriginIndex, short airportDestIndex, short scheduledDepartureTime,
-    short departureTime, short scheduledArrivalTime, short arrivalTime,
-    byte cancelledOrDiverted, short milesDistance) {
+    short departureTime, short departureDelay, short scheduledArrivalTime, 
+    short arrivalTime, short arrivalDelay, byte cancelledOrDiverted, 
+    short milesDistance) {
 
     this.Day = day;
     this.CarrierCodeIndex = carrierCodeIndex;
@@ -63,8 +68,10 @@ class FlightType { // 19 bytes total
     this.AirportDestIndex = airportDestIndex;
     this.ScheduledDepartureTime = scheduledDepartureTime;
     this.DepartureTime = departureTime;
+    this.DepartureDelay = departureDelay;
     this.ScheduledArrivalTime = scheduledArrivalTime;
     this.ArrivalTime = arrivalTime;
+    this.ArrivalDelay = arrivalDelay;
     this.CancelledOrDiverted = cancelledOrDiverted;
     this.MilesDistance = milesDistance;
   }
@@ -194,7 +201,7 @@ class FlightsManagerClass {
   private FlightType[] queryFlightsAysnc(FlightType[] flightsList, FlightQueryType queryType, FlightQueryOperator queryOperator, int queryValue, int threadCount) {
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
     CountDownLatch latch = new CountDownLatch(threadCount);
-    
+
     if (!checkForIllegalQuery(queryType, queryOperator)) {
       println("Error: QueryType is illegal with QueryOperator");
       return flightsList;
@@ -283,7 +290,7 @@ class FlightsManagerClass {
   private FlightType[] queryFlightsWithinRangeAysnc(FlightType[] flightsList, FlightQueryType queryType, int start, int end, int threadCount) {
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
     CountDownLatch latch = new CountDownLatch(threadCount);
-    
+
     if (!checkForIllegalQuery(queryType, FlightQueryOperator.GREATER_THAN_EQUAL)) {
       println("Error: FlightQueryType is illegal to query range");
       return flightsList;
@@ -413,7 +420,7 @@ class FlightsManagerClass {
       println("Error: FlightQueryType invalid");
       return flightsList;
     }
-    
+
     switch(sortDirection) {
     case ASCENDING:
       break;
@@ -424,10 +431,11 @@ class FlightsManagerClass {
       println("Error: FlightQuerySortDirection invalid");
       return flightsList;
     }
-    
+
     Arrays.sort(flightsList, flightComparator);
     return flightsList;
   }
+
 
   public int queryFrequency(FlightType[] flightsList, FlightQueryType queryType, FlightQueryOperator queryOperator, int queryValue, int threadCount) {
     queryFlights(flightsList, queryType, queryOperator, queryValue, theardCount, returnedList -> {

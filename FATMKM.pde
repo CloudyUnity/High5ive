@@ -3,12 +3,13 @@ InputClass s_InputClass = new InputClass();
 DebugProfilerClass s_DebugProfiler = new DebugProfilerClass();
 PGraphics s_3D;
 int s_deltaTime;
-int debugCount;
 
 void setup() {
   size(600, 600, P2D);
   if (FULLSCREEN_ENABLED)
-    fullScreen();
+    fullScreen();  
+    
+  s_DebugProfiler.startProfileTimer();
   
   surface.setTitle("Flight Thing");
   surface.setResizable(true);
@@ -18,9 +19,11 @@ void setup() {
 
   textFont(loadFont("data/Fonts/AgencyFB-Bold-48.vlw"));
 
-  s_3D = createGraphics((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, P3D);    
+  s_3D = createGraphics((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, P3D);  
 
   s_ApplicationClass.init();
+  
+  s_DebugProfiler.printTimeTakenMillis("All Setup");
 }
 
 void draw() {

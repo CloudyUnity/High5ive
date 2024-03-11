@@ -5,9 +5,9 @@ final int INPUT_ARRAY_LENGTH = 70000;
 final boolean FULLSCREEN_ENABLED = false;
 
 // Data/Files
-final int LINE_BYTE_SIZE = 19;
-final int NUMBER_OF_FLIGHT_FULL_LINES = 563737;
-final int NUMBER_OF_AIRPORTS = 369;
+final int LINE_BYTE_SIZE = 23;
+final int NUMBER_OF_FLIGHT_FULL_LINES = 638995;
+final int NUMBER_OF_AIRPORTS = 374;
 final String DATA_DIRECTOR_PATH = "/data/Preprocessed Data/";
 
 // Debug Options
@@ -15,6 +15,7 @@ final boolean DEBUG_MODE = true; // Turns on various stats or console logging
 final int DEBUG_FPS_COUNTER_STORAGE = 30;
 final boolean DEBUG_DATA_LOADING = true;
 final boolean DEBUG_FPS_ENABLED = true;
+final boolean DEBUG_PRINT_3D_LOADING = false;
 
 // Scene
 final int DEFAULT_FOREGROUND_COLOUR = #000000;
@@ -46,13 +47,16 @@ final PVector WINDOW_SIZE_3D_FLIGHT_MAP = new PVector(1200, 800);
 final int EARTH_Z = -20;
 final int EARTH_SPHERE_SIZE = 300;
 final float DAY_CYCLE_SPEED = 0.00005f;
-final float VERTICAL_SCROLL_LIMIT = 0.5f;
+final float VERTICAL_SCROLL_LIMIT = 0.6f;
 final float VERTICAL_DRAG_SPEED = 0.000003f;
 final int ARC_SEGMENTS = 15;
 final float ARC_HEIGHT_MULT = 0.5f;
-final int ARC_SIZE = 3;
-final float MARKER_SIZE = 1.5f;
+final int ARC_SIZE = 1;
+final float MARKER_SIZE = 1f;
+final int TEXT_SIZE_3D = 12;
+final PVector TEXT_DISPLACEMENT_3D = new PVector(0, 10, 10); 
 final boolean DITHER_MODE = false;
+final int MAX_DATA_LOADED = 600000;
 
 // Descending code authorship changes:
 // F. Wright, Set up constants for the Engine and Debug, 8pm 23/02/24

@@ -19,24 +19,6 @@ class ApplicationClass {
     // m_dataPreprocessor.init();
     // m_dataPreprocessor.convertCsvToBinaryFile("flights_full.csv", "flights_full.bin");
 
-    if (DEBUG_DATA_LOADING) {
-      String dataDirectory = "data/Preprocessed Data";
-      m_flightsManager.init(4, list -> {
-        println("I'm done! Here's the first flights day: " + list[0].Day + "\n\n");
-        m_flightsManager.queryFlightsWithinRange(list, FlightQueryType.SCHEDULED_DEPARTURE_TIME, 700, 900, 4, flightsQuery2 -> {
-          // m_flightsManager.print(m_flightsManager.sort(flightsQuery2, FlightQueryType.FLIGHT_NUMBER, FlightQuerySortDirection.ASCENDING), 10);
-        }
-        );
-        m_flightsManager.queryFlights(
-          list, FlightQueryType.MILES_DISTANCE, FlightQueryOperator.EQUAL, 2475, 4, flightsQuery1 -> {
-            // m_flightsManager.print(flightsQuery1, 10);
-          }
-        );
-        // bug, cant do both or one doesnt happen
-      }
-      );
-    }
-
     m_onSwitchEvent.addHandler(e -> switchScreen(e));
 
     Screen1 s1 = new Screen1(600, 600, SCREEN_1_ID);
@@ -48,13 +30,32 @@ class ApplicationClass {
     Screen barchartDemo = new FlightCodesBarchartDemo(700, 700, SWITCH_TO_DEMO_ID);
     m_screens.add(barchartDemo);
 
-    ScreenFlightMap sfm = new ScreenFlightMap((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, SCREEN_FLIGHT_MAP_ID, m_flightsManager, m_queryManager);
+    ScreenFlightMap sfm = new ScreenFlightMap((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, SCREEN_FLIGHT_MAP_ID, m_queryManager);
     m_screens.add(sfm);
 
     m_currentScreen = m_screens.get(0);
 
     PVector windowSize = m_currentScreen.getScale();
     resizeWindow((int)windowSize.x, (int)windowSize.y);
+
+    if (DEBUG_DATA_LOADING) {
+      m_flightsManager.init(4, list -> {        
+        s_DebugProfiler.startProfileTimer();
+        sfm.startLoadingData(list);
+        s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
+
+        //m_flightsManager.queryFlightsWithinRange(list, FlightQueryType.SCHEDULED_DEPARTURE_TIME, 700, 900, 4, flightsQuery2 -> {
+        //  m_flightsManager.print(m_flightsManager.sort(flightsQuery2, FlightQueryType.FLIGHT_NUMBER, FlightQuerySortDirection.ASCENDING), 10);
+        //}
+        //);
+        //m_flightsManager.queryFlights(
+        //  list, FlightQueryType.MILES_DISTANCE, FlightQueryOperator.EQUAL, 2475, 4, flightsQuery1 -> {
+        //    m_flightsManager.print(flightsQuery1, 10);
+        //  }
+        //);
+      }
+      );
+    }
   }
 
   void frame() {
@@ -93,7 +94,7 @@ class ApplicationClass {
     if (m_currentScreen != null)
       m_currentScreen.onMouseClick();
   }
-  
+
   public void onKeyPressed(char k) {
     if (m_currentScreen != null)
       m_currentScreen.getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(mouseX, mouseY, k, m_currentScreen));
