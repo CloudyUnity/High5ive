@@ -8,7 +8,7 @@ class Image extends Widget{
 
   Image(int scaleY, int scaleX, int posX, int posY){
     super(posX, posY, scaleX, scaleY);
-    m_displayedImage = loadImage("data/Images/DefaultImage.jpg");
+    m_displayedImage = loadImage("data/Images/EarthDay2k.jpg");
     m_imageWidth = scaleX;
     m_imageLength = scaleY;
     m_posX = posX;
