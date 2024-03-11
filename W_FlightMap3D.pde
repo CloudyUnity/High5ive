@@ -341,6 +341,7 @@ class FlightMap3D extends Widget implements IDraggable {
   // MAJOR TODO
   public void loadFlights(FlightType[] flights, QueryManagerClass queries){
     for (int i = 0; i < flights.length; i++){
+      s_ApplicationClass.m_flightsManager.printFlight(flights[i]);
       String code = queries.getCode(flights[i].AirportOriginIndex);
       float latitude = queries.getLatitude(code);
       float longitude = queries.getLongitude(code);
