@@ -1,6 +1,7 @@
 public class TextboxUI extends Widget implements IKeyInput, IClickable {
    private int fontSize = 24;
    private StringBuilder m_text;
+   private int m_cursorPosition;
    
    private Event<KeyPressedEventInfoType> m_onKeyPressedEvent;
    private Event<EventInfoType> m_onClickEvent;
@@ -17,6 +18,7 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
      m_onStringEnteredEvent = new Event<StringEnteredEventInfoType>();
      m_timer = 30;
      m_drawBar = true;
+     m_cursorPosition = 0;
      
      m_onKeyPressedEvent.addHandler(e -> onKeyPressed(e));
    }
@@ -42,13 +44,17 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
           m_timer = 30;
           m_drawBar = !m_drawBar;
         }
-        text(m_text.toString() + (m_drawBar ? "|" : ""), m_pos.x, m_pos.y, m_scale.x, m_scale.y);
+        StringBuilder output = new StringBuilder();
+        output.append(m_text.toString());
+        output.insert(m_cursorPosition, m_drawBar ? "|" : " ");
+        text(output.toString(), m_pos.x, m_pos.y, m_scale.x, m_scale.y);
       }
    }
 
    public void setText(String text) {
       m_text.setLength(0);
       m_text.append(text);
+      m_cursorPosition = text.length() - 1;
    }
    
    public String getText() {
@@ -70,10 +76,16 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
    private void onKeyPressed(KeyPressedEventInfoType e) {
      if (e.pressedKey == BACKSPACE && m_text.length() > 0) {
        m_text.deleteCharAt(m_text.length() - 1);
+       m_cursorPosition--;
+     } else if (e.pressedKey == LEFT && m_text.length() > 0) {
+       m_cursorPosition--;
+     } else if (e.pressedKey == RIGHT && m_cursorPosition < m_text.length()) {
+       m_cursorPosition++;
      } else if (e.pressedKey == RETURN || e.pressedKey == ENTER) {
        m_onStringEnteredEvent.raise(new StringEnteredEventInfoType((int)m_pos.x, (int)m_pos.y, m_text.toString(), this));
      } else {
        m_text.append(e.pressedKey);
+       m_cursorPosition++;
      }
    }
 }

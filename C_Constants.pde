@@ -29,6 +29,7 @@ final String SCREEN_1_ID = "Screen 1";
 final String SCREEN_2_ID = "Screen 2";
 final String SWITCH_TO_DEMO_ID = "Barchart demo screen";
 final String SCREEN_FLIGHT_MAP_ID = "Screen Flight Map";
+final String TB_DEMO_ID = "Textbox demo";
 
 // Color Palette (TODO)
 final int EXAMPLE_COLOR_1 = #000000;
