@@ -430,16 +430,16 @@ class FlightsManagerClass {
   }
 
   public int queryFrequency(FlightType[] flightsList, FlightQueryType queryType, FlightQueryOperator queryOperator, int queryValue, int threadCount) {
-    queryFlights(flightList, queryType, queryOperator, queryValue, theardCount, returnedList -> {
+    queryFlights(flightsList, queryType, queryOperator, queryValue, theardCount, returnedList -> {
       return (int)returnedList.lenght;
     });
   }
 
-  // public int queryRangeFrequency(FlightType[] flightsList, FlightQueryType queryType, int start, int end, int threadCount) {
-  //   queryFlightsWithinRange(flightList, queryType, start, end, threadCount, returnedList -> {
-  //     return (int)returnedList.lenght;
-  //   });
-  // }
+  public int queryRangeFrequency(FlightType[] flightsList, FlightQueryType queryType, int start, int end, int threadCount) {
+    queryFlightsWithinRange(flightList, queryType, start, end, threadCount, returnedList -> {
+      return (int)returnedList.lenght;
+    });
+  }
 
   // public FlightType[] getHead(FlightType[] flightList, int numberOfItems) {
   //   return Arrays.copyOfRange(flightList, 0, numberOfItems);
