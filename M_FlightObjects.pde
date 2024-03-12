@@ -66,7 +66,7 @@ class FlightSortQuery {
   public QueryType Type;
   public QuerySortDirection SortDirection;
 
-  FlightRangeQuery(QueryType type, QuerySortDirection sortDirection) {
+  FlightSortQuery(QueryType type, QuerySortDirection sortDirection) {
     this.Type = type;
     this.SortDirection = sortDirection;
   }
