@@ -140,9 +140,7 @@ class FlightMap3D extends Widget implements IDraggable {
     s_3D.rotateX(m_earthRotation.x);
     s_3D.rotateY(m_rotationYModified);
 
-    s_DebugProfiler.startProfileTimer();
     s_3D.shape(m_earthModel);
-    s_DebugProfiler.printTimeTakenMillis("3D earth rendering");
     s_3D.resetShader();
     s_3D.popMatrix();       
 
