@@ -27,7 +27,6 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
    
    void draw() {
       super.draw();
-      fill(m_focused ? #FF0000 : m_backgroundColour);
       rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y);
       // DRAWING THE TEXT ITSELF
       textAlign(LEFT, CENTER);
@@ -103,3 +102,4 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
 
 // Code authorship:
 // M.Poole, Created textbox widget, 4:15pm 09/03/24
+// A. Robertson, adapted textbox to use the event system and added features, 16:00 12/03/2024
