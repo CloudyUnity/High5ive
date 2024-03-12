@@ -3,16 +3,12 @@
 ## People
 
 - Group B, Team 5
-- Finn Wright (CloudyUnity)
 - Alex Robertson (roberta1tcd)
-- Kyara (Cosmo) McWilliam (Cajm0)
+- Finn Wright (CloudyUnity)
+- Kyara (Cosmo) McWilliam (Kya-ra)
 - Mateusz Orlowski (MO1805)
-- Matthew Poole (Matthew Poole)
-- Thomas Creagh (Thomas Creagh)
-
-## Attributions
-
-Data from openflights (https://openflights.org/faq) and the US Bureau of Transportation Statistics (https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FGK&QO_fu146_anzr=b0-gvzr)
+- Matthew Poole (MPoole1105)
+- Thomas Creagh (ThomasCreagh)
 
 ## Coding Standard
 
@@ -35,6 +31,7 @@ Feel free to disagree with any of these. We can put it up to a vote.
 ### Control Flow/Methods
 
 - There should be as few comments as possible. Use self-documenting code techniques. Use your best judgement.  
+- The spec requires comments. Use comments.
 - Avoid nesting statements multiple times. Use guard clauses and methods to break stuff up.  
 - Each method should do only a single task and the name should accurately describe what it does. Don't be afraid of long identifier names.  
 - The Main tab should have minimal functions like setup() and draw() and getting input.  

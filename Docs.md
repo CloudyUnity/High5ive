@@ -93,7 +93,11 @@ Inside the project files we have some interesting things to note
 - Helper Scripts  
     Contains random scripts from other languages generally used for pre-processing data.  
 - CSV_Modifier  
-    Used for converting CSV files to raw binary data  
+    Used for editing CSV files en masse
+- Specification.pdf
+    The spec for the assingment we need to adhere to/supercede
+- LICENSE
+    Permission to use/copy/whatever our project, required by the data it contains
 - data  
     - Fonts  
     - Images  
@@ -102,3 +106,5 @@ Inside the project files we have some interesting things to note
         Contains lookup tables and raw binary data used by FlightManagerClass and DataPreprocessorClass  
     - Shaders  
         Vertex and Fragment scripts run by the GPU to render triangles using matrix math. Unless you're in the 3D turbo team you don't need to understand what I just said.  
+
+// CKM added some details, 14:00 12/03

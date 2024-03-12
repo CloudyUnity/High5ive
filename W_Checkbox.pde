@@ -13,6 +13,7 @@ class CheckboxUI extends Widget implements IClickable {
   public CheckboxUI(int posX, int posY, int scaleX, int scaleY, String label) {
     super(posX, posY, scaleX, scaleY);
     m_label = new LabelUI(posX + scaleY + m_textPadding, posY, scaleX - scaleY - m_textPadding, scaleY, label);
+    m_label.setForegroundColour(DEFAULT_TEXT_COLOUR_OUTSIDE);
     m_textPadding = 5;
     
     m_onClickEvent = new Event<EventInfoType>();
@@ -22,7 +23,7 @@ class CheckboxUI extends Widget implements IClickable {
   }
 
   @ Override
-    public void draw() {
+  public void draw() {
     super.draw();
 
     fill(color(m_checked ? m_checkedColour : m_backgroundColour));
