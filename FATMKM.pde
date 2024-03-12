@@ -6,8 +6,6 @@ int s_deltaTime;
 
 void setup() {
   size(600, 600, P2D);
-  if (FULLSCREEN_ENABLED)
-    fullScreen();  
     
   s_DebugProfiler.startProfileTimer();
   
