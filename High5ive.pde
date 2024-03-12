@@ -34,7 +34,7 @@ void keyPressed() {
     return;
 
   //s_InputClass.setKeyState(key, true);
-  s_ApplicationClass.onKeyPressed(key);
+  //s_ApplicationClass.onKeyPressed(key);
 }
 
 //void keyReleased() {

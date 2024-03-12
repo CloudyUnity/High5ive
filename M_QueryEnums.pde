@@ -11,7 +11,7 @@ public enum FlightQueryType {
   ARRIVAL_TIME,
   ARRIVAL_DELAY,
   CANCELLED_OR_DIVERTED,
-  MILES_DISTANCE,
+  KILOMETRES_DISTANCE,
 }
 
 public enum FlightQueryOperator {
@@ -30,3 +30,4 @@ public enum FlightQuerySortDirection {
 
 // Descending code authorship changes:
 // T. Creagh, added enums into this file, 11pm 06/03/24
+// CKM, converted to kilometres, 17:00 12/03

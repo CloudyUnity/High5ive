@@ -212,8 +212,8 @@ class QueryManagerClass {
       return (int)flight.ArrivalTime;
     case CANCELLED_OR_DIVERTED:
       return (int)flight.CancelledOrDiverted;
-    case MILES_DISTANCE:
-      return (int)flight.MilesDistance;
+    case KILOMETRES_DISTANCE:
+      return (int)flight.KmDistance;
     default:
       println("Error: FlightQueryType invalid");
       return -1;
@@ -269,8 +269,8 @@ class QueryManagerClass {
     case CANCELLED_OR_DIVERTED:
       flightComparator = Comparator.comparingInt(flight -> flight.CancelledOrDiverted);
       break;
-    case MILES_DISTANCE:
-      flightComparator = Comparator.comparingInt(flight -> flight.MilesDistance);
+    case KILOMETRES_DISTANCE:
+      flightComparator = Comparator.comparingInt(flight -> flight.KmDistance);
       break;
     default:
       println("Error: FlightQueryType invalid");
@@ -321,3 +321,4 @@ class QueryManagerClass {
 // T. Creagh, fixed queryFrequency and queryRangeFrequency, 12pm 06/03/24
 // T. Creagh, removed redundant code, 12:30pm 06/03/24
 // CKM, wrote comments about my code, 16:00 12/03
+// CKM, converted to kilometres 17:00 12/03

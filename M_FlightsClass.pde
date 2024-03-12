@@ -22,14 +22,14 @@ class FlightType { // 23 bytes total
   public short ArrivalTime;             // supports all querys
   public short ArrivalDelay;            // supports all querys
   public byte CancelledOrDiverted;      // only supports EQUAL or NOT_EQUAL
-  public short MilesDistance;           // supports all querys
+  public short KmDistance;              // supports all querys
 
   public FlightType(
     byte day, byte carrierCodeIndex, short flightNumber,
     short airportOriginIndex, short airportDestIndex, short scheduledDepartureTime,
     short departureTime, short departureDelay, short scheduledArrivalTime, 
     short arrivalTime, short arrivalDelay, byte cancelledOrDiverted, 
-    short milesDistance) {
+    short kmDistance) {
 
     this.Day = day;
     this.CarrierCodeIndex = carrierCodeIndex;
@@ -43,7 +43,7 @@ class FlightType { // 23 bytes total
     this.ArrivalTime = arrivalTime;
     this.ArrivalDelay = arrivalDelay;
     this.CancelledOrDiverted = cancelledOrDiverted;
-    this.MilesDistance = milesDistance;
+    this.KmDistance = kmDistance;
   }
 
   public FlightType() {
@@ -176,7 +176,7 @@ class FlightsManagerClass {
   //     flight.ArrivalTime + "\t\t" +
   //     flight.ArrivalDelay + "\t\t" +
   //     flight.CancelledOrDiverted + "\t\t" +
-  //     flight.MilesDistance
+  //     flight.KmDistance
   //     );
   // }
   // private void printFlightHeading() {
@@ -193,7 +193,7 @@ class FlightsManagerClass {
   //     "ArrivalTime\t" +
   //     "ArrivalDelay\t" +
   //     "CancelledOrDiverted\t" +
-  //     "MilesDistance"
+  //     "KmDistance"
   //     );
   // }
 }
@@ -228,3 +228,4 @@ class FlightsManagerClass {
 // T. Creagh, refacotored methodes, 11:30pm 11/03/24
 // T. Creagh, cleaned up code a bit, 12pm 0/03/24
 // CKM, implemented delay stats, 23:00 11/03
+// CKM, converted to kilometres, 17:00 12/03
