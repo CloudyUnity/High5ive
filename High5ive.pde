@@ -38,7 +38,7 @@ void draw() {
 
   //s_InputClass.setKeyState(key, true);
   // s_ApplicationClass.onKeyPressed(key);
-}
+// }
 
 //void keyReleased() {
 //  s_InputClass.setKeyState(key, false);
