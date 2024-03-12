@@ -28,6 +28,8 @@ void main() {
   vec3 day = texture2D(texDay, vertTexCoord.st).xyz;
   vec3 night = texture2D(texNight, vertTexCoord.st).xyz;
   vec3 specular = texture2D(specularMap, vertTexCoord.st).xyz;
+  vec3 norm = texture2D(normalMap, vertTexCoord.st).xyz;
+  norm = normalize(norm * 2.0 - 1.0);
 
   float strength = max(specular.r, 0.001);
   vec3 viewDir = -(fragPos.xyz / fragPos.w);
