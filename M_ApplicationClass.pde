@@ -48,8 +48,7 @@ class ApplicationClass {
           screenFlightMap3D.startLoadingData(queriedList);
           s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
         }
-        );
-        
+        );        
       }
       );
     }
