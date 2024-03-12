@@ -31,14 +31,21 @@ class Screen1 extends Screen {
     switchToDemo.setText("Barchart demo");
     switchToDemo.setTextSize(25);
     switchToDemo.setGrowMode(true);
+    
+    ButtonUI switchTo2D = createButton(350, 260, 100, 100);
+    switchTo2D.getOnClickEvent();
+    switchTo2D.setText("2D (WIP)");
+    switchTo2D.setTextSize(25);
+    switchTo2D.setGrowMode(true);
 
-    ButtonUI switchTo3D = createButton(350, 260, 100, 100);
+
+    ButtonUI switchTo3D = createButton(350, 380, 100, 100);
     switchTo3D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_FLIGHT_MAP_ID));
     switchTo3D.setText("3D (WIP)");
     switchTo3D.setTextSize(25);
     switchTo3D.setGrowMode(true);
 
-    CheckboxUI cb = createCheckbox(400, 400, 200, 50, "My checkbox");
+    CheckboxUI cb = createCheckbox(400, 500, 200, 50, "My checkbox");
     cb.setCheckedColour(color(255, 255, 0, 255));
     cb.setGrowMode(true);
     
@@ -209,6 +216,9 @@ class FlightCodesBarchartDemo extends Screen {
   }
 }
 
+
+
+
 class ScreenFlightMap extends Screen {
   FlightMap3D m_flightMap3D;
   QueryManagerClass m_queryManager;
@@ -336,3 +346,4 @@ class ScreenFlightMap extends Screen {
 // F. Wright, Modified and simplified code to fit coding standard. Fixed checkbox issues with colours, 6pm 04/03/24
 // F. Wright, Refactored screen, presets and applied grow mode to relevant widgets, 1pm 07/03/24
 // F. Wright, Created 3D flight map screen using OpenGL GLSL shaders and P3D features. Implemented light shading and day-night cycle, 9pm 07/03/24
+// M. Orlowski, Worked on 2D Map Button, 1pm 12/03/2024
