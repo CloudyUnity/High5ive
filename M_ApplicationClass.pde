@@ -9,7 +9,6 @@ class ApplicationClass {
 
   private FlightsManagerClass m_flightsManager = new FlightsManagerClass();
   private QueryManagerClass m_queryManager = new QueryManagerClass();
-  private DataPreprocessor m_dataPreprocessor = new DataPreprocessor();
   private DebugFPSClass m_fpsClass = new DebugFPSClass();
 
   private Event<SwitchScreenEventInfoType> m_onSwitchEvent = new Event<SwitchScreenEventInfoType>();
