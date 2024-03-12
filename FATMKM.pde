@@ -5,14 +5,12 @@ PGraphics s_3D;
 int s_deltaTime;
 
 void setup() {
-  size(600, 600, P2D);
-  if (FULLSCREEN_ENABLED)
-    fullScreen();  
-    
+  fullScreen(P2D, SPAN);
+
   s_DebugProfiler.startProfileTimer();
   
   surface.setTitle("Flight Thing");
-  surface.setResizable(true);
+  surface.setResizable(!FULLSCREEN_ENABLED);
   surface.setLocation(0, 0);
 
   frameRate(FRAME_RATE);
