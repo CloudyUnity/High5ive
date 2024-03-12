@@ -1,16 +1,17 @@
 ApplicationClass s_ApplicationClass = new ApplicationClass();
-//InputClass s_InputClass = new InputClass();
+InputClass s_InputClass = new InputClass();
 DebugProfilerClass s_DebugProfiler = new DebugProfilerClass();
 PGraphics s_3D;
 int s_deltaTime;
 
-void setup() {  
-  fullScreen(P2D, SPAN);
+void setup() {
+  size(600, 600, P2D);
 
-  s_DebugProfiler.startProfileTimer();
-  
+  s_DebugProfiler.startProfileTimer();  
+
   surface.setTitle("Flight Thing");
-  surface.setResizable(!FULLSCREEN_ENABLED);
+  if (!FULLSCREEN_ENABLED)
+    surface.setResizable(true);
   surface.setLocation(0, 0);
 
   frameRate(FRAME_RATE);
@@ -28,7 +29,7 @@ void setup() {
 }
 
 void draw() {
-  //s_InputClass.frame();
+  s_InputClass.frame();
   s_ApplicationClass.frame();
 }
 
@@ -36,13 +37,13 @@ void keyPressed() {
   if (!keyPressed)
     return;
 
-  //s_InputClass.setKeyState(key, true);
+  s_InputClass.setKeyState(key, true);
   s_ApplicationClass.onKeyPressed(key);
 }
 
-//void keyReleased() {
-//  s_InputClass.setKeyState(key, false);
-//}
+void keyReleased() {
+  s_InputClass.setKeyState(key, false);
+}
 
 void mousePressed() {
   s_ApplicationClass.onMouseClick();
@@ -69,6 +70,4 @@ void resizeWindow(int w, int h) {
 // F. Wright, Made mouse related functions for use in ApplicationClass and Widgets. Set up window resizing, 6pm 04/03/24
 // F. Wright, Modified and simplified UI code to fit coding standard. Combined all UI elements into the UI tab, 6pm 04/03/24
 // F. Wright, Used symbolic linking to allow us to put all UI pde files into subfolder, 11pm 05/03/24
-// M. Poole, Modified to add to add mouseWheel(), 1pm 12/3/24 
-// CKM, implemented working fullscreen 15:00 12/03
-// CKM, commented out deprecated input class 16:00 12/03
+// M. Poole, Modified to add to add mouseWheel(), 1pm 12/3/24

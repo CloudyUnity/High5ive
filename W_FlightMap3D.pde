@@ -63,8 +63,13 @@ class FlightMap3D extends Widget implements IDraggable {
 
   public FlightMap3D(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
+<<<<<<< HEAD
+    
+    m_starsTex = loadImage("data/Images/StarsLow.jpg");
+=======
 
     m_starsTex = loadImage("data/Images/Stars2k.jpg");
+>>>>>>> 8845f556c0ba44c363d2b3718e57db238c058f5d
 
     new Thread(() -> {
       m_earthModel = s_3D.createShape(SPHERE, EARTH_SPHERE_SIZE);
@@ -77,8 +82,13 @@ class FlightMap3D extends Widget implements IDraggable {
       m_earthDayTex = loadImage("data/Images/EarthDay2k.jpg");
       m_earthNightTex = loadImage("data/Images/EarthNight2k.jpg");
       m_earthSpecularMap = loadImage("data/Images/EarthSpecular2k.tif");
+<<<<<<< HEAD
+      m_sunTex = loadImage("data/Images/SunLow.jpg");
+      m_noiseImg = loadImage("data/Images/noise.png");      
+=======
       m_sunTex = loadImage("data/Images/Sun2k.jpg");
       m_noiseImg = loadImage("data/Images/noise.png");
+>>>>>>> 8845f556c0ba44c363d2b3718e57db238c058f5d
 
       m_earthShader = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
       m_sunShader = loadShader("data/Shaders/SunFrag.glsl", "data/Shaders/BaseVert.glsl");
@@ -141,9 +151,11 @@ class FlightMap3D extends Widget implements IDraggable {
     s_3D.rotateX(m_earthRotation.x);
     s_3D.rotateY(m_rotationYModified);
 
+    s_DebugProfiler.startProfileTimer();
     s_3D.shape(m_earthModel);
+    s_DebugProfiler.printTimeTakenMillis("3D earth rendering");
     s_3D.resetShader();
-    s_3D.popMatrix();
+    s_3D.popMatrix();       
 
     PVector sunTranslation = lightDir.copy().mult(-3000);
     s_3D.shader(m_sunShader);
