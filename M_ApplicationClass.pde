@@ -19,18 +19,18 @@ class ApplicationClass {
 
     m_onSwitchEvent.addHandler(e -> switchScreen(e));
 
-    Screen1 s1 = new Screen1(600, 600, SCREEN_1_ID);
-    m_screens.add(s1);
+    Screen1 screen1 = new Screen1(600, 600, SCREEN_1_ID);
+    m_screens.add(screen1);
 
-    Screen2 s2 = new Screen2(700, 700, SCREEN_2_ID);
-    m_screens.add(s2);
+    Screen2 screen2 = new Screen2(700, 700, SCREEN_2_ID);
+    m_screens.add(screen2);
 
-    Screen barchartDemo = new FlightCodesBarchartDemo(700, 700, SWITCH_TO_DEMO_ID);
-    m_screens.add(barchartDemo);
+    Screen screenDemo = new FlightCodesBarchartDemo(700, 700, SWITCH_TO_DEMO_ID);
+    m_screens.add(screenDemo);
 
-    ScreenFlightMap sfm = new ScreenFlightMap((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, SCREEN_FLIGHT_MAP_ID, m_queryManager);
-    m_screens.add(sfm);
-    
+    ScreenFlightMap screenFlightMap3D = new ScreenFlightMap((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, SCREEN_FLIGHT_MAP_ID, m_queryManager);
+    m_screens.add(screenFlightMap3D);
+
     // TextBoxDemoScreen d = new TextBoxDemoScreen(700, 700, TB_DEMO_ID);
     // m_screens.add(d);
 
@@ -41,19 +41,14 @@ class ApplicationClass {
 
     if (DEBUG_DATA_LOADING) {
       m_flightsManager.init(4, list -> {        
-        s_DebugProfiler.startProfileTimer();
-        sfm.startLoadingData(list);
-        s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
-
-        //m_flightsManager.queryFlightsWithinRange(list, FlightQueryType.SCHEDULED_DEPARTURE_TIME, 700, 900, 4, flightsQuery2 -> {
-        //  m_flightsManager.print(m_flightsManager.sort(flightsQuery2, FlightQueryType.FLIGHT_NUMBER, FlightQuerySortDirection.ASCENDING), 10);
-        //}
-        //);
-        //m_flightsManager.queryFlights(
-        //  list, FlightQueryType.MILES_DISTANCE, FlightQueryOperator.EQUAL, 2475, 4, flightsQuery1 -> {
-        //    m_flightsManager.print(flightsQuery1, 10);
-        //  }
-        //);
+              
+        m_queryManager.queryFlights(list, FlightQueryType.AIRPORT_ORIGIN_INDEX, FlightQueryOperator.EQUAL, 1, 4, queriedList -> {
+          s_DebugProfiler.startProfileTimer();
+          screenFlightMap3D.startLoadingData(queriedList);
+          s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
+        }
+        );
+        
       }
       );
     }
@@ -72,9 +67,9 @@ class ApplicationClass {
 
     if (DEBUG_MODE && DEBUG_FPS_ENABLED) {
       m_fpsClass.addToFrameTimes();
-      fill(255, 0, 0, 255);      
+      fill(255, 0, 0, 255);
       textSize(15);
-      text("FPS: " + m_fpsClass.calculateFPS(), width - 100, 10, 100, 100);      
+      text("FPS: " + m_fpsClass.calculateFPS(), width - 100, 10, 100, 100);
     }
   }
 
