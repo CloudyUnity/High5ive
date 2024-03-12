@@ -3,8 +3,8 @@
 ## People
 
 - Group B, Team 5
-- Finn Wright (CloudyUnity)
 - Alex Robertson (roberta1tcd)
+- Finn Wright (CloudyUnity)
 - Kyara (Cosmo) McWilliam (Kya-ra)
 - Mateusz Orlowski (MO1805)
 - Matthew Poole (MPoole1105)
