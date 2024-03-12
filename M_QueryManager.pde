@@ -1,6 +1,6 @@
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
-//CKM: code to return details about airports
+
 
 class QueryManagerClass {
 
@@ -309,7 +309,7 @@ class QueryManagerClass {
 }
 
 // Descending code authorship changes:
-// K. McWilliam, ___, ___
+// CKM: code to return details about airports
 // T. Creagh, moved query methods in, 11pm 06/03/24
 // T. Creagh, fixed queryFrequency and queryRangeFrequency, 12pm 06/03/24
 // T. Creagh, removed redundant code, 12:30pm 06/03/24
