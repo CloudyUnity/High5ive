@@ -70,7 +70,6 @@ class QueryManagerClass {
     for (int i = 0; i < threadCount; i++) {
       int startPosition = i * chunkSize;
       long endPosition = (i == threadCount - 1) ? NUMBER_OF_FLIGHT_FULL_LINES : (i + 1) * chunkSize;
-      long processingSize = endPosition - startPosition;
 
       executor.submit(() -> {
         listOfFlightsLists.add(processQueryFlightsChunk(Arrays.copyOfRange(flightsList, startPosition, (int)endPosition), queryType, queryOperator, queryValue));
@@ -157,7 +156,6 @@ class QueryManagerClass {
     for (int i = 0; i < threadCount; i++) {
       int startPosition = i * chunkSize;
       long endPosition = (i == threadCount - 1) ? NUMBER_OF_FLIGHT_FULL_LINES : (i + 1) * chunkSize;
-      long processingSize = endPosition - startPosition;
 
       executor.submit(() -> {
         listOfFlightsLists.add(processQueryFlightsWithinRangeChunk(Arrays.copyOfRange(flightsList, startPosition, (int)endPosition), queryType, start, end));
@@ -314,3 +312,4 @@ class QueryManagerClass {
 // K. McWilliam, ___, ___
 // T. Creagh, moved query methods in, 11pm 06/03/24
 // T. Creagh, fixed queryFrequency and queryRangeFrequency, 12pm 06/03/24
+// T. Creagh, removed redundant code, 12:30pm 06/03/24
