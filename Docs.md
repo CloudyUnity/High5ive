@@ -85,19 +85,26 @@ This class uses a stack so you can nest multiple profilers and it will still wor
 
 ### What else is in this project?
 
-Inside the project files we have some interesting things to note  
-- README.md  
-    You should have already read this  
+Inside the project files we have some interesting things to note 
+
+- .gitignore
+    Contains files that shouldn't be updated, e.g. individual scratch files
 - Docs.md  
-    Hey, that's me!  
-- Helper Scripts  
-    Contains random scripts from other languages generally used for pre-processing data.  
-- CSV_Modifier  
-    Used for editing CSV files en masse
+    Hey, that's me! 
+- LICENSE
+    Permission to use/copy/whatever our project, required by our data sources
+- README.md  
+    Contains team information, coding standard, information standards, and an approximate responsibility list
+- sketch.properties
+    Points to the main (shouldn't be required if the folder name matches)
+- Sources.md
+    Contains attributions and citations
 - Specification.pdf
     The spec for the assingment we need to adhere to/supercede
-- LICENSE
-    Permission to use/copy/whatever our project, required by the data it contains
+
+  
+- Concept Sketches
+    Brilliantly drawn outlines of what the various screens in the program should look like
 - data  
     - Fonts  
     - Images  
@@ -105,6 +112,20 @@ Inside the project files we have some interesting things to note
     - Preprocessed Data  
         Contains lookup tables and raw binary data used by FlightManagerClass and DataPreprocessorClass  
     - Shaders  
-        Vertex and Fragment scripts run by the GPU to render triangles using matrix math. Unless you're in the 3D turbo team you don't need to understand what I just said.  
+        Vertex and Fragment scripts run by the GPU to render triangles using matrix math. Unless you're in the 3D turbo team you don't need to understand what I just said. 
+- Deprecated
+    Contains unused classes, in case they're needed in future
+    - M_InputClass
+        Legacy from when Finn thought it might be a game
+- Helper Scripts  
+    Contains random scripts from other languages generally used for pre-processing data.  
+    - D_CsvModifier.pde  
+        Used for editing CSV files en masse
+    - M_DataPreprocesser.pde
+        Used for converting CSV files en masse
+    - write_text_byte_file.zig
+        Generates random data for testing input at an easier scale than 650k flights
+ 
 
 // CKM added some details, 14:00 12/03
+// CKM added more details, 16:00 12/03
