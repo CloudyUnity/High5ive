@@ -309,3 +309,8 @@ class QueryManagerClass {
     return Arrays.copyOfRange(flightList, start, end);
   }
 }
+
+// Descending code authorship changes:
+// K. McWilliam, ___, ___
+// T. Creagh, moved query methods in, 11pm 06/03/24
+// T. Creagh, fixed queryFrequency and queryRangeFrequency, 12pm 06/03/24

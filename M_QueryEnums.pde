@@ -27,3 +27,6 @@ public enum FlightQuerySortDirection {
   ASCENDING,
   DESCENDING,
 }
+
+// Descending code authorship changes:
+// T. Creagh, added enums into this file, 11pm 06/03/24
