@@ -1,32 +1,26 @@
-public class TEXTBOX {
-   private int X = 0, Y = 0, H = 35, W = 200;
-   private int TEXTSIZE = 24;
+public class TextboxUI extends Widget implements IKeyInput, IClickable {
+   private int fontSize = 24;
+   private StringBuilder m_text;
+   private int m_cursorPosition;
    
-   // COLORS
-   private color Background = color(255);
-   private color Foreground = color(0, 0, 0);
-   private color BackgroundSelected = color(230);
-   private color Border = color(30, 30, 30);
+   private Event<KeyPressedEventInfoType> m_onKeyPressedEvent;
+   private Event<EventInfoType> m_onClickEvent;
+   private Event<StringEnteredEventInfoType> m_onStringEnteredEvent;
    
-   private boolean BorderEnable = true;
-   private int BorderWeight = 1;
+   private int m_timer;
+   private boolean m_drawBar;
    
-   private String InputText; 
-   private String Text = "";
-   private int TextLength = 0;
-   private int numOfLines = 0;
-   private boolean selected = false;
-   private boolean changable = true;
-   private boolean isOutputBox = false;
-   
-   TEXTBOX() {
-      // CREATE OBJECT DEFAULT TEXTBOX NOT REALLY USEFUL UNTIL SEARCH IS IMPLEMENTED
-   }
-   
-   TEXTBOX(int x, int y, int w, int h) {
-   
-     X = x; Y = y; W = w; H = h; 
-
+   public TextboxUI(int x, int y, int width, int height) {
+     super(x, y, width, height);
+     m_text = new StringBuilder();
+     m_onKeyPressedEvent = new Event<KeyPressedEventInfoType>();
+     m_onClickEvent = new Event<EventInfoType>();
+     m_onStringEnteredEvent = new Event<StringEnteredEventInfoType>();
+     m_timer = 30;
+     m_drawBar = true;
+     m_cursorPosition = 0;
+     
+     m_onKeyPressedEvent.addHandler(e -> onKeyPressed(e));
    }
    
    TEXTBOX(int x, int y, int w, int h, boolean changable, boolean isOutputBox) {
@@ -55,51 +49,28 @@ public class TEXTBOX {
       rect(X, Y, W, H);
       
       // DRAWING THE TEXT ITSELF
-      fill(Foreground);
-      textSize(TEXTSIZE);
-      text(Text, X + (textWidth("a") / 2), Y + TEXTSIZE);
-     
-      if (isOutputBox && InputText != null){
-       //PLACED IN HERE TO INSTANTLY SEND TEXT IN THE EVENT OF A TRANSFER AS OPPOSED TO WAITING FOR AN ADDITIONAL KEYPRESS
-         OBTAINSTRING(InputText);
-         InputText = null;
-         
-       }
-   }
-   
-   // IF THE KEYCODE IS ENTER RETURN 1
-   // ELSE RETURN 0
-   boolean KEYPRESSED(char KEY, int KEYCODE) {
-      if (selected && changable && isOutputBox == false) {
-         if (KEYCODE == (int)BACKSPACE) {
-            BACKSPACE();
-         } 
-         else if (KEYCODE == 32) {
-            // SPACE
-            addText(' ');
-         } 
-         else if (KEYCODE == (int)ENTER) {
-         
-            // TransferText = ENTER(); ERROR
-            return true;
-            
-         } 
-         else {
-            // CHECK IF THE KEY IS A LETTER OR A NUMBER
-            boolean isKeyCapitalLetter = (KEY >= 'A' && KEY <= 'Z');
-            boolean isKeySmallLetter = (KEY >= 'a' && KEY <= 'z');
-            boolean isKeyNumber = (KEY >= '0' && KEY <= '9');
-      
-            if (isKeyCapitalLetter || isKeySmallLetter || isKeyNumber) {
-               addText(KEY);
-            }
-         }
-     
-       
+      textAlign(LEFT, CENTER);
+      fill(m_foregroundColour);
+      textSize(fontSize);
+      if (!isFocused())
+        text(m_text.toString(), m_pos.x, m_pos.y, m_scale.x, m_scale.y);
+      else {
+        m_timer -= 1;
+        if (m_timer == 0) {
+          m_timer = 30;
+          m_drawBar = !m_drawBar;
+        }
+        StringBuilder output = new StringBuilder();
+        output.append(m_text.toString());
+        output.insert(m_cursorPosition, m_drawBar ? "|" : " ");
+        text(output.toString(), m_pos.x, m_pos.y, m_scale.x, m_scale.y);
       }
-       
-     
-      return false;
+   }
+
+   public void setText(String text) {
+      m_text.setLength(0);
+      m_text.append(text);
+      m_cursorPosition = text.length() - 1;
    }
    
    private void addText(char text) {
@@ -135,14 +106,19 @@ public class TEXTBOX {
    
    }
    
-   
-   
-   public void OBTAINSTRING(String InputText){
-     //TAKES AN OUTSIDE STRING AND PLACES IT IN TEXTBOX ONLY USED IF ISOUTPUTBOX IS TRUE
-     if (numOfLines * 10 < Y){
-     Text += InputText;
-     Text += "\n";
-     numOfLines += 1;
+   private void onKeyPressed(KeyPressedEventInfoType e) {
+     if (e.pressedKey == BACKSPACE && m_text.length() > 0) {
+       m_text.deleteCharAt(m_text.length() - 1);
+       m_cursorPosition--;
+     } else if (e.pressedKey == LEFT && m_text.length() > 0) {
+       m_cursorPosition--;
+     } else if (e.pressedKey == RIGHT && m_cursorPosition < m_text.length()) {
+       m_cursorPosition++;
+     } else if (e.pressedKey == RETURN || e.pressedKey == ENTER) {
+       m_onStringEnteredEvent.raise(new StringEnteredEventInfoType((int)m_pos.x, (int)m_pos.y, m_text.toString(), this));
+     } else {
+       m_text.append(e.pressedKey);
+       m_cursorPosition++;
      }
    
    }

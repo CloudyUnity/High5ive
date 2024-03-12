@@ -5,14 +5,10 @@
 - Group B, Team 5
 - Finn Wright (CloudyUnity)
 - Alex Robertson (roberta1tcd)
-- Kyara (Cosmo) McWilliam (Cajm0)
+- Kyara (Cosmo) McWilliam (Kya-ra)
 - Mateusz Orlowski (MO1805)
 - Matthew Poole (Matthew Poole)
 - Thomas Creagh (Thomas Creagh)
-
-## Attributions
-
-Data from openflights (https://openflights.org/faq) and the US Bureau of Transportation Statistics (https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FGK&QO_fu146_anzr=b0-gvzr)
 
 ## Coding Standard
 
