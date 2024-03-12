@@ -126,3 +126,4 @@ class ApplicationClass {
 // F. Wright, Modified onMouse() functions and merged functions from the old UI main into ApplicationClass, 6pm 04/03/24
 // F. Wright, Changed manual profiling to use DebugProfilingClass instead, 2pm 06/03/24
 // F. Wright, Fixed UI errors, 12pm 07/03/24
+// CKM, bought code to working levels 14:00 12/03

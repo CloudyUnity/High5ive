@@ -1,5 +1,5 @@
 ApplicationClass s_ApplicationClass = new ApplicationClass();
-InputClass s_InputClass = new InputClass();
+//InputClass s_InputClass = new InputClass();
 DebugProfilerClass s_DebugProfiler = new DebugProfilerClass();
 PGraphics s_3D;
 int s_deltaTime;
@@ -25,7 +25,7 @@ void setup() {
 }
 
 void draw() {
-  s_InputClass.frame();
+  //s_InputClass.frame();
   s_ApplicationClass.frame();
 }
 
@@ -33,13 +33,13 @@ void keyPressed() {
   if (!keyPressed)
     return;
 
-  s_InputClass.setKeyState(key, true);
+  //s_InputClass.setKeyState(key, true);
   s_ApplicationClass.onKeyPressed(key);
 }
 
-void keyReleased() {
-  s_InputClass.setKeyState(key, false);
-}
+//void keyReleased() {
+//  s_InputClass.setKeyState(key, false);
+//}
 
 void mousePressed() {
   s_ApplicationClass.onMouseClick();
@@ -69,3 +69,4 @@ void resizeWindow(int w, int h) {
 // F. Wright, Used symbolic linking to allow us to put all UI pde files into subfolder, 11pm 05/03/24
 // M. Poole, Modified to add to add mouseWheel(), 1pm 12/3/24 
 // CKM, implemented working fullscreen 15:00 12/03
+// CKM, commented out deprecated input class 16:00 12/03
