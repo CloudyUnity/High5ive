@@ -15,6 +15,7 @@ class LabelUI extends Widget {
     m_textYOffset = 0;
     m_textXOffset = 5;
     m_centreAligned = false;
+    m_foregroundColour = DEFAULT_TEXT_COLOUR_INSIDE;
   }
 
   @ Override
