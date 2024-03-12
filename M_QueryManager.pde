@@ -8,6 +8,7 @@ class QueryManagerClass {
   Table m_usaAirportIndexes;
   TableRow m_lookupResult;
   private boolean m_working;
+  // push
 
   void init() {
     m_airportTable = loadTable("data/Preprocessed Data/airports.csv", "header");
