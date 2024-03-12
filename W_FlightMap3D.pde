@@ -2,35 +2,6 @@ import java.util.function.Function;
 import java.util.function.Consumer;
 import java.util.Map;
 
-class CoordType {
-  public float Latitude;
-  public float Longitude;
-
-  public CoordType(float lat, float longi) {
-    Latitude = lat;
-    Longitude = longi;
-  }
-}
-
-class AirportPointType {
-  public PVector Pos;
-  public String Name;
-  public color Color = color(0, 255, 0, 255);
-  public ArrayList<String> Connections = new ArrayList<String>();
-  public ArrayList<ArrayList<PVector>> ConnectionArcPoints = new ArrayList<ArrayList<PVector>>();
-
-  public AirportPointType(PVector pos, String name) {
-    Pos = pos;
-    Name = name;
-  }
-
-  public AirportPointType(PVector pos, String name, color col) {
-    Pos = pos;
-    Name = name;
-    Color = col;
-  }
-}
-
 class FlightMap3D extends Widget implements IDraggable {
 
   private Event<MouseDraggedEventInfoType> m_onDraggedEvent = new Event<MouseDraggedEventInfoType>();
@@ -58,7 +29,7 @@ class FlightMap3D extends Widget implements IDraggable {
 
   private float m_rotationYModified = 0;
 
-  private HashMap<String, AirportPointType> m_airportHashmap = new HashMap<String, AirportPointType>();
+  private HashMap<String, AirportPoint3DType> m_airportHashmap = new HashMap<String, AirportPoint3DType>();
 
   private PVector m_earthPos;
 
@@ -191,7 +162,7 @@ class FlightMap3D extends Widget implements IDraggable {
     s_3D.rotateX(m_earthRotation.x);
     s_3D.rotateY(m_rotationYModified);
 
-    for (AirportPointType point : m_airportHashmap.values()) {
+    for (AirportPoint3DType point : m_airportHashmap.values()) {
       PVector endline = point.Pos.copy().mult(1.05f);
 
       if (m_markersEnabled) {
@@ -215,7 +186,7 @@ class FlightMap3D extends Widget implements IDraggable {
     s_3D.textAlign(CENTER);
     s_3D.textSize(TEXT_SIZE_3D);
 
-    for (AirportPointType point : m_airportHashmap.values()) {
+    for (AirportPoint3DType point : m_airportHashmap.values()) {
       float verticalDisplacement = point.Pos.y > 0 ? TEXT_DISPLACEMENT_3D.y : -TEXT_DISPLACEMENT_3D.y;
 
       s_3D.pushMatrix();
@@ -240,9 +211,9 @@ class FlightMap3D extends Widget implements IDraggable {
     m_earthRotationalVelocity.add(deltaDrag);
   }
 
-  private AirportPointType manualAddPoint(double latitude, double longitude, String code) {
+  private AirportPoint3DType manualAddPoint(double latitude, double longitude, String code) {
     PVector pos = coordsToPoint(latitude, longitude);
-    AirportPointType point = new AirportPointType(pos, code);
+    AirportPoint3DType point = new AirportPoint3DType(pos, code);
     m_airportHashmap.put(code, point);
     return point;
   }
@@ -260,7 +231,7 @@ class FlightMap3D extends Widget implements IDraggable {
     return new PVector(x, y, z);
   }
 
-  void drawGreatCircleArcFast(AirportPointType point) {
+  void drawGreatCircleArcFast(AirportPoint3DType point) {
     for (var connection : point.ConnectionArcPoints) {
       PVector lastPos = connection.get(0);
 
@@ -332,7 +303,7 @@ class FlightMap3D extends Widget implements IDraggable {
 
       String originCode = queries.getCode(flights[i].AirportOriginIndex);
       String destCode = queries.getCode(flights[i].AirportDestIndex);
-      AirportPointType origin, dest;
+      AirportPoint3DType origin, dest;
 
       if (!m_airportHashmap.containsKey(originCode)) {
         float latitude = queries.getLatitude(originCode);
