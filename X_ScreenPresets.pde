@@ -102,7 +102,7 @@ class Screen2 extends Screen {
     rb2.setGrowMode(true);
     group.addMember(rb2);
     
-    Image i1 = new Image(50, 50, 300, 300);  
+    ImageUI i1 = new ImageUI(50, 50, 300, 300);  
     addWidget(i1);
 
     createSlider(100, 400, 300, 50, 0, 100, 1);

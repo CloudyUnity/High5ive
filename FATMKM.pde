@@ -54,7 +54,11 @@ void mouseMoved() {
 void mouseDragged() {
   s_ApplicationClass.onMouseDragged();
 }
+void mouseWheel(MouseEvent event) {
 
+  s_ApplicationClass.onMouseWheel(event);
+
+}
 void resizeWindow(int w, int h) {
   surface.setSize(w, h);
 }
@@ -65,3 +69,4 @@ void resizeWindow(int w, int h) {
 // F. Wright, Made mouse related functions for use in ApplicationClass and Widgets. Set up window resizing, 6pm 04/03/24
 // F. Wright, Modified and simplified UI code to fit coding standard. Combined all UI elements into the UI tab, 6pm 04/03/24
 // F. Wright, Used symbolic linking to allow us to put all UI pde files into subfolder, 11pm 05/03/24
+// M. Poole, Modified to add to add mouseWheel(), 1pm 12/3/24 

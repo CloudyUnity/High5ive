@@ -95,6 +95,13 @@ class ApplicationClass {
     if (m_currentScreen != null)
       m_currentScreen.onMouseClick();
   }
+  
+  void onMouseWheel(MouseEvent event){
+    if (m_currentScreen != null){
+      m_currentScreen.onMouseWheel(event);
+    }
+  
+  }
 
   public void onKeyPressed(char k) {
     if (m_currentScreen != null)
