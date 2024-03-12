@@ -111,3 +111,4 @@ public enum QueryLocation {
 // Descending code authorship changes:
 // T. Creagh, added enums into this file, 11pm 06/03/24
 // T. Creagh, added in FlightQuery, 8pm 12/03/24
+// T. Creagh, added in FlightRangeQuery, 9pm 12/03/24
