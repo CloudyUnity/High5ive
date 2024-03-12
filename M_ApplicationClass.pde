@@ -31,8 +31,8 @@ class ApplicationClass {
     ScreenFlightMap screenFlightMap3D = new ScreenFlightMap(displayWidth, displayHeight, SCREEN_FLIGHT_MAP_ID, m_queryManager);
     m_screens.add(screenFlightMap3D);
 
-    // TextBoxDemoScreen d = new TextBoxDemoScreen(700, 700, TB_DEMO_ID);
-    // m_screens.add(d);
+    TextBoxDemoScreen d = new TextBoxDemoScreen(700, 700, TB_DEMO_ID);
+    m_screens.add(d);
 
     m_currentScreen = m_screens.get(0);
 
@@ -98,9 +98,9 @@ class ApplicationClass {
   
   }
 
-  public void onKeyPressed(char k) {
+  public void onKeyPressed(char k, int kc) {
     if (m_currentScreen != null)
-      m_currentScreen.getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(mouseX, mouseY, k, m_currentScreen));
+      m_currentScreen.getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(mouseX, mouseY, k, kc, m_currentScreen));
   }
 
   public Event<SwitchScreenEventInfoType> getOnSwitchEvent() {
