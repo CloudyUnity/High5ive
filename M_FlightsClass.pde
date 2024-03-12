@@ -12,7 +12,7 @@ class FlightsManagerClass {
   private FlightType[] m_flightsList = new FlightType[NUMBER_OF_FLIGHT_FULL_LINES];
   private boolean m_working;
 
-  public void init(int threadCount, Consumer<FlightType[]> onTaskComplete) {
+  public void init(int threadCount, Consumer<FlightType[]> onUSTaskComplete, Consumer<FlightType[]> onWorldTaskComplete) {
     boolean result = convertBinaryFileToFlightType("hex_flight_data.bin", threadCount, onTaskComplete);
     if (!result)
       return;
