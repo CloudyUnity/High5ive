@@ -41,14 +41,12 @@ class ApplicationClass {
 
     if (DEBUG_DATA_LOADING) {
       m_flightsManager.init(4, list -> {        
-              
-        m_queryManager.queryFlights(list, FlightQueryType.AIRPORT_ORIGIN_INDEX, FlightQueryOperator.EQUAL, 1, 4, queriedList -> {
+        m_queryManager.queryFlights(list, FlightQueryType.AIRPORT_ORIGIN_INDEX, FlightQueryOperator.EQUAL, m_queryManager.getIndex("SFO"), 4, queriedList -> {
           s_DebugProfiler.startProfileTimer();
           screenFlightMap3D.startLoadingData(queriedList);
           s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
         }
         );
-        
       }
       );
     }
