@@ -13,6 +13,8 @@ class QueryManagerClass {
     m_airportTable = loadTable("data/Preprocessed Data/airports.csv", "header");
     m_usaAirportIndexes = loadTable("data/Preprocessed Data/airport_lookup_table.csv");
   }
+  //a series of function for lookup tables - the lookup tables are loaded directly into processing as spreadsheets
+  //the findRow functions allow the spreadsheet to be searched, and a pointer to that row is passed as a variable
   float getLatitude(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getFloat("Latitude");
@@ -36,6 +38,10 @@ class QueryManagerClass {
   String getCode(int index) {
     m_lookupResult = m_usaAirportIndexes.findRow(String.valueOf(index), 1);
     return m_lookupResult.getString(0);
+  }
+  int getIndex(String code) {
+    m_lookupResult = m_usaAirportIndexes.findRow(code, 0);
+    return m_lookupResult.getInt(1);
   }
   public void queryFlights(FlightType[] flightsList, FlightQueryType queryType, FlightQueryOperator queryOperator, int queryValue, int threadCount, Consumer<FlightType[]> onTaskComplete) {
     if (m_working) {
