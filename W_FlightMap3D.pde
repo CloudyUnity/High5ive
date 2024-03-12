@@ -41,7 +41,7 @@ class FlightMap3D extends Widget implements IDraggable {
   private PShader m_earthShader, m_sunShader, m_postProcessingShader, m_skyboxShader;
   private PImage m_starsTex;
 
-  private PVector m_earthRotation = new PVector(0, 0, 0);
+  private PVector m_earthRotation = new PVector(0, 90, 0);
   private PVector m_earthRotationalVelocity = new PVector(0, 0, 0);
   private final float m_earthRotationalFriction = 0.99;
 
@@ -50,6 +50,7 @@ class FlightMap3D extends Widget implements IDraggable {
   private int m_arcStartGrowMillis = 0;
   private boolean m_connectionsEnabled = true;
   private boolean m_textEnabled = true;
+  private boolean m_markersEnabled = true;
 
   private boolean m_assetsLoaded = false;
   private boolean m_drawnLoadingScreen = false;
@@ -62,7 +63,7 @@ class FlightMap3D extends Widget implements IDraggable {
   private PVector m_earthPos;
 
   public FlightMap3D(int posX, int posY, int scaleX, int scaleY) {
-    super(posX, posY, scaleX, scaleY);    
+    super(posX, posY, scaleX, scaleY);
     m_starsTex = loadImage("data/Images/Stars2k.jpg");
 
     new Thread(() -> {
@@ -142,7 +143,7 @@ class FlightMap3D extends Widget implements IDraggable {
 
     s_3D.shape(m_earthModel);
     s_3D.resetShader();
-    s_3D.popMatrix();       
+    s_3D.popMatrix();
 
     PVector sunTranslation = lightDir.copy().mult(-3000);
     s_3D.shader(m_sunShader);
@@ -193,8 +194,10 @@ class FlightMap3D extends Widget implements IDraggable {
     for (AirportPointType point : m_airportHashmap.values()) {
       PVector endline = point.Pos.copy().mult(1.05f);
 
-      s_3D.stroke(point.Color);
-      s_3D.line(point.Pos.x, point.Pos.y, point.Pos.z, endline.x, endline.y, endline.z);
+      if (m_markersEnabled) {
+        s_3D.stroke(point.Color);
+        s_3D.line(point.Pos.x, point.Pos.y, point.Pos.z, endline.x, endline.y, endline.z);
+      }
 
       if (m_connectionsEnabled) {
         s_3D.stroke(255, 255, 255, 255);
@@ -313,6 +316,10 @@ class FlightMap3D extends Widget implements IDraggable {
 
   public void setTextEnabled(boolean enabled) {
     m_textEnabled = enabled;
+  }
+
+  public void setMarkersEnabled(boolean enabled) {
+    m_markersEnabled = enabled;
   }
 
   public void loadFlights(FlightType[] flights, QueryManagerClass queries) {
