@@ -31,8 +31,8 @@ class ApplicationClass {
     ScreenFlightMap sfm = new ScreenFlightMap((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, SCREEN_FLIGHT_MAP_ID, m_queryManager);
     m_screens.add(sfm);
     
-    TextBoxDemoScreen d = new TextBoxDemoScreen(700, 700, TB_DEMO_ID);
-    m_screens.add(d);
+    // TextBoxDemoScreen d = new TextBoxDemoScreen(700, 700, TB_DEMO_ID);
+    // m_screens.add(d);
 
     m_currentScreen = m_screens.get(0);
 
@@ -94,6 +94,13 @@ class ApplicationClass {
   void onMouseClick() {
     if (m_currentScreen != null)
       m_currentScreen.onMouseClick();
+  }
+  
+  void onMouseWheel(MouseEvent event){
+    if (m_currentScreen != null){
+      m_currentScreen.onMouseWheel(event);
+    }
+  
   }
 
   public void onKeyPressed(char k) {

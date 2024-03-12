@@ -34,6 +34,7 @@ class RadioButtonUI extends Widget implements IClickable {
   public RadioButtonUI(int posX, int posY, int scaleX, int scaleY, String label) {
     super(posX, posY, scaleX, scaleY);
     m_label = new LabelUI(posX + scaleY, posY, scaleX - scaleY, scaleY, label);
+    m_label.setForegroundColour(DEFAULT_TEXT_COLOUR_OUTSIDE);
 
     m_onCheckedEvent = new Event<EventInfoType>();
     m_onClickEvent = new Event<EventInfoType>();

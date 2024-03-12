@@ -17,13 +17,24 @@ final boolean DEBUG_DATA_LOADING = true;
 final boolean DEBUG_FPS_ENABLED = true;
 final boolean DEBUG_PRINT_3D_LOADING = false;
 
+// Color Palette
+final int CP_RED = #FF407D;
+final int CP_PINK = #FFCAD4;
+final int CP_BLUE = #40679E;
+final int CP_NAVY = #1B3C73;
+final int CP_WHITE = #F8F4EC;
+final int CP_BLACK = #402B3A;
+
 // Scene
-final int DEFAULT_FOREGROUND_COLOUR = #000000;
-final int DEFAULT_BACKGROUND_COLOUR = #F9F9F9;
-final int DEFAULT_OUTLINE_COLOUR = #000000;
-final int DEFAULT_CHECKBOX_CHECKED_COLOUR = #FF0000;
-final int DEFAULT_RADIOBUTTON_CHECKED_COLOUR = #00BCD4;
-final int DEFAULT_SLIDER_FILLED_COLOUR = #00BCD4;
+final int DEFAULT_FOREGROUND_COLOUR = CP_WHITE;
+final int DEFAULT_BACKGROUND_COLOUR = CP_WHITE;
+final int DEFAULT_OUTLINE_COLOUR = CP_PINK;
+final int DEFAULT_CHECKBOX_CHECKED_COLOUR = CP_RED;
+final int DEFAULT_RADIOBUTTON_CHECKED_COLOUR = CP_RED;
+final int DEFAULT_SLIDER_FILLED_COLOUR = CP_BLUE;
+final int DEFAULT_TEXT_COLOUR_INSIDE = CP_BLACK;
+final int DEFAULT_TEXT_COLOUR_OUTSIDE = CP_WHITE;
+final int DEFAULT_SCREEN_COLOUR = CP_BLACK;
 
 // IDs
 final String SCREEN_1_ID = "Screen 1";
@@ -31,10 +42,6 @@ final String SCREEN_2_ID = "Screen 2";
 final String SWITCH_TO_DEMO_ID = "Barchart demo screen";
 final String SCREEN_FLIGHT_MAP_ID = "Screen Flight Map";
 final String TB_DEMO_ID = "Textbox demo";
-
-// Color Palette (TODO)
-final int EXAMPLE_COLOR_1 = #000000;
-final int EXAMPLE_COLOR_2 = #000000;
 
 // Math
 final long MILLI_TO_NANO = 1_000_000;

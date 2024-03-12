@@ -1,6 +1,6 @@
 class Screen1 extends Screen {
   public Screen1(int scaleX, int scaleY, String screenId) {
-    super(scaleX, scaleY, screenId, color(220, 220, 220, 255));
+    super(scaleX, scaleY, screenId, DEFAULT_SCREEN_COLOUR);
 
     ButtonUI redBtn = createButton(50, 50, 200, 100);
     redBtn.getOnClickEvent().addHandler(e -> redButtonOnClick(e));
@@ -38,14 +38,13 @@ class Screen1 extends Screen {
     switchTo2D.setTextSize(25);
     switchTo2D.setGrowMode(true);
 
-
-    ButtonUI switchTo3D = createButton(350, 380, 100, 100);
+    ButtonUI switchTo3D = createButton(350, 260, 100, 100);
     switchTo3D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_FLIGHT_MAP_ID));
     switchTo3D.setText("3D (WIP)");
     switchTo3D.setTextSize(25);
     switchTo3D.setGrowMode(true);
 
-    CheckboxUI cb = createCheckbox(400, 500, 200, 50, "My checkbox");
+    CheckboxUI cb = createCheckbox(400, 400, 200, 50, "My checkbox");
     cb.setCheckedColour(color(255, 255, 0, 255));
     cb.setGrowMode(true);
     
@@ -81,7 +80,7 @@ class Screen2 extends Screen {
   private ArrayList<String> m_data;
 
   public Screen2(int scaleX, int scaleY, String screenId) {
-    super(scaleX, scaleY, screenId, color(150, 150, 150, 255));
+    super(scaleX, scaleY, screenId, DEFAULT_SCREEN_COLOUR);
 
     ButtonUI switchToScreen1Btn = createButton(width / 2 - 50, height / 2 - 50, 100, 100);
     switchToScreen1Btn.getOnMouseEnterEvent().addHandler(e -> changeOutlineColourOnEnter(e));
@@ -103,7 +102,7 @@ class Screen2 extends Screen {
     rb2.setGrowMode(true);
     group.addMember(rb2);
     
-    Image i1 = new Image(50, 50, 300, 300);  
+    ImageUI i1 = new ImageUI(50, 50, 300, 300);  
     addWidget(i1);
 
     createSlider(100, 400, 300, 50, 0, 100, 1);
@@ -216,15 +215,12 @@ class FlightCodesBarchartDemo extends Screen {
   }
 }
 
-
-
-
 class ScreenFlightMap extends Screen {
   FlightMap3D m_flightMap3D;
   QueryManagerClass m_queryManager;
   
   public ScreenFlightMap(int scaleX, int scaleY, String screenId, QueryManagerClass query) {
-    super(scaleX, scaleY, screenId, color(0, 0, 0, 255));
+    super(scaleX, scaleY, screenId, DEFAULT_SCREEN_COLOUR);
     
     m_queryManager = query;
 
@@ -236,16 +232,14 @@ class ScreenFlightMap extends Screen {
 
     ButtonUI uiBackground = createButton(0, 0, 200, 800);
     uiBackground.setHighlightOutlineOnEnter(false);
-    uiBackground.setBackgroundColour(color(150, 150, 150, 255));
+    uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
 
-    ButtonUI returnBttn = createButton(20, currentUIPosY, 50, 50);
+    ButtonUI returnBttn = createButton(20, currentUIPosY, 160, 50);
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
     returnBttn.setGrowMode(true);
     returnBttn.setText("Return");
-    returnBttn.setTextXOffset(70);
     returnBttn.setTextSize(textSize);
     returnBttn.getLabel().setCentreAligned(true);
-    returnBttn.getLabel().setScale(130, 50);
 
     currentUIPosY += 60;
 
@@ -309,14 +303,12 @@ class ScreenFlightMap extends Screen {
 
     currentUIPosY += 60;
 
-    ButtonUI resetArcGrow = createButton(20, currentUIPosY, 50, 50);
+    ButtonUI resetArcGrow = createButton(20, currentUIPosY, 160, 50);
     resetArcGrow.getOnClickEvent().addHandler(e -> m_flightMap3D.setArcGrowMillis(10_000, 0));
     resetArcGrow.setGrowMode(true);
     resetArcGrow.setText("Reset Arcs");
-    resetArcGrow.getLabel().setTextXOffset(70);
     resetArcGrow.setTextSize(textSize);
     resetArcGrow.getLabel().setCentreAligned(true);
-    resetArcGrow.getLabel().setScale(130, 50);
 
     currentUIPosY += 60;
 

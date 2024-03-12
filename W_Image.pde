@@ -1,4 +1,4 @@
-class Image extends Widget{
+class ImageUI extends Widget{
   
   private PImage m_displayedImage;
   private int m_posX;
@@ -6,7 +6,7 @@ class Image extends Widget{
   private int m_imageLength;
   private int m_imageWidth;
 
-  Image(int scaleY, int scaleX, int posX, int posY){
+  ImageUI(int scaleY, int scaleX, int posX, int posY){
     super(posX, posY, scaleX, scaleY);
     m_displayedImage = loadImage("data/Images/EarthDay2k.jpg");
     m_imageWidth = scaleX;
@@ -15,7 +15,7 @@ class Image extends Widget{
     m_posY = posY;
   }
   
-  Image(PImage inputImage, int scaleY, int scaleX, int posX, int posY){
+  ImageUI(PImage inputImage, int scaleY, int scaleX, int posX, int posY){
     super(posX, posY, scaleX, scaleY);
     m_displayedImage = inputImage;
     m_imageWidth = scaleX;
