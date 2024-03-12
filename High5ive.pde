@@ -4,7 +4,7 @@ DebugProfilerClass s_DebugProfiler = new DebugProfilerClass();
 PGraphics s_3D;
 int s_deltaTime;
 
-void setup() {
+void setup() {  
   fullScreen(P2D, SPAN);
 
   s_DebugProfiler.startProfileTimer();
@@ -17,10 +17,13 @@ void setup() {
 
   textFont(createFont("Century Gothic Bold", 48, true));
 
-  s_3D = createGraphics((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, P3D);  
+  s_3D = createGraphics((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, P3D);
+  if (!s_3D.isGL()) {
+    println("OpenGL is not available. Make sure hardware acceleration is enabled.");
+  }
 
   s_ApplicationClass.init();
-  
+
   s_DebugProfiler.printTimeTakenMillis("All Setup");
 }
 
@@ -29,6 +32,17 @@ void draw() {
   s_ApplicationClass.frame();
 }
 
+<<<<<<< HEAD
+=======
+void keyPressed() {
+  if (!keyPressed)
+    return;
+
+  //s_InputClass.setKeyState(key, true);
+  // s_ApplicationClass.onKeyPressed(key);
+}
+
+>>>>>>> b9c72474d5c2ad8dd1afe5da0513dcb0873b234d
 //void keyReleased() {
 //  s_InputClass.setKeyState(key, false);
 //}
@@ -47,7 +61,6 @@ void mouseDragged() {
 void mouseWheel(MouseEvent event) {
 
   s_ApplicationClass.onMouseWheel(event);
-
 }
 void resizeWindow(int w, int h) {
   surface.setSize(w, h);

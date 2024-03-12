@@ -36,18 +36,17 @@ class ApplicationClass {
     m_currentScreen = m_screens.get(0);
 
     PVector windowSize = m_currentScreen.getScale();
-    resizeWindow((int)windowSize.x, (int)windowSize.y);
+    if (!FULLSCREEN_ENABLED)
+      resizeWindow((int)windowSize.x, (int)windowSize.y);    
 
     if (DEBUG_DATA_LOADING) {
       m_flightsManager.init(4, list -> {        
-              
-        m_queryManager.queryFlights(list, FlightQueryType.AIRPORT_ORIGIN_INDEX, FlightQueryOperator.EQUAL, 1, 4, queriedList -> {
+        m_queryManager.queryFlights(list, FlightQueryType.MILES_DISTANCE, FlightQueryOperator.GREATER_THAN, 4000, 4, queriedList -> {
           s_DebugProfiler.startProfileTimer();
           screenFlightMap3D.startLoadingData(queriedList);
           s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
         }
         );
-        
       }
       );
     }
