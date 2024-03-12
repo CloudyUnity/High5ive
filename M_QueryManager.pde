@@ -349,3 +349,4 @@ class QueryManagerClass {
 // CKM, wrote comments about my code, 16:00 12/03
 // T. Creagh, Added Working queryFlights with world, 10pm, 12/03/24
 // T. Creagh, Added Working queryRangeFlights with world, 11pm, 12/03/24
+// T. Creagh, Added Working querySortFlights with world, 11:30pm, 12/03/24
