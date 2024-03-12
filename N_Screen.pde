@@ -59,7 +59,7 @@ abstract class Screen extends Widget implements IClickable {
   public Event<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
-  
+
   public Event<KeyPressedEventInfoType> getOnKeyPressedEvent() {
     return m_onKeyPressedEvent;
   }
@@ -130,12 +130,24 @@ abstract class Screen extends Widget implements IClickable {
       }
     }
   }
-  
+
+  private void onMouseWheel(MouseEvent event) {
+
+    for (WidgetGroupType group : this.m_groups) {
+      for (Widget child : group.getMembers()) {
+        if (child instanceof IWheelInput && child.isPositionInside(mouseX, mouseY)) {
+          ((IWheelInput)child).getOnMouseWheelEvent().raise(new MouseWheelEventInfoType(mouseX, mouseY, event.getCount(), child));
+        }
+      }
+    }
+  }
+
   private void onKeyPressed(KeyPressedEventInfoType e) {
     for (Widget child : m_children) {
       if (child instanceof IKeyInput && child.isFocused())
         ((IKeyInput)child).getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(e.X, e.Y, e.pressedKey, child));
     }
+
 
 
     for (WidgetGroupType group : this.m_groups) {
@@ -145,6 +157,7 @@ abstract class Screen extends Widget implements IClickable {
       }
     }
   }
+
 
   public String getScreenId() {
     return m_screenId;
@@ -192,3 +205,4 @@ abstract class Screen extends Widget implements IClickable {
 // Descending code authorship changes:
 // A. Robertson, Created screen class to represent an individual screen 12pm 04/03/24
 // F. Wright, Modified and simplified code to fit coding standard, 6pm 04/03/24
+// M. Poole, Created onMouseWheel method 1pm 12/03/24

@@ -12,6 +12,10 @@ interface IKeyInput {
   public Event<KeyPressedEventInfoType> getOnKeyPressedEvent();
 }
 
+interface IWheelInput{
+  public Event<MouseWheelEventInfoType> getOnMouseWheelEvent();
+}
+
 interface IChart<T> {
   public void addData(T[] data, Function<T, String> getKey);
   public <I extends Iterable<T>> void addData(I data, Function<T, String> getKey);

@@ -69,7 +69,21 @@ class SwitchScreenEventInfoType extends EventInfoType {
     NewScreenId = newScreenId;
   }
 }
+class MouseWheelEventInfoType extends EventInfoType {
+  
+  public float WheelCount;
+  
+  public MouseWheelEventInfoType(int x, int y, float wheelCount, Widget widget){
+  
+    super(x,y,widget);
+    WheelCount = wheelCount;
+    
+  }
+
+
+}
 
 // Descending code authorship changes:
 // A. Robertson, Created an event system including all required classes, 12pm 04/03/24
 // F. Wright, Modified code to fit coding standard, 6pm 04/03/24
+// M. Poole, implemented MouseWheelEventInfoType class 1pm 12/03/24
