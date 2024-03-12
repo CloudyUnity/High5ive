@@ -19,16 +19,16 @@ class ApplicationClass {
 
     m_onSwitchEvent.addHandler(e -> switchScreen(e));
 
-    Screen1 screen1 = new Screen1(600, 600, SCREEN_1_ID);
+    Screen1 screen1 = new Screen1(displayWidth, displayHeight, SCREEN_1_ID);
     m_screens.add(screen1);
 
-    Screen2 screen2 = new Screen2(700, 700, SCREEN_2_ID);
+    Screen2 screen2 = new Screen2(displayWidth, displayHeight, SCREEN_2_ID);
     m_screens.add(screen2);
 
-    Screen screenDemo = new FlightCodesBarchartDemo(700, 700, SWITCH_TO_DEMO_ID);
+    Screen screenDemo = new FlightCodesBarchartDemo(displayWidth, displayHeight, SWITCH_TO_DEMO_ID);
     m_screens.add(screenDemo);
 
-    ScreenFlightMap screenFlightMap3D = new ScreenFlightMap((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, SCREEN_FLIGHT_MAP_ID, m_queryManager);
+    ScreenFlightMap screenFlightMap3D = new ScreenFlightMap(displayWidth, displayHeight, SCREEN_FLIGHT_MAP_ID, m_queryManager);
     m_screens.add(screenFlightMap3D);
 
     // TextBoxDemoScreen d = new TextBoxDemoScreen(700, 700, TB_DEMO_ID);
