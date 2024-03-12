@@ -312,3 +312,4 @@ class QueryManagerClass {
 // K. McWilliam, ___, ___
 // T. Creagh, moved query methods in, 11pm 06/03/24
 // T. Creagh, fixed queryFrequency and queryRangeFrequency, 12pm 06/03/24
+// T. Creagh, removed redundant code, 12:30pm 06/03/24
