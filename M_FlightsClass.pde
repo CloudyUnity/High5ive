@@ -104,8 +104,8 @@ class FlightsManagerClass {
     s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
   }
   public void print(FlightType flight) {
-    printFlightHeading();
-    printFlight(flight);
+    // printFlightHeading();
+    // printFlight(flight);
   }
 
   // public void print(FlightType[] flights) {

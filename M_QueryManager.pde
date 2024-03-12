@@ -1,7 +1,6 @@
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
 class QueryManagerClass {
   Table m_airportTable;
   Table m_usaAirportIndexes;
@@ -210,8 +209,8 @@ class QueryManagerClass {
       return (int)flight.ArrivalTime;
     case CANCELLED_OR_DIVERTED:
       return (int)flight.CancelledOrDiverted;
-    case KILOMETRES_DISTANCE:
-      return (int)flight.KmDistance;
+    //case KILOMETRES_DISTANCE:
+    //  return (int)flight.KmDistance; // FIX HERE =====================================================================================================================================
     default:
       println("Error: FlightQueryType invalid");
       return -1;
@@ -267,9 +266,9 @@ class QueryManagerClass {
     case CANCELLED_OR_DIVERTED:
       flightComparator = Comparator.comparingInt(flight -> flight.CancelledOrDiverted);
       break;
-    case KILOMETRES_DISTANCE:
-      flightComparator = Comparator.comparingInt(flight -> flight.KmDistance);
-      break;
+    //case KILOMETRES_DISTANCE:
+    //  flightComparator = Comparator.comparingInt(flight -> flight.KmDistance); // FIX HERE ========================================================================
+      // break;
     default:
       println("Error: FlightQueryType invalid");
       return flightsList;
