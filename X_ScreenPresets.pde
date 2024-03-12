@@ -344,10 +344,15 @@ class ScreenFlightMap extends Screen {
 
 class TextBoxDemoScreen extends Screen {
   private TextboxUI box;
+  private ListboxUI<String> list;
   public TextBoxDemoScreen(int scaleX, int scaleY, String screenId) {
     super(scaleX, scaleY, screenId, color(220, 220, 220, 255));
     box = new TextboxUI(50, 50, 200, 50);
+    list = new ListboxUI<String>(50, 150, 200, 400, 40, v -> v);
+    list.add("One");
+    list.add("Two");
     addWidget(box);
+    addWidget(list);
   }
 }
 
