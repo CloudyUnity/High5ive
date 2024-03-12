@@ -69,7 +69,7 @@ class FlightMap3D extends Widget implements IDraggable {
     new Thread(() -> {
       m_earthModel = s_3D.createShape(SPHERE, EARTH_SPHERE_SIZE);
       m_sunModel = s_3D.createShape(SPHERE, 120);
-      m_skySphere = s_3D.createShape(SPHERE, 1000);
+      m_skySphere = s_3D.createShape(SPHERE, 9000);
       m_earthModel.disableStyle();
       m_sunModel.disableStyle();
       m_skySphere.disableStyle();
@@ -170,7 +170,6 @@ class FlightMap3D extends Widget implements IDraggable {
     s_3D.pushMatrix();
     s_3D.shader(m_skyboxShader);
     
-    s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
     s_3D.rotateX(m_earthRotation.x);
     s_3D.rotateY(m_rotationYModified - time);
 
@@ -359,3 +358,4 @@ class FlightMap3D extends Widget implements IDraggable {
 // F. Wright, Fixed loading screen, 10am, 08/03/24
 // F. Wright, Created latitude/longitude coords to 3D point converter and used geometric slerping to create arcs around the planet for connections between airports, 3pm 08/03/24
 // F. Wright, Specular maps, vertical scrolling, bigger window, more constants, growing arcs over time, 3pm 09/03/24
+// F. Wright, Did everything else in this tab. Too much to name one by one
