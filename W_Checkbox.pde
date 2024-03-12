@@ -22,7 +22,7 @@ class CheckboxUI extends Widget implements IClickable {
   }
 
   @ Override
-    public void draw() {
+  public void draw() {
     super.draw();
 
     fill(color(m_checked ? m_checkedColour : m_backgroundColour));
