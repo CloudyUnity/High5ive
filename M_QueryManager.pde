@@ -1,4 +1,6 @@
-//CKM: code to return details about airports
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
+
 
 class QueryManagerClass {
 
@@ -68,7 +70,6 @@ class QueryManagerClass {
     for (int i = 0; i < threadCount; i++) {
       int startPosition = i * chunkSize;
       long endPosition = (i == threadCount - 1) ? NUMBER_OF_FLIGHT_FULL_LINES : (i + 1) * chunkSize;
-      long processingSize = endPosition - startPosition;
 
       executor.submit(() -> {
         listOfFlightsLists.add(processQueryFlightsChunk(Arrays.copyOfRange(flightsList, startPosition, (int)endPosition), queryType, queryOperator, queryValue));
@@ -155,7 +156,6 @@ class QueryManagerClass {
     for (int i = 0; i < threadCount; i++) {
       int startPosition = i * chunkSize;
       long endPosition = (i == threadCount - 1) ? NUMBER_OF_FLIGHT_FULL_LINES : (i + 1) * chunkSize;
-      long processingSize = endPosition - startPosition;
 
       executor.submit(() -> {
         listOfFlightsLists.add(processQueryFlightsWithinRangeChunk(Arrays.copyOfRange(flightsList, startPosition, (int)endPosition), queryType, start, end));
@@ -283,20 +283,20 @@ class QueryManagerClass {
     Arrays.sort(flightsList, flightComparator);
     return flightsList;
   }
-  // public int queryFrequency(FlightType[] flightsList, FlightQueryType queryType, FlightQueryOperator queryOperator, int queryValue, int threadCount) {
-  //   int frequency = 0;
-  //   queryFlights(flightsList, queryType, queryOperator, queryValue, threadCount, returnedList -> {
-  //     return returnedList.length;
-  //   });
-  //   return frequency;
-  // }
-  // public int queryRangeFrequency(FlightType[] flightsList, FlightQueryType queryType, int start, int end, int threadCount) {
-  //   int frequency = 0;
-  //   queryFlightsWithinRange(flightList, queryType, start, end, threadCount, returnedList -> {
-  //     frequency = (int)returnedList.length;
-  //   });
-  //   return frequency;
-  // }
+  public int queryFrequency(FlightType[] flightsList, FlightQueryType queryType, FlightQueryOperator queryOperator, int queryValue, int threadCount) {
+    AtomicInteger frequency = new AtomicInteger(0);
+    queryFlights(flightsList, queryType, queryOperator, queryValue, threadCount, returnedList -> {
+      frequency.set(returnedList.length);
+    });
+    return frequency.get();
+  }
+  public int queryRangeFrequency(FlightType[] flightsList, FlightQueryType queryType, int start, int end, int threadCount) {
+    AtomicInteger frequency = new AtomicInteger(0);
+    queryFlightsWithinRange(flightsList, queryType, start, end, threadCount, returnedList -> {
+      frequency.set(returnedList.length);
+    });
+    return frequency.get();
+  }
   public FlightType[] getHead(FlightType[] flightList, int numberOfItems) {
     return Arrays.copyOfRange(flightList, 0, numberOfItems);
   }
@@ -307,3 +307,9 @@ class QueryManagerClass {
     return Arrays.copyOfRange(flightList, start, end);
   }
 }
+
+// Descending code authorship changes:
+// CKM: code to return details about airports
+// T. Creagh, moved query methods in, 11pm 06/03/24
+// T. Creagh, fixed queryFrequency and queryRangeFrequency, 12pm 06/03/24
+// T. Creagh, removed redundant code, 12:30pm 06/03/24
