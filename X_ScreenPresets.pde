@@ -2,23 +2,23 @@ class Screen1 extends Screen {
   public Screen1(int scaleX, int scaleY, String screenId) {
     super(scaleX, scaleY, screenId, DEFAULT_SCREEN_COLOUR);
 
-   /* ButtonUI redBtn = createButton(50, 50, 200, 100);
-    redBtn.getOnClickEvent().addHandler(e -> redButtonOnClick(e));
-    redBtn.setText("Red");
-    redBtn.setTextSize(30);
-    redBtn.setGrowMode(true);
-
-    ButtonUI greenBtn = createButton(50, 200, 200, 100);
-    greenBtn.getOnClickEvent().addHandler(e -> greenButtonOnClick(e));
-    greenBtn.setText("Green");
-    greenBtn.setTextSize(30);
-    greenBtn.setGrowMode(true);
-
-    ButtonUI blueBtn = createButton(50, 350, 200, 100);
-    blueBtn.getOnClickEvent().addHandler(e -> blueButtonOnClick(e));
-    blueBtn.setText("Blue");
-    blueBtn.setTextSize(30);
-    blueBtn.setGrowMode(true);*/
+    /* ButtonUI redBtn = createButton(50, 50, 200, 100);
+     redBtn.getOnClickEvent().addHandler(e -> redButtonOnClick(e));
+     redBtn.setText("Red");
+     redBtn.setTextSize(30);
+     redBtn.setGrowMode(true);
+     
+     ButtonUI greenBtn = createButton(50, 200, 200, 100);
+     greenBtn.getOnClickEvent().addHandler(e -> greenButtonOnClick(e));
+     greenBtn.setText("Green");
+     greenBtn.setTextSize(30);
+     greenBtn.setGrowMode(true);
+     
+     ButtonUI blueBtn = createButton(50, 350, 200, 100);
+     blueBtn.getOnClickEvent().addHandler(e -> blueButtonOnClick(e));
+     blueBtn.setText("Blue");
+     blueBtn.setTextSize(30);
+     blueBtn.setGrowMode(true);*/
 
     ButtonUI switchToTextboxDemo = createButton(50, 500, 200, 100);
     switchToTextboxDemo.getOnClickEvent().addHandler(e -> switchToTextBoxDemoOnClick(e));
@@ -26,7 +26,7 @@ class Screen1 extends Screen {
     switchToTextboxDemo.setTextSize(30);
     switchToTextboxDemo.setGrowMode(true);
 
-    ButtonUI switchToScreen2Btn = createButton(0 , 0, 100, 100);
+    ButtonUI switchToScreen2Btn = createButton(0, 0, 100, 100);
     switchToScreen2Btn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_2_ID));
     switchToScreen2Btn.setText("Screen 2");
     switchToScreen2Btn.setTextSize(25);
@@ -54,34 +54,34 @@ class Screen1 extends Screen {
     cb.setCheckedColour(color(255, 255, 0, 255));
     cb.setGrowMode(true);
   }
-  
+
   private void switchToTextBoxDemoOnClick(EventInfoType e) {
-      switchScreen(e, TB_DEMO_ID);
+    switchScreen(e, TB_DEMO_ID);
   }
 
- /* private void redButtonOnClick(EventInfoType e) {
-    ButtonUI btn = (ButtonUI)e.Widget;
-    if (btn.getBackgroundColour() == color(#FF0000))
-      btn.setBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
-    else
-      btn.setBackgroundColour(#FF0000);
-  }
-
-  private void greenButtonOnClick(EventInfoType e) {
-    ButtonUI btn = (ButtonUI)e.Widget;
-    if (btn.getBackgroundColour() == color(#00FF00))
-      btn.setBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
-    else
-      btn.setBackgroundColour(#00FF00);
-  }
-
-  private void blueButtonOnClick(EventInfoType e) {
-    ButtonUI btn = (ButtonUI)e.Widget;
-    if (btn.getBackgroundColour() == color(#0000FF))
-      btn.setBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
-    else
-      btn.setBackgroundColour(#0000FF);
-  }*/
+  /* private void redButtonOnClick(EventInfoType e) {
+   ButtonUI btn = (ButtonUI)e.Widget;
+   if (btn.getBackgroundColour() == color(#FF0000))
+   btn.setBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
+   else
+   btn.setBackgroundColour(#FF0000);
+   }
+   
+   private void greenButtonOnClick(EventInfoType e) {
+   ButtonUI btn = (ButtonUI)e.Widget;
+   if (btn.getBackgroundColour() == color(#00FF00))
+   btn.setBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
+   else
+   btn.setBackgroundColour(#00FF00);
+   }
+   
+   private void blueButtonOnClick(EventInfoType e) {
+   ButtonUI btn = (ButtonUI)e.Widget;
+   if (btn.getBackgroundColour() == color(#0000FF))
+   btn.setBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
+   else
+   btn.setBackgroundColour(#0000FF);
+   }*/
 }
 
 class Screen2 extends Screen {
@@ -312,16 +312,18 @@ class ScreenFlightMap extends Screen {
 
     currentUIPosY += 60;
 
-    ButtonUI resetArcGrow = createButton(20, currentUIPosY, 160, 50);
-    resetArcGrow.getOnClickEvent().addHandler(e -> m_flightMap3D.setArcGrowMillis(10_000, 0));
-    resetArcGrow.setGrowMode(true);
-    resetArcGrow.setText("Reset Arcs");
-    resetArcGrow.setTextSize(textSize);
-    resetArcGrow.getLabel().setCentreAligned(true);
+    CheckboxUI markersEnabledCB = createCheckbox(20, currentUIPosY, 50, 50, "Markers");
+    markersEnabledCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setMarkersEnabled(markersEnabledCB.getChecked()));
+    markersEnabledCB.setGrowMode(true);
+    markersEnabledCB.setChecked(true);
+    markersEnabledCB.getLabel().setTextXOffset(0);
+    markersEnabledCB.setTextSize(textSize);
+    markersEnabledCB.getLabel().setCentreAligned(true);
+    markersEnabledCB.getLabel().setScale(130, 50);
 
     currentUIPosY += 60;
 
-    CheckboxUI airportTextCB = createCheckbox(20, currentUIPosY, 50, 50, "Text Enabled");
+    CheckboxUI airportTextCB = createCheckbox(20, currentUIPosY, 50, 50, "Text");
     airportTextCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setTextEnabled(airportTextCB.getChecked()));
     airportTextCB.setGrowMode(true);
     airportTextCB.setChecked(true);
@@ -329,6 +331,15 @@ class ScreenFlightMap extends Screen {
     airportTextCB.setTextSize(textSize);
     airportTextCB.getLabel().setCentreAligned(true);
     airportTextCB.getLabel().setScale(130, 50);
+
+    currentUIPosY += 60;
+
+    ButtonUI resetArcGrow = createButton(20, currentUIPosY, 160, 50);
+    resetArcGrow.getOnClickEvent().addHandler(e -> m_flightMap3D.setArcGrowMillis(10_000, 0));
+    resetArcGrow.setGrowMode(true);
+    resetArcGrow.setText("Reset Arcs");
+    resetArcGrow.setTextSize(textSize);
+    resetArcGrow.getLabel().setCentreAligned(true);
 
     currentUIPosY += 60;
 
