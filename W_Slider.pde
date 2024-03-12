@@ -3,6 +3,8 @@ import java.util.TreeMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+// CKM : Proposed for Deprecation
+
 class SliderUI extends Widget implements IDraggable, IClickable {
   private LabelUI m_label;
   private int m_labelSpace;

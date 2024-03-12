@@ -316,7 +316,8 @@ class QueryManagerClass {
 }
 
 // Descending code authorship changes:
-// CKM: code to return details about airports
+// CKM: wrote class to return details about airports 17:00 11/03
 // T. Creagh, moved query methods in, 11pm 06/03/24
 // T. Creagh, fixed queryFrequency and queryRangeFrequency, 12pm 06/03/24
 // T. Creagh, removed redundant code, 12:30pm 06/03/24
+// CKM, wrote comments about my code, 16:00 12/03
