@@ -54,7 +54,7 @@ class FlightMap3D extends Widget implements IDraggable {
   private boolean m_assetsLoaded = false;
   private boolean m_drawnLoadingScreen = false;
   private boolean m_flightDataLoaded = false;
-  
+
   private float m_rotationYModified = 0;
 
   private HashMap<String, AirportPointType> m_airportHashmap = new HashMap<String, AirportPointType>();
@@ -63,8 +63,13 @@ class FlightMap3D extends Widget implements IDraggable {
 
   public FlightMap3D(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
+<<<<<<< HEAD
     
     m_starsTex = loadImage("data/Images/StarsLow.jpg");
+=======
+
+    m_starsTex = loadImage("data/Images/Stars2k.jpg");
+>>>>>>> 8845f556c0ba44c363d2b3718e57db238c058f5d
 
     new Thread(() -> {
       m_earthModel = s_3D.createShape(SPHERE, EARTH_SPHERE_SIZE);
@@ -77,8 +82,13 @@ class FlightMap3D extends Widget implements IDraggable {
       m_earthDayTex = loadImage("data/Images/EarthDay2k.jpg");
       m_earthNightTex = loadImage("data/Images/EarthNight2k.jpg");
       m_earthSpecularMap = loadImage("data/Images/EarthSpecular2k.tif");
+<<<<<<< HEAD
       m_sunTex = loadImage("data/Images/SunLow.jpg");
       m_noiseImg = loadImage("data/Images/noise.png");      
+=======
+      m_sunTex = loadImage("data/Images/Sun2k.jpg");
+      m_noiseImg = loadImage("data/Images/noise.png");
+>>>>>>> 8845f556c0ba44c363d2b3718e57db238c058f5d
 
       m_earthShader = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
       m_sunShader = loadShader("data/Shaders/SunFrag.glsl", "data/Shaders/BaseVert.glsl");
@@ -92,13 +102,13 @@ class FlightMap3D extends Widget implements IDraggable {
       m_postProcessingShader.set("noise", m_noiseImg);
       m_skyboxShader.set("tex", m_starsTex);
       setPermaDay(false);
-      
+
       m_assetsLoaded = true;
     }
     ).start();
 
     m_earthPos = new PVector(WINDOW_SIZE_3D_FLIGHT_MAP.x * 0.5f + posX, WINDOW_SIZE_3D_FLIGHT_MAP.y * 0.5f + posY, EARTH_Z);
-    
+
     m_onDraggedEvent.addHandler(e -> onDraggedHandler(e));
   }
 
@@ -122,7 +132,7 @@ class FlightMap3D extends Widget implements IDraggable {
       return;
     }
 
-    float time = millis() * DAY_CYCLE_SPEED;    
+    float time = millis() * DAY_CYCLE_SPEED;
     PVector lightDir = new PVector(cos(time), 0, sin(time));
     m_earthShader.set("lightDir", lightDir);
     m_sunShader.set("texTranslation", 0, time * 0.5f);
@@ -155,7 +165,7 @@ class FlightMap3D extends Widget implements IDraggable {
     s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
     s_3D.rotateX(m_earthRotation.x);
     s_3D.rotateY(m_rotationYModified);
-    s_3D.translate(sunTranslation.x, sunTranslation.y, sunTranslation.z);    
+    s_3D.translate(sunTranslation.x, sunTranslation.y, sunTranslation.z);
 
     s_3D.shape(m_sunModel);
     s_3D.popMatrix();
@@ -171,7 +181,7 @@ class FlightMap3D extends Widget implements IDraggable {
 
     s_3D.pushMatrix();
     s_3D.shader(m_skyboxShader);
-    
+
     s_3D.rotateX(m_earthRotation.x);
     s_3D.rotateY(m_rotationYModified - time);
 
@@ -361,3 +371,4 @@ class FlightMap3D extends Widget implements IDraggable {
 // F. Wright, Created latitude/longitude coords to 3D point converter and used geometric slerping to create arcs around the planet for connections between airports, 3pm 08/03/24
 // F. Wright, Specular maps, vertical scrolling, bigger window, more constants, growing arcs over time, 3pm 09/03/24
 // F. Wright, Did everything else in this tab. Too much to name one by one
+// CKM, made minor edits to neaten up code 16:00 12/03

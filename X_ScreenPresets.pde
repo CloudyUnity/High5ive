@@ -2,7 +2,7 @@ class Screen1 extends Screen {
   public Screen1(int scaleX, int scaleY, String screenId) {
     super(scaleX, scaleY, screenId, DEFAULT_SCREEN_COLOUR);
 
-    ButtonUI redBtn = createButton(50, 50, 200, 100);
+   /* ButtonUI redBtn = createButton(50, 50, 200, 100);
     redBtn.getOnClickEvent().addHandler(e -> redButtonOnClick(e));
     redBtn.setText("Red");
     redBtn.setTextSize(30);
@@ -18,15 +18,15 @@ class Screen1 extends Screen {
     blueBtn.getOnClickEvent().addHandler(e -> blueButtonOnClick(e));
     blueBtn.setText("Blue");
     blueBtn.setTextSize(30);
-    blueBtn.setGrowMode(true);
+    blueBtn.setGrowMode(true);*/
 
-    //ButtonUI switchToTextboxDemo = createButton(50, 500, 200, 100);
-    //switchToTextboxDemo.getOnClickEvent().addHandler(e -> switchToTextBoxDemoOnClick(e));
-    //switchToTextboxDemo.setText("Textbox demo");
-    //switchToTextboxDemo.setTextSize(30);
-    //switchToTextboxDemo.setGrowMode(true);
+    ButtonUI switchToTextboxDemo = createButton(50, 500, 200, 100);
+    switchToTextboxDemo.getOnClickEvent().addHandler(e -> switchToTextBoxDemoOnClick(e));
+    switchToTextboxDemo.setText("Textbox demo");
+    switchToTextboxDemo.setTextSize(30);
+    switchToTextboxDemo.setGrowMode(true);
 
-    ButtonUI switchToScreen2Btn = createButton(350, 20, 100, 100);
+    ButtonUI switchToScreen2Btn = createButton(0 , 0, 100, 100);
     switchToScreen2Btn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_2_ID));
     switchToScreen2Btn.setText("Screen 2");
     switchToScreen2Btn.setTextSize(25);
@@ -53,13 +53,13 @@ class Screen1 extends Screen {
     CheckboxUI cb = createCheckbox(400, 500, 200, 50, "My checkbox");
     cb.setCheckedColour(color(255, 255, 0, 255));
     cb.setGrowMode(true);
-
-    //private void switchToTextBoxDemoOnClick(EventInfoType e) {
-      //switchScreen(e, TB_DEMO_ID);
-    //}
+  }
+  
+  private void switchToTextBoxDemoOnClick(EventInfoType e) {
+      switchScreen(e, TB_DEMO_ID);
   }
 
-  private void redButtonOnClick(EventInfoType e) {
+ /* private void redButtonOnClick(EventInfoType e) {
     ButtonUI btn = (ButtonUI)e.Widget;
     if (btn.getBackgroundColour() == color(#FF0000))
       btn.setBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
@@ -81,7 +81,7 @@ class Screen1 extends Screen {
       btn.setBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
     else
       btn.setBackgroundColour(#0000FF);
-  }
+  }*/
 }
 
 class Screen2 extends Screen {
@@ -342,14 +342,14 @@ class ScreenFlightMap extends Screen {
   }
 }
 
-//class TextBoxDemoScreen extends Screen {
-  //private TextboxUI box;
-  //public TextBoxDemoScreen(int scaleX, int scaleY, String screenId) {
-    //super(scaleX, scaleY, screenId, color(220, 220, 220, 255));
-    //box = new TextboxUI(50, 50, 200, 50);
-    //addWidget(box);
-  //}
-//}
+class TextBoxDemoScreen extends Screen {
+  private TextboxUI box;
+  public TextBoxDemoScreen(int scaleX, int scaleY, String screenId) {
+    super(scaleX, scaleY, screenId, color(220, 220, 220, 255));
+    box = new TextboxUI(50, 50, 200, 50);
+    addWidget(box);
+  }
+}
 
 // Descending code authorship changes:
 // A. Robertson, Wrote Screen1 and Screen2 presets

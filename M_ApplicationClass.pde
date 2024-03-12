@@ -19,20 +19,20 @@ class ApplicationClass {
 
     m_onSwitchEvent.addHandler(e -> switchScreen(e));
 
-    Screen1 screen1 = new Screen1(600, 600, SCREEN_1_ID);
+    Screen1 screen1 = new Screen1(displayWidth, displayHeight, SCREEN_1_ID);
     m_screens.add(screen1);
 
-    Screen2 screen2 = new Screen2(700, 700, SCREEN_2_ID);
+    Screen2 screen2 = new Screen2(displayWidth, displayHeight, SCREEN_2_ID);
     m_screens.add(screen2);
 
-    Screen screenDemo = new FlightCodesBarchartDemo(700, 700, SWITCH_TO_DEMO_ID);
+    Screen screenDemo = new FlightCodesBarchartDemo(displayWidth, displayHeight, SWITCH_TO_DEMO_ID);
     m_screens.add(screenDemo);
 
-    ScreenFlightMap screenFlightMap3D = new ScreenFlightMap((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, SCREEN_FLIGHT_MAP_ID, m_queryManager);
+    ScreenFlightMap screenFlightMap3D = new ScreenFlightMap(displayWidth, displayHeight, SCREEN_FLIGHT_MAP_ID, m_queryManager);
     m_screens.add(screenFlightMap3D);
 
-    // TextBoxDemoScreen d = new TextBoxDemoScreen(700, 700, TB_DEMO_ID);
-    // m_screens.add(d);
+    TextBoxDemoScreen d = new TextBoxDemoScreen(700, 700, TB_DEMO_ID);
+    m_screens.add(d);
 
     m_currentScreen = m_screens.get(0);
 
@@ -99,9 +99,9 @@ class ApplicationClass {
   
   }
 
-  public void onKeyPressed(char k) {
+  public void onKeyPressed(char k, int kc) {
     if (m_currentScreen != null)
-      m_currentScreen.getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(mouseX, mouseY, k, m_currentScreen));
+      m_currentScreen.getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(mouseX, mouseY, k, kc, m_currentScreen));
   }
 
   public Event<SwitchScreenEventInfoType> getOnSwitchEvent() {
@@ -127,3 +127,4 @@ class ApplicationClass {
 // F. Wright, Modified onMouse() functions and merged functions from the old UI main into ApplicationClass, 6pm 04/03/24
 // F. Wright, Changed manual profiling to use DebugProfilingClass instead, 2pm 06/03/24
 // F. Wright, Fixed UI errors, 12pm 07/03/24
+// CKM, bought code to working levels 14:00 12/03

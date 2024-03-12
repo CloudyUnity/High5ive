@@ -20,4 +20,4 @@ class FlightMap2DUI extends Widget {
 }
 
 
-// Added this to not mess with anything else that uses the W_FlightMap map.
+// M. Orlowski: Added this to not mess with anything else that uses the W_FlightMap map.
