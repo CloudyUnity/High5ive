@@ -59,7 +59,7 @@ class Screen1 extends Screen {
     //}
   }
 
-  private void redButtonOnClick(EventInfoType e) {
+ /* private void redButtonOnClick(EventInfoType e) {
     ButtonUI btn = (ButtonUI)e.Widget;
     if (btn.getBackgroundColour() == color(#FF0000))
       btn.setBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
@@ -81,7 +81,7 @@ class Screen1 extends Screen {
       btn.setBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
     else
       btn.setBackgroundColour(#0000FF);
-  }
+  }*/
 }
 
 class Screen2 extends Screen {
