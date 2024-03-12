@@ -1,10 +1,10 @@
 ApplicationClass s_ApplicationClass = new ApplicationClass();
-InputClass s_InputClass = new InputClass();
+//InputClass s_InputClass = new InputClass();
 DebugProfilerClass s_DebugProfiler = new DebugProfilerClass();
 PGraphics s_3D;
 int s_deltaTime;
 
-void setup() {
+void setup() {  
   fullScreen(P2D, SPAN);
 
   s_DebugProfiler.startProfileTimer();
@@ -17,15 +17,18 @@ void setup() {
 
   textFont(createFont("Century Gothic Bold", 48, true));
 
-  s_3D = createGraphics((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, P3D);  
+  s_3D = createGraphics((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, P3D);
+  if (!s_3D.isGL()) {
+    println("OpenGL is not available. Make sure hardware acceleration is enabled.");
+  }
 
   s_ApplicationClass.init();
-  
+
   s_DebugProfiler.printTimeTakenMillis("All Setup");
 }
 
 void draw() {
-  s_InputClass.frame();
+  //s_InputClass.frame();
   s_ApplicationClass.frame();
 }
 
@@ -33,13 +36,13 @@ void keyPressed() {
   if (!keyPressed)
     return;
 
-  s_InputClass.setKeyState(key, true);
-  s_ApplicationClass.onKeyPressed(key);
+  //s_InputClass.setKeyState(key, true);
+  // s_ApplicationClass.onKeyPressed(key);
 }
 
-void keyReleased() {
-  s_InputClass.setKeyState(key, false);
-}
+//void keyReleased() {
+//  s_InputClass.setKeyState(key, false);
+//}
 
 void mousePressed() {
   s_ApplicationClass.onMouseClick();
@@ -55,7 +58,6 @@ void mouseDragged() {
 void mouseWheel(MouseEvent event) {
 
   s_ApplicationClass.onMouseWheel(event);
-
 }
 void resizeWindow(int w, int h) {
   surface.setSize(w, h);
@@ -69,3 +71,4 @@ void resizeWindow(int w, int h) {
 // F. Wright, Used symbolic linking to allow us to put all UI pde files into subfolder, 11pm 05/03/24
 // M. Poole, Modified to add to add mouseWheel(), 1pm 12/3/24 
 // CKM, implemented working fullscreen 15:00 12/03
+// CKM, commented out deprecated input class 16:00 12/03

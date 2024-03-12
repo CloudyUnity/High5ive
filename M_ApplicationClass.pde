@@ -31,13 +31,14 @@ class ApplicationClass {
     ScreenFlightMap screenFlightMap3D = new ScreenFlightMap(displayWidth, displayHeight, SCREEN_FLIGHT_MAP_ID, m_queryManager);
     m_screens.add(screenFlightMap3D);
 
-    // TextBoxDemoScreen d = new TextBoxDemoScreen(700, 700, TB_DEMO_ID);
-    // m_screens.add(d);
+    TextBoxDemoScreen d = new TextBoxDemoScreen(700, 700, TB_DEMO_ID);
+    m_screens.add(d);
 
     m_currentScreen = m_screens.get(0);
 
     PVector windowSize = m_currentScreen.getScale();
-    resizeWindow((int)windowSize.x, (int)windowSize.y);
+    if (!FULLSCREEN_ENABLED)
+      resizeWindow((int)windowSize.x, (int)windowSize.y);    
 
     if (DEBUG_DATA_LOADING) {
       m_flightsManager.init(4, list -> {        
@@ -96,9 +97,9 @@ class ApplicationClass {
   
   }
 
-  public void onKeyPressed(char k) {
+  public void onKeyPressed(char k, int kc) {
     if (m_currentScreen != null)
-      m_currentScreen.getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(mouseX, mouseY, k, m_currentScreen));
+      m_currentScreen.getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(mouseX, mouseY, k, kc, m_currentScreen));
   }
 
   public Event<SwitchScreenEventInfoType> getOnSwitchEvent() {
@@ -124,3 +125,4 @@ class ApplicationClass {
 // F. Wright, Modified onMouse() functions and merged functions from the old UI main into ApplicationClass, 6pm 04/03/24
 // F. Wright, Changed manual profiling to use DebugProfilingClass instead, 2pm 06/03/24
 // F. Wright, Fixed UI errors, 12pm 07/03/24
+// CKM, bought code to working levels 14:00 12/03

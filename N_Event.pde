@@ -37,9 +37,11 @@ class StringEnteredEventInfoType extends EventInfoType {
 
 class KeyPressedEventInfoType extends EventInfoType {
    public char pressedKey;
-   public KeyPressedEventInfoType(int x, int y, char k, Widget widget) {
+   public int pressedKeyCode;
+   public KeyPressedEventInfoType(int x, int y, char k, int kc, Widget widget) {
      super(x, y, widget);
      pressedKey = k;
+     pressedKeyCode = kc;
    }
 }
 
