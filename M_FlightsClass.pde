@@ -108,7 +108,6 @@ class FlightsManagerClass {
     printFlight(flight);
   }
 
-<<<<<<< HEAD
   // public void print(FlightType[] flights) {
   //   printFlightHeading();
   //   for (FlightType flight : flights)
@@ -155,53 +154,6 @@ class FlightsManagerClass {
   //     "KmDistance"
   //     );
   // }
-=======
-  public void print(FlightType[] flights) {
-    printFlightHeading();
-    for (FlightType flight : flights)
-      printFlight(flight);
-  }
-  public void print(FlightType[] flights, int amount) {
-    printFlightHeading();
-    for (int i = 0; i < amount; i++) {
-      printFlight(flights[i]);
-    }
-  }
-  private void printFlight(FlightType flight) { // Can be changed to a toString() override
-    println(
-      flight.Day + "\t" +
-      flight.CarrierCodeIndex + "\t\t" +
-      flight.FlightNumber + "\t\t" +
-      flight.AirportOriginIndex + "\t\t" +
-      flight.AirportDestIndex + "\t\t" +
-      flight.ScheduledDepartureTime + "\t\t\t" +
-      flight.DepartureTime + "\t\t" +
-      flight.DepartureDelay + "\t\t" +
-      flight.ScheduledArrivalTime + "\t\t\t" +
-      flight.ArrivalTime + "\t\t" +
-      flight.ArrivalDelay + "\t\t" +
-      flight.CancelledOrDiverted + "\t\t" +
-      flight.MilesDistance
-      );
-  }
-  private void printFlightHeading() {
-    println(
-      "Day\t" +
-      "CarrierCodeIndex\t" +
-      "FlightNumber\t" +
-      "AirportOriginIndex\t" +
-      "AirportDestIndex\t" +
-      "ScheduledDepartureTime\t" +
-      "DepartureTime\t" +
-      "DepartureDelay\t" +
-      "ScheduledArrivalTime\t\t" +
-      "ArrivalTime\t" +
-      "ArrivalDelay\t" +
-      "CancelledOrDiverted\t" +
-      "MilesDistance"
-      );
-  }
->>>>>>> b9c72474d5c2ad8dd1afe5da0513dcb0873b234d
 }
 
 
