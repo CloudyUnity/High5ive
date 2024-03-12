@@ -31,6 +31,7 @@ Feel free to disagree with any of these. We can put it up to a vote.
 ### Control Flow/Methods
 
 - There should be as few comments as possible. Use self-documenting code techniques. Use your best judgement.  
+- The spec requires comments. Use comments.
 - Avoid nesting statements multiple times. Use guard clauses and methods to break stuff up.  
 - Each method should do only a single task and the name should accurately describe what it does. Don't be afraid of long identifier names.  
 - The Main tab should have minimal functions like setup() and draw() and getting input.  
