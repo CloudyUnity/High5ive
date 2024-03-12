@@ -44,13 +44,13 @@ class Screen1 extends Screen {
     switchTo2D.setTextSize(25);
     switchTo2D.setGrowMode(true);
 
-    ButtonUI switchTo3D = createButton(350, 260, 100, 100);
+    ButtonUI switchTo3D = createButton(350, 380, 100, 100);
     switchTo3D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_FLIGHT_MAP_ID));
     switchTo3D.setText("3D (WIP)");
     switchTo3D.setTextSize(25);
     switchTo3D.setGrowMode(true);
 
-    CheckboxUI cb = createCheckbox(400, 400, 200, 50, "My checkbox");
+    CheckboxUI cb = createCheckbox(400, 500, 200, 50, "My checkbox");
     cb.setCheckedColour(color(255, 255, 0, 255));
     cb.setGrowMode(true);
 

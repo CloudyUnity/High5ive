@@ -7,8 +7,8 @@
 - Alex Robertson (roberta1tcd)
 - Kyara (Cosmo) McWilliam (Kya-ra)
 - Mateusz Orlowski (MO1805)
-- Matthew Poole (Matthew Poole)
-- Thomas Creagh (Thomas Creagh)
+- Matthew Poole (MPoole1105)
+- Thomas Creagh (ThomasCreagh)
 
 ## Coding Standard
 
