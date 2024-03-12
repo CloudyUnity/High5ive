@@ -3,12 +3,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 
 class QueryManagerClass {
-
   Table m_airportTable;
   Table m_usaAirportIndexes;
   TableRow m_lookupResult;
   private boolean m_working;
-  // push
 
   void init() {
     m_airportTable = loadTable("data/Preprocessed Data/airports.csv", "header");
@@ -226,7 +224,7 @@ class QueryManagerClass {
     case AIRPORT_ORIGIN_INDEX:
     case AIRPORT_DEST_INDEX:
     case CANCELLED_OR_DIVERTED:
-      if (queryOperator != FlightQueryOperator.EQUAL || queryOperator != FlightQueryOperator.NOT_EQUAL) {
+      if (queryOperator != FlightQueryOperator.EQUAL && queryOperator != FlightQueryOperator.NOT_EQUAL) {
         return false;
       } else {
         break;
