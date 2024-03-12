@@ -57,9 +57,6 @@ void mouseWheel(MouseEvent event) {
   s_ApplicationClass.onMouseWheel(event);
 
 }
-void resizeWindow(int w, int h) {
-  surface.setSize(w, h);
-}
 
 // Descending code authorship changes:
 // F. Wright, Made setup(), draw(), 8pm 23/02/24

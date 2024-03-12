@@ -37,7 +37,7 @@ class ApplicationClass {
     m_currentScreen = m_screens.get(0);
 
     PVector windowSize = m_currentScreen.getScale();
-    resizeWindow((int)windowSize.x, (int)windowSize.y);
+    
 
     if (DEBUG_DATA_LOADING) {
       m_flightsManager.init(4, list -> {        
@@ -115,7 +115,7 @@ class ApplicationClass {
         continue;
 
       m_currentScreen = screen;
-      resizeWindow((int)screen.getScale().x, (int)screen.getScale().y);
+     
       return;
     }
   }
@@ -126,3 +126,4 @@ class ApplicationClass {
 // F. Wright, Modified onMouse() functions and merged functions from the old UI main into ApplicationClass, 6pm 04/03/24
 // F. Wright, Changed manual profiling to use DebugProfilingClass instead, 2pm 06/03/24
 // F. Wright, Fixed UI errors, 12pm 07/03/24
+// M. Poole   Removed unecessary screen resizing method 3pm 12/03/24
