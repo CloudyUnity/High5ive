@@ -1,7 +1,3 @@
-// BROKEN CODE. DO NOT PUSH UNTIL IT RUNS!
-// 
-
-/*
 public class TextboxUI extends Widget implements IKeyInput, IClickable {
    private int fontSize = 24;
    private StringBuilder m_text;
@@ -16,6 +12,8 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
    
    public TextboxUI(int x, int y, int width, int height) {
      super(x, y, width, height);
+     m_backgroundColour = #FFFFFF;
+     m_foregroundColour = 0;
      m_text = new StringBuilder();
      m_onKeyPressedEvent = new Event<KeyPressedEventInfoType>();
      m_onClickEvent = new Event<EventInfoType>();
@@ -27,31 +25,10 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
      m_onKeyPressedEvent.addHandler(e -> onKeyPressed(e));
    }
    
-   TEXTBOX(int x, int y, int w, int h, boolean changable, boolean isOutputBox) {
-     X = x; Y = y; W = w; H = h; 
-     this.changable = changable;
-     this.isOutputBox = isOutputBox;
-   }
-   
-   void DRAW() {
-      // DRAWING THE BACKGROUND
-      
-      if (selected) {
-         fill(BackgroundSelected);
-         
-      } else {
-         fill(Background);
-      }
-      
-      if (BorderEnable && selected == true) {
-         strokeWeight(BorderWeight);
-         stroke(Border);
-      } else {
-         noStroke();
-      }
-      
-      rect(X, Y, W, H);
-      
+   void draw() {
+      super.draw();
+      fill(m_focused ? #FF0000 : m_backgroundColour);
+      rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y);
       // DRAWING THE TEXT ITSELF
       textAlign(LEFT, CENTER);
       fill(m_foregroundColour);
@@ -77,78 +54,52 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
       m_cursorPosition = text.length() - 1;
    }
    
-   private void addText(char text) {
-      // IF THE TEXT WIDTH IS IN BOUNDARIES OF THE TEXTBOX
-      if (textWidth(Text + text) < W - 10) {
-         Text += text;
-         TextLength++;
-      }
+   public String getText() {
+     return m_text.toString();
    }
    
-
-   
-   private void BACKSPACE() {
-     //BACKSPACE PROGRAM
-      if (TextLength - 1 >= 0) {
-         Text = Text.substring(0, TextLength - 1);
-         TextLength--;
-      }
-   }
-   
-   private String ENTER(){
-   // FUNCTION FOR SENDING TEXT CURRENTLY IN BOX TO OUTSIDE LIST/VAR
-     String tempText = Text;
-     Text = "";
-     TextLength = 0; 
-     return tempText;
-   
-   }
-   
-   public void SETINPUTTEXT(String input){
-     //SETS INPUT TEXT PRIVATE VARIBLE
-     InputText = input;
-   
+   private boolean isPrintable(char c) {
+     Character.UnicodeBlock block = Character.UnicodeBlock.of( c );
+      return (!Character.isISOControl(c)) &&
+            c != java.awt.event.KeyEvent.CHAR_UNDEFINED &&
+            block != null &&
+            block != Character.UnicodeBlock.SPECIALS;
    }
    
    private void onKeyPressed(KeyPressedEventInfoType e) {
-     if (e.pressedKey == BACKSPACE && m_text.length() > 0) {
-       m_text.deleteCharAt(m_text.length() - 1);
+     if (e.pressedKey == BACKSPACE) {
+       if (m_cursorPosition > 0) {
+         m_text.deleteCharAt(m_cursorPosition - 1);
+         m_cursorPosition--;
+       }
+     } else if (e.pressedKey == DELETE) {
+       if (m_cursorPosition < m_text.length()) {
+         m_text.deleteCharAt(m_cursorPosition);
+       }
+     } else if (e.pressedKeyCode == LEFT && m_cursorPosition > 0) {
        m_cursorPosition--;
-     } else if (e.pressedKey == LEFT && m_text.length() > 0) {
-       m_cursorPosition--;
-     } else if (e.pressedKey == RIGHT && m_cursorPosition < m_text.length()) {
+     } else if (e.pressedKeyCode == RIGHT && m_cursorPosition < m_text.length()) {
        m_cursorPosition++;
      } else if (e.pressedKey == RETURN || e.pressedKey == ENTER) {
        m_onStringEnteredEvent.raise(new StringEnteredEventInfoType((int)m_pos.x, (int)m_pos.y, m_text.toString(), this));
-     } else {
+     } else if (isPrintable(e.pressedKey)) {
        m_text.append(e.pressedKey);
        m_cursorPosition++;
      }
-   
    }
    
-   // FUNCTION FOR TESTING IS THE POINT
-   // OVER THE TEXTBOX
-   private boolean OVERBOX(int x, int y) {
-      if (x >= X && x <= X + W) {
-         if (y >= Y && y <= Y + H) {
-            return true;
-         }
-      }
-      
-      return false;
+   public Event<EventInfoType> getOnClickEvent() {
+     return m_onClickEvent;
    }
    
-   void PRESSED(int x, int y) { 
-     //FUNCTION TO CHECK IF A BOX SHOULD BE SELECTED 
-      if (OVERBOX(x, y)) {
-         selected = true;
-      } else {
-         selected = false;
-      }
+   public Event<StringEnteredEventInfoType> getOnStringEnteredEvent() {
+     return m_onStringEnteredEvent;
+   }
+   
+   public Event<KeyPressedEventInfoType> getOnKeyPressedEvent() {
+     return m_onKeyPressedEvent;
    }
 }
 
 // Code authorship:
 // M.Poole, Created textbox widget, 4:15pm 09/03/24
-*/

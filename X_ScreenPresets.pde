@@ -20,11 +20,11 @@ class Screen1 extends Screen {
     blueBtn.setTextSize(30);
     blueBtn.setGrowMode(true);
 
-    //ButtonUI switchToTextboxDemo = createButton(50, 500, 200, 100);
-    //switchToTextboxDemo.getOnClickEvent().addHandler(e -> switchToTextBoxDemoOnClick(e));
-    //switchToTextboxDemo.setText("Textbox demo");
-    //switchToTextboxDemo.setTextSize(30);
-    //switchToTextboxDemo.setGrowMode(true);
+    ButtonUI switchToTextboxDemo = createButton(50, 500, 200, 100);
+    switchToTextboxDemo.getOnClickEvent().addHandler(e -> switchToTextBoxDemoOnClick(e));
+    switchToTextboxDemo.setText("Textbox demo");
+    switchToTextboxDemo.setTextSize(30);
+    switchToTextboxDemo.setGrowMode(true);
 
     ButtonUI switchToScreen2Btn = createButton(350, 20, 100, 100);
     switchToScreen2Btn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_2_ID));
@@ -53,10 +53,10 @@ class Screen1 extends Screen {
     CheckboxUI cb = createCheckbox(400, 500, 200, 50, "My checkbox");
     cb.setCheckedColour(color(255, 255, 0, 255));
     cb.setGrowMode(true);
-
-    //private void switchToTextBoxDemoOnClick(EventInfoType e) {
-      //switchScreen(e, TB_DEMO_ID);
-    //}
+  }
+  
+  private void switchToTextBoxDemoOnClick(EventInfoType e) {
+      switchScreen(e, TB_DEMO_ID);
   }
 
   private void redButtonOnClick(EventInfoType e) {
@@ -342,14 +342,14 @@ class ScreenFlightMap extends Screen {
   }
 }
 
-//class TextBoxDemoScreen extends Screen {
-  //private TextboxUI box;
-  //public TextBoxDemoScreen(int scaleX, int scaleY, String screenId) {
-    //super(scaleX, scaleY, screenId, color(220, 220, 220, 255));
-    //box = new TextboxUI(50, 50, 200, 50);
-    //addWidget(box);
-  //}
-//}
+class TextBoxDemoScreen extends Screen {
+  private TextboxUI box;
+  public TextBoxDemoScreen(int scaleX, int scaleY, String screenId) {
+    super(scaleX, scaleY, screenId, color(220, 220, 220, 255));
+    box = new TextboxUI(50, 50, 200, 50);
+    addWidget(box);
+  }
+}
 
 // Descending code authorship changes:
 // A. Robertson, Wrote Screen1 and Screen2 presets
