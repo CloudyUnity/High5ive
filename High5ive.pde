@@ -29,14 +29,6 @@ void draw() {
   s_ApplicationClass.frame();
 }
 
-void keyPressed() {
-  if (!keyPressed)
-    return;
-
-  //s_InputClass.setKeyState(key, true);
-  //s_ApplicationClass.onKeyPressed(key);
-}
-
 //void keyReleased() {
 //  s_InputClass.setKeyState(key, false);
 //}
