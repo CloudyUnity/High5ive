@@ -32,17 +32,14 @@ void draw() {
   s_ApplicationClass.frame();
 }
 
-<<<<<<< HEAD
-=======
-void keyPressed() {
-  if (!keyPressed)
-    return;
+// do these do anything?
+
+// void keyPressed() {
 
   //s_InputClass.setKeyState(key, true);
   // s_ApplicationClass.onKeyPressed(key);
 }
 
->>>>>>> b9c72474d5c2ad8dd1afe5da0513dcb0873b234d
 //void keyReleased() {
 //  s_InputClass.setKeyState(key, false);
 //}
