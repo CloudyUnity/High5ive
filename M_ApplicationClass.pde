@@ -16,8 +16,6 @@ class ApplicationClass {
 
   void init() {
     m_queryManager.init();
-    // m_dataPreprocessor.init();
-    // m_dataPreprocessor.convertCsvToBinaryFile("flights_full.csv", "flights_full.bin");
 
     m_onSwitchEvent.addHandler(e -> switchScreen(e));
 
