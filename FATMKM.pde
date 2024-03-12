@@ -17,7 +17,7 @@ void setup() {
 
   frameRate(FRAME_RATE);
 
-  textFont(loadFont("data/Fonts/AgencyFB-Bold-48.vlw"));
+  textFont(createFont("Century Gothic Bold", 48, true));
 
   s_3D = createGraphics((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, P3D);  
 
