@@ -109,8 +109,13 @@ abstract class Screen extends Widget implements IClickable {
 
     for (WidgetGroupType group : this.m_groups) {
       for (Widget child : group.getMembers()) {
-        if (child instanceof IClickable && child.isPositionInside(mouseX, mouseY)) {
-          ((IClickable)child).getOnClickEvent().raise(new EventInfoType(mouseX, mouseY, child));
+        if (child instanceof IClickable) {
+          if (child.isPositionInside(mouseX, mouseY)) {
+            ((IClickable)child).getOnClickEvent().raise(new EventInfoType(mouseX, mouseY, child));
+            child.setFocused(true);
+          } else {
+            child.setFocused(false);
+          }
         }
       }
     }
@@ -145,7 +150,7 @@ abstract class Screen extends Widget implements IClickable {
   private void onKeyPressed(KeyPressedEventInfoType e) {
     for (Widget child : m_children) {
       if (child instanceof IKeyInput && child.isFocused())
-        ((IKeyInput)child).getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(e.X, e.Y, e.pressedKey, child));
+        ((IKeyInput)child).getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(e.X, e.Y, e.pressedKey, e.pressedKeyCode, child));
     }
 
 
@@ -153,7 +158,7 @@ abstract class Screen extends Widget implements IClickable {
     for (WidgetGroupType group : this.m_groups) {
       for (Widget child : group.getMembers()) {
         if (child instanceof IKeyInput && child.isFocused())
-          ((IKeyInput)child).getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(e.X, e.Y, e.pressedKey, child));
+          ((IKeyInput)child).getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(e.X, e.Y, e.pressedKey, e.pressedKeyCode, child));
       }
     }
   }
