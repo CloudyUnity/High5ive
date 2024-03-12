@@ -220,14 +220,19 @@ class FlightCodesBarchartDemo extends Screen {
 }
 
 class ScreenFlightMap extends Screen {
-  public ScreenFlightMap(int scaleX, int scaleY, String screenId) {
+  FlightMap3D m_flightMap3D;
+  QueryManagerClass m_queryManager;
+  
+  public ScreenFlightMap(int scaleX, int scaleY, String screenId, QueryManagerClass query) {
     super(scaleX, scaleY, screenId, color(0, 0, 0, 255));
+    
+    m_queryManager = query;
 
     int currentUIPosY = 20;
     int textSize = 20;
 
-    FlightMap3D flight3D = new FlightMap3D(100, 0, 800, 800);
-    addWidget(flight3D);
+    m_flightMap3D = new FlightMap3D(100, 0, 800, 800);
+    addWidget(m_flightMap3D);    
 
     ButtonUI uiBackground = createButton(0, 0, 200, 800);
     uiBackground.setHighlightOutlineOnEnter(false);
@@ -246,7 +251,7 @@ class ScreenFlightMap extends Screen {
 
     CheckboxUI dayNightCB = createCheckbox(20, currentUIPosY, 50, 50, "Perma-Day");
     dayNightCB.setGrowMode(true);
-    dayNightCB.getOnClickEvent().addHandler(e -> flight3D.setPermaDay(dayNightCB.getChecked()));
+    dayNightCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setPermaDay(dayNightCB.getChecked()));
     dayNightCB.getLabel().setTextXOffset(0);
     dayNightCB.setTextSize(textSize);
     dayNightCB.getLabel().setCentreAligned(true);
@@ -294,7 +299,7 @@ class ScreenFlightMap extends Screen {
     currentUIPosY += 30 + radioButtonSize;
 
     CheckboxUI connectionsEnabledCB = createCheckbox(20, currentUIPosY, 50, 50, "Connections");
-    connectionsEnabledCB.getOnClickEvent().addHandler(e -> flight3D.setConnectionsEnabled(connectionsEnabledCB.getChecked()));
+    connectionsEnabledCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setConnectionsEnabled(connectionsEnabledCB.getChecked()));
     connectionsEnabledCB.setGrowMode(true);
     connectionsEnabledCB.setChecked(true);
     connectionsEnabledCB.getLabel().setTextXOffset(0);
@@ -305,7 +310,7 @@ class ScreenFlightMap extends Screen {
     currentUIPosY += 60;
 
     ButtonUI resetArcGrow = createButton(20, currentUIPosY, 50, 50);
-    resetArcGrow.getOnClickEvent().addHandler(e -> flight3D.setArcGrowMillis(10_000, 0));
+    resetArcGrow.getOnClickEvent().addHandler(e -> m_flightMap3D.setArcGrowMillis(10_000, 0));
     resetArcGrow.setGrowMode(true);
     resetArcGrow.setText("Reset Arcs");
     resetArcGrow.getLabel().setTextXOffset(70);
@@ -316,7 +321,7 @@ class ScreenFlightMap extends Screen {
     currentUIPosY += 60;
 
     CheckboxUI airportTextCB = createCheckbox(20, currentUIPosY, 50, 50, "Text Enabled");
-    airportTextCB.getOnClickEvent().addHandler(e -> flight3D.setTextEnabled(airportTextCB.getChecked()));
+    airportTextCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setTextEnabled(airportTextCB.getChecked()));
     airportTextCB.setGrowMode(true);
     airportTextCB.setChecked(true);
     airportTextCB.getLabel().setTextXOffset(0);
@@ -331,9 +336,8 @@ class ScreenFlightMap extends Screen {
     label.setTextSize(30);
   }
 
-  public void applyFlightData(FlightType[] flightData) {
-    for (int i = 0; i < flightData.length; i++) {
-    }
+  public void startLoadingData(FlightType[] flights){
+    m_flightMap3D.loadFlights(flights, m_queryManager);
   }
 }
 

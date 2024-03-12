@@ -5,7 +5,7 @@
 - Group B, Team 5
 - Finn Wright (CloudyUnity)
 - Alex Robertson (roberta1tcd)
-- Kyara (Cosmo) McWilliam (Cajm0)
+- Kyara (Cosmo) McWilliam (Kya-ra)
 - Mateusz Orlowski (MO1805)
 - Matthew Poole (Matthew Poole)
 - Thomas Creagh (Thomas Creagh)
@@ -82,57 +82,67 @@ Note that you might be able to do this using a git extension for processing, cmd
     git push origin master  
 14. Once committed to master, delete your branch or local repo to prevent it getting behind.
 
-### Data Preprocessing and reading:
+### Data Preprocessing [US Dataset]:
 
 ```
-_----------------------------------------------------------------------------------------------------------_
-| Type:    | FL_DATE             | MKT_CARRIER         | MKT_CARRIER_FL_NUM  |                             |
-| VarSize: | byte                | byte                | short               |                             |
-| Reading: | 0001 1111           | 0000 1001           | 0000 0001 0111 0001 |                             |
-|----------------------------------------------------------------------------------------------------------|
-| Type:    | ORIGIN              | DEST                | CRS_DEP_TIME        | DEP_TIME                    |
-| VarSize: | short               | short               | shorts              | short                       |
-| Reading: | 0000 0001 0111 0001 | 0000 0001 0111 0001 | 1111 1111 1111 1111 | 1111 1111 1111 1111         |
-|----------------------------------------------------------------------------------------------------------|
-| Type:    | CRS_ARR_TIME        | ARR_TIME            |                                                   |
-| VarSize: | short               | short               |                                                   |         
-| Reading: | 1111 1111 1111 1111 | 1111 1111 1111 1111 |                                                   | 
-|----------------------------------------------------------------------------------------------------------|
-| Type:    | CANCELLED/DIVERTED  | DISTANCE            | PADDING                                           |
-| VarSize: | byte                | short               | 0 bytes                                           |
-| Reading: | 0000  0010          | 1111 1111 1111 1111 |                                                   |
--__________________________________________________________________________________________________________-
+_--------------------------------------------------------------------------------------------------_
+| Type:    | FL_DATE             | MKT_CARRIER         | MKT_CARRIER_FL_NUM  | ORIGIN              |
+| VarSize: | byte                | byte                | short               | short               |
+| Reading: | 0001 1111           | 0000 1001           | 0000 0001 0111 0000 | 0000 0001 0111 0000 |
+|--------------------------------------------------------------------------------------------------|
+| Type:    | DEST                | CRS_DEP_TIME        | DEP_TIME            | DEP_DELAY           |
+| VarSize: | short               | shorts              | short               | short               |
+| Reading: | 0000 0001 0111 0000 | 1111 1111 1111 1111 | 1111 1111 1111 1111 | 1111 1111 1111 1111 |
+|--------------------------------------------------------------------------------------------------|
+| Type:    | DEP_DELAY           | CRS_ARR_TIME        | ARR_TIME            | CANCELLED/DIVERTED  |
+| VarSize: | short               | short               | short               | byte                |        
+| Reading: | 1111 1111 1111 1111 | 1111 1111 1111 1111 | 1111 1111 1111 1111 | 0000 0010          |
+|--------------------------------------------------------------------------------------------------|
+| Type:    | DISTANCE            | PADDING                                                         |
+| VarSize: | short               | 0 bytes                                                         |
+| Reading: | 1111 1111 1111 1111 |                                                                 |
+-__________________________________________________________________________________________________-
 
-Max Bytes: 0001 1111 0000 1001 0000 0001 0111 000 0000 0001 0111 0000 0000 0001 0111 0000 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 0000 0010 1111 1111 1111 1111
-Max Bits:  0001111100001001000000010111000000000010111000000000001011100001111111111111111111111111111111111111111111111111111111111111111000000101111111111111111
+Max Bytes: 0001 1111,  0000 1001,  0000 0001 0111 000,  0000 0001 0111 0000,  0000 0001 0111 0000,  1111 1111 1111 1111,  1111 1111 1111 1111,  1111 1111 1111 1111,  1111 1111 1111 1111,  1111 1111 1111 1111,  1111 1111 1111 1111,  0000 0010,  1111 1111 1111 1111
+Max Bits:  0001111100001001000000010111000000000001011100000000000101110000111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111000000101111111111111111
 
-Total Bytes: 19 bytes
-Total Bits: 152 bits
+Total Bytes: 23 bytes
+Total Bits: 184 bits
 
 Total file lines: 563,737
-Total file size: 10,711,003 bytes   or  10.711003 mega bytes
+Total file size: 12,965,951 bytes   or  12.965951 mega bytes
 
 MKT_CARRIER:
-AA = 0000 0000
-AS = 0000 0001
-B6 = 0000 0010
-DL = 0000 0011
-F9 = 0000 0100
-G4 = 0000 0101
-HA = 0000 0110
-NK = 0000 0111
-UA = 0000 1000
-WN = 0000 1001
+AA = 0000 0000 [0x00]
+AS = 0000 0001 [0x01]
+B6 = 0000 0010 [0x02]
+DL = 0000 0011 [0x03]
+F9 = 0000 0100 [0x04]
+G4 = 0000 0101 [0x05]
+HA = 0000 0110 [0x06]
+NK = 0000 0111 [0x07]
+UA = 0000 1000 [0x08]
+WN = 0000 1001 [0x09]
 
 ORIGIN and DEST:
-ABE = 0000 0000 0000 0000
+ABE = 0000 0000 0000 0000 [0x0000]
+ABI = 0000 0000 0000 0001 [0x0001]
     ...
-YUM = 0000 0001 0111 0001
+JMS = 0000 0000 1011 1010 [0x00BA]
+    ...
+YKM = 0000 0001 0111 0100 [0x0174]
+YUM = 0000 0001 0111 0101 [0x0175]
 
 CANCELLED/DIVERTED:
-NONE        = 0000 0000
-CANCELLED   = 0000 0001
-DIVERTED    = 0000 0010
+NONE        = 0000 0000 [0x00]
+CANCELLED   = 0000 0001 [0x01]
+DIVERTED    = 0000 0010 [0x02]
+```
+## Data Preprocessing [World Version]:
+```
+routes.csv: Contains a code for the operating airline, the origin airport IATA code and the destination airport IATA code
+airlines.csv: Contains the IATA code and name of every airline in the dataset
+airports.csv: Contains the IATA code, name and coordinates of 8k airports around the world
 ```
 
 ## Troubleshooting
@@ -149,9 +159,9 @@ DIVERTED    = 0000 0010
 
 - Preprocess data into binary (Kyara (Cosmo) McWilliam (Cajm0))
 - Read data very efficiently (Thomas Creagh (Thomas Creagh))
-- Query data (Thomas Creagh (Thomas Creagh))
-- Manipulate data (?)
-- Conjoin data with other dataset (?)
+- Query data (Thomas Creagh (Thomas Creagh) & Kyara (Cosmo) McWilliam (Cajm0))
+- Manipulate data (Thomas Creagh (Thomas Creagh) & Kyara (Cosmo) McWilliam (Cajm0))
+- Conjoin data with other dataset (Thomas Creagh (Thomas Creagh) & Kyara (Cosmo) McWilliam (Cajm0))
 - Create GUI widgets (Alex Robertson (roberta1tcd))
 - 3D flight map (Finn Wright (CloudyUnity))
 - Design the gui place widgets (?)

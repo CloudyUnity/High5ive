@@ -23,15 +23,31 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
      m_onKeyPressedEvent.addHandler(e -> onKeyPressed(e));
    }
    
-   @ Override
-   public void draw() {
+   TEXTBOX(int x, int y, int w, int h, boolean changable, boolean isOutputBox) {
+     X = x; Y = y; W = w; H = h; 
+     this.changable = changable;
+     this.isOutputBox = isOutputBox;
+   }
+   
+   void DRAW() {
       // DRAWING THE BACKGROUND
-      super.draw();
       
-      fill(m_backgroundColour);
-
-      rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y);
-            
+      if (selected) {
+         fill(BackgroundSelected);
+         
+      } else {
+         fill(Background);
+      }
+      
+      if (BorderEnable && selected == true) {
+         strokeWeight(BorderWeight);
+         stroke(Border);
+      } else {
+         noStroke();
+      }
+      
+      rect(X, Y, W, H);
+      
       // DRAWING THE TEXT ITSELF
       textAlign(LEFT, CENTER);
       fill(m_foregroundColour);
@@ -57,20 +73,37 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
       m_cursorPosition = text.length() - 1;
    }
    
-   public String getText() {
-     return m_text.toString();
+   private void addText(char text) {
+      // IF THE TEXT WIDTH IS IN BOUNDARIES OF THE TEXTBOX
+      if (textWidth(Text + text) < W - 10) {
+         Text += text;
+         TextLength++;
+      }
    }
    
-   public Event<KeyPressedEventInfoType> getOnKeyPressedEvent() {
-     return m_onKeyPressedEvent; 
+
+   
+   private void BACKSPACE() {
+     //BACKSPACE PROGRAM
+      if (TextLength - 1 >= 0) {
+         Text = Text.substring(0, TextLength - 1);
+         TextLength--;
+      }
    }
    
-   public Event<EventInfoType> getOnClickEvent() {
-     return m_onClickEvent;
+   private String ENTER(){
+   // FUNCTION FOR SENDING TEXT CURRENTLY IN BOX TO OUTSIDE LIST/VAR
+     String tempText = Text;
+     Text = "";
+     TextLength = 0; 
+     return tempText;
+   
    }
    
-   public Event<StringEnteredEventInfoType> getOnStringEnteredEvent() {
-     return m_onStringEnteredEvent;
+   public void SETINPUTTEXT(String input){
+     //SETS INPUT TEXT PRIVATE VARIBLE
+     InputText = input;
+   
    }
    
    private void onKeyPressed(KeyPressedEventInfoType e) {
@@ -87,9 +120,30 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
        m_text.append(e.pressedKey);
        m_cursorPosition++;
      }
+   
+   }
+   
+   // FUNCTION FOR TESTING IS THE POINT
+   // OVER THE TEXTBOX
+   private boolean OVERBOX(int x, int y) {
+      if (x >= X && x <= X + W) {
+         if (y >= Y && y <= Y + H) {
+            return true;
+         }
+      }
+      
+      return false;
+   }
+   
+   void PRESSED(int x, int y) { 
+     //FUNCTION TO CHECK IF A BOX SHOULD BE SELECTED 
+      if (OVERBOX(x, y)) {
+         selected = true;
+      } else {
+         selected = false;
+      }
    }
 }
 
 // Code authorship:
 // M.Poole, Created textbox widget, 4:15pm 09/03/24
-// A. Robertson, Adapted textbox to fit in with the event system, 15:00 11/03/2024
