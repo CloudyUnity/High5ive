@@ -37,7 +37,8 @@ class ApplicationClass {
     m_currentScreen = m_screens.get(0);
 
     PVector windowSize = m_currentScreen.getScale();
-    resizeWindow((int)windowSize.x, (int)windowSize.y);
+    if (!FULLSCREEN_ENABLED)
+      resizeWindow((int)windowSize.x, (int)windowSize.y);    
 
     if (DEBUG_DATA_LOADING) {
       m_flightsManager.init(4, list -> {        

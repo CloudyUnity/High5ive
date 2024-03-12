@@ -2,7 +2,7 @@
 final int FRAME_RATE = 72;
 final int FIXED_FRAME_INCREMENT = 50;
 final int INPUT_ARRAY_LENGTH = 70000;
-final boolean FULLSCREEN_ENABLED = false;
+final boolean FULLSCREEN_ENABLED = true;
 
 // Data/Files
 final int LINE_BYTE_SIZE = 23;
