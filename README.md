@@ -163,7 +163,7 @@ airports.csv: Contains the IATA code, name and coordinates of 8k airports around
 
 - Preprocess data into binary (Kyara (Cosmo) McWilliam (Cajm0))
 - Read data very efficiently (Thomas Creagh (Thomas Creagh))
-- Query data (Thomas Creagh (Thomas Creagh))
+- Query data (Thomas Creagh (Thomas Creagh) & Kyara (Cosmo) McWilliam (Cajm0))
 - Manipulate data (?)
 - Conjoin data with other dataset (?)
 - Create GUI widgets (Alex Robertson (roberta1tcd))
