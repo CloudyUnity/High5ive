@@ -1,6 +1,3 @@
-// TODO
-// Resize listbox up until max size
-
 class DropdownUI<T> extends Widget implements IClickable, IWheelInput {  
   private Event<EventInfoType> m_onClickEvent;
   private Event<MouseWheelEventInfoType> m_onMouseWheelMoved;
@@ -29,11 +26,12 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
     m_dropdownButton = new ButtonUI((int)(posX + m_textbox.getScale().x), posY, (int)m_textbox.getScale().y, (int)m_textbox.getScale().y);
     m_listbox = new ListboxUI<T>((int)m_pos.x, (int)m_pos.y + (int)m_textbox.getScale().y, (int)m_scale.x, (int)(m_scale.y - m_textbox.getScale().y), entryHeight, getDisplayString);
     
+    m_listbox.setOnlyUseNeededHeight(true);
+    
     m_textbox.setUserModifiable(false);
     
     m_dropdownButton.setText("+");
     
-    m_textbox.getOnClickEvent().addHandler(e -> onTextboxClicked(e));
     m_dropdownButton.getOnClickEvent().addHandler(e -> onDropdownButtonClicked(e));
     m_listbox.getOnClickEvent().addHandler(e -> onListboxClick(e));
     m_listbox.getOnSelectedEntryChangedEvent().addHandler(e -> onListboxSelectionChanged(e));
@@ -61,10 +59,15 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
     return m_listbox.getSelectedEntry();
   }
   
+  public int getSelectedIndex() {
+    return m_listbox.getSelectedIndex();
+  }
+  
   @ Override
   public boolean isPositionInside(int mx, int my) {
     if (m_showList) {
-      return super.isPositionInside(mx, my);
+      return  mx >= m_pos.x && mx <= (m_pos.x + m_scale.x) &&
+              my >= m_pos.y && my <= (m_pos.y + m_textbox.getScale().y + m_listbox.shownHeight());
     } else {
       return mx >= m_pos.x && mx <= (m_pos.x + m_scale.x) &&
              my >= m_pos.y && my <= (m_pos.y + m_textbox.getScale().y);
@@ -90,28 +93,21 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
       m_listbox.getOnClickEvent().raise(new EventInfoType(e.X, e.Y, m_listbox));
   }
   
-  private void onTextboxClicked(EventInfoType e) {
-    if (!m_showList) {
-      m_showList = true; 
-    }
-  }
-  
   private void onDropdownButtonClicked(EventInfoType e) {
     if (m_showList) {
-      m_showList = false;
-      ((ButtonUI)e.Widget).setText("+");
+      closeList();
     } else {
-      m_showList = true;
-      ((ButtonUI)e.Widget).setText("-");
+      openList();
     }
   }
   
   private void onListboxSelectionChanged(ListboxSelectedEntryChangedEventInfoType<T> e) {
     m_textbox.setText(m_getDisplayString.apply(e.data));
+    closeList();
   }
   
   private void onListboxClick(EventInfoType e) {
-    m_showList = false;
+    closeList();
   }
   
   private void onMouseWheelMoved(MouseWheelEventInfoType e) {
@@ -122,6 +118,16 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
   }
   
   private void onFocusLost(EventInfoType e) {
+    closeList();
+  }
+  
+  private void openList() {
+    m_showList = true;
+    m_dropdownButton.setText("-");
+  }
+  
+  private void closeList() {
     m_showList = false;
+    m_dropdownButton.setText("+");
   }
 }

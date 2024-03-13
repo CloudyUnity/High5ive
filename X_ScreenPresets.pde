@@ -448,6 +448,7 @@ class AlexTestingScreen extends Screen {
     super(scaleX, scaleY, screenId, color(220, 220, 220, 255));
     box = new TextboxUI(50, 70, 200, 50);
     list = new ListboxUI<String>(50, 170, 200, 400, 40, v -> v);
+        
     addItemButton = createButton(300, 50, 80, 20);
     addItemButton.setText("Add item");
     addItemButton.getOnClickEvent().addHandler(e -> addItemOnClick(e));
