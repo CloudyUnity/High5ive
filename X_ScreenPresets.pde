@@ -224,38 +224,6 @@ class FlightCodesBarchartDemo extends Screen {
   }
 }
 
-class TwoDMapScreen extends Screen {
-  FlightMap2DUI m_flightMap;
-  QueryManagerClass m_twodQueryManager;
-
-  public TwoDMapScreen (int scaleX, int scaleY, String screenId, QueryManagerClass query) {
-    super(scaleX, scaleY, screenId, DEFAULT_SCREEN_COLOUR);
-
-    m_twodQueryManager = query;
-    int currentUIPosY = 20;
-    int textSize = 20;
-
-    m_flightMap = new FlightMap2DUI(100, 0, 100, 100);
-    addWidget(m_flightMap);
-   
-
-    ButtonUI uiBackground = createButton(0, 0, 200, 800);
-    uiBackground.setHighlightOutlineOnEnter(false);
-    uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
-
-    ButtonUI returnBttn = createButton(20, currentUIPosY, 160, 50);
-    returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
-    returnBttn.setGrowMode(true);
-    returnBttn.setText("Return");
-    returnBttn.setTextSize(textSize);
-    returnBttn.getLabel().setCentreAligned(true);
-
-    currentUIPosY += 60;
-  }
-}
-
-
-
 class ScreenFlightMap extends Screen {
   FlightMap3D m_flightMap3D;
   QueryManagerClass m_queryManager;
@@ -268,9 +236,7 @@ class ScreenFlightMap extends Screen {
     int currentUIPosY = 20;
     int textSize = 20;
 
-    int dragWindowX = width - 200;
-    int dragWindowY = height;
-    m_flightMap3D = new FlightMap3D(100, 0, dragWindowX, dragWindowY);
+    m_flightMap3D = new FlightMap3D(100, 0, 800, 800);
     addWidget(m_flightMap3D);
 
     ButtonUI uiBackground = createButton(0, 0, 200, 800);
@@ -368,14 +334,14 @@ class ScreenFlightMap extends Screen {
 
     currentUIPosY += 60;
     
-    CheckboxUI draggingCB = createCheckbox(20, currentUIPosY, 50, 50, "Locked");
-    draggingCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setDraggingEnabled(!draggingCB.getChecked()));
-    draggingCB.setGrowMode(true);
-    draggingCB.setChecked(false);
-    draggingCB.getLabel().setTextXOffset(0);
-    draggingCB.setTextSize(textSize);
-    draggingCB.getLabel().setCentreAligned(true);
-    draggingCB.getLabel().setScale(130, 50);
+    CheckboxUI spin3D = createCheckbox(20, currentUIPosY, 50, 50, "Spin [WIP]");
+    spin3D.getOnClickEvent().addHandler(e -> m_flightMap3D.setSpinEnabled(spin3D.getChecked()));
+    spin3D.setGrowMode(true);
+    spin3D.setChecked(true);
+    spin3D.getLabel().setTextXOffset(0);
+    spin3D.setTextSize(textSize);
+    spin3D.getLabel().setCentreAligned(true);
+    spin3D.getLabel().setScale(130, 50);
 
     currentUIPosY += 60;
 
@@ -414,3 +380,6 @@ class TextBoxDemoScreen extends Screen {
 // F. Wright, Created 3D flight map screen using OpenGL GLSL shaders and P3D features. Implemented light shading and day-night cycle, 9pm 07/03/24
 // M. Orlowski, Worked on 2D Map Button, 1pm 12/03/2024
 // CKM, reintroduced some code that was overwritten, 14:00 12/03
+// CKM, implemented spin control for 3D map, 10:00 13/03
+// M. Orlowski, Added 2D calls, 12:00 13/03
+

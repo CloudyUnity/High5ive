@@ -22,6 +22,7 @@ class FlightMap3D extends Widget implements IDraggable {
   private boolean m_connectionsEnabled = true;
   private boolean m_textEnabled = true;
   private boolean m_markersEnabled = true;
+  private boolean m_spinEnabled = true;
 
   private boolean m_assetsLoaded = false;
   private boolean m_drawnLoadingScreen = false;
@@ -42,7 +43,7 @@ class FlightMap3D extends Widget implements IDraggable {
     new Thread(() -> {
       m_earthModel = s_3D.createShape(SPHERE, EARTH_SPHERE_SIZE);
       m_sunModel = s_3D.createShape(SPHERE, 120);
-      m_skySphere = s_3D.createShape(SPHERE, 9000);
+      m_skySphere = s_3D.createShape(SPHERE, 3840);
       m_earthModel.disableStyle();
       m_sunModel.disableStyle();
       m_skySphere.disableStyle();
@@ -304,6 +305,12 @@ class FlightMap3D extends Widget implements IDraggable {
   public void setMarkersEnabled(boolean enabled) {
     m_markersEnabled = enabled;
   }
+  
+  public void setSpinEnabled(boolean enabled) {
+    m_spinEnabled = enabled;
+  }
+    
+  }
 
   public void setDraggingEnabled(boolean enabled) {
     m_movingEnabled = enabled;
@@ -353,3 +360,7 @@ class FlightMap3D extends Widget implements IDraggable {
 // F. Wright, Specular maps, vertical scrolling, bigger window, more constants, growing arcs over time, 3pm 09/03/24
 // F. Wright, Did everything else in this tab. Too much to name one by one
 // CKM, made minor edits to neaten up code 16:00 12/03
+// CKM, reduced offscreen content for performance 10:00 13/03
+// CKM, steps towards being able to disable spin 11:00 13/03
+// CKM, added low frction mode for fun 11:00 13/03
+// CKM, removed low frcition (it breaks things)
