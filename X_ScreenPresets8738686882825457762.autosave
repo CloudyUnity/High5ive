@@ -20,19 +20,19 @@ class Screen1 extends Screen {
      blueBtn.setTextSize(30);
      blueBtn.setGrowMode(true);*/
 
-    ButtonUI switchToTextboxDemo = createButton(20, 170, 250, 100);
+    ButtonUI switchToTextboxDemo = createButton(20, 170, 200, 100);
     switchToTextboxDemo.getOnClickEvent().addHandler(e -> switchToTextBoxDemoOnClick(e));
     switchToTextboxDemo.setText("Alex testing");
     switchToTextboxDemo.setTextSize(30);
     switchToTextboxDemo.setGrowMode(true);
 
-    ButtonUI switchToScreen2Btn = createButton(20, 320, 250, 100);
+    ButtonUI switchToScreen2Btn = createButton(20, 320, 200, 100);
     switchToScreen2Btn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_2_ID));
     switchToScreen2Btn.setText("Screen 2");
     switchToScreen2Btn.setTextSize(25);
     switchToScreen2Btn.setGrowMode(true);
 
-    ButtonUI switchToDemo = createButton(20, 470, 250, 100);
+    ButtonUI switchToDemo = createButton(20, 470, 200, 100);
     switchToDemo.getOnClickEvent().addHandler(e -> switchScreen(e, SWITCH_TO_DEMO_ID));
     switchToDemo.setText("Barchart demo");
     switchToDemo.setTextSize(25);
