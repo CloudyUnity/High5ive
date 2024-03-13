@@ -137,7 +137,6 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
   }
 
   private void onMouseWheelMoved(MouseWheelEventInfoType e) {
-    println("Wheel count " + e.wheelCount);
     if (m_scrollBar) {
       if (e.wheelCount < 0 && m_topItem > 0)
         m_topItem--;
