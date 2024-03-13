@@ -50,9 +50,9 @@ class Screen1 extends Screen {
     switchTo3D.setTextSize(25);
     switchTo3D.setGrowMode(true);
 
-    CheckboxUI cb = createCheckbox(400, 500, 200, 50, "My checkbox");
+  /*  CheckboxUI cb = createCheckbox(400, 500, 200, 50, "My checkbox");
     cb.setCheckedColour(color(255, 255, 0, 255));
-    cb.setGrowMode(true);
+    cb.setGrowMode(true);*/ 
   }
 
   private void switchToTextBoxDemoOnClick(EventInfoType e) {
@@ -241,7 +241,7 @@ class ScreenFlightMap extends Screen {
     m_flightMap3D = new FlightMap3D(100, 0, dragWindowX, dragWindowY);
     addWidget(m_flightMap3D);
 
-    ButtonUI uiBackground = createButton(0, 0, 200, 800);
+    ButtonUI uiBackground = createButton(0, 0, 200, 00);
     uiBackground.setHighlightOutlineOnEnter(false);
     uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
 
