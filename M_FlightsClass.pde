@@ -139,4 +139,3 @@ class FlightsManagerClass {
 // T. Creagh, Removed getFlightlist as its depreiated, 12:30pm 13/04
 // T. Creagh, fixed convertBinaryFileToFlightTypeAsync to work without the member varible, 12:45pm 13/04
 // T. Creagh, convertBinaryFileToFlightTypeAsync compatible with consumer, 12:45pm 13/04
-
