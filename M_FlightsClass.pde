@@ -9,7 +9,6 @@ import java.nio.*;
 import java.io.*;
 
 class FlightsManagerClass {
-  private FlightType[] m_flightsList = new FlightType[NUMBER_OF_FLIGHT_FULL_LINES];
   private boolean m_working;
 
   public void init(int threadCount, Consumer<FlightType[]> onUSTaskComplete) { //  Consumer<FlightType[]> onWorldTaskComplete
