@@ -84,10 +84,8 @@ class FlightsManagerClass {
       catch (InterruptedException e) {
         e.printStackTrace();
       }
-      finally {
-        executor.shutdown();
-        return flightsList;
-      }
+      executor.shutdown();
+      return flightsList;
     }
     catch (IOException e) {
       println("Error: " + e);
