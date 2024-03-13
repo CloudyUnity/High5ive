@@ -344,17 +344,6 @@ class ScreenFlightMap extends Screen {
     spin3D.getLabel().setScale(130, 50);
 
     currentUIPosY += 60;
-    
-    CheckboxUI lowFriction = createCheckbox(20, currentUIPosY, 50, 50, "LF Mode");
-    lowFriction.getOnClickEvent().addHandler(e -> m_flightMap3D.changeFriction(lowFriction.getChecked()));
-    lowFriction.setGrowMode(true);
-    lowFriction.setChecked(true);
-    lowFriction.getLabel().setTextXOffset(0);
-    lowFriction.setTextSize(textSize);
-    lowFriction.getLabel().setCentreAligned(true);
-    lowFriction.getLabel().setScale(130, 50);
-
-    currentUIPosY += 60;
 
     ButtonUI resetArcGrow = createButton(20, currentUIPosY, 160, 50);
     resetArcGrow.getOnClickEvent().addHandler(e -> m_flightMap3D.setArcGrowMillis(10_000, 0));

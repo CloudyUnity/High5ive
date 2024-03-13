@@ -14,7 +14,7 @@ class FlightMap3D extends Widget implements IDraggable {
 
   private PVector m_earthRotation = new PVector(0, 90, 0);
   private PVector m_earthRotationalVelocity = new PVector(0, 0, 0);
-  private float m_earthRotationalFriction = 0.99;
+  private final float m_earthRotationalFriction = 0.99;
 
   private float m_arcFraction = 1.0f;
   private float m_arcGrowMillis = 1.0f;
@@ -23,7 +23,6 @@ class FlightMap3D extends Widget implements IDraggable {
   private boolean m_textEnabled = true;
   private boolean m_markersEnabled = true;
   private boolean m_spinEnabled = true;
-  private boolean m_lowFriction = false;
 
   private boolean m_assetsLoaded = false;
   private boolean m_drawnLoadingScreen = false;
@@ -298,15 +297,6 @@ class FlightMap3D extends Widget implements IDraggable {
   public void setSpinEnabled(boolean enabled) {
     m_spinEnabled = enabled;
   }
-  
-  public void lowFriction(boolean enabled) {
-    m_lowFriction = enabled;
-    if (m_lowFriction == true) {
-      m_earthRotationalFriction = 9.9;
-    }
-    else {
-      m_earthRotationalFriction = 0.99;
-    }
     
   }
 
@@ -357,3 +347,4 @@ class FlightMap3D extends Widget implements IDraggable {
 // CKM, reduced offscreen content for performance 10:00 13/03
 // CKM, steps towards being able to disable spin 11:00 13/03
 // CKM, added low frction mode for fun 11:00 13/03
+// CKM, removed low frcition (it breaks things)
