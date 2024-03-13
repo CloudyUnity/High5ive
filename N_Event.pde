@@ -73,16 +73,24 @@ class SwitchScreenEventInfoType extends EventInfoType {
 }
 class MouseWheelEventInfoType extends EventInfoType {
   
-  public float WheelCount;
+  public int wheelCount;
   
-  public MouseWheelEventInfoType(int x, int y, float wheelCount, Widget widget){
+  public MouseWheelEventInfoType(int x, int y, int wheelCount, Widget widget){
   
     super(x,y,widget);
-    WheelCount = wheelCount;
+    this.wheelCount = wheelCount;
     
   }
 
 
+}
+
+class ListboxSelectedEntryChangedEventInfoType<T> extends EventInfoType {
+  public T data;
+  public ListboxSelectedEntryChangedEventInfoType(int x, int y, T data, Widget widget) {
+    super(x, y, widget);
+    this.data = data;
+  }
 }
 
 // Descending code authorship changes:

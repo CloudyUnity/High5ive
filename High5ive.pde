@@ -32,13 +32,13 @@ void draw() {
   s_ApplicationClass.frame();
 }
 
-// do these do anything?
+// Yes the application class one is necessary for the keypressed events, thats what broke the textbox.
 
-// void keyPressed() {
+void keyPressed() {
 
   //s_InputClass.setKeyState(key, true);
-  // s_ApplicationClass.onKeyPressed(key);
-// }
+  s_ApplicationClass.onKeyPressed(key, keyCode);
+}
 
 //void keyReleased() {
 //  s_InputClass.setKeyState(key, false);
@@ -57,7 +57,7 @@ void mouseDragged() {
 }
 void mouseWheel(MouseEvent event) {
 
-  s_ApplicationClass.onMouseWheel(event);
+  s_ApplicationClass.onMouseWheel(event.getCount());
 }
 void resizeWindow(int w, int h) {
   surface.setSize(w, h);

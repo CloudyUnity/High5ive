@@ -27,9 +27,6 @@ class ApplicationClass {
     Screen screenDemo = new FlightCodesBarchartDemo(displayWidth, displayHeight, SWITCH_TO_DEMO_ID);
     m_screens.add(screenDemo);
 
-    TwoDMapScreen screenFlightMap2D = new TwoDMapScreen(displayWidth, displayHeight, SCREEN_TWOD_MAP_ID, m_queryManager);
-    m_screens.add(screenFlightMap2D);
-
     ScreenFlightMap screenFlightMap3D = new ScreenFlightMap(displayWidth, displayHeight, SCREEN_FLIGHT_MAP_ID, m_queryManager);
     m_screens.add(screenFlightMap3D);
 
@@ -40,10 +37,10 @@ class ApplicationClass {
 
     PVector windowSize = m_currentScreen.getScale();
     if (!FULLSCREEN_ENABLED)
-      resizeWindow((int)windowSize.x, (int)windowSize.y);
+      resizeWindow((int)windowSize.x, (int)windowSize.y);    
 
     if (DEBUG_DATA_LOADING) {
-      m_flightsManager.init(4, list -> {
+      m_flightsManager.init("hex_flight_data.bin", 4, list -> {        
         m_queryManager.queryFlights(list, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.US), m_queryManager.getIndex("SFO"), 4, queriedList -> {
           s_DebugProfiler.startProfileTimer();
           screenFlightMap3D.startLoadingData(queriedList);
@@ -91,11 +88,11 @@ class ApplicationClass {
     if (m_currentScreen != null)
       m_currentScreen.onMouseClick();
   }
-
-  void onMouseWheel(MouseEvent event) {
-    if (m_currentScreen != null) {
-      m_currentScreen.onMouseWheel(event);
-    }
+  
+  void onMouseWheel(int wheelCount){
+    if (m_currentScreen != null)
+      m_currentScreen.getOnMouseWheelEvent().raise(new MouseWheelEventInfoType(mouseX, mouseY, wheelCount, m_currentScreen));
+    
   }
 
   public void onKeyPressed(char k, int kc) {

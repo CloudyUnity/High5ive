@@ -20,31 +20,31 @@ class Screen1 extends Screen {
      blueBtn.setTextSize(30);
      blueBtn.setGrowMode(true);*/
 
-    ButtonUI switchToTextboxDemo = createButton(50, 500, 200, 100);
+    ButtonUI switchToTextboxDemo = createButton(20, 170, 250, 100);
     switchToTextboxDemo.getOnClickEvent().addHandler(e -> switchToTextBoxDemoOnClick(e));
-    switchToTextboxDemo.setText("Textbox demo");
+    switchToTextboxDemo.setText("Alex testing");
     switchToTextboxDemo.setTextSize(30);
     switchToTextboxDemo.setGrowMode(true);
 
-    ButtonUI switchToScreen2Btn = createButton(0, 0, 100, 100);
+    ButtonUI switchToScreen2Btn = createButton(20, 320, 250, 100);
     switchToScreen2Btn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_2_ID));
     switchToScreen2Btn.setText("Screen 2");
     switchToScreen2Btn.setTextSize(25);
     switchToScreen2Btn.setGrowMode(true);
 
-    ButtonUI switchToDemo = createButton(350, 140, 100, 100);
+    ButtonUI switchToDemo = createButton(20, 470, 250, 100);
     switchToDemo.getOnClickEvent().addHandler(e -> switchScreen(e, SWITCH_TO_DEMO_ID));
     switchToDemo.setText("Barchart demo");
     switchToDemo.setTextSize(25);
     switchToDemo.setGrowMode(true);
 
-    ButtonUI switchTo2D = createButton(350, 260, 100, 100);
+    ButtonUI switchTo2D = createButton(20, 20, 100, 100);
     switchTo2D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_TWOD_MAP_ID));
     switchTo2D.setText("2D (WIP)");
     switchTo2D.setTextSize(25);
     switchTo2D.setGrowMode(true);
 
-    ButtonUI switchTo3D = createButton(350, 380, 100, 100);
+    ButtonUI switchTo3D = createButton(170, 20, 100, 100);
     switchTo3D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_FLIGHT_MAP_ID));
     switchTo3D.setText("3D (WIP)");
     switchTo3D.setTextSize(25);
@@ -236,7 +236,9 @@ class ScreenFlightMap extends Screen {
     int currentUIPosY = 20;
     int textSize = 20;
 
-    m_flightMap3D = new FlightMap3D(100, 0, 800, 800);
+    int dragWindowX = width - 200;
+    int dragWindowY = height;
+    m_flightMap3D = new FlightMap3D(100, 0, dragWindowX, dragWindowY);
     addWidget(m_flightMap3D);
 
     ButtonUI uiBackground = createButton(0, 0, 200, 800);
@@ -331,17 +333,17 @@ class ScreenFlightMap extends Screen {
     airportTextCB.setTextSize(textSize);
     airportTextCB.getLabel().setCentreAligned(true);
     airportTextCB.getLabel().setScale(130, 50);
-
-    currentUIPosY += 60;
     
-    CheckboxUI spin3D = createCheckbox(20, currentUIPosY, 50, 50, "Spin [WIP]");
-    spin3D.getOnClickEvent().addHandler(e -> m_flightMap3D.setSpinEnabled(spin3D.getChecked()));
-    spin3D.setGrowMode(true);
-    spin3D.setChecked(true);
-    spin3D.getLabel().setTextXOffset(0);
-    spin3D.setTextSize(textSize);
-    spin3D.getLabel().setCentreAligned(true);
-    spin3D.getLabel().setScale(130, 50);
+    currentUIPosY += 60;
+
+    CheckboxUI draggingCB = createCheckbox(20, currentUIPosY, 50, 50, "Locked");
+    draggingCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setDraggingEnabled(!draggingCB.getChecked()));
+    draggingCB.setGrowMode(true);
+    draggingCB.setChecked(false);
+    draggingCB.getLabel().setTextXOffset(0);
+    draggingCB.setTextSize(textSize);
+    draggingCB.getLabel().setCentreAligned(true);
+    draggingCB.getLabel().setScale(130, 50);
 
     currentUIPosY += 60;
 
@@ -366,10 +368,38 @@ class ScreenFlightMap extends Screen {
 
 class TextBoxDemoScreen extends Screen {
   private TextboxUI box;
+  private ListboxUI<String> list;
+  private ButtonUI clearListButton;
+  private ButtonUI removeSelectedButton;
+  private ButtonUI addItemButton;
+  private int counter = 0;
   public TextBoxDemoScreen(int scaleX, int scaleY, String screenId) {
     super(scaleX, scaleY, screenId, color(220, 220, 220, 255));
     box = new TextboxUI(50, 50, 200, 50);
+    list = new ListboxUI<String>(50, 150, 200, 400, 40, v -> v);
+    addItemButton = createButton(300, 50, 80, 20);
+    addItemButton.setText("Add item");
+    addItemButton.getOnClickEvent().addHandler(e -> addItemOnClick(e));
+    
+    clearListButton = createButton(300, 90, 80, 20);
+    clearListButton.setText("Clear");
+    clearListButton.getOnClickEvent().addHandler(e -> clearListOnClick(e));
+    
+    removeSelectedButton = createButton(300, 130, 80, 20);
+    removeSelectedButton.setText("Remove selected");
+    removeSelectedButton.getOnClickEvent().addHandler(e -> list.removeSelected());
+    
     addWidget(box);
+    addWidget(list);
+  }
+  
+  private void addItemOnClick(EventInfoType e) {
+    list.add("" + counter);
+    counter++;
+  }
+  
+  private void clearListOnClick(EventInfoType e) {
+    list.clear();
   }
 }
 
@@ -382,4 +412,3 @@ class TextBoxDemoScreen extends Screen {
 // CKM, reintroduced some code that was overwritten, 14:00 12/03
 // CKM, implemented spin control for 3D map, 10:00 13/03
 // M. Orlowski, Added 2D calls, 12:00 13/03
-
