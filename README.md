@@ -154,7 +154,7 @@ airports.csv: Contains the IATA code, name and coordinates of 8k airports around
     - Store the colour as an `int` then call fill as `fill(color(variable));`
 - Getting the error "The nested type ApplicationClass cannot hide an enclosing type.":
     - Delete "sketch.properties" file.
-    - Ensure project directory is named "FATMKM".
+    - Ensure project directory is named "High5ive".
 
 ## Jobs:
 
