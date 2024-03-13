@@ -44,9 +44,11 @@ class FlightMap3D extends Widget implements IDraggable {
       m_earthModel.disableStyle();
       m_earthDayTex = loadImage("data/Images/EarthDay2k.jpg");
       m_earthNightTex = loadImage("data/Images/EarthNight2k.jpg");
+      m_earthNormalTex = loadImage("data/Images/EarthNormalAlt.jpg");
       m_earthShader = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
       m_earthShader.set("texDay", m_earthDayTex);
       m_earthShader.set("texNight", m_earthNightTex);
+      m_earthShader.set("normalMap", m_earthNormalTex);
 
       if (DEBUG_3D_FAST_LOADING) {
         m_assetsLoaded = true;
@@ -58,17 +60,15 @@ class FlightMap3D extends Widget implements IDraggable {
       m_sunModel.disableStyle();
       m_skySphere.disableStyle();
 
-      m_earthNormalTex = loadImage("data/Images/EarthNormalAlt.jpg");
+
       m_sunTex = loadImage("data/Images/Sun2k.jpg");
       m_noiseImg = loadImage("data/Images/noise.png");
       m_earthSpecularMap = loadImage("data/Images/EarthSpecular2k.tif");
-
       m_sunShader = loadShader("data/Shaders/SunFrag.glsl", "data/Shaders/BaseVert.glsl");
       m_postProcessingShader = loadShader("data/Shaders/PostProcessing.glsl");
       m_skyboxShader = loadShader("data/Shaders/SkyboxFrag.glsl", "data/Shaders/SkyboxVert.glsl");
 
       m_earthShader.set("specularMap", m_earthSpecularMap);
-      m_earthShader.set("normalMap", m_earthNormalTex);
       m_sunShader.set("tex", m_sunTex);
       m_postProcessingShader.set("noise", m_noiseImg);
       m_skyboxShader.set("tex", m_starsTex);
@@ -104,7 +104,7 @@ class FlightMap3D extends Widget implements IDraggable {
     }
 
     if (!m_lockTime)
-      m_totalTimeElapsed += s_deltaTime * DAY_CYCLE_SPEED;   
+      m_totalTimeElapsed += s_deltaTime * DAY_CYCLE_SPEED;
 
     PVector lightDir = new PVector(cos(m_totalTimeElapsed), 0, sin(m_totalTimeElapsed));
     m_earthShader.set("lightDir", lightDir);
@@ -349,6 +349,24 @@ class FlightMap3D extends Widget implements IDraggable {
       origin.ConnectionArcPoints.add(cacheArcPoints(origin.Pos, dest.Pos));
     }
     m_flightDataLoaded = true;
+  }
+
+  public void drawEarth(int radius, int vertexCount) {
+    int halfVertexCount = (int)(vertexCount * 0.5f);
+
+    for (int i = 0; i < vertexCount; i++) {
+      float phi = 2 * PI * i / vertexCount;
+      for (int j = 0; j < halfVertexCount; j++) {
+        float theta = PI * j / halfVertexCount;
+
+        float x = sin(theta) * cos(phi);
+        float y = cos(theta);
+        float z = sin(theta) * sin(phi);
+        normal(x, y, z);
+        vertex(x * radius, y * radius, z * radius);
+        // WIP
+      }
+    }
   }
 }
 

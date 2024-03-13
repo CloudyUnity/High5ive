@@ -34,9 +34,10 @@ void main() {
 
   vec3 bump = (norm.x * fragTangent) + (norm.y * fragBinormal) + (norm.z * fragNormal);
   bump = normalize(bump);
-  float bumpIntensity = max(dot(bump, -lightDir), 0) * 0.8f + (0.2f);
-  // gl_FragColor = vec4(bumpIntensity, 0, 0, 1);
-  // return;
+  float bumpIntensity = max(dot(bump, -lightDir), -99);
+
+  gl_FragColor = vec4(bump, 1);
+  return;
 
   float strength = max(specular.r, 0.001);
   vec3 viewDir = -(fragPos.xyz / fragPos.w);
@@ -44,9 +45,6 @@ void main() {
   float spec = pow(max(dot(viewDir, reflection), 0.0), specularShininess);
 
   vec3 col = day * diffuse + night * (1-diffuse);
-  if (false && diffuse > 0.0f && bumpIntensity > 0.2f) // DISABLED
-    col *= bumpIntensity;
-
   col += vec3(1,1,1) * strength * spec * diffuse;
 
   gl_FragColor = vec4(col, 1);

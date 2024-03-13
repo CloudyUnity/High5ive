@@ -63,7 +63,7 @@ final int WESTERN_ALL_50 = 144;
 final int WESTERN_ALL_50_ALT = 216;
 
 // 3D Flight Map
-final boolean DEBUG_3D_FAST_LOADING = false;
+final boolean DEBUG_3D_FAST_LOADING = true;
 final int EARTH_Z = -20;
 final int EARTH_SPHERE_SIZE = 400;
 final float DAY_CYCLE_SPEED = 0.00005f;
