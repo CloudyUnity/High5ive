@@ -50,6 +50,7 @@ class QueryManagerClass {
     return m_lookupResult.getInt(1);
   }
   public void queryFlights(FlightType[] flightsList, FlightQuery flightQuery, int queryValue, int threadCount, Consumer<FlightType[]> onTaskComplete) {
+    println("2 <-");
     if (m_working) {
       println("Warning: m_working is true, queryFlights did not process correctly");
       return;
@@ -78,34 +79,40 @@ class QueryManagerClass {
     }
     int chunkSize = NUMBER_OF_FLIGHT_FULL_LINES / threadCount;
     ArrayList<FlightType[]> listOfFlightsLists = new ArrayList<>();
+    println("3 <-");
 
     for (int i = 0; i < threadCount; i++) {
       int startPosition = i * chunkSize;
       long endPosition = (i == threadCount - 1) ? NUMBER_OF_FLIGHT_FULL_LINES : (i + 1) * chunkSize;
 
       executor.submit(() -> {
+        println("3.5 <-");
         listOfFlightsLists.add(processQueryFlightsChunk(Arrays.copyOfRange(flightsList, startPosition, (int)endPosition), flightQuery, queryValue));
+        println("6 <-");
         latch.countDown();
+        println("7 <-");
       }
       );
     }
     try {
+      println("8 <-");
       latch.await();
     }
     catch (InterruptedException e) {
       e.printStackTrace();
     }
-    finally {
-      executor.shutdown();
-      FlightType[] joinedFlightArray = listOfFlightsLists.stream()
-        .flatMap(Arrays::stream)
-        .toArray(FlightType[]::new);
-      return joinedFlightArray;
-    }
+    executor.shutdown();
+    FlightType[] joinedFlightArray = listOfFlightsLists.stream()
+      .flatMap(Arrays::stream)
+      .toArray(FlightType[]::new);
+    println("9 <-");
+    return joinedFlightArray;
   }
   private FlightType[] processQueryFlightsChunk(FlightType[] flightsList, FlightQuery flightQuery, int queryValue) {
+    println("4 <-");
     switch(flightQuery.Operator) {
     case EQUAL:
+      println("5 <-");
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) == queryValue)
         .toArray(FlightType[]::new);
@@ -181,13 +188,11 @@ class QueryManagerClass {
     catch (InterruptedException e) {
       e.printStackTrace();
     }
-    finally {
-      executor.shutdown();
-      FlightType[] joinedFlightArray = listOfFlightsLists.stream()
-        .flatMap(Arrays::stream)
-        .toArray(FlightType[]::new);
-      return joinedFlightArray;
-    }
+    executor.shutdown();
+    FlightType[] joinedFlightArray = listOfFlightsLists.stream()
+      .flatMap(Arrays::stream)
+      .toArray(FlightType[]::new);
+    return joinedFlightArray;
   }
   private FlightType[] processQueryFlightsWithinRangeChunk(FlightType[] flightsList, FlightRangeQuery flightRangeQuery, int start, int end) {
     return Arrays.stream(flightsList)
