@@ -50,6 +50,7 @@ class QueryManagerClass {
     return m_lookupResult.getInt(1);
   }
   public void queryFlights(FlightType[] flightsList, FlightQuery flightQuery, int queryValue, int threadCount, Consumer<FlightType[]> onTaskComplete) {
+    println("rigt here....");
     if (m_working) {
       println("Warning: m_working is true, queryFlights did not process correctly");
       return;
@@ -78,13 +79,14 @@ class QueryManagerClass {
     }
     int chunkSize = NUMBER_OF_FLIGHT_FULL_LINES / threadCount;
     ArrayList<FlightType[]> listOfFlightsLists = new ArrayList<>();
+    println("yoyoyo");
 
     for (int i = 0; i < threadCount; i++) {
       int startPosition = i * chunkSize;
       long endPosition = (i == threadCount - 1) ? NUMBER_OF_FLIGHT_FULL_LINES : (i + 1) * chunkSize;
 
       executor.submit(() -> {
-        listOfFlightsLists.add(processQueryFlightsChunk(Arrays.copyOfRange(flightsList, startPosition, (int)endPosition), flightQuery, queryValue));
+        listOfFlightsLists.add(pjrocessQueryFlightsChunk(Arrays.copyOfRange(flightsList, startPosition, (int)endPosition), flightQuery, queryValue));
         latch.countDown();
       }
       );
@@ -104,6 +106,7 @@ class QueryManagerClass {
     }
   }
   private FlightType[] processQueryFlightsChunk(FlightType[] flightsList, FlightQuery flightQuery, int queryValue) {
+    println("ok?");
     switch(flightQuery.Operator) {
     case EQUAL:
       return Arrays.stream(flightsList)

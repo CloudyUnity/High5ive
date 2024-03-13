@@ -21,11 +21,13 @@ class FlightsManagerClass {
   private boolean m_working;
 
   public void init(String usFileName, String worldFileName, int usLineByteSize, int worldLineByteSize, int threadCount, Consumer<FlightLists> onTaskComplete) { //  Consumer<FlightType[]> onWorldTaskComplete
+    println("INIT");
     boolean result = convertBinaryFileToFlightType(usFileName, worldFileName, usLineByteSize, worldLineByteSize, threadCount, onTaskComplete);
     if (!result)
       return;
   }
   private boolean convertBinaryFileToFlightType(String usFileName, String worldFileName, int usLineByteSize, int worldLineByteSize, int threadCount, Consumer<FlightLists> onTaskComplete) {
+    println("CONVERT");
     if (m_working) {
       println("Warning: m_working is true, convertBinaryFileToFlightType did not process correctly");
       return false;
