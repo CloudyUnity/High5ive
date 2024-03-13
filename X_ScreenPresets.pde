@@ -333,6 +333,28 @@ class ScreenFlightMap extends Screen {
     airportTextCB.getLabel().setScale(130, 50);
 
     currentUIPosY += 60;
+    
+    CheckboxUI spin3D = createCheckbox(20, currentUIPosY, 50, 50, "Spin [WIP]");
+    spin3D.getOnClickEvent().addHandler(e -> m_flightMap3D.setSpinEnabled(spin3D.getChecked()));
+    spin3D.setGrowMode(true);
+    spin3D.setChecked(true);
+    spin3D.getLabel().setTextXOffset(0);
+    spin3D.setTextSize(textSize);
+    spin3D.getLabel().setCentreAligned(true);
+    spin3D.getLabel().setScale(130, 50);
+
+    currentUIPosY += 60;
+    
+    CheckboxUI lowFriction = createCheckbox(20, currentUIPosY, 50, 50, "LF Mode");
+    lowFriction.getOnClickEvent().addHandler(e -> m_flightMap3D.changeFriction(lowFriction.getChecked()));
+    lowFriction.setGrowMode(true);
+    lowFriction.setChecked(true);
+    lowFriction.getLabel().setTextXOffset(0);
+    lowFriction.setTextSize(textSize);
+    lowFriction.getLabel().setCentreAligned(true);
+    lowFriction.getLabel().setScale(130, 50);
+
+    currentUIPosY += 60;
 
     ButtonUI resetArcGrow = createButton(20, currentUIPosY, 160, 50);
     resetArcGrow.getOnClickEvent().addHandler(e -> m_flightMap3D.setArcGrowMillis(10_000, 0));
@@ -369,3 +391,4 @@ class TextBoxDemoScreen extends Screen {
 // F. Wright, Created 3D flight map screen using OpenGL GLSL shaders and P3D features. Implemented light shading and day-night cycle, 9pm 07/03/24
 // M. Orlowski, Worked on 2D Map Button, 1pm 12/03/2024
 // CKM, reintroduced some code that was overwritten, 14:00 12/03
+// CKM, implemented spin control for 3D map, 10:00 13/03
