@@ -42,7 +42,7 @@ final String SCREEN_2_ID = "Screen 2";
 final String SWITCH_TO_DEMO_ID = "Barchart demo screen";
 final String SCREEN_TWOD_MAP_ID = "Screen Flight Map 2D";
 final String SCREEN_FLIGHT_MAP_ID = "Screen Flight Map";
-final String TB_DEMO_ID = "Textbox demo";
+final String ALEX_TESTING_ID = "Alex testing";
 
 // Math
 final long MILLI_TO_NANO = 1_000_000;

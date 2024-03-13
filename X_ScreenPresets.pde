@@ -50,13 +50,13 @@ class Screen1 extends Screen {
     switchTo3D.setTextSize(25);
     switchTo3D.setGrowMode(true);
 
-    CheckboxUI cb = createCheckbox(400, 500, 200, 50, "My checkbox");
+  /*  CheckboxUI cb = createCheckbox(400, 500, 200, 50, "My checkbox");
     cb.setCheckedColour(color(255, 255, 0, 255));
-    cb.setGrowMode(true);
+    cb.setGrowMode(true);*/ 
   }
 
   private void switchToTextBoxDemoOnClick(EventInfoType e) {
-    switchScreen(e, TB_DEMO_ID);
+    switchScreen(e, ALEX_TESTING_ID);
   }
 
   /* private void redButtonOnClick(EventInfoType e) {
@@ -233,7 +233,7 @@ class ScreenFlightMap extends Screen {
 
     m_queryManager = query;
 
-    int currentUIPosY = 20;
+    int currentUIPosY = 60;
     int textSize = 20;
 
     int dragWindowX = width - 200;
@@ -241,11 +241,11 @@ class ScreenFlightMap extends Screen {
     m_flightMap3D = new FlightMap3D(100, 0, dragWindowX, dragWindowY);
     addWidget(m_flightMap3D);
 
-    ButtonUI uiBackground = createButton(0, 0, 200, 800);
+    ButtonUI uiBackground = createButton(0, 0, 200, 00);
     uiBackground.setHighlightOutlineOnEnter(false);
     uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
 
-    ButtonUI returnBttn = createButton(20, currentUIPosY, 160, 50);
+    ButtonUI returnBttn = createButton(20, currentUIPosY , 160, 50);
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
     returnBttn.setGrowMode(true);
     returnBttn.setText("Return");
@@ -356,7 +356,7 @@ class ScreenFlightMap extends Screen {
 
     currentUIPosY += 60;
 
-    LabelUI label = createLabel(200, 30, 150, 40, "3D Flight Map");
+    LabelUI label = createLabel(20, 10, 150, 40, "3D Flight Map");
     label.setForegroundColour(color(255, 255, 255, 255));
     label.setTextSize(30);
   }
@@ -366,17 +366,17 @@ class ScreenFlightMap extends Screen {
   }
 }
 
-class TextBoxDemoScreen extends Screen {
+class AlexTestingScreen extends Screen {
   private TextboxUI box;
   private ListboxUI<String> list;
   private ButtonUI clearListButton;
   private ButtonUI removeSelectedButton;
   private ButtonUI addItemButton;
   private int counter = 0;
-  public TextBoxDemoScreen(int scaleX, int scaleY, String screenId) {
+  public AlexTestingScreen(int scaleX, int scaleY, String screenId) {
     super(scaleX, scaleY, screenId, color(220, 220, 220, 255));
-    box = new TextboxUI(50, 50, 200, 50);
-    list = new ListboxUI<String>(50, 150, 200, 400, 40, v -> v);
+    box = new TextboxUI(50, 70, 200, 50);
+    list = new ListboxUI<String>(50, 170, 200, 400, 40, v -> v);
     addItemButton = createButton(300, 50, 80, 20);
     addItemButton.setText("Add item");
     addItemButton.getOnClickEvent().addHandler(e -> addItemOnClick(e));
@@ -391,6 +391,13 @@ class TextBoxDemoScreen extends Screen {
     
     addWidget(box);
     addWidget(list);
+    
+    ButtonUI returnBttn = createButton(50, 20 , 80, 40);
+    returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
+    returnBttn.setGrowMode(true);
+    returnBttn.setText("<-");
+    returnBttn.setTextSize(20);
+    returnBttn.getLabel().setCentreAligned(true);
   }
   
   private void addItemOnClick(EventInfoType e) {
