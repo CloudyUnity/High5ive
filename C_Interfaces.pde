@@ -12,7 +12,7 @@ interface IKeyInput {
   public Event<KeyPressedEventInfoType> getOnKeyPressedEvent();
 }
 
-interface IWheelInput{
+interface IWheelInput {
   public Event<MouseWheelEventInfoType> getOnMouseWheelEvent();
 }
 

@@ -17,7 +17,7 @@ void setup() {
 
   textFont(createFont("Century Gothic Bold", 48, true));
 
-  s_3D = createGraphics((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, P3D);
+  s_3D = createGraphics(width, height, P3D);
   if (!s_3D.isGL()) {
     println("OpenGL is not available. Make sure hardware acceleration is enabled.");
   }
@@ -32,13 +32,13 @@ void draw() {
   s_ApplicationClass.frame();
 }
 
-// do these do anything?
+// Yes the application class one is necessary for the keypressed events, thats what broke the textbox.
 
-// void keyPressed() {
+void keyPressed() {
 
   //s_InputClass.setKeyState(key, true);
-  // s_ApplicationClass.onKeyPressed(key);
-// }
+  s_ApplicationClass.onKeyPressed(key, keyCode);
+}
 
 //void keyReleased() {
 //  s_InputClass.setKeyState(key, false);
@@ -57,7 +57,7 @@ void mouseDragged() {
 }
 void mouseWheel(MouseEvent event) {
 
-  s_ApplicationClass.onMouseWheel(event);
+  s_ApplicationClass.onMouseWheel(event.getCount());
 }
 void resizeWindow(int w, int h) {
   surface.setSize(w, h);

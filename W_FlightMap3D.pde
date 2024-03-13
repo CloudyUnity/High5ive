@@ -8,7 +8,7 @@ class FlightMap3D extends Widget implements IDraggable {
 
   private PShape m_earthModel, m_sunModel, m_skySphere;
   private PImage m_earthDayTex, m_earthNightTex, m_sunTex;
-  private PImage m_earthSpecularMap, m_noiseImg;
+  private PImage m_earthNormalTex, m_earthSpecularMap, m_noiseImg;
   private PShader m_earthShader, m_sunShader, m_postProcessingShader, m_skyboxShader;
   private PImage m_starsTex;
 
@@ -22,13 +22,14 @@ class FlightMap3D extends Widget implements IDraggable {
   private boolean m_connectionsEnabled = true;
   private boolean m_textEnabled = true;
   private boolean m_markersEnabled = true;
-  private boolean m_spinEnabled = true;
+  private boolean m_movingEnabled = true;
 
   private boolean m_assetsLoaded = false;
   private boolean m_drawnLoadingScreen = false;
   private boolean m_flightDataLoaded = false;
 
   private float m_rotationYModified = 0;
+  private float m_lockedLastMillis;
 
   private HashMap<String, AirportPoint3DType> m_airportHashmap = new HashMap<String, AirportPoint3DType>();
 
@@ -48,9 +49,10 @@ class FlightMap3D extends Widget implements IDraggable {
 
       m_earthDayTex = loadImage("data/Images/EarthDay2k.jpg");
       m_earthNightTex = loadImage("data/Images/EarthNight2k.jpg");
-      m_earthSpecularMap = loadImage("data/Images/EarthSpecular2k.tif");
+      m_earthNormalTex = loadImage("data/Images/EarthNormalAlt.jpg");
       m_sunTex = loadImage("data/Images/Sun2k.jpg");
       m_noiseImg = loadImage("data/Images/noise.png");
+      m_earthSpecularMap = loadImage("data/Images/EarthSpecular2k.tif");
 
       m_earthShader = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
       m_sunShader = loadShader("data/Shaders/SunFrag.glsl", "data/Shaders/BaseVert.glsl");
@@ -60,6 +62,7 @@ class FlightMap3D extends Widget implements IDraggable {
       m_earthShader.set("texDay", m_earthDayTex);
       m_earthShader.set("texNight", m_earthNightTex);
       m_earthShader.set("specularMap", m_earthSpecularMap);
+      m_earthShader.set("normalMap", m_earthNormalTex);
       m_sunShader.set("tex", m_sunTex);
       m_postProcessingShader.set("noise", m_noiseImg);
       m_skyboxShader.set("tex", m_starsTex);
@@ -69,7 +72,7 @@ class FlightMap3D extends Widget implements IDraggable {
     }
     ).start();
 
-    m_earthPos = new PVector(WINDOW_SIZE_3D_FLIGHT_MAP.x * 0.5f + posX, WINDOW_SIZE_3D_FLIGHT_MAP.y * 0.5f + posY, EARTH_Z);
+    m_earthPos = new PVector(width * 0.5f + posX, height * 0.5f + posY, EARTH_Z);
 
     m_onDraggedEvent.addHandler(e -> onDraggedHandler(e));
   }
@@ -78,7 +81,8 @@ class FlightMap3D extends Widget implements IDraggable {
     public void draw() {
     super.draw();
 
-    m_earthRotation.add(m_earthRotationalVelocity);
+    if (m_movingEnabled)
+      m_earthRotation.add(m_earthRotationalVelocity);
     m_earthRotationalVelocity.mult(m_earthRotationalFriction);
     m_earthRotation.x = clamp(m_earthRotation.x, -VERTICAL_SCROLL_LIMIT, VERTICAL_SCROLL_LIMIT);
     m_arcFraction = (millis() - m_arcStartGrowMillis) / m_arcGrowMillis;
@@ -94,7 +98,13 @@ class FlightMap3D extends Widget implements IDraggable {
       return;
     }
 
-    float time = millis() * DAY_CYCLE_SPEED;
+    float time;
+    if (m_movingEnabled)
+      time = millis() * DAY_CYCLE_SPEED;
+    else
+      time = m_lockedLastMillis;
+
+    m_lockedLastMillis = time;
     PVector lightDir = new PVector(cos(time), 0, sin(time));
     m_earthShader.set("lightDir", lightDir);
     m_sunShader.set("texTranslation", 0, time * 0.5f);
@@ -207,6 +217,9 @@ class FlightMap3D extends Widget implements IDraggable {
   }
 
   private void onDraggedHandler(MouseDraggedEventInfoType e) {
+    if (!m_movingEnabled)
+      return;
+
     PVector deltaDrag = new PVector( -(e.Y - e.PreviousPos.y) * 2, e.X - e.PreviousPos.x);
     deltaDrag.mult(s_deltaTime).mult(VERTICAL_DRAG_SPEED);
     m_earthRotationalVelocity.add(deltaDrag);
@@ -293,11 +306,9 @@ class FlightMap3D extends Widget implements IDraggable {
   public void setMarkersEnabled(boolean enabled) {
     m_markersEnabled = enabled;
   }
-  
-  public void setSpinEnabled(boolean enabled) {
-    m_spinEnabled = enabled;
-  }
-    
+
+  public void setDraggingEnabled(boolean enabled) {
+    m_movingEnabled = enabled;
   }
 
   public void loadFlights(FlightType[] flights, QueryManagerClass queries) {
@@ -342,9 +353,7 @@ class FlightMap3D extends Widget implements IDraggable {
 // F. Wright, Fixed loading screen, 10am, 08/03/24
 // F. Wright, Created latitude/longitude coords to 3D point converter and used geometric slerping to create arcs around the planet for connections between airports, 3pm 08/03/24
 // F. Wright, Specular maps, vertical scrolling, bigger window, more constants, growing arcs over time, 3pm 09/03/24
-// F. Wright, Did everything else in this tab. Too much to name one by one
+// F. Wright, Skybox, shaders, fullscreen, UI, buttons, sun, connections, loading in data, etc, etc
 // CKM, made minor edits to neaten up code 16:00 12/03
-// CKM, reduced offscreen content for performance 10:00 13/03
-// CKM, steps towards being able to disable spin 11:00 13/03
-// CKM, added low frction mode for fun 11:00 13/03
-// CKM, removed low frcition (it breaks things)
+// CKM, inital no spin setup 11:00 13/03
+// F. Wright, Implemented "Lock" checkbox, 12pm 13/03/24
