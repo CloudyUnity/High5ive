@@ -63,11 +63,8 @@ final int WESTERN_ALL_50 = 144;
 final int WESTERN_ALL_50_ALT = 216;
 
 // 3D Flight Map
-final int EARTH_3D_WIDTH = 1920;
-final int EARTH_3D_HEIGHT = 1080;
-final PVector WINDOW_SIZE_3D_FLIGHT_MAP = new PVector(EARTH_3D_WIDTH, EARTH_3D_HEIGHT);
 final int EARTH_Z = -20;
-final int EARTH_SPHERE_SIZE = (int) EARTH_3D_HEIGHT/9*4;
+final int EARTH_SPHERE_SIZE = 400;
 final float DAY_CYCLE_SPEED = 0.00005f;
 final float VERTICAL_SCROLL_LIMIT = 0.6f;
 final float VERTICAL_DRAG_SPEED = 0.000003f;
@@ -90,4 +87,3 @@ final int MAX_DATA_LOADED = 700000;
 // CKM, Added datasets for 2D map, 00:00 12/03
 // CKM, Updated 3D dataset constants, 10:00 13/03
 // M. Orlowski, Added Screen ID for 2D map, 11:00 13/03
-

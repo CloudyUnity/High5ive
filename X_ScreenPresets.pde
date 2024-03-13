@@ -236,7 +236,9 @@ class ScreenFlightMap extends Screen {
     int currentUIPosY = 20;
     int textSize = 20;
 
-    m_flightMap3D = new FlightMap3D(100, 0, 800, 800);
+    int dragWindowX = width - 200;
+    int dragWindowY = height;
+    m_flightMap3D = new FlightMap3D(100, 0, dragWindowX, dragWindowY);
     addWidget(m_flightMap3D);
 
     ButtonUI uiBackground = createButton(0, 0, 200, 800);
@@ -331,17 +333,17 @@ class ScreenFlightMap extends Screen {
     airportTextCB.setTextSize(textSize);
     airportTextCB.getLabel().setCentreAligned(true);
     airportTextCB.getLabel().setScale(130, 50);
-
-    currentUIPosY += 60;
     
-    CheckboxUI spin3D = createCheckbox(20, currentUIPosY, 50, 50, "Spin [WIP]");
-    spin3D.getOnClickEvent().addHandler(e -> m_flightMap3D.setSpinEnabled(spin3D.getChecked()));
-    spin3D.setGrowMode(true);
-    spin3D.setChecked(true);
-    spin3D.getLabel().setTextXOffset(0);
-    spin3D.setTextSize(textSize);
-    spin3D.getLabel().setCentreAligned(true);
-    spin3D.getLabel().setScale(130, 50);
+    currentUIPosY += 60;
+
+    CheckboxUI draggingCB = createCheckbox(20, currentUIPosY, 50, 50, "Locked");
+    draggingCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setDraggingEnabled(!draggingCB.getChecked()));
+    draggingCB.setGrowMode(true);
+    draggingCB.setChecked(false);
+    draggingCB.getLabel().setTextXOffset(0);
+    draggingCB.setTextSize(textSize);
+    draggingCB.getLabel().setCentreAligned(true);
+    draggingCB.getLabel().setScale(130, 50);
 
     currentUIPosY += 60;
 
@@ -382,4 +384,3 @@ class TextBoxDemoScreen extends Screen {
 // CKM, reintroduced some code that was overwritten, 14:00 12/03
 // CKM, implemented spin control for 3D map, 10:00 13/03
 // M. Orlowski, Added 2D calls, 12:00 13/03
-

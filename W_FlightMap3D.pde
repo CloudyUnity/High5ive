@@ -22,12 +22,11 @@ class FlightMap3D extends Widget implements IDraggable {
   private boolean m_connectionsEnabled = true;
   private boolean m_textEnabled = true;
   private boolean m_markersEnabled = true;
-  private boolean m_spinEnabled = true;
+  private boolean m_movingEnabled = true;
 
   private boolean m_assetsLoaded = false;
   private boolean m_drawnLoadingScreen = false;
-  private boolean m_flightDataLoaded = false;
-  private boolean m_movingEnabled = true;
+  private boolean m_flightDataLoaded = false;  
 
   private float m_rotationYModified = 0;
   private float m_lockedLastMillis;
@@ -304,13 +303,7 @@ class FlightMap3D extends Widget implements IDraggable {
 
   public void setMarkersEnabled(boolean enabled) {
     m_markersEnabled = enabled;
-  }
-  
-  public void setSpinEnabled(boolean enabled) {
-    m_spinEnabled = enabled;
-  }
-    
-  }
+  } 
 
   public void setDraggingEnabled(boolean enabled) {
     m_movingEnabled = enabled;
