@@ -442,6 +442,7 @@ class AlexTestingScreen extends Screen {
   private ButtonUI clearListButton;
   private ButtonUI removeSelectedButton;
   private ButtonUI addItemButton;
+  private DropdownUI<String> testDropdown;
   private int counter = 0;
   public AlexTestingScreen(int scaleX, int scaleY, String screenId) {
     super(scaleX, scaleY, screenId, color(220, 220, 220, 255));
@@ -459,8 +460,14 @@ class AlexTestingScreen extends Screen {
     removeSelectedButton.setText("Remove selected");
     removeSelectedButton.getOnClickEvent().addHandler(e -> list.removeSelected());
     
+    testDropdown = new DropdownUI<String>(400, 90, 200, 600, 30, v -> v);
+    testDropdown.add("One");
+    testDropdown.add("Too");
+    testDropdown.add("Three");
+    
     addWidget(box);
     addWidget(list);
+    addWidget(testDropdown);
     
 
     ButtonUI returnBttn = createButton(20, displayHeight - 60 , 160, 50);
