@@ -8,15 +8,20 @@ import java.nio.channels.FileChannel;
 import java.nio.*;
 import java.io.*;
 
+class FlightLists {
+  public FlightType[] US;
+  public FlightType[] WORLD;
+}
+
 class FlightsManagerClass {
   private boolean m_working;
 
-  public void init(String usFileName, int threadCount, Consumer<FlightType[]> onUSTaskComplete) { //  Consumer<FlightType[]> onWorldTaskComplete
+  public void init(String usFileName, String worldFileName, int threadCount, Consumer<FlightLists> onTaskComplete) { //  Consumer<FlightType[]> onWorldTaskComplete
     boolean result = convertBinaryFileToFlightType(usFileName, threadCount, onUSTaskComplete);
     if (!result)
       return;
   }
-  private boolean convertBinaryFileToFlightType(String filename, int threadCount, Consumer<FlightType[]> onTaskComplete) {
+  private boolean convertBinaryFileToFlightType(String usFileName, String worldFileName, int threadCount, Consumer<FlightLists> onTaskComplete) {
     if (m_working) {
       println("Warning: m_working is true, convertBinaryFileToFlightType did not process correctly");
       return false;
@@ -24,18 +29,19 @@ class FlightsManagerClass {
 
     new Thread(() -> {
       s_DebugProfiler.startProfileTimer();
-      FlightType[] flightsList = convertBinaryFileToFlightTypeAsync(filename, threadCount);
-      s_DebugProfiler.printTimeTakenMillis("Raw file pre-processing");
-
-      m_working = false;
+      FlightLists flightLists = new FlightLists(convertBinaryFileToFlightTypeAsync(usFileName, threadCount, QueryLocation.US),
+      convertBinaryFileToFlightTypeAsync(worldFileName, threadCount, QueryLocation.WORLD));
+      s_DebugProfiler.printTimeTakenMillis("Raw files pre-processing");
       onTaskComplete.accept(flightsList);
+      m_working = false;
     }
     ).start();
+
 
     m_working = true;
     return true;
   }
-  private FlightType[] convertBinaryFileToFlightTypeAsync(String filename, int threadCount) {
+  private FlightType[] convertBinaryFileToFlightTypeAsync(String filename, int threadCount, QueryLocation queryLocation) {
     MappedByteBuffer buffer;
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
     CountDownLatch latch = new CountDownLatch(threadCount);
@@ -57,7 +63,11 @@ class FlightsManagerClass {
         long processingSize = endPosition - startPosition;
 
         executor.submit(() -> {
-          processConvertBinaryFileToFlightTypeChunk(flightsList, buffer, processingSize, startPosition);
+          if (queryLocation == QueryLocation.US) {
+            processUSConvertBinaryFileToFlightTypeChunk(flightsList, buffer, processingSize, startPosition);
+          } else {
+            processWorldConvertBinaryFileToFlightTypeChunk(flightsList, buffer, processingSize, startPosition);
+          }
           latch.countDown();
         }
         );
@@ -78,7 +88,7 @@ class FlightsManagerClass {
       return null;
     }
   }
-  private void processConvertBinaryFileToFlightTypeChunk(FlightType[] flightsList, MappedByteBuffer buffer, long processingSize, int startPosition) {
+  private void processUSConvertBinaryFileToFlightTypeChunk(FlightType[] flightsList, MappedByteBuffer buffer, long processingSize, int startPosition) {
     s_DebugProfiler.startProfileTimer();
 
     long maxI = startPosition + processingSize;
@@ -101,6 +111,7 @@ class FlightsManagerClass {
     }
     s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
   }
+
 }
 
 
@@ -134,8 +145,9 @@ class FlightsManagerClass {
 // T. Creagh, cleaned up code a bit, 12pm 0/03/24
 // CKM, implemented delay stats, 23:00 11/03
 // CKM, converted to kilometres, 17:00 12/03
-// T. Creagh, Added World Consumer object TODO, 12am 12/04
-// T. Creagh, Removed member varible from flightList, 12pm 13/04
-// T. Creagh, Removed getFlightlist as its depreiated, 12:30pm 13/04
-// T. Creagh, fixed convertBinaryFileToFlightTypeAsync to work without the member varible, 12:45pm 13/04
-// T. Creagh, convertBinaryFileToFlightTypeAsync compatible with consumer, 12:45pm 13/04
+// T. Creagh, Added World Consumer object TODO, 12am 12/03
+// T. Creagh, Removed member varible from flightList, 12pm 13/03
+// T. Creagh, Removed getFlightlist as its depreiated, 12:30pm 13/03
+// T. Creagh, fixed convertBinaryFileToFlightTypeAsync to work without the member varible, 12:45pm 13/03
+// T. Creagh, convertBinaryFileToFlightTypeAsync compatible with consumer, 12:45pm 13/03
+// T. Creagh, added world for init and aysnc functions, 3pm 13/03
