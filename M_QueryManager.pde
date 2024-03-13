@@ -10,15 +10,21 @@ class QueryManagerClass {
   void init() {
     m_airportTable = loadTable("data/Preprocessed Data/airports.csv", "header");
     m_usaAirportIndexes = loadTable("data/Preprocessed Data/airport_lookup_table.csv");
+    if (m_airportTable == null || m_usaAirportIndexes == null)
+      println("ERROR ON INIT QUERY MANAGER");
   }
   //a series of function for lookup tables - the lookup tables are loaded directly into processing as spreadsheets
   //the findRow functions allow the spreadsheet to be searched, and a pointer to that row is passed as a variable
   float getLatitude(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
+    if (m_lookupResult == null)
+      return 0;
     return m_lookupResult.getFloat("Latitude");
   }
   float getLongitude(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
+    if (m_lookupResult == null)
+      return 0;
     return m_lookupResult.getFloat(5);
   }
   String getAirportName(String code) {
@@ -35,6 +41,8 @@ class QueryManagerClass {
   }
   String getCode(int index) {
     m_lookupResult = m_usaAirportIndexes.findRow(String.valueOf(index), 1);
+    if (m_lookupResult == null)
+      return "ERROR";
     return m_lookupResult.getString(0);
   }
   int getIndex(String code) {
@@ -319,14 +327,16 @@ class QueryManagerClass {
     AtomicInteger frequency = new AtomicInteger(0);
     queryFlights(flightsList, flightQuery, queryValue, threadCount, returnedList -> {
       frequency.set(returnedList.length);
-    });
+    }
+    );
     return frequency.get();
   }
   public int queryRangeFrequency(FlightType[] flightsList, FlightRangeQuery flightRangeQuery, int start, int end, int threadCount) {
     AtomicInteger frequency = new AtomicInteger(0);
     queryFlightsWithinRange(flightsList, flightRangeQuery, start, end, threadCount, returnedList -> {
       frequency.set(returnedList.length);
-    });
+    }
+    );
     return frequency.get();
   }
   public FlightType[] getHead(FlightType[] flightList, int numberOfItems) {
