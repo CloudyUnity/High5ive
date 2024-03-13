@@ -9,7 +9,6 @@ class ApplicationClass {
 
   private FlightsManagerClass m_flightsManager = new FlightsManagerClass();
   private QueryManagerClass m_queryManager = new QueryManagerClass();
-  private DataPreprocessor m_dataPreprocessor = new DataPreprocessor();
   private DebugFPSClass m_fpsClass = new DebugFPSClass();
 
   private Event<SwitchScreenEventInfoType> m_onSwitchEvent = new Event<SwitchScreenEventInfoType>();
@@ -19,16 +18,16 @@ class ApplicationClass {
 
     m_onSwitchEvent.addHandler(e -> switchScreen(e));
 
-    Screen1 screen1 = new Screen1(600, 600, SCREEN_1_ID);
+    Screen1 screen1 = new Screen1(displayWidth, displayHeight, SCREEN_1_ID);
     m_screens.add(screen1);
 
-    Screen2 screen2 = new Screen2(700, 700, SCREEN_2_ID);
+    Screen2 screen2 = new Screen2(displayWidth, displayHeight, SCREEN_2_ID);
     m_screens.add(screen2);
 
-    Screen screenDemo = new FlightCodesBarchartDemo(700, 700, SWITCH_TO_DEMO_ID);
+    Screen screenDemo = new FlightCodesBarchartDemo(displayWidth, displayHeight, SWITCH_TO_DEMO_ID);
     m_screens.add(screenDemo);
 
-    ScreenFlightMap screenFlightMap3D = new ScreenFlightMap((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, SCREEN_FLIGHT_MAP_ID, m_queryManager);
+    ScreenFlightMap screenFlightMap3D = new ScreenFlightMap(displayWidth, displayHeight, SCREEN_FLIGHT_MAP_ID, m_queryManager);
     m_screens.add(screenFlightMap3D);
 
     TextBoxDemoScreen d = new TextBoxDemoScreen(700, 700, TB_DEMO_ID);
@@ -37,18 +36,17 @@ class ApplicationClass {
     m_currentScreen = m_screens.get(0);
 
     PVector windowSize = m_currentScreen.getScale();
-    resizeWindow((int)windowSize.x, (int)windowSize.y);
+    if (!FULLSCREEN_ENABLED)
+      resizeWindow((int)windowSize.x, (int)windowSize.y);    
 
     if (DEBUG_DATA_LOADING) {
-      m_flightsManager.init(4, list -> {        
-              
-        m_queryManager.queryFlights(list, FlightQueryType.AIRPORT_ORIGIN_INDEX, FlightQueryOperator.EQUAL, 1, 4, queriedList -> {
+      m_flightsManager.init("hex_flight_data.bin", 4, list -> {        
+        m_queryManager.queryFlights(list, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.US), m_queryManager.getIndex("SFO"), 4, queriedList -> {
           s_DebugProfiler.startProfileTimer();
           screenFlightMap3D.startLoadingData(queriedList);
           s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
         }
         );
-        
       }
       );
     }
@@ -126,3 +124,6 @@ class ApplicationClass {
 // F. Wright, Modified onMouse() functions and merged functions from the old UI main into ApplicationClass, 6pm 04/03/24
 // F. Wright, Changed manual profiling to use DebugProfilingClass instead, 2pm 06/03/24
 // F. Wright, Fixed UI errors, 12pm 07/03/24
+// CKM, bought code to working levels 14:00 12/03
+// CKM, removed datapreprocessor references, 17:00 12/03
+// M. Orlowski, added 2D screen, 11:00, 13/03

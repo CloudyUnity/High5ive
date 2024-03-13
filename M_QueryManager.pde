@@ -1,9 +1,7 @@
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
 class QueryManagerClass {
-
   Table m_airportTable;
   Table m_usaAirportIndexes;
   TableRow m_lookupResult;
@@ -43,7 +41,7 @@ class QueryManagerClass {
     m_lookupResult = m_usaAirportIndexes.findRow(code, 0);
     return m_lookupResult.getInt(1);
   }
-  public void queryFlights(FlightType[] flightsList, FlightQueryType queryType, FlightQueryOperator queryOperator, int queryValue, int threadCount, Consumer<FlightType[]> onTaskComplete) {
+  public void queryFlights(FlightType[] flightsList, FlightQuery flightQuery, int queryValue, int threadCount, Consumer<FlightType[]> onTaskComplete) {
     if (m_working) {
       println("Warning: m_working is true, queryFlights did not process correctly");
       return;
@@ -51,7 +49,7 @@ class QueryManagerClass {
 
     new Thread(() -> {
       s_DebugProfiler.startProfileTimer();
-      FlightType[] newFlightsList = queryFlightsAysnc(flightsList, queryType, queryOperator, queryValue, threadCount);
+      FlightType[] newFlightsList = queryFlightsAysnc(flightsList, flightQuery, queryValue, threadCount);
       s_DebugProfiler.printTimeTakenMillis("queryFlights");
 
       m_working = false;
@@ -62,12 +60,12 @@ class QueryManagerClass {
     m_working = true;
     return;
   }
-  private FlightType[] queryFlightsAysnc(FlightType[] flightsList, FlightQueryType queryType, FlightQueryOperator queryOperator, int queryValue, int threadCount) {
+  private FlightType[] queryFlightsAysnc(FlightType[] flightsList, FlightQuery flightQuery, int queryValue, int threadCount) {
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
     CountDownLatch latch = new CountDownLatch(threadCount);
 
-    if (!checkForIllegalQuery(queryType, queryOperator)) {
-      println("Error: QueryType is illegal with QueryOperator");
+    if (!checkForIllegalQuery(flightQuery)) {
+      println("Error: FlightQuery.Type is illegal with FlightQuery.Operator");
       return flightsList;
     }
     int chunkSize = NUMBER_OF_FLIGHT_FULL_LINES / threadCount;
@@ -78,7 +76,7 @@ class QueryManagerClass {
       long endPosition = (i == threadCount - 1) ? NUMBER_OF_FLIGHT_FULL_LINES : (i + 1) * chunkSize;
 
       executor.submit(() -> {
-        listOfFlightsLists.add(processQueryFlightsChunk(Arrays.copyOfRange(flightsList, startPosition, (int)endPosition), queryType, queryOperator, queryValue));
+        listOfFlightsLists.add(processQueryFlightsChunk(Arrays.copyOfRange(flightsList, startPosition, (int)endPosition), flightQuery, queryValue));
         latch.countDown();
       }
       );
@@ -97,38 +95,38 @@ class QueryManagerClass {
       return joinedFlightArray;
     }
   }
-  private FlightType[] processQueryFlightsChunk(FlightType[] flightsList, FlightQueryType queryType, FlightQueryOperator queryOperator, int queryValue) {
-    switch(queryOperator) {
+  private FlightType[] processQueryFlightsChunk(FlightType[] flightsList, FlightQuery flightQuery, int queryValue) {
+    switch(flightQuery.Operator) {
     case EQUAL:
       return Arrays.stream(flightsList)
-        .filter(flight -> getFlightTypeFieldFromQueryType(flight, queryType) == queryValue)
+        .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) == queryValue)
         .toArray(FlightType[]::new);
     case NOT_EQUAL:
       return Arrays.stream(flightsList)
-        .filter(flight -> getFlightTypeFieldFromQueryType(flight, queryType) != queryValue)
+        .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) != queryValue)
         .toArray(FlightType[]::new);
     case LESS_THAN:
       return Arrays.stream(flightsList)
-        .filter(flight -> getFlightTypeFieldFromQueryType(flight, queryType) < queryValue)
+        .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) < queryValue)
         .toArray(FlightType[]::new);
     case LESS_THAN_EQUAL:
       return Arrays.stream(flightsList)
-        .filter(flight -> getFlightTypeFieldFromQueryType(flight, queryType) <= queryValue)
+        .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) <= queryValue)
         .toArray(FlightType[]::new);
     case GREATER_THAN:
       return Arrays.stream(flightsList)
-        .filter(flight -> getFlightTypeFieldFromQueryType(flight, queryType) > queryValue)
+        .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) > queryValue)
         .toArray(FlightType[]::new);
     case GREATER_THAN_EQUAL:
       return Arrays.stream(flightsList)
-        .filter(flight -> getFlightTypeFieldFromQueryType(flight, queryType) >= queryValue)
+        .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) >= queryValue)
         .toArray(FlightType[]::new);
     default:
-      println("Error: FlightQueryOperator invalid");
+      println("Error: FlightQuery.Operator invalid");
       return flightsList;
     }
   }
-  public void queryFlightsWithinRange(FlightType[] flightsList, FlightQueryType queryType, int start, int end, int threadCount, Consumer<FlightType[]> onTaskComplete) {
+  public void queryFlightsWithinRange(FlightType[] flightsList, FlightRangeQuery flightRangeQuery, int start, int end, int threadCount, Consumer<FlightType[]> onTaskComplete) {
     if (m_working) {
       println("Warning: m_working is true, queryFlightsWithinRange did not process correctly");
       return;
@@ -136,7 +134,7 @@ class QueryManagerClass {
 
     new Thread(() -> {
       s_DebugProfiler.startProfileTimer();
-      FlightType[] newFlightsList = queryFlightsWithinRangeAysnc(flightsList, queryType, start, end, threadCount);
+      FlightType[] newFlightsList = queryFlightsWithinRangeAysnc(flightsList, flightRangeQuery, start, end, threadCount);
       s_DebugProfiler.printTimeTakenMillis("queryFlightsWithinRange");
 
       m_working = false;
@@ -147,12 +145,12 @@ class QueryManagerClass {
     m_working = true;
     return;
   }
-  private FlightType[] queryFlightsWithinRangeAysnc(FlightType[] flightsList, FlightQueryType queryType, int start, int end, int threadCount) {
+  private FlightType[] queryFlightsWithinRangeAysnc(FlightType[] flightsList, FlightRangeQuery flightRangeQuery, int start, int end, int threadCount) {
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
     CountDownLatch latch = new CountDownLatch(threadCount);
 
-    if (!checkForIllegalQuery(queryType, FlightQueryOperator.GREATER_THAN_EQUAL)) {
-      println("Error: FlightQueryType is illegal to query range");
+    if (!checkForIllegalQuery(flightRangeQuery)) {
+      println("Error: FlightRangeQuery.Type is illegal to query range");
       return flightsList;
     }
 
@@ -164,7 +162,7 @@ class QueryManagerClass {
       long endPosition = (i == threadCount - 1) ? NUMBER_OF_FLIGHT_FULL_LINES : (i + 1) * chunkSize;
 
       executor.submit(() -> {
-        listOfFlightsLists.add(processQueryFlightsWithinRangeChunk(Arrays.copyOfRange(flightsList, startPosition, (int)endPosition), queryType, start, end));
+        listOfFlightsLists.add(processQueryFlightsWithinRangeChunk(Arrays.copyOfRange(flightsList, startPosition, (int)endPosition), flightRangeQuery, start, end));
         latch.countDown();
       }
       );
@@ -183,13 +181,13 @@ class QueryManagerClass {
       return joinedFlightArray;
     }
   }
-  private FlightType[] processQueryFlightsWithinRangeChunk(FlightType[] flightsList, FlightQueryType queryType, int start, int end) {
+  private FlightType[] processQueryFlightsWithinRangeChunk(FlightType[] flightsList, FlightRangeQuery flightRangeQuery, int start, int end) {
     return Arrays.stream(flightsList)
-      .filter(flight -> getFlightTypeFieldFromQueryType(flight, queryType) >= start &&
-      getFlightTypeFieldFromQueryType(flight, queryType) < end)
+      .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightRangeQuery.Type) >= start &&
+      getFlightTypeFieldFromQueryType(flight, flightRangeQuery.Type) < end)
       .toArray(FlightType[]::new);
   }
-  private int getFlightTypeFieldFromQueryType(FlightType flight, FlightQueryType queryType) {
+  private int getFlightTypeFieldFromQueryType(FlightType flight, QueryType queryType) {
     switch(queryType) {
     case DAY:
       return (int)flight.Day;
@@ -211,33 +209,61 @@ class QueryManagerClass {
       return (int)flight.ArrivalTime;
     case CANCELLED_OR_DIVERTED:
       return (int)flight.CancelledOrDiverted;
-    case MILES_DISTANCE:
+    case KILOMETRES_DISTANCE:
       return (int)flight.MilesDistance;
     default:
-      println("Error: FlightQueryType invalid");
+      println("Error: Query.Type invalid");
       return -1;
     }
   }
-  private boolean checkForIllegalQuery(FlightQueryType queryType, FlightQueryOperator queryOperator) {
-    switch(queryType) {
-    case CARRIER_CODE_INDEX:
-    case FLIGHT_NUMBER:
-    case AIRPORT_ORIGIN_INDEX:
-    case AIRPORT_DEST_INDEX:
-    case CANCELLED_OR_DIVERTED:
-      if (queryOperator != FlightQueryOperator.EQUAL || queryOperator != FlightQueryOperator.NOT_EQUAL) {
-        return false;
-      } else {
-        break;
+  private boolean checkForIllegalQuery(FlightQuery flightQuery) {
+    if (flightQuery.Location == QueryLocation.US) {
+      switch(flightQuery.Type) {
+      case CARRIER_CODE_INDEX:
+      case FLIGHT_NUMBER:
+      case AIRPORT_ORIGIN_INDEX:
+      case AIRPORT_DEST_INDEX:
+      case CANCELLED_OR_DIVERTED:
+        if (flightQuery.Operator == QueryOperator.EQUAL || flightQuery.Operator == QueryOperator.NOT_EQUAL) {
+          return true;
+        } else {
+          return false;
+        }
+      default:
+        return true;
       }
-    default:
-      return true;
+    } else {
+      switch(flightQuery.Type) {
+      case CARRIER_CODE_INDEX:
+      case AIRPORT_ORIGIN_INDEX:
+      case AIRPORT_DEST_INDEX:
+        if (flightQuery.Operator == QueryOperator.EQUAL || flightQuery.Operator == QueryOperator.NOT_EQUAL) {
+          return true;
+        }
+      default:
+        return false;
+      }
     }
-    return true;
   }
-  public FlightType[] sort(FlightType[] flightsList, FlightQueryType queryType, FlightQuerySortDirection sortDirection) {
+  private boolean checkForIllegalQuery(FlightRangeQuery flightRangeQuery) {
+    if (flightRangeQuery.Location == QueryLocation.US) {
+      switch(flightRangeQuery.Type) {
+      case CARRIER_CODE_INDEX:
+      case FLIGHT_NUMBER:
+      case AIRPORT_ORIGIN_INDEX:
+      case AIRPORT_DEST_INDEX:
+      case CANCELLED_OR_DIVERTED:
+        return false;
+      default:
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
+  public FlightType[] sort(FlightType[] flightsList, FlightSortQuery flightSortQuery) {
     Comparator<FlightType> flightComparator;
-    switch(queryType) {
+    switch(flightSortQuery.Type) {
     case DAY:
       flightComparator = Comparator.comparingInt(flight -> flight.Day);
       break;
@@ -268,37 +294,37 @@ class QueryManagerClass {
     case CANCELLED_OR_DIVERTED:
       flightComparator = Comparator.comparingInt(flight -> flight.CancelledOrDiverted);
       break;
-    case MILES_DISTANCE:
+    case KILOMETRES_DISTANCE:
       flightComparator = Comparator.comparingInt(flight -> flight.MilesDistance);
       break;
     default:
-      println("Error: FlightQueryType invalid");
+      println("Error: FlightSortQuery.Type invalid");
       return flightsList;
     }
-    switch(sortDirection) {
+    switch(flightSortQuery.SortDirection) {
     case ASCENDING:
       break;
     case DESCENDING:
       flightComparator = flightComparator.reversed();
       break;
     default:
-      println("Error: FlightQuerySortDirection invalid");
+      println("Error: FlightSortQuery.SortDirection invalid");
       return flightsList;
     }
 
     Arrays.sort(flightsList, flightComparator);
     return flightsList;
   }
-  public int queryFrequency(FlightType[] flightsList, FlightQueryType queryType, FlightQueryOperator queryOperator, int queryValue, int threadCount) {
+  public int queryFrequency(FlightType[] flightsList, FlightQuery flightQuery, int queryValue, int threadCount) {
     AtomicInteger frequency = new AtomicInteger(0);
-    queryFlights(flightsList, queryType, queryOperator, queryValue, threadCount, returnedList -> {
+    queryFlights(flightsList, flightQuery, queryValue, threadCount, returnedList -> {
       frequency.set(returnedList.length);
     });
     return frequency.get();
   }
-  public int queryRangeFrequency(FlightType[] flightsList, FlightQueryType queryType, int start, int end, int threadCount) {
+  public int queryRangeFrequency(FlightType[] flightsList, FlightRangeQuery flightRangeQuery, int start, int end, int threadCount) {
     AtomicInteger frequency = new AtomicInteger(0);
-    queryFlightsWithinRange(flightsList, queryType, start, end, threadCount, returnedList -> {
+    queryFlightsWithinRange(flightsList, flightRangeQuery, start, end, threadCount, returnedList -> {
       frequency.set(returnedList.length);
     });
     return frequency.get();
@@ -315,7 +341,14 @@ class QueryManagerClass {
 }
 
 // Descending code authorship changes:
-// CKM: code to return details about airports
+// CKM: wrote class to return details about airports 17:00 11/03
 // T. Creagh, moved query methods in, 11pm 06/03/24
 // T. Creagh, fixed queryFrequency and queryRangeFrequency, 12pm 06/03/24
 // T. Creagh, removed redundant code, 12:30pm 06/03/24
+// CKM, wrote comments about my code, 16:00 12/03
+// CKM, converted to kilometres 17:00 12/03
+// T. Creagh, Added Working queryFlights with world, 10pm, 12/03/24
+// T. Creagh, Added Working queryRangeFlights with world, 11pm, 12/03/24
+// T. Creagh, Added Working querySortFlights with world, 11:30pm, 12/03/24
+// T. Creagh, Added Working queryFrequency with world, 11:45pm, 12/03/24
+// T. Creagh, Added Working queryRangeFrequency with world, 12pm, 12/03/24

@@ -1,5 +1,5 @@
 // Engine
-final int FRAME_RATE = 72;
+final int FRAME_RATE = 60;
 final int FIXED_FRAME_INCREMENT = 50;
 final int INPUT_ARRAY_LENGTH = 70000;
 final boolean FULLSCREEN_ENABLED = true;
@@ -40,6 +40,7 @@ final int DEFAULT_SCREEN_COLOUR = CP_BLACK;
 final String SCREEN_1_ID = "Screen 1";
 final String SCREEN_2_ID = "Screen 2";
 final String SWITCH_TO_DEMO_ID = "Barchart demo screen";
+final String SCREEN_TWOD_MAP_ID = "Screen Flight Map 2D";
 final String SCREEN_FLIGHT_MAP_ID = "Screen Flight Map";
 final String TB_DEMO_ID = "Textbox demo";
 
@@ -62,9 +63,8 @@ final int WESTERN_ALL_50 = 144;
 final int WESTERN_ALL_50_ALT = 216;
 
 // 3D Flight Map
-final PVector WINDOW_SIZE_3D_FLIGHT_MAP = new PVector(1200, 800);
 final int EARTH_Z = -20;
-final int EARTH_SPHERE_SIZE = 300;
+final int EARTH_SPHERE_SIZE = 400;
 final float DAY_CYCLE_SPEED = 0.00005f;
 final float VERTICAL_SCROLL_LIMIT = 0.6f;
 final float VERTICAL_DRAG_SPEED = 0.000003f;
@@ -75,7 +75,7 @@ final float MARKER_SIZE = 1f;
 final int TEXT_SIZE_3D = 12;
 final PVector TEXT_DISPLACEMENT_3D = new PVector(0, 10, 10); 
 final boolean DITHER_MODE = false;
-final int MAX_DATA_LOADED = 600000;
+final int MAX_DATA_LOADED = 700000;
 
 // Descending code authorship changes:
 // F. Wright, Set up constants for the Engine and Debug, 8pm 23/02/24
@@ -85,3 +85,5 @@ final int MAX_DATA_LOADED = 600000;
 // F. Wright, Added a lot of 3D flight map related constants, 2pm 09/03/24 
 // CKM, Updated dataset constants, 23:00 11/03
 // CKM, Added datasets for 2D map, 00:00 12/03
+// CKM, Updated 3D dataset constants, 10:00 13/03
+// M. Orlowski, Added Screen ID for 2D map, 11:00 13/03

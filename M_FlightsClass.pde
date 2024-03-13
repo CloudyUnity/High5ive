@@ -8,59 +8,13 @@ import java.nio.channels.FileChannel;
 import java.nio.*;
 import java.io.*;
 
-
-class FlightType { // 23 bytes total
-  public byte Day;                      // supports all querys
-  public byte CarrierCodeIndex;         // only supports EQUAL or NOT_EQUAL
-  public short FlightNumber;            // only supports EQUAL or NOT_EQUAL
-  public short AirportOriginIndex;      // only supports EQUAL or NOT_EQUAL
-  public short AirportDestIndex;        // only supports EQUAL or NOT_EQUAL
-  public short ScheduledDepartureTime;  // supports all querys
-  public short DepartureTime;           // supports all querys
-  public short DepartureDelay;          // supports all querys
-  public short ScheduledArrivalTime;    // supports all querys
-  public short ArrivalTime;             // supports all querys
-  public short ArrivalDelay;            // supports all querys
-  public byte CancelledOrDiverted;      // only supports EQUAL or NOT_EQUAL
-  public short MilesDistance;           // supports all querys
-
-  public FlightType(
-    byte day, byte carrierCodeIndex, short flightNumber,
-    short airportOriginIndex, short airportDestIndex, short scheduledDepartureTime,
-    short departureTime, short departureDelay, short scheduledArrivalTime, 
-    short arrivalTime, short arrivalDelay, byte cancelledOrDiverted, 
-    short milesDistance) {
-
-    this.Day = day;
-    this.CarrierCodeIndex = carrierCodeIndex;
-    this.FlightNumber = flightNumber;
-    this.AirportOriginIndex = airportOriginIndex;
-    this.AirportDestIndex = airportDestIndex;
-    this.ScheduledDepartureTime = scheduledDepartureTime;
-    this.DepartureTime = departureTime;
-    this.DepartureDelay = departureDelay;
-    this.ScheduledArrivalTime = scheduledArrivalTime;
-    this.ArrivalTime = arrivalTime;
-    this.ArrivalDelay = arrivalDelay;
-    this.CancelledOrDiverted = cancelledOrDiverted;
-    this.MilesDistance = milesDistance;
-  }
-
-  public FlightType() {
-  }
-}
-
 class FlightsManagerClass {
-  private FlightType[] m_flightsList = new FlightType[NUMBER_OF_FLIGHT_FULL_LINES];
   private boolean m_working;
 
-  public void init(int threadCount, Consumer<FlightType[]> onTaskComplete) {
-    boolean result = convertBinaryFileToFlightType("hex_flight_data.bin", threadCount, onTaskComplete);
+  public void init(String usFileName, int threadCount, Consumer<FlightType[]> onUSTaskComplete) { //  Consumer<FlightType[]> onWorldTaskComplete
+    boolean result = convertBinaryFileToFlightType(usFileName, threadCount, onUSTaskComplete);
     if (!result)
       return;
-  }
-  public FlightType[] getFlightsList() {
-    return m_flightsList;
   }
   private boolean convertBinaryFileToFlightType(String filename, int threadCount, Consumer<FlightType[]> onTaskComplete) {
     if (m_working) {
@@ -70,18 +24,18 @@ class FlightsManagerClass {
 
     new Thread(() -> {
       s_DebugProfiler.startProfileTimer();
-      convertBinaryFileToFlightTypeAsync(filename, threadCount);
+      FlightType[] flightsList = convertBinaryFileToFlightTypeAsync(filename, threadCount);
       s_DebugProfiler.printTimeTakenMillis("Raw file pre-processing");
 
       m_working = false;
-      onTaskComplete.accept(m_flightsList);
+      onTaskComplete.accept(flightsList);
     }
     ).start();
 
     m_working = true;
     return true;
   }
-  private void convertBinaryFileToFlightTypeAsync(String filename, int threadCount) {
+  private FlightType[] convertBinaryFileToFlightTypeAsync(String filename, int threadCount) {
     MappedByteBuffer buffer;
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
     CountDownLatch latch = new CountDownLatch(threadCount);
@@ -90,9 +44,10 @@ class FlightsManagerClass {
       FileChannel channel = fis.getChannel();
       buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
       long flightCount = channel.size() / LINE_BYTE_SIZE;
-      m_flightsList = new FlightType[(int)flightCount];
       fis.close();
       channel.close();
+
+      FlightType[] flightsList = new FlightType[(int)flightCount];
 
       int chunkSize = (int)flightCount / threadCount;
 
@@ -102,7 +57,7 @@ class FlightsManagerClass {
         long processingSize = endPosition - startPosition;
 
         executor.submit(() -> {
-          processConvertBinaryFileToFlightTypeChunk(buffer, processingSize, startPosition);
+          processConvertBinaryFileToFlightTypeChunk(flightsList, buffer, processingSize, startPosition);
           latch.countDown();
         }
         );
@@ -115,20 +70,21 @@ class FlightsManagerClass {
       }
       finally {
         executor.shutdown();
+        return flightsList;
       }
     }
     catch (IOException e) {
       println("Error: " + e);
-      return;
+      return null;
     }
   }
-  private void processConvertBinaryFileToFlightTypeChunk(MappedByteBuffer buffer, long processingSize, int startPosition) {
+  private void processConvertBinaryFileToFlightTypeChunk(FlightType[] flightsList, MappedByteBuffer buffer, long processingSize, int startPosition) {
     s_DebugProfiler.startProfileTimer();
 
     long maxI = startPosition + processingSize;
     for (int i = startPosition; i < maxI; i++) {
       int offset = LINE_BYTE_SIZE * i;
-      m_flightsList[i] = new FlightType(
+      flightsList[i] = new FlightType(
         buffer.get(offset),
         buffer.get(offset+1),
         buffer.getShort(offset+2),
@@ -145,57 +101,6 @@ class FlightsManagerClass {
     }
     s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
   }
-  // public void print(FlightType flight) {
-  //   printFlightHeading();
-  //   printFlight(flight);
-  // }
-
-  // public void print(FlightType[] flights) {
-  //   printFlightHeading();
-  //   for (FlightType flight : flights)
-  //     printFlight(flight);
-  // }
-  // public void print(FlightType[] flights, int amount) {
-  //   printFlightHeading();
-  //   for (int i = 0; i < amount; i++) {
-  //     printFlight(flights[i]);
-  //   }
-  // }
-  // @Override
-  // private void toString(FlightType flight) { // Can be changed to a toString() override
-  //   println(
-  //     flight.Day + "\t" +
-  //     flight.CarrierCodeIndex + "\t\t" +
-  //     flight.FlightNumber + "\t\t" +
-  //     flight.AirportOriginIndex + "\t\t" +
-  //     flight.AirportDestIndex + "\t\t" +
-  //     flight.ScheduledDepartureTime + "\t\t\t" +
-  //     flight.DepartureTime + "\t\t" +
-  //     flight.DepartureDelay + "\t\t" +
-  //     flight.ScheduledArrivalTime + "\t\t\t" +
-  //     flight.ArrivalTime + "\t\t" +
-  //     flight.ArrivalDelay + "\t\t" +
-  //     flight.CancelledOrDiverted + "\t\t" +
-  //     flight.MilesDistance
-  //     );
-  // }
-  // private void printFlightHeading() {
-  //   println(
-  //     "Day\t" +
-  //     "CarrierCodeIndex\t" +
-  //     "FlightNumber\t" +
-  //     "AirportOriginIndex\t" +
-  //     "AirportDestIndex\t" +
-  //     "ScheduledDepartureTime\t" +
-  //     "DepartureTime\t" +
-  //     "DepartureDelay\t" +
-  //     "ScheduledArrivalTime\t\t" +
-  //     "ArrivalTime\t" +
-  //     "ArrivalDelay\t" +
-  //     "CancelledOrDiverted\t" +
-  //     "MilesDistance"
-  //     );
-  // }
 }
 
 
@@ -228,3 +133,10 @@ class FlightsManagerClass {
 // T. Creagh, refacotored methodes, 11:30pm 11/03/24
 // T. Creagh, cleaned up code a bit, 12pm 0/03/24
 // CKM, implemented delay stats, 23:00 11/03
+// CKM, converted to kilometres, 17:00 12/03
+// T. Creagh, Added World Consumer object TODO, 12am 12/04
+// T. Creagh, Removed member varible from flightList, 12pm 13/04
+// T. Creagh, Removed getFlightlist as its depreiated, 12:30pm 13/04
+// T. Creagh, fixed convertBinaryFileToFlightTypeAsync to work without the member varible, 12:45pm 13/04
+// T. Creagh, convertBinaryFileToFlightTypeAsync compatible with consumer, 12:45pm 13/04
+
