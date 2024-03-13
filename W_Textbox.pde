@@ -1,5 +1,5 @@
 public class TextboxUI extends Widget implements IKeyInput, IClickable {
-  private int fontSize = 24;
+  private int fontSize = 20;
   private StringBuilder m_text;
   private int m_cursorPosition = 0;
 

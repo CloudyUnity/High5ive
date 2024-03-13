@@ -359,6 +359,43 @@ class ScreenFlightMap extends Screen {
     LabelUI label = createLabel(20, 10, 150, 40, "3D Flight Map");
     label.setForegroundColour(color(255, 255, 255, 255));
     label.setTextSize(30);
+    
+    TextboxUI airportOriginSearch = new TextboxUI(20, currentUIPosY, 160, 40);
+    addWidget(airportOriginSearch);
+    
+    currentUIPosY += 40;
+    
+    TextboxUI airportDestSearch = new TextboxUI(20, currentUIPosY, 160, 40);
+    addWidget(airportDestSearch);
+    
+    currentUIPosY += 40;
+    
+    /*TextboxUI airportOriginSearch = new TextboxUI(20, currentUIPosY, 160, 40);
+    addWidget(airportOriginSearch);
+    
+    currentUIPosY += 50
+    
+    TextboxUI airportOriginSearch = new TextboxUI(20, currentUIPosY, 160, 40);
+    addWidget(airportOriginSearch);
+    
+    currentUIPosY += 50
+    
+    TextboxUI airportOriginSearch = new TextboxUI(20, currentUIPosY, 160, 40);
+    addWidget(airportOriginSearch);
+    
+    currentUIPosY += 50
+    
+    TextboxUI airportOriginSearch = new TextboxUI(20, currentUIPosY, 160, 40);
+    addWidget(airportOriginSearch);
+    
+    currentUIPosY += 50
+    
+    TextboxUI airportOriginSearch = new TextboxUI(20, currentUIPosY, 160, 40);
+    addWidget(airportOriginSearch);
+    
+    currentUIPosY += 50*/
+    
+    
   }
 
   public void startLoadingData(FlightType[] flights) {
@@ -392,7 +429,7 @@ class AlexTestingScreen extends Screen {
     addWidget(box);
     addWidget(list);
     
-    ButtonUI returnBttn = createButton(220, 20 , 160, 50);
+    ButtonUI returnBttn = createButton(20, displayHeight - 60 , 160, 50);
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
     returnBttn.setGrowMode(true);
     returnBttn.setText("Return");
