@@ -39,7 +39,7 @@ class Screen1 extends Screen {
     switchToDemo.setGrowMode(true);
 
     ButtonUI switchTo2D = createButton(350, 260, 100, 100);
-    switchTo2D.getOnClickEvent();
+    switchTo2D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_TWOD_MAP_ID));
     switchTo2D.setText("2D (WIP)");
     switchTo2D.setTextSize(25);
     switchTo2D.setGrowMode(true);
@@ -381,3 +381,5 @@ class TextBoxDemoScreen extends Screen {
 // M. Orlowski, Worked on 2D Map Button, 1pm 12/03/2024
 // CKM, reintroduced some code that was overwritten, 14:00 12/03
 // CKM, implemented spin control for 3D map, 10:00 13/03
+// M. Orlowski, Added 2D calls, 12:00 13/03
+

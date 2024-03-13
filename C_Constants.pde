@@ -40,6 +40,7 @@ final int DEFAULT_SCREEN_COLOUR = CP_BLACK;
 final String SCREEN_1_ID = "Screen 1";
 final String SCREEN_2_ID = "Screen 2";
 final String SWITCH_TO_DEMO_ID = "Barchart demo screen";
+final String SCREEN_TWOD_MAP_ID = "Screen Flight Map 2D";
 final String SCREEN_FLIGHT_MAP_ID = "Screen Flight Map";
 final String TB_DEMO_ID = "Textbox demo";
 
@@ -88,3 +89,5 @@ final int MAX_DATA_LOADED = 700000;
 // CKM, Updated dataset constants, 23:00 11/03
 // CKM, Added datasets for 2D map, 00:00 12/03
 // CKM, Updated 3D dataset constants, 10:00 13/03
+// M. Orlowski, Added Screen ID for 2D map, 11:00 13/03
+

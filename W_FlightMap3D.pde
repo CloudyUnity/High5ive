@@ -27,8 +27,10 @@ class FlightMap3D extends Widget implements IDraggable {
   private boolean m_assetsLoaded = false;
   private boolean m_drawnLoadingScreen = false;
   private boolean m_flightDataLoaded = false;
+  private boolean m_movingEnabled = true;
 
   private float m_rotationYModified = 0;
+  private float m_lockedLastMillis;
 
   private HashMap<String, AirportPoint3DType> m_airportHashmap = new HashMap<String, AirportPoint3DType>();
 
@@ -69,7 +71,7 @@ class FlightMap3D extends Widget implements IDraggable {
     }
     ).start();
 
-    m_earthPos = new PVector(WINDOW_SIZE_3D_FLIGHT_MAP.x * 0.5f + posX, WINDOW_SIZE_3D_FLIGHT_MAP.y * 0.5f + posY, EARTH_Z);
+    m_earthPos = new PVector(width * 0.5f + posX, height * 0.5f + posY, EARTH_Z);
 
     m_onDraggedEvent.addHandler(e -> onDraggedHandler(e));
   }
@@ -78,7 +80,8 @@ class FlightMap3D extends Widget implements IDraggable {
     public void draw() {
     super.draw();
 
-    m_earthRotation.add(m_earthRotationalVelocity);
+    if (m_movingEnabled)
+      m_earthRotation.add(m_earthRotationalVelocity);
     m_earthRotationalVelocity.mult(m_earthRotationalFriction);
     m_earthRotation.x = clamp(m_earthRotation.x, -VERTICAL_SCROLL_LIMIT, VERTICAL_SCROLL_LIMIT);
     m_arcFraction = (millis() - m_arcStartGrowMillis) / m_arcGrowMillis;
@@ -94,7 +97,13 @@ class FlightMap3D extends Widget implements IDraggable {
       return;
     }
 
-    float time = millis() * DAY_CYCLE_SPEED;
+    float time;
+    if (m_movingEnabled)
+      time = millis() * DAY_CYCLE_SPEED;
+    else
+      time = m_lockedLastMillis;
+
+    m_lockedLastMillis = time;
     PVector lightDir = new PVector(cos(time), 0, sin(time));
     m_earthShader.set("lightDir", lightDir);
     m_sunShader.set("texTranslation", 0, time * 0.5f);
@@ -207,6 +216,9 @@ class FlightMap3D extends Widget implements IDraggable {
   }
 
   private void onDraggedHandler(MouseDraggedEventInfoType e) {
+    if (!m_movingEnabled)
+      return;
+
     PVector deltaDrag = new PVector( -(e.Y - e.PreviousPos.y) * 2, e.X - e.PreviousPos.x);
     deltaDrag.mult(s_deltaTime).mult(VERTICAL_DRAG_SPEED);
     m_earthRotationalVelocity.add(deltaDrag);
@@ -298,6 +310,10 @@ class FlightMap3D extends Widget implements IDraggable {
     m_spinEnabled = enabled;
   }
     
+  }
+
+  public void setDraggingEnabled(boolean enabled) {
+    m_movingEnabled = enabled;
   }
 
   public void loadFlights(FlightType[] flights, QueryManagerClass queries) {
