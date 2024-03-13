@@ -360,40 +360,73 @@ class ScreenFlightMap extends Screen {
     label.setForegroundColour(color(255, 255, 255, 255));
     label.setTextSize(30);
     
-    TextboxUI airportOriginSearch = new TextboxUI(20, currentUIPosY, 160, 40);
+    TextboxUI airportOriginSearch = new TextboxUI(20, currentUIPosY, 160, 30);
     addWidget(airportOriginSearch);
     
     currentUIPosY += 40;
     
-    TextboxUI airportDestSearch = new TextboxUI(20, currentUIPosY, 160, 40);
+    TextboxUI airportDestSearch = new TextboxUI(20, currentUIPosY, 160, 30);
     addWidget(airportDestSearch);
     
     currentUIPosY += 40;
     
-    /*TextboxUI airportOriginSearch = new TextboxUI(20, currentUIPosY, 160, 40);
-    addWidget(airportOriginSearch);
+    TextboxUI airlineSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(airlineSearch);
     
-    currentUIPosY += 50
+    currentUIPosY += 40;
     
-    TextboxUI airportOriginSearch = new TextboxUI(20, currentUIPosY, 160, 40);
-    addWidget(airportOriginSearch);
+    TextboxUI DateSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(DateSearch);
     
-    currentUIPosY += 50
+    currentUIPosY += 40;
     
-    TextboxUI airportOriginSearch = new TextboxUI(20, currentUIPosY, 160, 40);
-    addWidget(airportOriginSearch);
+    TextboxUI DepartBeforeSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(DepartBeforeSearch);
     
-    currentUIPosY += 50
+    currentUIPosY += 40;
     
-    TextboxUI airportOriginSearch = new TextboxUI(20, currentUIPosY, 160, 40);
-    addWidget(airportOriginSearch);
+    TextboxUI DepartAfterSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(DepartAfterSearch);
     
-    currentUIPosY += 50
+    currentUIPosY += 40;
     
-    TextboxUI airportOriginSearch = new TextboxUI(20, currentUIPosY, 160, 40);
-    addWidget(airportOriginSearch);
+    TextboxUI DistanceAboveSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(DistanceAboveSearch);
     
-    currentUIPosY += 50*/
+    currentUIPosY += 40;
+    
+    TextboxUI DepartDelayUnderSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(DepartDelayUnderSearch);
+    
+    currentUIPosY += 40;
+    
+    TextboxUI DepartDelayOverSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(DepartDelayOverSearch);
+    
+    currentUIPosY += 40;
+    
+    TextboxUI ArriveBeforeSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(ArriveBeforeSearch );
+    
+    currentUIPosY += 40;
+    
+    TextboxUI ArriveAfterSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(ArriveAfterSearch);
+    
+    currentUIPosY += 40;
+    
+    TextboxUI ArrivalDelayUnderSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(ArrivalDelayUnderSearch);
+    
+    currentUIPosY += 40;
+    
+    
+    TextboxUI ArrivalDelayOverSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(ArrivalDelayOverSearch);
+    
+    currentUIPosY += 40;
+    
+    
     
     
   }
@@ -456,3 +489,4 @@ class AlexTestingScreen extends Screen {
 // CKM, reintroduced some code that was overwritten, 14:00 12/03
 // CKM, implemented spin control for 3D map, 10:00 13/03
 // M. Orlowski, Added 2D calls, 12:00 13/03
+// M. Poole added TextBoxes and removed background 5pm 13/03
