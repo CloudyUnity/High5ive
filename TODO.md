@@ -16,4 +16,4 @@
 - [ ] Get it done
 
 ## Querying
-- [ ] Dont store m_flightList
+- [x] Dont store m_flightList
