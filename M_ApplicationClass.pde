@@ -39,7 +39,7 @@ class ApplicationClass {
       resizeWindow((int)windowSize.x, (int)windowSize.y);    
 
     if (DEBUG_DATA_LOADING) {
-      m_flightsManager.init("hex_flight_data.bin", "hex_world_data.bin", 4, list -> {        
+      m_flightsManager.init("hex_flight_data.bin", "hex_world_data.bin", 24, 6, 4, list -> {        
         m_queryManager.queryFlights(list.US, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.US), m_queryManager.getIndex("SFO"), 4, queriedList -> {
           s_DebugProfiler.startProfileTimer();
           screenFlightMap3D.startLoadingData(queriedList);

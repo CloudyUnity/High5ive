@@ -20,12 +20,12 @@ class FlightLists {
 class FlightsManagerClass {
   private boolean m_working;
 
-  public void init(String usFileName, String worldFileName, int threadCount, Consumer<FlightLists> onTaskComplete) { //  Consumer<FlightType[]> onWorldTaskComplete
-    boolean result = convertBinaryFileToFlightType(usFileName, worldFileName, threadCount, onTaskComplete);
+  public void init(String usFileName, String worldFileName, int usLineByteSize, int worldLineByteSize, int threadCount, Consumer<FlightLists> onTaskComplete) { //  Consumer<FlightType[]> onWorldTaskComplete
+    boolean result = convertBinaryFileToFlightType(usFileName, worldFileName, usLineByteSize, worldLineByteSize, threadCount, onTaskComplete);
     if (!result)
       return;
   }
-  private boolean convertBinaryFileToFlightType(String usFileName, String worldFileName, int threadCount, Consumer<FlightLists> onTaskComplete) {
+  private boolean convertBinaryFileToFlightType(String usFileName, String worldFileName, int usLineByteSize, int worldLineByteSize, int threadCount, Consumer<FlightLists> onTaskComplete) {
     if (m_working) {
       println("Warning: m_working is true, convertBinaryFileToFlightType did not process correctly");
       return false;
@@ -33,8 +33,8 @@ class FlightsManagerClass {
 
     new Thread(() -> {
       s_DebugProfiler.startProfileTimer();
-      FlightLists flightsLists = new FlightLists(convertBinaryFileToFlightTypeAsync(usFileName, threadCount, QueryLocation.US),
-      convertBinaryFileToFlightTypeAsync(worldFileName, threadCount, QueryLocation.WORLD));
+      FlightLists flightsLists = new FlightLists(convertBinaryFileToFlightTypeAsync(usFileName, threadCount, QueryLocation.US, usLineByteSize),
+      convertBinaryFileToFlightTypeAsync(worldFileName, threadCount, QueryLocation.WORLD, worldLineByteSize));
       s_DebugProfiler.printTimeTakenMillis("Raw files pre-processing");
       onTaskComplete.accept(flightsLists);
       m_working = false;
@@ -45,7 +45,7 @@ class FlightsManagerClass {
     m_working = true;
     return true;
   }
-  private FlightType[] convertBinaryFileToFlightTypeAsync(String filename, int threadCount, QueryLocation queryLocation) {
+  private FlightType[] convertBinaryFileToFlightTypeAsync(String filename, int threadCount, QueryLocation queryLocation, int lineByteSize) {
     MappedByteBuffer buffer;
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
     CountDownLatch latch = new CountDownLatch(threadCount);
@@ -53,7 +53,7 @@ class FlightsManagerClass {
     try (FileInputStream fis = new FileInputStream(sketchPath() + DATA_DIRECTOR_PATH + filename)) {
       FileChannel channel = fis.getChannel();
       buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
-      long flightCount = channel.size() / LINE_BYTE_SIZE;
+      long flightCount = channel.size() / lineByteSize;
       fis.close();
       channel.close();
 
@@ -68,9 +68,9 @@ class FlightsManagerClass {
 
         executor.submit(() -> {
           if (queryLocation == QueryLocation.US) {
-            processUSConvertBinaryFileToFlightTypeChunk(flightsList, buffer, processingSize, startPosition);
+            processUSConvertBinaryFileToFlightTypeChunk(flightsList, buffer, processingSize, startPosition, lineByteSize);
           } else {
-            processWorldConvertBinaryFileToFlightTypeChunk(flightsList, buffer, processingSize, startPosition);
+            processWorldConvertBinaryFileToFlightTypeChunk(flightsList, buffer, processingSize, startPosition, lineByteSize);
           }
           latch.countDown();
         }
@@ -92,12 +92,12 @@ class FlightsManagerClass {
       return null;
     }
   }
-  private void processUSConvertBinaryFileToFlightTypeChunk(FlightType[] flightsList, MappedByteBuffer buffer, long processingSize, int startPosition) {
+  private void processUSConvertBinaryFileToFlightTypeChunk(FlightType[] flightsList, MappedByteBuffer buffer, long processingSize, int startPosition, int lineByteSize) {
     s_DebugProfiler.startProfileTimer();
 
     long maxI = startPosition + processingSize;
     for (int i = startPosition; i < maxI; i++) {
-      int offset = LINE_BYTE_SIZE * i;
+      int offset = lineByteSize* i;
       flightsList[i] = new FlightType(
         buffer.get(offset),
         buffer.getShort(offset+1),
@@ -117,12 +117,12 @@ class FlightsManagerClass {
     s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
   }
   // (carrier_code, origin, dest)short, short, short
-  private void processWorldConvertBinaryFileToFlightTypeChunk(FlightType[] flightsList, MappedByteBuffer buffer, long processingSize, int startPosition) {
+  private void processWorldConvertBinaryFileToFlightTypeChunk(FlightType[] flightsList, MappedByteBuffer buffer, long processingSize, int startPosition, int lineByteSize) {
     s_DebugProfiler.startProfileTimer();
 
     long maxI = startPosition + processingSize;
     for (int i = startPosition; i < maxI; i++) {
-      int offset = LINE_BYTE_SIZE * i;
+      int offset = lineByteSize * i;
       flightsList[i] = new FlightType(
         buffer.getShort(offset),
         buffer.getShort(offset+2),
@@ -170,3 +170,4 @@ class FlightsManagerClass {
 // T. Creagh, fixed convertBinaryFileToFlightTypeAsync to work without the member varible, 12:45pm 13/03
 // T. Creagh, convertBinaryFileToFlightTypeAsync compatible with consumer, 12:45pm 13/03
 // T. Creagh, added world for init and aysnc functions, 3pm 13/03
+// T. Creagh, implemetned world fix, 9pm 13/03
