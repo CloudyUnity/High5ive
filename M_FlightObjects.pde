@@ -1,6 +1,6 @@
 class FlightType { // 23 bytes total
   public byte Day;                      // supports all querys
-  public byte CarrierCodeIndex;         // only supports EQUAL or NOT_EQUAL
+  public short CarrierCodeIndex;         // only supports EQUAL or NOT_EQUAL
   public short FlightNumber;            // only supports EQUAL or NOT_EQUAL
   public short AirportOriginIndex;      // only supports EQUAL or NOT_EQUAL
   public short AirportDestIndex;        // only supports EQUAL or NOT_EQUAL
@@ -14,7 +14,7 @@ class FlightType { // 23 bytes total
   public short MilesDistance;           // supports all querys
 
   FlightType(
-    byte day, byte carrierCodeIndex, short flightNumber,
+    byte day, short carrierCodeIndex, short flightNumber,
     short airportOriginIndex, short airportDestIndex, short scheduledDepartureTime,
     short departureTime, short departureDelay, short scheduledArrivalTime, 
     short arrivalTime, short arrivalDelay, byte cancelledOrDiverted, 
@@ -35,7 +35,7 @@ class FlightType { // 23 bytes total
     this.MilesDistance = milesDistance;
   }
 
-  FlightType(byte carrierCodeIndex, short airportOriginIndex, short airportDestIndex) {
+  FlightType(short carrierCodeIndex, short airportOriginIndex, short airportDestIndex) {
     // this.Day = -1;
     this.CarrierCodeIndex = carrierCodeIndex;
     // this.FlightNumber = -1;

@@ -43,7 +43,7 @@ class ApplicationClass {
       m_flightsManager.init("hex_flight_data.bin", 4, list -> {        
         m_queryManager.queryFlights(list, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.US), m_queryManager.getIndex("SFO"), 4, queriedList -> {
           s_DebugProfiler.startProfileTimer();
-          screenFlightMap3D.startLoadingData(queriedList);
+          screenFlightMap3D.startLoadingData(queriedList.US);
           s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
         }
         );

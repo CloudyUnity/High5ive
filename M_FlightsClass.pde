@@ -96,18 +96,19 @@ class FlightsManagerClass {
       int offset = LINE_BYTE_SIZE * i;
       flightsList[i] = new FlightType(
         buffer.get(offset),
-        buffer.get(offset+1),
-        buffer.getShort(offset+2),
-        buffer.getShort(offset+4),
-        buffer.getShort(offset+6),
-        buffer.getShort(offset+8),
-        buffer.getShort(offset+10),
-        buffer.getShort(offset+12),
-        buffer.getShort(offset+14),
-        buffer.getShort(offset+16),
-        buffer.getShort(offset+18),
-        buffer.get(offset+20),
-        buffer.getShort(offset+21));
+        buffer.getShort(offset+1),
+        buffer.getShort(offset+3),
+        buffer.getShort(offset+5),
+        buffer.getShort(offset+7),
+        buffer.getShort(offset+9),
+        buffer.getShort(offset+11),
+        buffer.getShort(offset+13),
+        buffer.getShort(offset+15),
+        buffer.getShort(offset+17),
+        buffer.getShort(offset+19),
+        buffer.get(offset+21),
+        buffer.getShort(offset+22)
+      );
     }
     s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
   }
@@ -121,8 +122,8 @@ class FlightsManagerClass {
       flightsList[i] = new FlightType(
         buffer.getShort(offset),
         buffer.getShort(offset+2),
-        buffer.getShort(offset+4),
-        buffer.getShort(offset+6));
+        buffer.getShort(offset+4)
+      );
     }
     s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
   }
