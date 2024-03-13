@@ -45,7 +45,7 @@ class FlightsManagerClass {
       FileChannel channel = fis.getChannel();
       buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
       long flightCount = channel.size() / LINE_BYTE_SIZE;
-      m_flightsList = new FlightType[(int)flightCount];
+      flightsList = new FlightType[(int)flightCount];
       fis.close();
       channel.close();
 
@@ -57,7 +57,7 @@ class FlightsManagerClass {
         long processingSize = endPosition - startPosition;
 
         executor.submit(() -> {
-          processConvertBinaryFileToFlightTypeChunk(buffer, processingSize, startPosition);
+          processConvertBinaryFileToFlightTypeChunk(flightsList, buffer, processingSize, startPosition);
           latch.countDown();
         }
         );
@@ -77,13 +77,13 @@ class FlightsManagerClass {
       return;
     }
   }
-  private void processConvertBinaryFileToFlightTypeChunk(MappedByteBuffer buffer, long processingSize, int startPosition) {
+  private void processConvertBinaryFileToFlightTypeChunk(FlightType[] flightList, MappedByteBuffer buffer, long processingSize, int startPosition) {
     s_DebugProfiler.startProfileTimer();
 
     long maxI = startPosition + processingSize;
     for (int i = startPosition; i < maxI; i++) {
       int offset = LINE_BYTE_SIZE * i;
-      m_flightsList[i] = new FlightType(
+      flightsList[i] = new FlightType(
         buffer.get(offset),
         buffer.get(offset+1),
         buffer.getShort(offset+2),
@@ -136,3 +136,4 @@ class FlightsManagerClass {
 // T. Creagh, Added World Consumer object TODO, 12am 12/04
 // T. Creagh, Removed member varible from flightList, 12pm 13/04
 // T. Creagh, Removed getFlightlist as its depreiated, 12:30pm 13/04
+// T. Creagh, fixed convertBinaryFileToFlightTypeAsync to work without the member varible, 12:45pm 13/04
