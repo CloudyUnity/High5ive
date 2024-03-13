@@ -22,7 +22,7 @@ class Screen1 extends Screen {
 
     ButtonUI switchToTextboxDemo = createButton(50, 500, 200, 100);
     switchToTextboxDemo.getOnClickEvent().addHandler(e -> switchToTextBoxDemoOnClick(e));
-    switchToTextboxDemo.setText("Textbox demo");
+    switchToTextboxDemo.setText("Alex testing");
     switchToTextboxDemo.setTextSize(30);
     switchToTextboxDemo.setGrowMode(true);
 
@@ -369,14 +369,37 @@ class ScreenFlightMap extends Screen {
 class TextBoxDemoScreen extends Screen {
   private TextboxUI box;
   private ListboxUI<String> list;
+  private ButtonUI clearListButton;
+  private ButtonUI removeSelectedButton;
+  private ButtonUI addItemButton;
+  private int counter = 0;
   public TextBoxDemoScreen(int scaleX, int scaleY, String screenId) {
     super(scaleX, scaleY, screenId, color(220, 220, 220, 255));
     box = new TextboxUI(50, 50, 200, 50);
     list = new ListboxUI<String>(50, 150, 200, 400, 40, v -> v);
-    list.add("One");
-    list.add("Two");
+    addItemButton = createButton(300, 50, 80, 20);
+    addItemButton.setText("Add item");
+    addItemButton.getOnClickEvent().addHandler(e -> addItemOnClick(e));
+    
+    clearListButton = createButton(300, 90, 80, 20);
+    clearListButton.setText("Clear");
+    clearListButton.getOnClickEvent().addHandler(e -> clearListOnClick(e));
+    
+    removeSelectedButton = createButton(300, 130, 80, 20);
+    removeSelectedButton.setText("Remove selected");
+    removeSelectedButton.getOnClickEvent().addHandler(e -> list.removeSelected());
+    
     addWidget(box);
     addWidget(list);
+  }
+  
+  private void addItemOnClick(EventInfoType e) {
+    list.add("" + counter);
+    counter++;
+  }
+  
+  private void clearListOnClick(EventInfoType e) {
+    list.clear();
   }
 }
 

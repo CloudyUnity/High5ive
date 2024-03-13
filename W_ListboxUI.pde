@@ -1,18 +1,25 @@
-class ListboxUI<T> extends Widget implements IClickable {
+class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
   private Event<EventInfoType> m_onClickEvent;
   private Event<ListboxSelectedEntryChangedEventInfoType<T>> m_onSelectedEntryChangedEvent;
+  private Event<MouseWheelEventInfoType> m_mouseWheelMovedEvent;
   private ArrayList<ListboxEntry<T>> m_entries;
   private Function<T, String> m_getDisplayString;
   private int m_entryHeight;
+  private int m_entryWidth;
+  private boolean m_scrollBar = false;
+  private int m_topItem = 0;
 
   public ListboxUI(int x, int y, int width, int height, int entryHeight, Function<T, String> getDisplayString) {
     super(x, y, width, height);
     m_getDisplayString = getDisplayString;
     m_onClickEvent = new Event<EventInfoType>();
     m_onSelectedEntryChangedEvent = new Event<ListboxSelectedEntryChangedEventInfoType<T>>();
+    m_mouseWheelMovedEvent = new Event<MouseWheelEventInfoType>();
     m_entries = new ArrayList<ListboxEntry<T>>();
     m_entryHeight = entryHeight;
+    m_entryWidth = (int)m_scale.x;
     m_onClickEvent.addHandler(e -> onClick(e));
+    m_mouseWheelMovedEvent.addHandler(e -> onMouseWheelMoved(e));
   }
 
   @ Override
@@ -21,30 +28,69 @@ class ListboxUI<T> extends Widget implements IClickable {
     fill(m_backgroundColour);
     rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y);
 
-    // Handle scrolling and out of bounds
     textAlign(LEFT, CENTER);
-    for (int i = 0; i < m_entries.size(); i++) {
-      fill(m_entries.get(i).getSelected() ? m_entries.get(i).getSelectedColour() : m_entries.get(i).getBackgroundColour());
-      rect(m_pos.x, m_pos.y + i * m_entryHeight, m_scale.x, m_entryHeight);
-      fill(m_entries.get(i).getTextColour());
-      text(m_getDisplayString.apply(m_entries.get(i).getData()), m_pos.x, m_pos.y + i * m_entryHeight, m_scale.x, m_entryHeight);
+    for (int i = 0; i < m_entries.size() && ((i + 1) * m_entryHeight) <= m_scale.y; i++) {
+      int entry = i + m_topItem;
+      fill(m_entries.get(entry).getSelected() ? m_entries.get(entry).getSelectedColour() : m_entries.get(entry).getBackgroundColour());
+      rect(m_pos.x, m_pos.y + i * m_entryHeight, m_entryWidth, m_entryHeight);
+      fill(m_entries.get(entry).getTextColour());
+      text(m_getDisplayString.apply(m_entries.get(entry).getData()), m_pos.x, m_pos.y + i * m_entryHeight, m_entryWidth, m_entryHeight);
     }
   }
 
   public Event<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
-  
+
   public Event<ListboxSelectedEntryChangedEventInfoType<T>> getOnSelectedEntryChangedEvent() {
     return m_onSelectedEntryChangedEvent;
   }
 
+  public Event<MouseWheelEventInfoType> getOnMouseWheelEvent() {
+    return m_mouseWheelMovedEvent;
+  }
+
   public void add(T entry) {
     m_entries.add(new ListboxEntry<T>(entry));
+    if (!m_scrollBar && (m_entries.size() * m_entryHeight) > m_scale.y) {
+      m_scrollBar = true;
+      m_entryWidth = (int)m_scale.x - 10;
+    }
   }
 
   public void remove(T entry) {
     m_entries.remove(entry);
+    if (m_scrollBar && (m_entries.size() * m_entryHeight) <= m_scale.y) {
+      m_scrollBar = false;
+      m_entryWidth = (int)m_scale.x;
+      m_topItem = 0;
+    }
+  }
+
+  private void clearSelected() {
+    for (var entry : m_entries) {
+      entry.setSelected(false);
+    }
+  }
+
+  public void removeSelected() {
+    for (Iterator<ListboxEntry<T>> it = m_entries.iterator(); it.hasNext(); ) {
+      ListboxEntry<T> e = it.next();
+      if (e.getSelected())
+        it.remove();
+    }
+    if (m_scrollBar && (m_entries.size() * m_entryHeight) <= m_scale.y) {
+      m_scrollBar = false;
+      m_entryWidth = (int)m_scale.x;
+      m_topItem = 0;
+    }
+  }
+
+  public void clear() {
+    m_entries = new ArrayList<ListboxEntry<T>>();
+    m_scrollBar = false;
+    m_entryWidth = (int)m_scale.x;
+    m_topItem = 0;
   }
 
   public T getEntry(int index) {
@@ -69,12 +115,8 @@ class ListboxUI<T> extends Widget implements IClickable {
     m_getDisplayString = getDisplayString;
   }
 
-  public void clear() {
-    m_entries = new ArrayList<ListboxEntry<T>>();
-  }
-
   private void onClick(EventInfoType e) {
-    int i = (e.Y - (int)m_pos.y) / m_entryHeight;
+    int i = (e.Y - (int)m_pos.y) / m_entryHeight + m_topItem;
     if (i < m_entries.size()) {
       clearSelected();
       ListboxEntry<T> entry = m_entries.get(i);
@@ -84,11 +126,19 @@ class ListboxUI<T> extends Widget implements IClickable {
       }
     }
   }
-  
-  private void clearSelected() {
-    for (var entry : m_entries) {
-      entry.setSelected(false);
+
+  private void onMouseWheelMoved(MouseWheelEventInfoType e) {
+    println("Wheel count " + e.wheelCount);
+    if (m_scrollBar) {
+      if (e.wheelCount < 0 && m_topItem > 0)
+        m_topItem--;
+      else if (e.wheelCount > 0 && m_topItem < m_entries.size() - maxNumberOfFittingEntries())
+        m_topItem++;
     }
+  }
+  
+  private int maxNumberOfFittingEntries() {
+    return (int)m_scale.y / m_entryHeight;
   }
 }
 
