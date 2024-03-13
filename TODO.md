@@ -21,7 +21,7 @@
 ## Widgets (Alex)
 
 - [X] Listbox
-- [ ] Dropdown menu
+- [X] Dropdown menu
 - [ ] Rich text box
 - [ ] Scatter chart
 - [ ] Write docs for widgets
