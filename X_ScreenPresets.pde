@@ -39,7 +39,7 @@ class Screen1 extends Screen {
     switchToDemo.setGrowMode(true);
 
     ButtonUI switchTo2D = createButton(350, 260, 100, 100);
-    switchTo2D.getOnClickEvent();
+    switchTo2D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_TWOD_MAP_ID));
     switchTo2D.setText("2D (WIP)");
     switchTo2D.setTextSize(25);
     switchTo2D.setGrowMode(true);
@@ -236,7 +236,9 @@ class ScreenFlightMap extends Screen {
     int currentUIPosY = 20;
     int textSize = 20;
 
-    m_flightMap3D = new FlightMap3D(100, 0, 800, 800);
+    int dragWindowX = width - 200;
+    int dragWindowY = height;
+    m_flightMap3D = new FlightMap3D(100, 0, dragWindowX, dragWindowY);
     addWidget(m_flightMap3D);
 
     ButtonUI uiBackground = createButton(0, 0, 200, 800);
@@ -331,6 +333,17 @@ class ScreenFlightMap extends Screen {
     airportTextCB.setTextSize(textSize);
     airportTextCB.getLabel().setCentreAligned(true);
     airportTextCB.getLabel().setScale(130, 50);
+    
+    currentUIPosY += 60;
+
+    CheckboxUI draggingCB = createCheckbox(20, currentUIPosY, 50, 50, "Locked");
+    draggingCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setDraggingEnabled(!draggingCB.getChecked()));
+    draggingCB.setGrowMode(true);
+    draggingCB.setChecked(false);
+    draggingCB.getLabel().setTextXOffset(0);
+    draggingCB.setTextSize(textSize);
+    draggingCB.getLabel().setCentreAligned(true);
+    draggingCB.getLabel().setScale(130, 50);
 
     currentUIPosY += 60;
 
@@ -369,3 +382,5 @@ class TextBoxDemoScreen extends Screen {
 // F. Wright, Created 3D flight map screen using OpenGL GLSL shaders and P3D features. Implemented light shading and day-night cycle, 9pm 07/03/24
 // M. Orlowski, Worked on 2D Map Button, 1pm 12/03/2024
 // CKM, reintroduced some code that was overwritten, 14:00 12/03
+// CKM, implemented spin control for 3D map, 10:00 13/03
+// M. Orlowski, Added 2D calls, 12:00 13/03
