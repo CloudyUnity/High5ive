@@ -358,7 +358,7 @@ class FlightMap3D extends Widget implements IDraggable {
 // F. Wright, Fixed loading screen, 10am, 08/03/24
 // F. Wright, Created latitude/longitude coords to 3D point converter and used geometric slerping to create arcs around the planet for connections between airports, 3pm 08/03/24
 // F. Wright, Specular maps, vertical scrolling, bigger window, more constants, growing arcs over time, 3pm 09/03/24
-// F. Wright, Did everything else in this tab. Too much to name one by one
+// F. Wright, Skybox, shaders, fullscreen, UI, buttons, sun, connections, loading in data, etc, etc
 // CKM, made minor edits to neaten up code 16:00 12/03
 // CKM, reduced offscreen content for performance 10:00 13/03
 // CKM, steps towards being able to disable spin 11:00 13/03
