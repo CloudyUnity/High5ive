@@ -41,7 +41,7 @@ class ApplicationClass {
 
     if (DEBUG_DATA_LOADING) {
       m_flightsManager.init(4, list -> {        
-        m_queryManager.queryFlights(list, FlightQueryType.MILES_DISTANCE, FlightQueryOperator.GREATER_THAN, 4000, 4, queriedList -> {
+        m_queryManager.queryFlights(list, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.US), m_queryManager.getIndex("SFO"), 4, queriedList -> {
           s_DebugProfiler.startProfileTimer();
           screenFlightMap3D.startLoadingData(queriedList);
           s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
