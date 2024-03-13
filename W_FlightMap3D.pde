@@ -355,4 +355,5 @@ class FlightMap3D extends Widget implements IDraggable {
 // F. Wright, Specular maps, vertical scrolling, bigger window, more constants, growing arcs over time, 3pm 09/03/24
 // F. Wright, Skybox, shaders, fullscreen, UI, buttons, sun, connections, loading in data, etc, etc
 // CKM, made minor edits to neaten up code 16:00 12/03
+// CKM, inital no spin setup 11:00 13/03
 // F. Wright, Implemented "Lock" checkbox, 12pm 13/03/24
