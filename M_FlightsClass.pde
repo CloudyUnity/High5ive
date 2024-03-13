@@ -104,55 +104,56 @@ class FlightsManagerClass {
     s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
   }
   public void print(FlightType flight) {
-    printFlightHeading();
-    printFlight(flight);
+    // printFlightHeading();
+    // printFlight(flight);
   }
 
-  public void print(FlightType[] flights) {
-    printFlightHeading();
-    for (FlightType flight : flights)
-      printFlight(flight);
-  }
-  public void print(FlightType[] flights, int amount) {
-    printFlightHeading();
-    for (int i = 0; i < amount; i++) {
-      printFlight(flights[i]);
-    }
-  }
-  private void printFlight(FlightType flight) { // Can be changed to a toString() override
-    println(
-      flight.Day + "\t" +
-      flight.CarrierCodeIndex + "\t\t" +
-      flight.FlightNumber + "\t\t" +
-      flight.AirportOriginIndex + "\t\t" +
-      flight.AirportDestIndex + "\t\t" +
-      flight.ScheduledDepartureTime + "\t\t\t" +
-      flight.DepartureTime + "\t\t" +
-      flight.DepartureDelay + "\t\t" +
-      flight.ScheduledArrivalTime + "\t\t\t" +
-      flight.ArrivalTime + "\t\t" +
-      flight.ArrivalDelay + "\t\t" +
-      flight.CancelledOrDiverted + "\t\t" +
-      flight.MilesDistance
-      );
-  }
-  private void printFlightHeading() {
-    println(
-      "Day\t" +
-      "CarrierCodeIndex\t" +
-      "FlightNumber\t" +
-      "AirportOriginIndex\t" +
-      "AirportDestIndex\t" +
-      "ScheduledDepartureTime\t" +
-      "DepartureTime\t" +
-      "DepartureDelay\t" +
-      "ScheduledArrivalTime\t\t" +
-      "ArrivalTime\t" +
-      "ArrivalDelay\t" +
-      "CancelledOrDiverted\t" +
-      "MilesDistance"
-      );
-  }
+  // public void print(FlightType[] flights) {
+  //   printFlightHeading();
+  //   for (FlightType flight : flights)
+  //     printFlight(flight);
+  // }
+  // public void print(FlightType[] flights, int amount) {
+  //   printFlightHeading();
+  //   for (int i = 0; i < amount; i++) {
+  //     printFlight(flights[i]);
+  //   }
+  // }
+  // @Override
+  // private void toString(FlightType flight) { // Can be changed to a toString() override
+  //   println(
+  //     flight.Day + "\t" +
+  //     flight.CarrierCodeIndex + "\t\t" +
+  //     flight.FlightNumber + "\t\t" +
+  //     flight.AirportOriginIndex + "\t\t" +
+  //     flight.AirportDestIndex + "\t\t" +
+  //     flight.ScheduledDepartureTime + "\t\t\t" +
+  //     flight.DepartureTime + "\t\t" +
+  //     flight.DepartureDelay + "\t\t" +
+  //     flight.ScheduledArrivalTime + "\t\t\t" +
+  //     flight.ArrivalTime + "\t\t" +
+  //     flight.ArrivalDelay + "\t\t" +
+  //     flight.CancelledOrDiverted + "\t\t" +
+  //     flight.KmDistance
+  //     );
+  // }
+  // private void printFlightHeading() {
+  //   println(
+  //     "Day\t" +
+  //     "CarrierCodeIndex\t" +
+  //     "FlightNumber\t" +
+  //     "AirportOriginIndex\t" +
+  //     "AirportDestIndex\t" +
+  //     "ScheduledDepartureTime\t" +
+  //     "DepartureTime\t" +
+  //     "DepartureDelay\t" +
+  //     "ScheduledArrivalTime\t\t" +
+  //     "ArrivalTime\t" +
+  //     "ArrivalDelay\t" +
+  //     "CancelledOrDiverted\t" +
+  //     "KmDistance"
+  //     );
+  // }
 }
 
 
@@ -185,3 +186,4 @@ class FlightsManagerClass {
 // T. Creagh, refacotored methodes, 11:30pm 11/03/24
 // T. Creagh, cleaned up code a bit, 12pm 0/03/24
 // CKM, implemented delay stats, 23:00 11/03
+// CKM, converted to kilometres, 17:00 12/03

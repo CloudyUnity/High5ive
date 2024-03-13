@@ -108,8 +108,38 @@ public enum QueryLocation {
   WORLD,
 }
 
+class CoordType {
+  public float Latitude;
+  public float Longitude;
+
+  public CoordType(float lat, float longi) {
+    Latitude = lat;
+    Longitude = longi;
+  }
+}
+
+class AirportPoint3DType {
+  public PVector Pos;
+  public String Name;
+  public color Color = color(0, 255, 0, 255);
+  public ArrayList<String> Connections = new ArrayList<String>();
+  public ArrayList<ArrayList<PVector>> ConnectionArcPoints = new ArrayList<ArrayList<PVector>>();
+
+  public AirportPoint3DType(PVector pos, String name) {
+    Pos = pos;
+    Name = name;
+  }
+
+  public AirportPoint3DType(PVector pos, String name, color col) {
+    Pos = pos;
+    Name = name;
+    Color = col;
+  }
+}
+
 // Descending code authorship changes:
 // T. Creagh, added enums into this file, 11pm 06/03/24
+// F. Wright, Moved 3D objects into this tab from W_FlightMap3D
 // T. Creagh, added in FlightQuery, 8pm 12/03/24
 // T. Creagh, added in FlightRangeQuery, 9pm 12/03/24
 // T. Creagh, added in FlightSortQuery, 10pm 12/03/24

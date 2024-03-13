@@ -1,7 +1,6 @@
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
 class QueryManagerClass {
   Table m_airportTable;
   Table m_usaAirportIndexes;
@@ -347,6 +346,7 @@ class QueryManagerClass {
 // T. Creagh, fixed queryFrequency and queryRangeFrequency, 12pm 06/03/24
 // T. Creagh, removed redundant code, 12:30pm 06/03/24
 // CKM, wrote comments about my code, 16:00 12/03
+// CKM, converted to kilometres 17:00 12/03
 // T. Creagh, Added Working queryFlights with world, 10pm, 12/03/24
 // T. Creagh, Added Working queryRangeFlights with world, 11pm, 12/03/24
 // T. Creagh, Added Working querySortFlights with world, 11:30pm, 12/03/24

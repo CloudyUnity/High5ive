@@ -9,7 +9,6 @@ class ApplicationClass {
 
   private FlightsManagerClass m_flightsManager = new FlightsManagerClass();
   private QueryManagerClass m_queryManager = new QueryManagerClass();
-  private DataPreprocessor m_dataPreprocessor = new DataPreprocessor();
   private DebugFPSClass m_fpsClass = new DebugFPSClass();
 
   private Event<SwitchScreenEventInfoType> m_onSwitchEvent = new Event<SwitchScreenEventInfoType>();
@@ -126,3 +125,4 @@ class ApplicationClass {
 // F. Wright, Changed manual profiling to use DebugProfilingClass instead, 2pm 06/03/24
 // F. Wright, Fixed UI errors, 12pm 07/03/24
 // CKM, bought code to working levels 14:00 12/03
+// CKM, removed datapreprocessor references, 17:00 12/03
