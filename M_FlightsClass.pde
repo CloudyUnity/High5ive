@@ -11,13 +11,17 @@ import java.io.*;
 class FlightLists {
   public FlightType[] US;
   public FlightType[] WORLD;
+  FlightLists(FlightType[] us, FlightType[] world) {
+    this.US = us;
+    this.WORLD = world;
+  }
 }
 
 class FlightsManagerClass {
   private boolean m_working;
 
   public void init(String usFileName, String worldFileName, int threadCount, Consumer<FlightLists> onTaskComplete) { //  Consumer<FlightType[]> onWorldTaskComplete
-    boolean result = convertBinaryFileToFlightType(usFileName, threadCount, onUSTaskComplete);
+    boolean result = convertBinaryFileToFlightType(usFileName, worldFileName, threadCount, onTaskComplete);
     if (!result)
       return;
   }
@@ -29,10 +33,10 @@ class FlightsManagerClass {
 
     new Thread(() -> {
       s_DebugProfiler.startProfileTimer();
-      FlightLists flightLists = new FlightLists(convertBinaryFileToFlightTypeAsync(usFileName, threadCount, QueryLocation.US),
+      FlightLists flightsLists = new FlightLists(convertBinaryFileToFlightTypeAsync(usFileName, threadCount, QueryLocation.US),
       convertBinaryFileToFlightTypeAsync(worldFileName, threadCount, QueryLocation.WORLD));
       s_DebugProfiler.printTimeTakenMillis("Raw files pre-processing");
-      onTaskComplete.accept(flightsList);
+      onTaskComplete.accept(flightsLists);
       m_working = false;
     }
     ).start();
