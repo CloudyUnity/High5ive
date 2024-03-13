@@ -1,4 +1,4 @@
-abstract class Screen extends Widget implements IClickable {
+abstract class Screen extends Widget implements IClickable, IWheelInput {
 
   private ArrayList<Widget> m_children;
   private ArrayList<WidgetGroupType> m_groups;
@@ -7,6 +7,7 @@ abstract class Screen extends Widget implements IClickable {
   private Event<MouseMovedEventInfoType> m_onMouseMovedEvent;
   private Event<MouseDraggedEventInfoType> m_onMouseDraggedEvent;
   private Event<KeyPressedEventInfoType> m_onKeyPressedEvent;
+  private Event<MouseWheelEventInfoType> m_mouseWheelEvent;
   private color m_backgroundColor;
 
   Screen(int scaleX, int scaleY, String screenId, int backgroundColor) {
@@ -20,11 +21,13 @@ abstract class Screen extends Widget implements IClickable {
     m_onMouseMovedEvent = new Event<MouseMovedEventInfoType>();
     m_onMouseDraggedEvent = new Event<MouseDraggedEventInfoType>();
     m_onKeyPressedEvent = new Event<KeyPressedEventInfoType>();
+    m_mouseWheelEvent = new Event<MouseWheelEventInfoType>();
 
     m_onClickEvent.addHandler(e -> onMouseClick());
     m_onMouseMovedEvent.addHandler(e -> onMouseMoved());
     m_onMouseDraggedEvent.addHandler(e -> onMouseDragged());
     m_onKeyPressedEvent.addHandler(e -> onKeyPressed(e));
+    m_mouseWheelEvent.addHandler(e -> onMouseWheel(e));
   }
 
   public void draw() {
@@ -62,6 +65,10 @@ abstract class Screen extends Widget implements IClickable {
 
   public Event<KeyPressedEventInfoType> getOnKeyPressedEvent() {
     return m_onKeyPressedEvent;
+  }
+  
+  public Event<MouseWheelEventInfoType> getOnMouseWheelEvent() {
+    return m_mouseWheelEvent;
   }
 
   private void onMouseMoved() {
@@ -136,12 +143,16 @@ abstract class Screen extends Widget implements IClickable {
     }
   }
 
-  private void onMouseWheel(MouseEvent event) {
+  private void onMouseWheel(MouseWheelEventInfoType e) {
+    for (Widget child : m_children) {
+        if (child instanceof IWheelInput && child.isFocused())
+          ((IWheelInput)child).getOnMouseWheelEvent().raise(new MouseWheelEventInfoType(mouseX, mouseY, e.wheelCount, child));
+    }
 
     for (WidgetGroupType group : this.m_groups) {
       for (Widget child : group.getMembers()) {
-        if (child instanceof IWheelInput && child.isPositionInside(mouseX, mouseY)) {
-          ((IWheelInput)child).getOnMouseWheelEvent().raise(new MouseWheelEventInfoType(mouseX, mouseY, event.getCount(), child));
+        if (child instanceof IWheelInput && child.isFocused()) {
+          ((IWheelInput)child).getOnMouseWheelEvent().raise(new MouseWheelEventInfoType(mouseX, mouseY, e.wheelCount, child));
         }
       }
     }
