@@ -50,9 +50,9 @@ class Screen1 extends Screen {
     switchTo3D.setTextSize(25);
     switchTo3D.setGrowMode(true);
 
-    CheckboxUI cb = createCheckbox(400, 500, 200, 50, "My checkbox");
+  /*  CheckboxUI cb = createCheckbox(400, 500, 200, 50, "My checkbox");
     cb.setCheckedColour(color(255, 255, 0, 255));
-    cb.setGrowMode(true);
+    cb.setGrowMode(true);*/ 
   }
 
   private void switchToTextBoxDemoOnClick(EventInfoType e) {
@@ -233,7 +233,7 @@ class ScreenFlightMap extends Screen {
 
     m_queryManager = query;
 
-    int currentUIPosY = 20;
+    int currentUIPosY = 60;
     int textSize = 20;
 
     int dragWindowX = width - 200;
@@ -241,11 +241,11 @@ class ScreenFlightMap extends Screen {
     m_flightMap3D = new FlightMap3D(100, 0, dragWindowX, dragWindowY);
     addWidget(m_flightMap3D);
 
-    ButtonUI uiBackground = createButton(0, 0, 200, 800);
+    ButtonUI uiBackground = createButton(0, 0, 200, 00);
     uiBackground.setHighlightOutlineOnEnter(false);
     uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
 
-    ButtonUI returnBttn = createButton(20, currentUIPosY, 160, 50);
+    ButtonUI returnBttn = createButton(20, currentUIPosY , 160, 50);
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
     returnBttn.setGrowMode(true);
     returnBttn.setText("Return");
@@ -356,7 +356,7 @@ class ScreenFlightMap extends Screen {
 
     currentUIPosY += 60;
 
-    LabelUI label = createLabel(200, 30, 150, 40, "3D Flight Map");
+    LabelUI label = createLabel(20, 10, 150, 40, "3D Flight Map");
     label.setForegroundColour(color(255, 255, 255, 255));
     label.setTextSize(30);
   }
@@ -391,6 +391,13 @@ class AlexTestingScreen extends Screen {
     
     addWidget(box);
     addWidget(list);
+    
+    ButtonUI returnBttn = createButton(220, 20 , 160, 50);
+    returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
+    returnBttn.setGrowMode(true);
+    returnBttn.setText("Return");
+    returnBttn.setTextSize(20);
+    returnBttn.getLabel().setCentreAligned(true);
   }
   
   private void addItemOnClick(EventInfoType e) {
