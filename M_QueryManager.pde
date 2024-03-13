@@ -24,7 +24,7 @@ class QueryManagerClass {
   float getLongitude(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     if (m_lookupResult == null)
-      return 0;
+      return 0;   
     return m_lookupResult.getFloat(5);
   }
   String getAirportName(String code) {
