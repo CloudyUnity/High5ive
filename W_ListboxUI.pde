@@ -8,6 +8,7 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
   private int m_entryWidth;
   private boolean m_scrollBar = false;
   private int m_topItem = 0;
+  private int m_scrollBarColour = #ADADAD;
 
   public ListboxUI(int x, int y, int width, int height, int entryHeight, Function<T, String> getDisplayString) {
     super(x, y, width, height);
@@ -35,6 +36,14 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
       rect(m_pos.x, m_pos.y + i * m_entryHeight, m_entryWidth, m_entryHeight);
       fill(m_entries.get(entry).getTextColour());
       text(m_getDisplayString.apply(m_entries.get(entry).getData()), m_pos.x, m_pos.y + i * m_entryHeight, m_entryWidth, m_entryHeight);
+    }
+    
+    if (m_scrollBar) {
+      fill(m_scrollBarColour);
+      double startPercent = (double)m_topItem / (double)m_entries.size();
+      int startY = (int)(startPercent * (double)m_scale.y);
+      int barHeight = (int)(((double)maxNumberOfFittingEntries()/(double)m_entries.size()) * m_scale.y) - 2; // -2 to give a little space at the top.
+      rect(m_pos.x + m_entryWidth + 1, m_pos.y + startY + 1, 8, barHeight, 4);
     }
   }
 
