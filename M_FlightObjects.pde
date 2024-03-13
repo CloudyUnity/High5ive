@@ -13,7 +13,7 @@ class FlightType { // 23 bytes total
   public byte CancelledOrDiverted;      // only supports EQUAL or NOT_EQUAL
   public short MilesDistance;           // supports all querys
 
-  public FlightType(
+  FlightType(
     byte day, byte carrierCodeIndex, short flightNumber,
     short airportOriginIndex, short airportDestIndex, short scheduledDepartureTime,
     short departureTime, short departureDelay, short scheduledArrivalTime, 
@@ -39,7 +39,41 @@ class FlightType { // 23 bytes total
   }
 }
 
-public enum FlightQueryType {
+class FlightQuery {
+  public QueryType Type;
+  public QueryOperator Operator;
+  public QueryLocation Location;
+
+
+  FlightQuery(QueryType type, QueryOperator operator, QueryLocation location) {
+    this.Type = type;
+    this.Operator = operator;
+    this.Location = location;
+  }
+}
+
+class FlightRangeQuery {
+  public QueryType Type;
+  public QueryLocation Location;
+
+  FlightRangeQuery(QueryType type, QueryLocation location) {
+    this.Type = type;
+    this.Location = location;
+  }
+}
+
+class FlightSortQuery {
+  public QueryType Type;
+  public QuerySortDirection SortDirection;
+
+  FlightSortQuery(QueryType type, QuerySortDirection sortDirection) {
+    this.Type = type;
+    this.SortDirection = sortDirection;
+  }
+}
+
+
+public enum QueryType {
   DAY,
   CARRIER_CODE_INDEX,
   FLIGHT_NUMBER,
@@ -52,10 +86,10 @@ public enum FlightQueryType {
   ARRIVAL_TIME,
   ARRIVAL_DELAY,
   CANCELLED_OR_DIVERTED,
-  MILES_DISTANCE,
+  KILOMETRES_DISTANCE,
 }
 
-public enum FlightQueryOperator {
+public enum QueryOperator {
   EQUAL,
   NOT_EQUAL,
   LESS_THAN,
@@ -64,9 +98,14 @@ public enum FlightQueryOperator {
   GREATER_THAN_EQUAL,
 }
 
-public enum FlightQuerySortDirection {
+public enum QuerySortDirection {
   ASCENDING,
   DESCENDING,
+}
+
+public enum QueryLocation {
+  US,
+  WORLD,
 }
 
 class CoordType {
@@ -101,3 +140,6 @@ class AirportPoint3DType {
 // Descending code authorship changes:
 // T. Creagh, added enums into this file, 11pm 06/03/24
 // F. Wright, Moved 3D objects into this tab from W_FlightMap3D
+// T. Creagh, added in FlightQuery, 8pm 12/03/24
+// T. Creagh, added in FlightRangeQuery, 9pm 12/03/24
+// T. Creagh, added in FlightSortQuery, 10pm 12/03/24
