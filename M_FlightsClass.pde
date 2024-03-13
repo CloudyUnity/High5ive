@@ -111,7 +111,29 @@ class FlightsManagerClass {
     }
     s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
   }
+  private void processWorldConvertBinaryFileToFlightTypeChunk(FlightType[] flightsList, MappedByteBuffer buffer, long processingSize, int startPosition) {
+    s_DebugProfiler.startProfileTimer();
 
+    long maxI = startPosition + processingSize;
+    for (int i = startPosition; i < maxI; i++) {
+      int offset = LINE_BYTE_SIZE * i;
+      flightsList[i] = new FlightType(
+        buffer.get(offset),
+        buffer.get(offset+1),
+        buffer.getShort(offset+2),
+        buffer.getShort(offset+4),
+        buffer.getShort(offset+6),
+        buffer.getShort(offset+8),
+        buffer.getShort(offset+10),
+        buffer.getShort(offset+12),
+        buffer.getShort(offset+14),
+        buffer.getShort(offset+16),
+        buffer.getShort(offset+18),
+        buffer.get(offset+20),
+        buffer.getShort(offset+21));
+    }
+    s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
+  }
 }
 
 
