@@ -1,5 +1,6 @@
 class ListboxUI<T> extends Widget implements IClickable {
   private Event<EventInfoType> m_onClickEvent;
+  private Event<ListboxSelectedEntryChangedEventInfoType<T>> m_onSelectedEntryChangedEvent;
   private ArrayList<ListboxEntry<T>> m_entries;
   private Function<T, String> m_getDisplayString;
   private int m_entryHeight;
@@ -8,6 +9,7 @@ class ListboxUI<T> extends Widget implements IClickable {
     super(x, y, width, height);
     m_getDisplayString = getDisplayString;
     m_onClickEvent = new Event<EventInfoType>();
+    m_onSelectedEntryChangedEvent = new Event<ListboxSelectedEntryChangedEventInfoType<T>>();
     m_entries = new ArrayList<ListboxEntry<T>>();
     m_entryHeight = entryHeight;
     m_onClickEvent.addHandler(e -> onClick(e));
@@ -31,6 +33,10 @@ class ListboxUI<T> extends Widget implements IClickable {
 
   public Event<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
+  }
+  
+  public Event<ListboxSelectedEntryChangedEventInfoType<T>> getOnSelectedEntryChangedEvent() {
+    return m_onSelectedEntryChangedEvent;
   }
 
   public void add(T entry) {
@@ -71,8 +77,11 @@ class ListboxUI<T> extends Widget implements IClickable {
     int i = (e.Y - (int)m_pos.y) / m_entryHeight;
     if (i < m_entries.size()) {
       clearSelected();
-      ListboxEntry entry = m_entries.get(i);
-      entry.setSelected(true);
+      ListboxEntry<T> entry = m_entries.get(i);
+      if (!entry.getSelected()) {
+        m_onSelectedEntryChangedEvent.raise(new ListboxSelectedEntryChangedEventInfoType<T>(e.X, e.Y, entry.getData(), this));
+        entry.setSelected(true);
+      }
     }
   }
   
@@ -129,3 +138,5 @@ class ListboxEntry<T> {
     return m_selectedColour;
   }
 }
+
+// A. Robertson, Created listbox widget, 13:00 13/03/2024
