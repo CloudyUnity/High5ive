@@ -73,12 +73,12 @@ class SwitchScreenEventInfoType extends EventInfoType {
 }
 class MouseWheelEventInfoType extends EventInfoType {
   
-  public float WheelCount;
+  public float wheelCount;
   
   public MouseWheelEventInfoType(int x, int y, float wheelCount, Widget widget){
   
     super(x,y,widget);
-    WheelCount = wheelCount;
+    this.wheelCount = wheelCount;
     
   }
 

@@ -57,7 +57,7 @@ void mouseDragged() {
 }
 void mouseWheel(MouseEvent event) {
 
-  s_ApplicationClass.onMouseWheel(event);
+  s_ApplicationClass.onMouseWheel(event.getCount());
 }
 void resizeWindow(int w, int h) {
   surface.setSize(w, h);

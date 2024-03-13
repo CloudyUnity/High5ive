@@ -89,11 +89,10 @@ class ApplicationClass {
       m_currentScreen.onMouseClick();
   }
   
-  void onMouseWheel(MouseEvent event){
-    if (m_currentScreen != null){
-      m_currentScreen.onMouseWheel(event);
-    }
-  
+  void onMouseWheel(float wheelCount){
+    if (m_currentScreen != null)
+      m_currentScreen.getOnMouseWheelEvent().raise(new MouseWheelEventInfoType(mouseX, mouseY, wheelCount, m_currentScreen));
+    
   }
 
   public void onKeyPressed(char k, int kc) {
