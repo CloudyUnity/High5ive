@@ -359,6 +359,76 @@ class ScreenFlightMap extends Screen {
     LabelUI label = createLabel(20, 10, 150, 40, "3D Flight Map");
     label.setForegroundColour(color(255, 255, 255, 255));
     label.setTextSize(30);
+    
+    TextboxUI airportOriginSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(airportOriginSearch);
+    
+    currentUIPosY += 40;
+    
+    TextboxUI airportDestSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(airportDestSearch);
+    
+    currentUIPosY += 40;
+    
+    TextboxUI airlineSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(airlineSearch);
+    
+    currentUIPosY += 40;
+    
+    TextboxUI DateSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(DateSearch);
+    
+    currentUIPosY += 40;
+    
+    TextboxUI DepartBeforeSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(DepartBeforeSearch);
+    
+    currentUIPosY += 40;
+    
+    TextboxUI DepartAfterSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(DepartAfterSearch);
+    
+    currentUIPosY += 40;
+    
+    TextboxUI DistanceAboveSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(DistanceAboveSearch);
+    
+    currentUIPosY += 40;
+    
+    TextboxUI DepartDelayUnderSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(DepartDelayUnderSearch);
+    
+    currentUIPosY += 40;
+    
+    TextboxUI DepartDelayOverSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(DepartDelayOverSearch);
+    
+    currentUIPosY += 40;
+    
+    TextboxUI ArriveBeforeSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(ArriveBeforeSearch );
+    
+    currentUIPosY += 40;
+    
+    TextboxUI ArriveAfterSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(ArriveAfterSearch);
+    
+    currentUIPosY += 40;
+    
+    TextboxUI ArrivalDelayUnderSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(ArrivalDelayUnderSearch);
+    
+    currentUIPosY += 40;
+    
+    
+    TextboxUI ArrivalDelayOverSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    addWidget(ArrivalDelayOverSearch);
+    
+    currentUIPosY += 40;
+    
+    
+    
+    
   }
 
   public void startLoadingData(FlightType[] flights) {
@@ -392,7 +462,9 @@ class AlexTestingScreen extends Screen {
     addWidget(box);
     addWidget(list);
     
-    ButtonUI returnBttn = createButton(50, 20 , 80, 40);
+
+    ButtonUI returnBttn = createButton(20, displayHeight - 60 , 160, 50);
+
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
     returnBttn.setGrowMode(true);
     returnBttn.setText("<-");
@@ -419,3 +491,4 @@ class AlexTestingScreen extends Screen {
 // CKM, reintroduced some code that was overwritten, 14:00 12/03
 // CKM, implemented spin control for 3D map, 10:00 13/03
 // M. Orlowski, Added 2D calls, 12:00 13/03
+// M. Poole added TextBoxes and removed background 5pm 13/03
