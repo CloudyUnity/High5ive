@@ -375,8 +375,8 @@ class AlexTestingScreen extends Screen {
   private int counter = 0;
   public AlexTestingScreen(int scaleX, int scaleY, String screenId) {
     super(scaleX, scaleY, screenId, color(220, 220, 220, 255));
-    box = new TextboxUI(50, 50, 200, 50);
-    list = new ListboxUI<String>(50, 150, 200, 400, 40, v -> v);
+    box = new TextboxUI(50, 70, 200, 50);
+    list = new ListboxUI<String>(50, 170, 200, 400, 40, v -> v);
     addItemButton = createButton(300, 50, 80, 20);
     addItemButton.setText("Add item");
     addItemButton.getOnClickEvent().addHandler(e -> addItemOnClick(e));
@@ -392,10 +392,10 @@ class AlexTestingScreen extends Screen {
     addWidget(box);
     addWidget(list);
     
-    ButtonUI returnBttn = createButton(220, 20 , 160, 50);
+    ButtonUI returnBttn = createButton(50, 20 , 80, 40);
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
     returnBttn.setGrowMode(true);
-    returnBttn.setText("Return");
+    returnBttn.setText("<-");
     returnBttn.setTextSize(20);
     returnBttn.getLabel().setCentreAligned(true);
   }
