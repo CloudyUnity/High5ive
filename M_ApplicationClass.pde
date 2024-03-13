@@ -29,9 +29,8 @@ class ApplicationClass {
 
     ScreenFlightMap screenFlightMap3D = new ScreenFlightMap(displayWidth, displayHeight, SCREEN_FLIGHT_MAP_ID, m_queryManager);
     m_screens.add(screenFlightMap3D);
-
-    TextBoxDemoScreen d = new TextBoxDemoScreen(700, 700, TB_DEMO_ID);
-    m_screens.add(d);
+    
+    m_screens.add(new AlexTestingScreen(700, 700, ALEX_TESTING_ID));
 
     m_currentScreen = m_screens.get(0);
 
