@@ -268,7 +268,9 @@ class ScreenFlightMap extends Screen {
     int currentUIPosY = 20;
     int textSize = 20;
 
-    m_flightMap3D = new FlightMap3D(100, 0, 800, 800);
+    int dragWindowX = width - 200;
+    int dragWindowY = height;
+    m_flightMap3D = new FlightMap3D(100, 0, dragWindowX, dragWindowY);
     addWidget(m_flightMap3D);
 
     ButtonUI uiBackground = createButton(0, 0, 200, 800);
@@ -363,6 +365,17 @@ class ScreenFlightMap extends Screen {
     airportTextCB.setTextSize(textSize);
     airportTextCB.getLabel().setCentreAligned(true);
     airportTextCB.getLabel().setScale(130, 50);
+
+    currentUIPosY += 60;
+    
+    CheckboxUI draggingCB = createCheckbox(20, currentUIPosY, 50, 50, "Locked");
+    draggingCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setDraggingEnabled(!draggingCB.getChecked()));
+    draggingCB.setGrowMode(true);
+    draggingCB.setChecked(false);
+    draggingCB.getLabel().setTextXOffset(0);
+    draggingCB.setTextSize(textSize);
+    draggingCB.getLabel().setCentreAligned(true);
+    draggingCB.getLabel().setScale(130, 50);
 
     currentUIPosY += 60;
 

@@ -17,7 +17,7 @@ void setup() {
 
   textFont(createFont("Century Gothic Bold", 48, true));
 
-  s_3D = createGraphics((int)WINDOW_SIZE_3D_FLIGHT_MAP.x, (int)WINDOW_SIZE_3D_FLIGHT_MAP.y, P3D);
+  s_3D = createGraphics(width, height, P3D);
   if (!s_3D.isGL()) {
     println("OpenGL is not available. Make sure hardware acceleration is enabled.");
   }

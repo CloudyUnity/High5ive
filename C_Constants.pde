@@ -63,7 +63,6 @@ final int WESTERN_ALL_50 = 144;
 final int WESTERN_ALL_50_ALT = 216;
 
 // 3D Flight Map
-final PVector WINDOW_SIZE_3D_FLIGHT_MAP = new PVector(1200, 800);
 final int EARTH_Z = -20;
 final int EARTH_SPHERE_SIZE = 300;
 final float DAY_CYCLE_SPEED = 0.00005f;
