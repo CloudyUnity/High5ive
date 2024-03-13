@@ -39,7 +39,7 @@ class Screen1 extends Screen {
     switchToDemo.setGrowMode(true);
 
     ButtonUI switchTo2D = createButton(350, 260, 100, 100);
-    switchTo2D.getOnClickEvent();
+    switchTo2D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_TWOD_MAP_ID));
     switchTo2D.setText("2D (WIP)");
     switchTo2D.setTextSize(25);
     switchTo2D.setGrowMode(true);
@@ -223,6 +223,38 @@ class FlightCodesBarchartDemo extends Screen {
     }
   }
 }
+
+class TwoDMapScreen extends Screen {
+  FlightMap2DUI m_flightMap;
+  QueryManagerClass m_twodQueryManager;
+
+  public TwoDMapScreen (int scaleX, int scaleY, String screenId, QueryManagerClass query) {
+    super(scaleX, scaleY, screenId, DEFAULT_SCREEN_COLOUR);
+
+    m_twodQueryManager = query;
+    int currentUIPosY = 20;
+    int textSize = 20;
+
+    m_flightMap = new FlightMap2DUI(100, 0, 100, 100);
+    addWidget(m_flightMap);
+   
+
+    ButtonUI uiBackground = createButton(0, 0, 200, 800);
+    uiBackground.setHighlightOutlineOnEnter(false);
+    uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
+
+    ButtonUI returnBttn = createButton(20, currentUIPosY, 160, 50);
+    returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
+    returnBttn.setGrowMode(true);
+    returnBttn.setText("Return");
+    returnBttn.setTextSize(textSize);
+    returnBttn.getLabel().setCentreAligned(true);
+
+    currentUIPosY += 60;
+  }
+}
+
+
 
 class ScreenFlightMap extends Screen {
   FlightMap3D m_flightMap3D;
