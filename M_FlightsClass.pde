@@ -12,8 +12,8 @@ class FlightsManagerClass {
   private FlightType[] m_flightsList = new FlightType[NUMBER_OF_FLIGHT_FULL_LINES];
   private boolean m_working;
 
-  public void init(int threadCount, Consumer<FlightType[]> onUSTaskComplete, Consumer<FlightType[]> onWorldTaskComplete) {
-    boolean result = convertBinaryFileToFlightType("hex_flight_data.bin", threadCount, onTaskComplete);
+  public void init(int threadCount, Consumer<FlightType[]> onUSTaskComplete) { //  Consumer<FlightType[]> onWorldTaskComplete
+    boolean result = convertBinaryFileToFlightType("hex_flight_data.bin", threadCount, onUSTaskComplete);
     if (!result)
       return;
   }
@@ -104,6 +104,7 @@ class FlightsManagerClass {
     s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
   }
   public void print(FlightType flight) {
+    // TODO either make better or remove
     // printFlightHeading();
     // printFlight(flight);
   }
@@ -187,3 +188,4 @@ class FlightsManagerClass {
 // T. Creagh, cleaned up code a bit, 12pm 0/03/24
 // CKM, implemented delay stats, 23:00 11/03
 // CKM, converted to kilometres, 17:00 12/03
+// T. Creagh, Added World Consumer object TODO, 12pm 12/04
