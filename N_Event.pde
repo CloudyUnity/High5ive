@@ -85,6 +85,14 @@ class MouseWheelEventInfoType extends EventInfoType {
 
 }
 
+class ListboxSelectedEntryChangedEventInfoType<T> extends EventInfoType {
+  public T data;
+  public ListboxSelectedEntryChangedEventInfoType(int x, int y, T data, Widget widget) {
+    super(x, y, widget);
+    this.data = data;
+  }
+}
+
 // Descending code authorship changes:
 // A. Robertson, Created an event system including all required classes, 12pm 04/03/24
 // F. Wright, Modified code to fit coding standard, 6pm 04/03/24

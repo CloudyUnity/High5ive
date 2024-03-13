@@ -1,14 +1,14 @@
 public class TextboxUI extends Widget implements IKeyInput, IClickable {
   private int fontSize = 24;
   private StringBuilder m_text;
-  private int m_cursorPosition;
+  private int m_cursorPosition = 0;
 
   private Event<KeyPressedEventInfoType> m_onKeyPressedEvent;
   private Event<EventInfoType> m_onClickEvent;
   private Event<StringEnteredEventInfoType> m_onStringEnteredEvent;
 
-  private int m_timer;
-  private boolean m_drawBar;
+  private int m_timer = 30;
+  private boolean m_drawBar = true;
   private boolean m_userModifiable = true;
 
   public TextboxUI(int x, int y, int width, int height) {
@@ -19,9 +19,6 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
     m_onKeyPressedEvent = new Event<KeyPressedEventInfoType>();
     m_onClickEvent = new Event<EventInfoType>();
     m_onStringEnteredEvent = new Event<StringEnteredEventInfoType>();
-    m_timer = 30;
-    m_drawBar = true;
-    m_cursorPosition = 0;
 
     m_onKeyPressedEvent.addHandler(e -> onKeyPressed(e));
   }
@@ -68,6 +65,7 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
   }
 
   private void onKeyPressed(KeyPressedEventInfoType e) {
+    println("Key pressed textbox event");
     if (m_userModifiable) {
       if (e.pressedKey == BACKSPACE) {
         if (m_cursorPosition > 0) {
