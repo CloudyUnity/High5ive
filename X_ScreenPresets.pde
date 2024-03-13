@@ -56,7 +56,7 @@ class Screen1 extends Screen {
   }
 
   private void switchToTextBoxDemoOnClick(EventInfoType e) {
-    switchScreen(e, TB_DEMO_ID);
+    switchScreen(e, ALEX_TESTING_ID);
   }
 
   /* private void redButtonOnClick(EventInfoType e) {
@@ -366,14 +366,14 @@ class ScreenFlightMap extends Screen {
   }
 }
 
-class TextBoxDemoScreen extends Screen {
+class AlexTestingScreen extends Screen {
   private TextboxUI box;
   private ListboxUI<String> list;
   private ButtonUI clearListButton;
   private ButtonUI removeSelectedButton;
   private ButtonUI addItemButton;
   private int counter = 0;
-  public TextBoxDemoScreen(int scaleX, int scaleY, String screenId) {
+  public AlexTestingScreen(int scaleX, int scaleY, String screenId) {
     super(scaleX, scaleY, screenId, color(220, 220, 220, 255));
     box = new TextboxUI(50, 50, 200, 50);
     list = new ListboxUI<String>(50, 150, 200, 400, 40, v -> v);
