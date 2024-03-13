@@ -1,5 +1,5 @@
 public class TextboxUI extends Widget implements IKeyInput, IClickable {
-  private int fontSize = 24;
+  private int fontSize = 20;
   private StringBuilder m_text;
   private int m_cursorPosition = 0;
 
@@ -41,7 +41,8 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
       }
       StringBuilder output = new StringBuilder();
       output.append(m_text.toString());
-      output.insert(m_cursorPosition, m_drawBar ? "|" : " ");
+      if (m_userModifiable)
+        output.insert(m_cursorPosition, m_drawBar ? "|" : " ");
       text(output.toString(), m_pos.x, m_pos.y, m_scale.x, m_scale.y);
     }
   }
