@@ -10,6 +10,7 @@ class ListboxUI<T> extends Widget implements IClickable {
     m_onClickEvent = new Event<EventInfoType>();
     m_entries = new ArrayList<ListboxEntry<T>>();
     m_entryHeight = entryHeight;
+    m_onClickEvent.addHandler(e -> onClick(e));
   }
   
   @ Override
@@ -64,6 +65,13 @@ class ListboxUI<T> extends Widget implements IClickable {
   
   public void clear() {
     m_entries = new ArrayList<ListboxEntry<T>>();
+  }
+  
+  private void onClick(EventInfoType e) {
+    int i = (e.Y - (int)m_pos.y) / m_entryHeight;
+    ListboxEntry entry = m_entries.get(i);
+    if (entry != null)
+      entry.setSelected(true);
   }
 }
 
