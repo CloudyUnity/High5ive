@@ -50,9 +50,9 @@ class Screen1 extends Screen {
     switchTo3D.setTextSize(25);
     switchTo3D.setGrowMode(true);
 
-  /*  CheckboxUI cb = createCheckbox(400, 500, 200, 50, "My checkbox");
-    cb.setCheckedColour(color(255, 255, 0, 255));
-    cb.setGrowMode(true);*/ 
+    /*  CheckboxUI cb = createCheckbox(400, 500, 200, 50, "My checkbox");
+     cb.setCheckedColour(color(255, 255, 0, 255));
+     cb.setGrowMode(true);*/
   }
 
   private void switchToTextBoxDemoOnClick(EventInfoType e) {
@@ -237,13 +237,13 @@ class TwoDMapScreen extends Screen {
 
     m_flightMap = new FlightMap2DUI(100, 0, 100, 100);
     addWidget(m_flightMap);
-   
+
 
 
     ButtonUI uiBackground = createButton(0, -1, 200, (displayHeight));
     uiBackground.setHighlightOutlineOnEnter(false);
     uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
-    
+
     ButtonUI uiBackgroundTwo = createButton(0, (displayHeight-100), (displayWidth), (99));
     uiBackgroundTwo.setHighlightOutlineOnEnter(false);
     uiBackgroundTwo.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
@@ -276,11 +276,18 @@ class ScreenFlightMap extends Screen {
     m_flightMap3D = new FlightMap3D(100, 0, dragWindowX, dragWindowY);
     addWidget(m_flightMap3D);
 
+    // ATTENTION MATTHEW, SEE HERE!
+    UserQueryUI userQueryUI = new UserQueryUI(0, 0, 200, height, query);
+    userQueryUI.setOnLoadHandler(flights -> {
+      m_flightMap3D.loadFlights(flights, query);
+    }
+    );    
+
     ButtonUI uiBackground = createButton(0, 0, 200, 00);
     uiBackground.setHighlightOutlineOnEnter(false);
     uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
 
-    ButtonUI returnBttn = createButton(20, currentUIPosY , 160, 50);
+    ButtonUI returnBttn = createButton(20, currentUIPosY, 160, 50);
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
     returnBttn.setGrowMode(true);
     returnBttn.setText("Return");
@@ -329,7 +336,7 @@ class ScreenFlightMap extends Screen {
     airportTextCB.setTextSize(textSize);
     airportTextCB.getLabel().setCentreAligned(true);
     airportTextCB.getLabel().setScale(130, 50);
-    
+
     currentUIPosY += 60;
 
     CheckboxUI lockTimeCB = createCheckbox(20, currentUIPosY, 50, 50, "Lock Time");
@@ -355,83 +362,82 @@ class ScreenFlightMap extends Screen {
     LabelUI label = createLabel(20, 10, 150, 40, "3D Flight Map");
     label.setForegroundColour(color(255, 255, 255, 255));
     label.setTextSize(30);
-    
+
     TextboxUI airportOriginSearch = new TextboxUI(20, currentUIPosY, 160, 30);
     airportOriginSearch.setPlaceholderText("Origin");
     addWidget(airportOriginSearch);
-    
-    
+
     currentUIPosY += 40;
-    
+
     TextboxUI airportDestSearch = new TextboxUI(20, currentUIPosY, 160, 30);
     airportDestSearch.setPlaceholderText("Origin");
     addWidget(airportDestSearch);
-    
+
     currentUIPosY += 40;
-    
+
     TextboxUI airlineSearch = new TextboxUI(20, currentUIPosY, 160, 30);
     airlineSearch.setPlaceholderText("Origin");
     addWidget(airlineSearch);
-    
+
     currentUIPosY += 40;
-    
+
     TextboxUI DateSearch = new TextboxUI(20, currentUIPosY, 160, 30);
     DateSearch.setPlaceholderText("Origin");
     addWidget(DateSearch);
-    
+
     currentUIPosY += 40;
-    
+
     TextboxUI DepartBeforeSearch = new TextboxUI(20, currentUIPosY, 160, 30);
     DepartBeforeSearch.setPlaceholderText("Origin");
     addWidget(DepartBeforeSearch);
-    
+
     currentUIPosY += 40;
-    
+
     TextboxUI DepartAfterSearch = new TextboxUI(20, currentUIPosY, 160, 30);
     DepartAfterSearch.setPlaceholderText("Origin");
     addWidget(DepartAfterSearch);
-    
+
     currentUIPosY += 40;
-    
+
     TextboxUI DistanceAboveSearch = new TextboxUI(20, currentUIPosY, 160, 30);
     DistanceAboveSearch.setPlaceholderText("Origin");
     addWidget(DistanceAboveSearch);
-    
+
     currentUIPosY += 40;
-    
+
     TextboxUI DepartDelayUnderSearch = new TextboxUI(20, currentUIPosY, 160, 30);
     DepartDelayUnderSearch.setPlaceholderText("Origin");
     addWidget(DepartDelayUnderSearch);
-    
+
     currentUIPosY += 40;
-    
+
     TextboxUI DepartDelayOverSearch = new TextboxUI(20, currentUIPosY, 160, 30);
     DepartDelayOverSearch.setPlaceholderText("Origin");
     addWidget(DepartDelayOverSearch);
-    
+
     currentUIPosY += 40;
-    
+
     TextboxUI ArriveBeforeSearch = new TextboxUI(20, currentUIPosY, 160, 30);
     ArriveBeforeSearch.setPlaceholderText("Origin");
     addWidget(ArriveBeforeSearch );
-    
+
     currentUIPosY += 40;
-    
+
     TextboxUI ArriveAfterSearch = new TextboxUI(20, currentUIPosY, 160, 30);
     ArriveAfterSearch.setPlaceholderText("Origin");
     addWidget(ArriveAfterSearch);
-    
+
     currentUIPosY += 40;
-    
+
     TextboxUI ArrivalDelayUnderSearch = new TextboxUI(20, currentUIPosY, 160, 30);
     ArrivalDelayUnderSearch.setPlaceholderText("Origin");
     addWidget(ArrivalDelayUnderSearch);
-    
+
     currentUIPosY += 40;
-    
+
     TextboxUI ArrivalDelayOverSearch = new TextboxUI(20, currentUIPosY, 160, 30);
     ArrivalDelayOverSearch.setPlaceholderText("Origin");
-    addWidget(ArrivalDelayOverSearch);       
+    addWidget(ArrivalDelayOverSearch);
   }
 
   public void startLoadingData(FlightType[] flights) {
@@ -448,46 +454,49 @@ class AlexTestingScreen extends Screen {
   private DropdownUI<String> testDropdown;
   private ImageUI imageBox;
   private int counter = 0;
-  
+
   public AlexTestingScreen(int scaleX, int scaleY, String screenId) {
     super(scaleX, scaleY, screenId, color(220, 220, 220, 255));
     box = new TextboxUI(50, 70, 200, 50);
     list = new ListboxUI<String>(50, 170, 200, 400, 40, v -> v);
     imageBox = new ImageUI(400, 50, 60, 60);
-        
+
     addItemButton = createButton(300, 50, 80, 20);
     addItemButton.setText("Add item");
     addItemButton.getOnClickEvent().addHandler(e -> addItemOnClick(e));
-    
+
     clearListButton = createButton(300, 90, 80, 20);
     clearListButton.setText("Clear");
     clearListButton.getOnClickEvent().addHandler(e -> clearListOnClick(e));
-    
+
     removeSelectedButton = createButton(300, 130, 80, 20);
     removeSelectedButton.setText("Remove selected");
     removeSelectedButton.getOnClickEvent().addHandler(e -> list.removeSelected());
-    
+
     testDropdown = new DropdownUI<String>(400, 90, 200, 400, 30, v -> v);
     testDropdown.add("One");
     testDropdown.add("Too");
     testDropdown.add("Three");
     testDropdown.add("One");
     testDropdown.add("Too");
-    testDropdown.add("Three");testDropdown.add("One");
-    testDropdown.add("Too");
-    testDropdown.add("Three");testDropdown.add("One");
-    testDropdown.add("Too");
-    testDropdown.add("Three");testDropdown.add("One");
+    testDropdown.add("Three");
+    testDropdown.add("One");
     testDropdown.add("Too");
     testDropdown.add("Three");
-    
+    testDropdown.add("One");
+    testDropdown.add("Too");
+    testDropdown.add("Three");
+    testDropdown.add("One");
+    testDropdown.add("Too");
+    testDropdown.add("Three");
+
     addWidget(box);
     addWidget(list);
     addWidget(testDropdown);
     addWidget(imageBox);
-    
 
-    ButtonUI returnBttn = createButton(20, displayHeight - 60 , 160, 50);
+
+    ButtonUI returnBttn = createButton(20, displayHeight - 60, 160, 50);
 
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
     returnBttn.setGrowMode(true);
@@ -495,12 +504,12 @@ class AlexTestingScreen extends Screen {
     returnBttn.setTextSize(20);
     returnBttn.getLabel().setCentreAligned(true);
   }
-  
+
   private void addItemOnClick(EventInfoType e) {
     list.add("" + counter);
     counter++;
   }
-  
+
   private void clearListOnClick(EventInfoType e) {
     list.clear();
   }
