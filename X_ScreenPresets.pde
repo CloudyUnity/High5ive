@@ -450,8 +450,17 @@ class AlexTestingScreen extends Screen {
     removeSelectedButton.setText("Remove selected");
     removeSelectedButton.getOnClickEvent().addHandler(e -> list.removeSelected());
     
-    testDropdown = new DropdownUI<String>(400, 90, 200, 600, 30, v -> v);
+    testDropdown = new DropdownUI<String>(400, 90, 200, 400, 30, v -> v);
     testDropdown.add("One");
+    testDropdown.add("Too");
+    testDropdown.add("Three");
+    testDropdown.add("One");
+    testDropdown.add("Too");
+    testDropdown.add("Three");testDropdown.add("One");
+    testDropdown.add("Too");
+    testDropdown.add("Three");testDropdown.add("One");
+    testDropdown.add("Too");
+    testDropdown.add("Three");testDropdown.add("One");
     testDropdown.add("Too");
     testDropdown.add("Three");
     
