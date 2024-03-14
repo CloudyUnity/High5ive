@@ -49,6 +49,15 @@ class QueryManagerClass {
     m_lookupResult = m_usaAirportIndexes.findRow(code, 0);
     return m_lookupResult.getInt(1);
   }
+  String getWorldCode(int worldIndex) {
+    m_lookupResult = m_airportTable.findRow(String.valueOf(worldIndex), "Key");
+    return m_lookupResult.getString("IATA");
+  }
+  int getWorldIndex(String code) {
+    m_lookupResult = m_airportTable.findRow(code, "IATA");
+    return m_lookupResult.getInt("Key");
+  }
+  
   public void queryFlights(FlightType[] flightsList, FlightQuery flightQuery, int queryValue, int threadCount, Consumer<FlightType[]> onTaskComplete) {
     if (m_working) {
       println("Warning: m_working is true, queryFlights did not process correctly");
