@@ -182,12 +182,12 @@ class QueryManagerClass {
       return flightsList;
     }
 
-    int chunkSize = NUMBER_OF_FLIGHT_FULL_LINES / threadCount;
+    int chunkSize = flightsList.length / threadCount;
     ArrayList<FlightType[]> listOfFlightsLists = new ArrayList<>();
 
     for (int i = 0; i < threadCount; i++) {
       int startPosition = i * chunkSize;
-      long endPosition = (i == threadCount - 1) ? NUMBER_OF_FLIGHT_FULL_LINES : (i + 1) * chunkSize;
+      long endPosition = (i == threadCount - 1) ? flightsList.length : (i + 1) * chunkSize;
 
       executor.submit(() -> {
         listOfFlightsLists.add(processQueryFlightsWithinRangeChunk(Arrays.copyOfRange(flightsList, startPosition, (int)endPosition), flightRangeQuery, start, end));
