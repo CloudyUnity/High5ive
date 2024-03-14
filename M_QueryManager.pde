@@ -87,13 +87,13 @@ class QueryManagerClass {
       println("Error: FlightQuery.Type is illegal with FlightQuery.Operator");
       return flightsList;
     }
-    int chunkSize = NUMBER_OF_FLIGHT_FULL_LINES / threadCount;
+    int chunkSize = flightsList.length / threadCount;
     ArrayList<FlightType[]> listOfFlightsLists = new ArrayList<>();
     println("+Starting Query Chunks");
 
     for (int i = 0; i < threadCount; i++) {
       int startPosition = i * chunkSize;
-      long endPosition = (i == threadCount - 1) ? NUMBER_OF_FLIGHT_FULL_LINES : (i + 1) * chunkSize;
+      long endPosition = (i == threadCount - 1) ? flightsList.length : (i + 1) * chunkSize;
 
       executor.submit(() -> {
         println("+Query Executor Start");
@@ -122,6 +122,7 @@ class QueryManagerClass {
     switch(flightQuery.Operator) {
     case EQUAL:
       println("+EQUAL case found");
+
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) == queryValue)
         .toArray(FlightType[]::new);
@@ -213,6 +214,7 @@ class QueryManagerClass {
       .toArray(FlightType[]::new);
   }
   private int getFlightTypeFieldFromQueryType(FlightType flight, QueryType queryType) {
+    println("+Query " + queryType + " " + flight);
     switch(queryType) {
     case DAY:
       return (int)flight.Day;
