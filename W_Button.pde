@@ -38,18 +38,22 @@ class ButtonUI extends Widget implements IClickable {
 
   public void setHighlightOutlineOnEnter(boolean highlightOutlineOnEnter) {
     if (!highlightOutlineOnEnter)
-      setOutlineColour(#000000);
+      setOutlineColour(color(m_outlineColour));
     m_highlightOutlineOnEnter = highlightOutlineOnEnter;
   }
 
   private void changeOutlineColourOnExit(EventInfoType e) {
-    if (m_highlightOutlineOnEnter)
-      e.Widget.setOutlineColour(#000000);
+    if (m_highlightOutlineOnEnter) {
+      e.Widget.setOutlineColour(#FFCAD4);
+      System.out.printf("Setting outline colour on exit to %d\n", m_outlineColour);
+    }
   }
 
   private void changeOutlineColourOnEnter(EventInfoType e) {
-    if (m_highlightOutlineOnEnter)
+    if (m_highlightOutlineOnEnter) {
       e.Widget.setOutlineColour(#FFFFFF);
+      System.out.printf("Setting outline colour on enter to white\n");
+    }
   }
 
   public void setTextSize(int textSize) {
