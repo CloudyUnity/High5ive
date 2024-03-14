@@ -22,11 +22,8 @@ class ImageUI extends Widget{
   @ Override
   public void draw(){
     super.draw();
-    println(m_displayedImage);
-    if (m_displayedImage != null) {
-      println("Drawing image");
+    if (m_displayedImage != null)
       image(m_displayedImage, m_posX, m_posY, m_imageWidth, m_imageLength);
-    }
   }
   
   public void setImage(PImage inputImage) {

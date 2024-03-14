@@ -21,7 +21,7 @@ abstract class Widget {
   protected int m_foregroundColour = DEFAULT_FOREGROUND_COLOUR;
   protected int m_outlineColour = DEFAULT_OUTLINE_COLOUR;
 
-  private boolean m_drawOutlineEnabled = true;
+  protected boolean m_drawOutlineEnabled = true;
   protected Event<EventInfoType> m_onMouseEnterEvent = new Event<EventInfoType>();
   protected Event<EventInfoType> m_onMouseExitEvent = new Event<EventInfoType>();
   protected Event<EventInfoType> m_onFocusGainedEvent = new Event<EventInfoType>();
@@ -136,12 +136,16 @@ abstract class Widget {
       mx >= m_pos.x && mx <= (m_pos.x + m_scale.x) &&
       my >= m_pos.y && my <= (m_pos.y + m_scale.y);
   }
-
-  public void draw() {
+  
+  protected void drawOutline() {
     if (m_drawOutlineEnabled)
       stroke(color(m_outlineColour));
     else
       noStroke();
+  }
+
+  public void draw() {
+    drawOutline();
 
     if (m_growMode) {
       float mult = 1.1f;

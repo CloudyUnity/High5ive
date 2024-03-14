@@ -7,6 +7,8 @@ class ButtonUI extends Widget implements IClickable {
   private Event<EventInfoType> m_onClickEvent;
   private LabelUI m_label;
   private boolean m_highlightOutlineOnEnter;
+  private int m_highlightedColour = #FFFFFF;
+  private boolean m_highlighted = false;
 
   public ButtonUI(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
@@ -14,12 +16,23 @@ class ButtonUI extends Widget implements IClickable {
     m_label = new LabelUI(posX, posY, scaleX, scaleY, null);
     m_label.setCentreAligned(true);
     m_highlightOutlineOnEnter = true;
-    getOnMouseEnterEvent().addHandler(e -> changeOutlineColourOnEnter(e));
-    getOnMouseExitEvent().addHandler(e -> changeOutlineColourOnExit(e));
+    getOnMouseEnterEvent().addHandler(e -> m_highlighted = true);
+    getOnMouseExitEvent().addHandler(e -> m_highlighted = false);
+  }
+  
+  @ Override
+  protected void drawOutline() {
+    if (m_drawOutlineEnabled) {
+      if (m_highlightOutlineOnEnter && m_highlighted)
+        stroke(color(m_highlightedColour));
+      else
+        stroke(color(m_outlineColour));
+    } else
+      noStroke();
   }
 
   @ Override
-    public void draw() {
+  public void draw() {
     super.draw();
 
     fill(m_backgroundColour);
@@ -40,20 +53,6 @@ class ButtonUI extends Widget implements IClickable {
     if (!highlightOutlineOnEnter)
       setOutlineColour(color(m_outlineColour));
     m_highlightOutlineOnEnter = highlightOutlineOnEnter;
-  }
-
-  private void changeOutlineColourOnExit(EventInfoType e) {
-    if (m_highlightOutlineOnEnter) {
-      e.Widget.setOutlineColour(#FFCAD4);
-      System.out.printf("Setting outline colour on exit to %d\n", m_outlineColour);
-    }
-  }
-
-  private void changeOutlineColourOnEnter(EventInfoType e) {
-    if (m_highlightOutlineOnEnter) {
-      e.Widget.setOutlineColour(#FFFFFF);
-      System.out.printf("Setting outline colour on enter to white\n");
-    }
   }
 
   public void setTextSize(int textSize) {
