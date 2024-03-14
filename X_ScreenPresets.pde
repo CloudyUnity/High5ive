@@ -239,7 +239,7 @@ class TwoDMapScreen extends Screen {
     addWidget(m_flightMap);
    
 
-    ButtonUI uiBackground = createButton(0, 0, 200, displayHeight + 1);
+    ButtonUI uiBackground = createButton(0, 0, 200, displayHeight );
     uiBackground.setHighlightOutlineOnEnter(false);
     uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
 
@@ -352,7 +352,9 @@ class ScreenFlightMap extends Screen {
     label.setTextSize(30);
     
     TextboxUI airportOriginSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    airportOriginSearch.setPlaceholderText("Origin");
     addWidget(airportOriginSearch);
+    
     
     currentUIPosY += 40;
     

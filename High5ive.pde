@@ -1,3 +1,5 @@
+
+
 ApplicationClass s_ApplicationClass = new ApplicationClass();
 //InputClass s_InputClass = new InputClass();
 DebugProfilerClass s_DebugProfiler = new DebugProfilerClass();
