@@ -55,7 +55,7 @@ class FlightMap3D extends Widget implements IDraggable {
         return;
       }
 
-      m_sunModel = s_3D.createShape(SPHERE, 120);
+      m_sunModel = s_3D.createShape(SPHERE, 40);
       m_skySphere = s_3D.createShape(SPHERE, 3840);
       m_sunModel.disableStyle();
       m_skySphere.disableStyle();
@@ -107,7 +107,7 @@ class FlightMap3D extends Widget implements IDraggable {
 
     PVector lightDir = new PVector(cos(m_totalTimeElapsed), 0, sin(m_totalTimeElapsed));
     m_earthShader.set("lightDir", lightDir);
-    m_earthShader.set("mousePos", (float)mouseX / (float)width, (float)mouseY / (float)height);
+    // m_earthShader.set("mousePos", (float)mouseX / (float)width, (float)mouseY / (float)height);
     m_rotationYModified = m_earthRotation.y + m_totalTimeElapsed;
 
     if (!DEBUG_3D_FAST_LOADING)

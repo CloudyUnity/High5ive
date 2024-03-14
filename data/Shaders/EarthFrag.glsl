@@ -36,12 +36,8 @@ void main() {
 
   mat3 TBN = mat3(fragTangent, fragBinormal, normMapNormal);
   vec3 bump = normalize(TBN * norm);
-  float bumpIntensity = max(0.15f, dot(bump, vec3(-0.5f, 0, 1))); // 0.15
-  // float bumpIntensity = dot(bump, -lightDir) * 0.5f + 0.5f;
+  float bumpIntensity = max(0.15f, dot(bump, vec3(-0.5f, 0, 1)));
   bumpIntensity = sqrt(bumpIntensity);
-
-  //gl_FragColor = vec4(bumpIntensity, bumpIntensity,bumpIntensity, 1);
-  //return;
 
   float strength = max(specular.r, 0.001);  
   vec3 reflection = reflect(lightDir, fragNormal);
