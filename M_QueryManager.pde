@@ -11,7 +11,6 @@ class QueryManagerClass {
   void init() {
     m_airlineTable = loadTable("data/Preprocessed Data/airlines.csv", "header");
     m_airportTable = loadTable("data/Preprocessed Data/airports.csv", "header");
-    m_usaAirportIndexes = loadTable("data/Preprocessed Data/airport_lookup_table.csv");
     if (m_airportTable == null || m_usaAirportIndexes == null)
       println("ERROR ON INIT QUERY MANAGER");
   }
@@ -42,20 +41,12 @@ class QueryManagerClass {
     return m_lookupResult.getString("Country");
   }
   String getCode(int index) {
-    m_lookupResult = m_usaAirportIndexes.findRow(String.valueOf(index), 1);
+    m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
     if (m_lookupResult == null)
       return "ERROR";
-    return m_lookupResult.getString(0);
-  }
-  int getIndex(String code) {
-    m_lookupResult = m_usaAirportIndexes.findRow(code, 0);
-    return m_lookupResult.getInt(1);
-  }
-  String getWorldCode(int worldIndex) {
-    m_lookupResult = m_airportTable.findRow(String.valueOf(worldIndex), "Key");
     return m_lookupResult.getString("IATA");
   }
-  int getWorldIndex(String code) {
+  int getIndex(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getInt("Key");
   }
