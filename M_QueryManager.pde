@@ -4,7 +4,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 class QueryManagerClass {
   Table m_airlineTable;
   Table m_airportTable;
-  Table m_usaAirportIndexes;
   TableRow m_lookupResult;
   private boolean m_working;
 
@@ -13,6 +12,8 @@ class QueryManagerClass {
     m_airportTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "airports.csv", "header");
     if (m_airportTable == null || m_usaAirportIndexes == null)
       println("ERROR ON INIT QUERY MANAGER");
+    }
+
   }
   //a series of function for lookup tables - the lookup tables are loaded directly into processing as spreadsheets
   //the findRow functions allow the spreadsheet to be searched, and a pointer to that row is passed as a variable
@@ -42,8 +43,6 @@ class QueryManagerClass {
   }
   String getCode(int index) {
     m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
-    if (m_lookupResult == null)
-      return "ERROR";
     return m_lookupResult.getString("IATA");
   }
   int getIndex(String code) {
