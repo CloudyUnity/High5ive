@@ -17,6 +17,7 @@ varying vec4 fragPos;
 varying vec3 fragNormal;
 varying vec3 fragTangent;
 varying vec3 fragBinormal;
+varying vec3 normMapNormal;
 
 const vec3 diffuseCol = vec3(1,1,1);
 const float specularShininess = 50;
@@ -32,19 +33,19 @@ void main() {
   vec3 norm = texture2D(normalMap, vertTexCoord.st).xyz * vec3(normalStrength, normalStrength, 1.0);
   norm = norm * 2.0 - 1.0;
 
-  vec3 bump = (norm.x * fragTangent) + (norm.y * fragBinormal) + (norm.z * fragNormal);
-  bump = normalize(bump);
-  float bumpIntensity = max(dot(bump, -lightDir), -99);
+  mat3 TBN = mat3(fragTangent, fragBinormal, normMapNormal);
+  vec3 bump = normalize(TBN * norm);
+  float bumpIntensity = sqrt(max(0, dot(bump, -lightDir)));
 
-  gl_FragColor = vec4(bump, 1);
-  return;
+  // gl_FragColor = vec4(bumpIntensity,0,0, 1);
+  // return;
 
   float strength = max(specular.r, 0.001);
   vec3 viewDir = -(fragPos.xyz / fragPos.w);
   vec3 reflection = reflect(lightDir, fragNormal);
   float spec = pow(max(dot(viewDir, reflection), 0.0), specularShininess);
 
-  vec3 col = day * diffuse + night * (1-diffuse);
+  vec3 col = day * diffuse * bumpIntensity + night * (1-diffuse);
   col += vec3(1,1,1) * strength * spec * diffuse;
 
   gl_FragColor = vec4(col, 1);

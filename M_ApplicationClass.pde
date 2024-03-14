@@ -29,27 +29,31 @@ class ApplicationClass {
 
     ScreenFlightMap screenFlightMap3D = new ScreenFlightMap(displayWidth, displayHeight, SCREEN_FLIGHT_MAP_ID, m_queryManager);
     m_screens.add(screenFlightMap3D);
-    
+
     m_screens.add(new AlexTestingScreen(displayWidth, displayHeight, ALEX_TESTING_ID));
 
     m_currentScreen = m_screens.get(0);
 
     PVector windowSize = m_currentScreen.getScale();
     if (!FULLSCREEN_ENABLED)
-      resizeWindow((int)windowSize.x, (int)windowSize.y);    
+      resizeWindow((int)windowSize.x, (int)windowSize.y);
 
     if (DEBUG_DATA_LOADING) {
-      m_flightsManager.init("hex_flight_data.bin", "hex_world_data.bin", 24, 6, 4, list -> {        
+      m_flightsManager.init("hex_flight_data.bin", "hex_world_data.bin", 24, 6, 4, list -> {
         println(list.WORLD[0].AirportDestIndex);
-        println("1 <-");
-        m_queryManager.queryFlights(list.WORLD, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.WORLD), 3874, 4, queriedList -> {
-          println("10 <-");
-          s_DebugProfiler.startProfileTimer();
-          screenFlightMap3D.startLoadingData(queriedList);
-          println(queriedList.length);
-          s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
-        }
-        );
+        println("+Load Done");
+        s_DebugProfiler.startProfileTimer();
+        screenFlightMap3D.startLoadingData(list.US);
+        s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
+        
+        //m_queryManager.queryFlights(list.WORLD, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.WORLD), 3874, 1, queriedList -> {
+        //  println("+Query Done");
+        //  s_DebugProfiler.startProfileTimer();
+        //  screenFlightMap3D.startLoadingData(queriedList);
+        //  println(queriedList.length);
+        //  s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
+        //}
+        //);
       }
       );
     }
@@ -57,7 +61,7 @@ class ApplicationClass {
 
   void frame() {
     s_deltaTime = millis() - m_timeLastFrame;
-    m_timeLastFrame = millis();   
+    m_timeLastFrame = millis();
 
     if (m_fixedFrameCounter < millis()) {
       fixedFrame();
@@ -91,11 +95,10 @@ class ApplicationClass {
     if (m_currentScreen != null)
       m_currentScreen.onMouseClick();
   }
-  
-  void onMouseWheel(int wheelCount){
+
+  void onMouseWheel(int wheelCount) {
     if (m_currentScreen != null)
       m_currentScreen.getOnMouseWheelEvent().raise(new MouseWheelEventInfoType(mouseX, mouseY, wheelCount, m_currentScreen));
-    
   }
 
   public void onKeyPressed(char k, int kc) {

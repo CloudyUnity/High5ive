@@ -12,7 +12,7 @@ class FlightMap3D extends Widget implements IDraggable {
   private PShader m_earthShader, m_sunShader, m_postProcessingShader, m_skyboxShader;
   private PImage m_starsTex;
 
-  private PVector m_earthRotation = new PVector(0, 90, 0);
+  private PVector m_earthRotation = new PVector(0, 0, 0);
   private PVector m_earthRotationalVelocity = new PVector(0, 0, 0);
   private final float m_earthRotationalFriction = 0.99;
 
@@ -22,7 +22,7 @@ class FlightMap3D extends Widget implements IDraggable {
   private boolean m_connectionsEnabled = true;
   private boolean m_textEnabled = true;
   private boolean m_markersEnabled = true;
-  private boolean m_lockTime = false;
+  private boolean m_lockTime = true;
 
   private boolean m_assetsLoaded = false;
   private boolean m_drawnLoadingScreen = false;
@@ -59,7 +59,6 @@ class FlightMap3D extends Widget implements IDraggable {
       m_skySphere = s_3D.createShape(SPHERE, 3840);
       m_sunModel.disableStyle();
       m_skySphere.disableStyle();
-
 
       m_sunTex = loadImage("data/Images/Sun2k.jpg");
       m_noiseImg = loadImage("data/Images/noise.png");
