@@ -10,6 +10,7 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
   private int m_timer = 30;
   private boolean m_drawBar = true;
   private boolean m_userModifiable = true;
+  private String m_emptyText = "";
 
   public TextboxUI(int x, int y, int width, int height) {
     super(x, y, width, height);
@@ -21,7 +22,10 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
     m_onStringEnteredEvent = new Event<StringEnteredEventInfoType>();
 
     m_onKeyPressedEvent.addHandler(e -> onKeyPressed(e));
+
   }
+  
+  
 
   void draw() {
     super.draw();
@@ -31,8 +35,15 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
     textAlign(LEFT, CENTER);
     fill(m_foregroundColour);
     textSize(fontSize);
-    if (!isFocused())
+    if (!isFocused() && m_text.toString() != ""){
+      m_foregroundColour = 0;
       text(m_text.toString(), m_pos.x, m_pos.y, m_scale.x, m_scale.y);
+    }
+    else if(!isFocused() && m_text.toString() == ""){
+      m_foregroundColour = 120;
+      text(m_emptyText, m_pos.x, m_pos.y, m_scale.x, m_scale.y);
+      
+    }
     else {
       m_timer -= 1;
       if (m_timer == 0) {
@@ -45,6 +56,12 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
         output.insert(m_cursorPosition, m_drawBar ? "|" : " ");
       text(output.toString(), m_pos.x, m_pos.y, m_scale.x, m_scale.y);
     }
+  }
+  
+  public void setPlaceholderText(String EmptyText){
+    
+    m_emptyText = EmptyText;
+  
   }
 
   public void setText(String text) {
@@ -87,6 +104,7 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
         m_text.append(e.pressedKey);
         m_cursorPosition++;
       }
+      
     }
   }
 

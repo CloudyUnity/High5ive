@@ -24,7 +24,8 @@ final int CP_PINK = #FFCAD4;
 final int CP_BLUE = #40679E;
 final int CP_NAVY = #1B3C73;
 final int CP_WHITE = #F8F4EC;
-final int CP_BLACK = #402B3A;
+final int CP_BLACK = #000000;
+final int CP_LIGHT_BLUE = #589EF0;
 
 // Scene
 final int DEFAULT_FOREGROUND_COLOUR = CP_WHITE;
@@ -35,7 +36,7 @@ final int DEFAULT_RADIOBUTTON_CHECKED_COLOUR = CP_RED;
 final int DEFAULT_SLIDER_FILLED_COLOUR = CP_BLUE;
 final int DEFAULT_TEXT_COLOUR_INSIDE = CP_BLACK;
 final int DEFAULT_TEXT_COLOUR_OUTSIDE = CP_WHITE;
-final int DEFAULT_SCREEN_COLOUR = CP_BLACK;
+final int DEFAULT_SCREEN_COLOUR = CP_LIGHT_BLUE;
 
 // IDs
 final String SCREEN_1_ID = "Screen 1";

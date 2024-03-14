@@ -13,6 +13,7 @@ class QueryManagerClass {
     if (m_airportTable == null || m_airlineTable == null) {
       println("ERROR ON INIT QUERY MANAGER");
     }
+
   }
   //a series of function for lookup tables - the lookup tables are loaded directly into processing as spreadsheets
   //the findRow functions allow the spreadsheet to be searched, and a pointer to that row is passed as a variable
