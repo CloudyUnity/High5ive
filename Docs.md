@@ -95,11 +95,7 @@ Inside the project files we have some interesting things to note
     Contains team information, coding standard, information standards, and an approximate responsibility list
 - sketch.properties
     Points to the main (shouldn't be required if the folder name matches)
-- Sources.md
-    Contains attributions and citations
 
-
-  
 - Concept Sketches
     Brilliantly drawn outlines of what the various screens in the program should look like
 - data  
@@ -117,6 +113,8 @@ Inside the project files we have some interesting things to note
 - Docs
     - LICENSE
     Permission to use/copy/whatever our project, required by our data sources
+    - Sources.md
+    Contains attributions and citations
     - Specification.pdf
     The spec for the assingment we need to adhere to/supercede
     - TODO.md
