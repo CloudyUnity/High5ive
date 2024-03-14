@@ -16,7 +16,7 @@ class FlightMap2DUI extends Widget {
        
     m_mapImage = loadImage("data/Images/EarthDay8kNoIce.jpg");
     fill(m_backgroundColour);
-    image(m_mapImage, 0, 0, 2048, 1024);
+    image(m_mapImage, 128, 0, 2048, 1024);
   }
 }
 
