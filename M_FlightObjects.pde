@@ -36,19 +36,9 @@ class FlightType { // 23 bytes total
   }
 
   FlightType(short carrierCodeIndex, short airportOriginIndex, short airportDestIndex) {
-    // this.Day = -1;
     this.CarrierCodeIndex = carrierCodeIndex;
-    // this.FlightNumber = -1;
     this.AirportOriginIndex = airportOriginIndex;
     this.AirportDestIndex = airportDestIndex;
-    // this.ScheduledDepartureTime = -1;
-    // this.DepartureTime = -1;
-    // this.DepartureDelay = -1;
-    // this.ScheduledArrivalTime = -1;
-    // this.ArrivalTime = -1;
-    // this.ArrivalDelay = -1;
-    // this.CancelledOrDiverted = -1;
-    // this.MilesDistance = -1;
   }
 
   public FlightType() {
