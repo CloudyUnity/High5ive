@@ -13,9 +13,10 @@ class FlightMap2DUI extends Widget {
   @ Override
     public void draw() {
     super.draw();
-    
+       
+    m_mapImage = loadImage("data/Images/EarthDay8kNoIce.jpg");
     fill(m_backgroundColour);
-    image(m_mapImage, m_pos.x, m_pos.y, m_scale.x, m_scale.y);
+    image(m_mapImage, 128, 0, 2048, 1024);
   }
 }
 
