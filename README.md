@@ -165,4 +165,5 @@ airports.csv: Contains the IATA code, name and coordinates of 8k airports around
 - Conjoin data with other dataset (Thomas Creagh (Thomas Creagh) & Kyara (Cosmo) McWilliam (Cajm0))
 - Create GUI widgets (Alex Robertson (roberta1tcd))
 - 3D flight map (Finn Wright (CloudyUnity))
-- Design the gui place widgets (?)
+- 2D flight map (Mateusz Orlowski (MO1805))
+- Design the gui place widgets (Matthew Poole (MPoole1105))
