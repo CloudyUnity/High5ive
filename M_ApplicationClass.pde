@@ -26,6 +26,9 @@ class ApplicationClass {
 
     Screen screenDemo = new FlightCodesBarchartDemo(displayWidth, displayHeight, SWITCH_TO_DEMO_ID);
     m_screens.add(screenDemo);
+    
+    TwoDMapScreen screenFlightMap2D = new TwoDMapScreen(displayWidth, displayHeight, SCREEN_TWOD_MAP_ID, m_queryManager);
+    m_screens.add(screenFlightMap2D);
 
     ScreenFlightMap screenFlightMap3D = new ScreenFlightMap(displayWidth, displayHeight, SCREEN_FLIGHT_MAP_ID, m_queryManager);
     m_screens.add(screenFlightMap3D);
