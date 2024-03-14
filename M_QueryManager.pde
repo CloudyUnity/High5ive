@@ -4,28 +4,27 @@ import java.util.concurrent.atomic.AtomicInteger;
 class QueryManagerClass {
   Table m_airlineTable;
   Table m_airportTable;
-  Table m_usaAirportIndexes;
   TableRow m_lookupResult;
   private boolean m_working;
 
   void init() {
     m_airlineTable = loadTable("data/Preprocessed Data/airlines.csv", "header");
     m_airportTable = loadTable("data/Preprocessed Data/airports.csv", "header");
-    if (m_airportTable == null || m_usaAirportIndexes == null)
+    if (m_airportTable == null)
       println("ERROR ON INIT QUERY MANAGER");
   }
   //a series of function for lookup tables - the lookup tables are loaded directly into processing as spreadsheets
   //the findRow functions allow the spreadsheet to be searched, and a pointer to that row is passed as a variable
   float getLatitude(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
-    if (m_lookupResult == null)
-      return 0;
+    //if (m_lookupResult == null)
+    //  return 0;
     return m_lookupResult.getFloat("Latitude");
   }
   float getLongitude(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
-    if (m_lookupResult == null)
-      return 0;   
+    //if (m_lookupResult == null)
+    //  return 0;   
     return m_lookupResult.getFloat("Longitude");
   }
   String getAirportName(String code) {
@@ -42,8 +41,8 @@ class QueryManagerClass {
   }
   String getCode(int index) {
     m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
-    if (m_lookupResult == null)
-      return "ERROR";
+    //if (m_lookupResult == null)
+    //  return "ERROR";
     return m_lookupResult.getString("IATA");
   }
   int getIndex(String code) {
