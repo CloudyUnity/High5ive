@@ -145,13 +145,13 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
 
   private void onMouseWheel(MouseWheelEventInfoType e) {
     for (Widget child : m_children) {
-        if (child instanceof IWheelInput && child.isFocused())
+        if (child instanceof IWheelInput && (child.isFocused() || child.isPositionInside(mouseX, mouseY)))
           ((IWheelInput)child).getOnMouseWheelEvent().raise(new MouseWheelEventInfoType(mouseX, mouseY, e.wheelCount, child));
     }
 
     for (WidgetGroupType group : this.m_groups) {
       for (Widget child : group.getMembers()) {
-        if (child instanceof IWheelInput && child.isFocused()) {
+        if (child instanceof IWheelInput && (child.isFocused() || child.isPositionInside(mouseX, mouseY))) {
           ((IWheelInput)child).getOnMouseWheelEvent().raise(new MouseWheelEventInfoType(mouseX, mouseY, e.wheelCount, child));
         }
       }

@@ -111,7 +111,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
   }
   
   private void onMouseWheelMoved(MouseWheelEventInfoType e) {
-     if (m_listbox.isFocused()) {
+     if (m_listbox.isFocused() || m_listbox.isPositionInside(e.X, e.Y)) {
        e.Widget = m_listbox;
        m_listbox.getOnMouseWheelEvent().raise(e);
      }
