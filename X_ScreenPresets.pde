@@ -364,61 +364,73 @@ class ScreenFlightMap extends Screen {
     currentUIPosY += 40;
     
     TextboxUI airportDestSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    airportDestSearch.setPlaceholderText("Origin");
     addWidget(airportDestSearch);
     
     currentUIPosY += 40;
     
     TextboxUI airlineSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    airlineSearch.setPlaceholderText("Origin");
     addWidget(airlineSearch);
     
     currentUIPosY += 40;
     
     TextboxUI DateSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    DateSearch.setPlaceholderText("Origin");
     addWidget(DateSearch);
     
     currentUIPosY += 40;
     
     TextboxUI DepartBeforeSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    DepartBeforeSearch.setPlaceholderText("Origin");
     addWidget(DepartBeforeSearch);
     
     currentUIPosY += 40;
     
     TextboxUI DepartAfterSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    DepartAfterSearch.setPlaceholderText("Origin");
     addWidget(DepartAfterSearch);
     
     currentUIPosY += 40;
     
     TextboxUI DistanceAboveSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    DistanceAboveSearch.setPlaceholderText("Origin");
     addWidget(DistanceAboveSearch);
     
     currentUIPosY += 40;
     
     TextboxUI DepartDelayUnderSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    DepartDelayUnderSearch.setPlaceholderText("Origin");
     addWidget(DepartDelayUnderSearch);
     
     currentUIPosY += 40;
     
     TextboxUI DepartDelayOverSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    DepartDelayOverSearch.setPlaceholderText("Origin");
     addWidget(DepartDelayOverSearch);
     
     currentUIPosY += 40;
     
     TextboxUI ArriveBeforeSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    ArriveBeforeSearch.setPlaceholderText("Origin");
     addWidget(ArriveBeforeSearch );
     
     currentUIPosY += 40;
     
     TextboxUI ArriveAfterSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    ArriveAfterSearch.setPlaceholderText("Origin");
     addWidget(ArriveAfterSearch);
     
     currentUIPosY += 40;
     
     TextboxUI ArrivalDelayUnderSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    ArrivalDelayUnderSearch.setPlaceholderText("Origin");
     addWidget(ArrivalDelayUnderSearch);
     
     currentUIPosY += 40;
     
     TextboxUI ArrivalDelayOverSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    ArrivalDelayOverSearch.setPlaceholderText("Origin");
     addWidget(ArrivalDelayOverSearch);       
   }
 
