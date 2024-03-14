@@ -123,7 +123,7 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
     }
     return null;
   }
-  
+
   public int getSelectedIndex() {
     for (int i = 0; i < m_entries.size(); i++) {
       if (m_entries.get(i).getSelected())

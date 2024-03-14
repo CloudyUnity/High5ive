@@ -1,7 +1,3 @@
-import java.util.function.Function;
-import java.util.function.Consumer;
-import java.util.Map;
-
 class FlightMap3D extends Widget implements IDraggable {
 
   private Event<MouseDraggedEventInfoType> m_onDraggedEvent = new Event<MouseDraggedEventInfoType>();
@@ -45,7 +41,7 @@ class FlightMap3D extends Widget implements IDraggable {
       m_earthDayTex = loadImage("data/Images/EarthDay2k.jpg");
       m_earthNightTex = loadImage("data/Images/EarthNight2k.jpg");
       m_earthNormalTex = loadImage("data/Images/EarthNormalAlt.jpg");
-      
+
       m_earthShader = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
       m_earthShader.set("texDay", m_earthDayTex);
       m_earthShader.set("texNight", m_earthNightTex);
@@ -318,14 +314,14 @@ class FlightMap3D extends Widget implements IDraggable {
 
   public void loadFlights(FlightType[] flights, QueryManagerClass queries) {
     m_flightDataLoaded = false;
-    int count = min(MAX_DATA_LOADED, flights.length);
+    int count = flights.length;
 
     for (int i = 0; i < count; i++) {
-      if (DEBUG_MODE && DEBUG_PRINT_3D_LOADING){
+      if (DEBUG_MODE && DEBUG_PRINT_3D_LOADING) {
         println(flights[i].AirportOriginIndex + " " + flights[i].AirportDestIndex);
         println(flights[i].CarrierCodeIndex + " " + flights[i].FlightNumber);
-        println("Flight " + i + " / " + flights.length);        
-      }        
+        println("Flight " + i + " / " + flights.length);
+      }
 
       String originCode = queries.getCode(flights[i].AirportOriginIndex);
       println("Origin: " + originCode);

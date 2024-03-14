@@ -1,5 +1,3 @@
-import java.util.concurrent.TimeUnit;
-
 class ApplicationClass {
   private int m_timeLastFrame = 0;
   private int m_fixedFrameCounter = 0;
@@ -44,13 +42,13 @@ class ApplicationClass {
     if (DEBUG_DATA_LOADING) {
       m_flightsManager.init("hex_flight_data.bin", "hex_world_data.bin", US_LINE_BYTE_SIZE, WORLD_LINE_BYTE_SIZE, 4, list -> {
         println("+Load Done");
-        m_queryManager.queryFlights(list.WORLD, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.WORLD), m_queryManager.getIndex("DUB"), 4, queriedList -> {
+        m_queryManager.queryFlights(list.WORLD, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.WORLD), m_queryManager.getIndex("LHR"), 4, queriedList -> {
           s_DebugProfiler.startProfileTimer();
           screenFlightMap3D.startLoadingData(queriedList);
           s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
         }
         );
-                
+
         // m_queryManager.queryFlights(list.US, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.US), m_queryManager.getIndex("DEN"), 4, queriedList -> {
         //   println("+US Query Done");
         //   s_DebugProfiler.startProfileTimer();
@@ -59,7 +57,7 @@ class ApplicationClass {
         //   s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
         // }
         // );
-        
+
         //m_queryManager.queryFlights(list.WORLD, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.WORLD), 3874, 1, queriedList -> {
         //  println("+WORLD Query Done");
         //  s_DebugProfiler.startProfileTimer();
@@ -74,6 +72,7 @@ class ApplicationClass {
   }
 
   void frame() {
+
     s_deltaTime = millis() - m_timeLastFrame;
     m_timeLastFrame = millis();
 
@@ -85,7 +84,6 @@ class ApplicationClass {
     m_currentScreen.draw();
 
     if (DEBUG_MODE && DEBUG_FPS_ENABLED) {
-      m_fpsClass.addToFrameTimes();
       fill(255, 0, 0, 255);
       textSize(15);
       text("FPS: " + m_fpsClass.calculateFPS(), width - 100, 10, 100, 100);

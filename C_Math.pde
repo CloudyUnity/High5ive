@@ -4,14 +4,14 @@ float clamp(float val, float minVal, float maxVal) {
   return max(min(val, maxVal), minVal);
 }
 
-boolean approx(float val, float checkAgainst){
+boolean approx(float val, float checkAgainst) {
   return abs(val - checkAgainst) < 0.0001f;
 }
 
-int sign(float val){
-  return val == 0 ? 0 
-  : val < 0 ? -1 
-  : 1;
+int sign(float val) {
+  return val == 0 ? 0
+    : val < 0 ? -1
+    : 1;
 }
 
 // PVector Math
@@ -25,7 +25,7 @@ PVector slerp(PVector a, PVector b, float t) {
     return rotateY(a, PI * t);
   }
 
-  float omega = acos(dot);  
+  float omega = acos(dot);
   if (approx(omega, 0))
     return PVector.lerp(a, b, t);
 

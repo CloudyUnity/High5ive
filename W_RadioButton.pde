@@ -1,8 +1,3 @@
-import java.util.function.Function;
-import java.util.TreeMap;
-import java.util.Map;
-import java.util.function.Consumer;
-
 class RadioButtonGroupTypeUI extends WidgetGroupType {
   public RadioButtonGroupTypeUI() {
     super();

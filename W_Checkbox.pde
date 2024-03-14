@@ -1,8 +1,3 @@
-import java.util.function.Function;
-import java.util.TreeMap;
-import java.util.Map;
-import java.util.function.Consumer;
-
 class CheckboxUI extends Widget implements IClickable {
   private LabelUI m_label;
   private int m_textPadding;
@@ -15,15 +10,16 @@ class CheckboxUI extends Widget implements IClickable {
     m_label = new LabelUI(posX + scaleY + m_textPadding, posY, scaleX - scaleY - m_textPadding, scaleY, label);
     m_label.setForegroundColour(DEFAULT_TEXT_COLOUR_OUTSIDE);
     m_textPadding = 5;
-    
+
     m_onClickEvent = new Event<EventInfoType>();
     m_onClickEvent.addHandler(e -> {
       m_checked = !m_checked;
-    });
+    }
+    );
   }
 
   @ Override
-  public void draw() {
+    public void draw() {
     super.draw();
 
     fill(color(m_checked ? m_checkedColour : m_backgroundColour));
@@ -61,8 +57,8 @@ class CheckboxUI extends Widget implements IClickable {
   public void setText(String text) {
     m_label.setText(text);
   }
-  
-  public LabelUI getLabel(){
+
+  public LabelUI getLabel() {
     return m_label;
   }
 }

@@ -5,7 +5,7 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput {
   private Event<MouseDraggedEventInfoType> m_onMouseDraggedEvent;
   private Event<KeyPressedEventInfoType> m_onKeyPressedEvent;
   private Event<MouseWheelEventInfoType> m_mouseWheelEvent;
-  
+
   private Consumer<FlightType[]> m_onLoadDataEvent;
 
   QueryManagerClass m_queryManager;
@@ -26,7 +26,7 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput {
     m_onMouseDraggedEvent.addHandler(e -> onMouseDragged());
     m_onKeyPressedEvent.addHandler(e -> onKeyPressed(e));
     m_mouseWheelEvent.addHandler(e -> onMouseWheel(e));
-    
+
     m_queryManager = queryManager;
 
     m_day =  new TextboxUI(20, 20, 160, 30);
@@ -44,26 +44,26 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput {
 
   private void loadData() {
     // Load data here. Take info from all user inputs to build queries and apply them
-    
+
     FlightType[] result = null;
     m_onLoadDataEvent.accept(result);
   }
-  
-  private void saveQuery(){
+
+  private void saveQuery() {
     // Saves currently written user input into a query
     // Adds to query output field textbox thing
     // Set all user inputs back to default
   }
-  
-  private void clearQueries(){
+
+  private void clearQueries() {
     // Clear all currently saved user queries
   }
-  
-  private void changeDataToUS(){
+
+  private void changeDataToUS() {
   }
-  
-  private void changeDataToWorld(){
-  } 
+
+  private void changeDataToWorld() {
+  }
 
   @Override
     public void draw() {
