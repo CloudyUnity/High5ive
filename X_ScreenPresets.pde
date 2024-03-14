@@ -281,7 +281,7 @@ class ScreenFlightMap extends Screen {
     userQueryUI.setOnLoadHandler(flights -> {
       m_flightMap3D.loadFlights(flights, query);
     }
-    );    
+    );
 
     ButtonUI uiBackground = createButton(0, 0, 200, 00);
     uiBackground.setHighlightOutlineOnEnter(false);

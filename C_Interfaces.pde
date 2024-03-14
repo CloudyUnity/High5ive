@@ -1,5 +1,3 @@
-import java.util.function.Function;
-
 interface IClickable {
   public Event<EventInfoType> getOnClickEvent();
 }

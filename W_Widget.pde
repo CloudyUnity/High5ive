@@ -1,5 +1,3 @@
-import java.util.function.Consumer;
-
 class WidgetGroupType {
   protected ArrayList<Widget> Members;
 
@@ -136,7 +134,7 @@ abstract class Widget {
       mx >= m_pos.x && mx <= (m_pos.x + m_scale.x) &&
       my >= m_pos.y && my <= (m_pos.y + m_scale.y);
   }
-  
+
   protected void drawOutline() {
     if (m_drawOutlineEnabled)
       stroke(color(m_outlineColour));
@@ -161,25 +159,25 @@ abstract class Widget {
       m_pos = m_basePos.copy().sub(extension.mult(0.5));
     }
   }
-  
+
   public boolean isFocused() {
-    return m_focused; 
+    return m_focused;
   }
-  
+
   public void setFocused(boolean focused) {
-     m_focused = focused;
-     if (m_focused)
-       m_onFocusGainedEvent.raise(new EventInfoType((int)m_pos.x, (int)m_pos.y, this));
-     else
-       m_onFocusLostEvent.raise(new EventInfoType((int)m_pos.x, (int)m_pos.y, this));
+    m_focused = focused;
+    if (m_focused)
+      m_onFocusGainedEvent.raise(new EventInfoType((int)m_pos.x, (int)m_pos.y, this));
+    else
+      m_onFocusLostEvent.raise(new EventInfoType((int)m_pos.x, (int)m_pos.y, this));
   }
-  
+
   public void setFocused(boolean focused, int x, int y) {
-     m_focused = focused;
-     if (m_focused)
-       m_onFocusGainedEvent.raise(new EventInfoType(x, y, this));
-     else
-       m_onFocusLostEvent.raise(new EventInfoType(x, y, this));
+    m_focused = focused;
+    if (m_focused)
+      m_onFocusGainedEvent.raise(new EventInfoType(x, y, this));
+    else
+      m_onFocusLostEvent.raise(new EventInfoType(x, y, this));
   }
 
   public Event<EventInfoType> getOnMouseEnterEvent() {
@@ -189,11 +187,11 @@ abstract class Widget {
   public Event<EventInfoType> getOnMouseExitEvent() {
     return m_onMouseExitEvent;
   }
-  
+
   public Event<EventInfoType> getOnFocusGainedEvent() {
     return m_onFocusGainedEvent;
   }
-  
+
   public Event<EventInfoType> getOnFocusLostEvent() {
     return m_onFocusLostEvent;
   }
