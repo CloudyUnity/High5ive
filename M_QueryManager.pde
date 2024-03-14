@@ -8,9 +8,15 @@ class QueryManagerClass {
   private boolean m_working;
 
   void init() {
+<<<<<<< HEAD
+    m_airlineTable = loadTable("data/Preprocessed Data/airlines.csv", "header");
+    m_airportTable = loadTable("data/Preprocessed Data/airports.csv", "header");
+    if (m_airportTable == null)
+=======
     m_airlineTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "airlines.csv", "header");
     m_airportTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "airports.csv", "header");
     if (m_airportTable == null || m_airlineTable == null) {
+>>>>>>> 734b2547fb0b041e755f58ab9a54783ba121887d
       println("ERROR ON INIT QUERY MANAGER");
     }
 
@@ -19,14 +25,14 @@ class QueryManagerClass {
   //the findRow functions allow the spreadsheet to be searched, and a pointer to that row is passed as a variable
   float getLatitude(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
-    if (m_lookupResult == null)
-      return 0;
+    //if (m_lookupResult == null)
+    //  return 0;
     return m_lookupResult.getFloat("Latitude");
   }
   float getLongitude(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
-    if (m_lookupResult == null)
-      return 0;   
+    //if (m_lookupResult == null)
+    //  return 0;   
     return m_lookupResult.getFloat("Longitude");
   }
   String getAirportName(String code) {
@@ -43,6 +49,11 @@ class QueryManagerClass {
   }
   String getCode(int index) {
     m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
+<<<<<<< HEAD
+    //if (m_lookupResult == null)
+    //  return "ERROR";
+=======
+>>>>>>> 734b2547fb0b041e755f58ab9a54783ba121887d
     return m_lookupResult.getString("IATA");
   }
   int getIndex(String code) {

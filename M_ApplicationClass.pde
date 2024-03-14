@@ -26,7 +26,7 @@ class ApplicationClass {
 
     Screen screenDemo = new FlightCodesBarchartDemo(displayWidth, displayHeight, SWITCH_TO_DEMO_ID);
     m_screens.add(screenDemo);
-    
+
     TwoDMapScreen screenFlightMap2D = new TwoDMapScreen(displayWidth, displayHeight, SCREEN_TWOD_MAP_ID, m_queryManager);
     m_screens.add(screenFlightMap2D);
 
@@ -42,6 +42,22 @@ class ApplicationClass {
       resizeWindow((int)windowSize.x, (int)windowSize.y);
 
     if (DEBUG_DATA_LOADING) {
+<<<<<<< HEAD
+      m_flightsManager.init("hex_flight_data.bin", "hex_world_data.bin", 24, 6, 4, list -> {
+        println("+Load Done, Size: " + list.US.length);
+        s_DebugProfiler.startProfileTimer();
+        screenFlightMap3D.startLoadingData(list.US);
+        s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
+
+        //m_queryManager.queryFlights(list.US, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.US), 184, 4, queriedList -> {
+        //  println("+US Query Done");
+        //  s_DebugProfiler.startProfileTimer();
+        //  screenFlightMap3D.startLoadingData(queriedList);
+        //  s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
+        //}
+        //);
+
+=======
       m_flightsManager.init("hex_flight_data.bin", "hex_world_data.bin", US_LINE_BYTE_SIZE, WORLD_LINE_BYTE_SIZE, 4, list -> {
         println("+Load Done");
         // s_DebugProfiler.startProfileTimer();
@@ -57,6 +73,7 @@ class ApplicationClass {
         }
         );
         
+>>>>>>> 734b2547fb0b041e755f58ab9a54783ba121887d
         //m_queryManager.queryFlights(list.WORLD, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.WORLD), 3874, 1, queriedList -> {
         //  println("+WORLD Query Done");
         //  s_DebugProfiler.startProfileTimer();
@@ -72,7 +89,7 @@ class ApplicationClass {
 
   void frame() {
     s_deltaTime = millis() - m_timeLastFrame;
-    m_timeLastFrame = millis();   
+    m_timeLastFrame = millis();
 
     if (m_fixedFrameCounter < millis()) {
       fixedFrame();
