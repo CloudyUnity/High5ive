@@ -61,7 +61,7 @@ class ApplicationClass {
 
   void frame() {
     s_deltaTime = millis() - m_timeLastFrame;
-    m_timeLastFrame = millis();
+    m_timeLastFrame = millis();   
 
     if (m_fixedFrameCounter < millis()) {
       fixedFrame();

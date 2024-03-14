@@ -45,6 +45,7 @@ class FlightMap3D extends Widget implements IDraggable {
       m_earthDayTex = loadImage("data/Images/EarthDay2k.jpg");
       m_earthNightTex = loadImage("data/Images/EarthNight2k.jpg");
       m_earthNormalTex = loadImage("data/Images/EarthNormalAlt.jpg");
+      
       m_earthShader = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
       m_earthShader.set("texDay", m_earthDayTex);
       m_earthShader.set("texNight", m_earthNightTex);
@@ -380,4 +381,4 @@ class FlightMap3D extends Widget implements IDraggable {
 // CKM, inital no spin setup 11:00 13/03
 // F. Wright, Implemented "Lock" checkbox, 12pm 13/03/24
 // F. Wright, Improved time locking options, more progress on normal mapping, 9pm 13/03/24
-// F. Wright, Finally, FINALLY got normal mapping working! Had to go deep into github repos and tiny forums for that one, 11am 14/03/24
+// F. Wright, Finally got normal mapping working! Had to go deep into github repos and tiny forums for that one, 11am 14/03/24
