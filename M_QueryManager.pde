@@ -2,12 +2,14 @@ import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 class QueryManagerClass {
+  Table m_airlineTable;
   Table m_airportTable;
   Table m_usaAirportIndexes;
   TableRow m_lookupResult;
   private boolean m_working;
 
   void init() {
+    m_airlineTable = loadTable("data/Preprocessed Data/airlines.csv", "header");
     m_airportTable = loadTable("data/Preprocessed Data/airports.csv", "header");
     m_usaAirportIndexes = loadTable("data/Preprocessed Data/airport_lookup_table.csv");
     if (m_airportTable == null || m_usaAirportIndexes == null)
@@ -25,7 +27,7 @@ class QueryManagerClass {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     if (m_lookupResult == null)
       return 0;   
-    return m_lookupResult.getFloat(5);
+    return m_lookupResult.getFloat("Longitude");
   }
   String getAirportName(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
@@ -49,6 +51,23 @@ class QueryManagerClass {
     m_lookupResult = m_usaAirportIndexes.findRow(code, 0);
     return m_lookupResult.getInt(1);
   }
+  String getWorldCode(int worldIndex) {
+    m_lookupResult = m_airportTable.findRow(String.valueOf(worldIndex), "Key");
+    return m_lookupResult.getString("IATA");
+  }
+  int getWorldIndex(String code) {
+    m_lookupResult = m_airportTable.findRow(code, "IATA");
+    return m_lookupResult.getInt("Key");
+  }
+  String getAirlineCode(int airlineIndex) {
+    m_lookupResult = m_airlineTable.findRow(String.valueOf(airlineIndex), "Key");
+    return m_lookupResult.getString("IATA");
+  }
+  String getAirlineName(int airlineIndex) {
+    m_lookupResult = m_airlineTable.findRow(String.valueOf(airlineIndex), "Key");
+    return m_lookupResult.getString("Airline");
+  }
+  
   public void queryFlights(FlightType[] flightsList, FlightQuery flightQuery, int queryValue, int threadCount, Consumer<FlightType[]> onTaskComplete) {
     println("+Query Start");
     if (m_working) {
@@ -370,3 +389,5 @@ class QueryManagerClass {
 // T. Creagh, Added Working querySortFlights with world, 11:30pm, 12/03/24
 // T. Creagh, Added Working queryFrequency with world, 11:45pm, 12/03/24
 // T. Creagh, Added Working queryRangeFrequency with world, 12pm, 12/03/24
+// CKM, added world lookup functions 13:00 14/03
+// CKM, added airline lookup functions 13:00 14/03
