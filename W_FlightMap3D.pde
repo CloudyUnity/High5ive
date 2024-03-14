@@ -22,7 +22,7 @@ class FlightMap3D extends Widget implements IDraggable {
   private boolean m_connectionsEnabled = true;
   private boolean m_textEnabled = true;
   private boolean m_markersEnabled = true;
-  private boolean m_lockTime = true;
+  private boolean m_lockTime = false;
 
   private boolean m_assetsLoaded = false;
   private boolean m_drawnLoadingScreen = false;
@@ -107,6 +107,7 @@ class FlightMap3D extends Widget implements IDraggable {
 
     PVector lightDir = new PVector(cos(m_totalTimeElapsed), 0, sin(m_totalTimeElapsed));
     m_earthShader.set("lightDir", lightDir);
+    m_earthShader.set("mousePos", (float)mouseX / (float)width, (float)mouseY / (float)height);
     m_rotationYModified = m_earthRotation.y + m_totalTimeElapsed;
 
     if (!DEBUG_3D_FAST_LOADING)
@@ -379,3 +380,4 @@ class FlightMap3D extends Widget implements IDraggable {
 // CKM, inital no spin setup 11:00 13/03
 // F. Wright, Implemented "Lock" checkbox, 12pm 13/03/24
 // F. Wright, Improved time locking options, more progress on normal mapping, 9pm 13/03/24
+// F. Wright, Finally, FINALLY got normal mapping working! Had to go deep into github repos and tiny forums for that one, 11am 14/03/24
