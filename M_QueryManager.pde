@@ -10,7 +10,7 @@ class QueryManagerClass {
   void init() {
     m_airlineTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "airlines.csv", "header");
     m_airportTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "airports.csv", "header");
-    if (m_airportTable == null || m_usaAirportIndexes == null)
+    if (m_airportTable == null || m_airlineTable == null) {
       println("ERROR ON INIT QUERY MANAGER");
     }
 
