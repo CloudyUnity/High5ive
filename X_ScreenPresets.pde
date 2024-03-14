@@ -239,9 +239,14 @@ class TwoDMapScreen extends Screen {
     addWidget(m_flightMap);
    
 
-    ButtonUI uiBackground = createButton(0, 0, 200, 800);
+
+    ButtonUI uiBackground = createButton(0, -1, 200, (displayHeight));
     uiBackground.setHighlightOutlineOnEnter(false);
     uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
+    
+    ButtonUI uiBackgroundTwo = createButton(0, (displayHeight-100), (displayWidth), (99));
+    uiBackgroundTwo.setHighlightOutlineOnEnter(false);
+    uiBackgroundTwo.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
 
     ButtonUI returnBttn = createButton(20, currentUIPosY, 160, 50);
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
@@ -352,7 +357,9 @@ class ScreenFlightMap extends Screen {
     label.setTextSize(30);
     
     TextboxUI airportOriginSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    airportOriginSearch.setPlaceholderText("Origin");
     addWidget(airportOriginSearch);
+    
     
     currentUIPosY += 40;
     
@@ -427,11 +434,14 @@ class AlexTestingScreen extends Screen {
   private ButtonUI removeSelectedButton;
   private ButtonUI addItemButton;
   private DropdownUI<String> testDropdown;
+  private ImageUI imageBox;
   private int counter = 0;
+  
   public AlexTestingScreen(int scaleX, int scaleY, String screenId) {
     super(scaleX, scaleY, screenId, color(220, 220, 220, 255));
     box = new TextboxUI(50, 70, 200, 50);
     list = new ListboxUI<String>(50, 170, 200, 400, 40, v -> v);
+    imageBox = new ImageUI(400, 50, 60, 60);
         
     addItemButton = createButton(300, 50, 80, 20);
     addItemButton.setText("Add item");
@@ -445,14 +455,24 @@ class AlexTestingScreen extends Screen {
     removeSelectedButton.setText("Remove selected");
     removeSelectedButton.getOnClickEvent().addHandler(e -> list.removeSelected());
     
-    testDropdown = new DropdownUI<String>(400, 90, 200, 600, 30, v -> v);
+    testDropdown = new DropdownUI<String>(400, 90, 200, 400, 30, v -> v);
     testDropdown.add("One");
+    testDropdown.add("Too");
+    testDropdown.add("Three");
+    testDropdown.add("One");
+    testDropdown.add("Too");
+    testDropdown.add("Three");testDropdown.add("One");
+    testDropdown.add("Too");
+    testDropdown.add("Three");testDropdown.add("One");
+    testDropdown.add("Too");
+    testDropdown.add("Three");testDropdown.add("One");
     testDropdown.add("Too");
     testDropdown.add("Three");
     
     addWidget(box);
     addWidget(list);
     addWidget(testDropdown);
+    addWidget(imageBox);
     
 
     ButtonUI returnBttn = createButton(20, displayHeight - 60 , 160, 50);
