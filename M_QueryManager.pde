@@ -9,8 +9,8 @@ class QueryManagerClass {
   private boolean m_working;
 
   void init() {
-    m_airlineTable = loadTable("data/Preprocessed Data/airlines.csv", "header");
-    m_airportTable = loadTable("data/Preprocessed Data/airports.csv", "header");
+    m_airlineTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "airlines.csv", "header");
+    m_airportTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "airports.csv", "header");
     if (m_airportTable == null || m_usaAirportIndexes == null)
       println("ERROR ON INIT QUERY MANAGER");
   }

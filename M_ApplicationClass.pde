@@ -48,7 +48,8 @@ class ApplicationClass {
         // screenFlightMap3D.startLoadingData(list.US);
         // s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
                 
-        m_queryManager.queryFlights(list.US, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.US), 184, 4, queriedList -> {
+                
+        m_queryManager.queryFlights(list.US, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.US), m_queryManager.getIndex("JFK"), 4, queriedList -> {
           println("+US Query Done");
           s_DebugProfiler.startProfileTimer();
           screenFlightMap3D.startLoadingData(queriedList);
