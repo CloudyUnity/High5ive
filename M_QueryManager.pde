@@ -19,14 +19,14 @@ class QueryManagerClass {
   //the findRow functions allow the spreadsheet to be searched, and a pointer to that row is passed as a variable
   float getLatitude(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
-    if (m_lookupResult == null)
-      return 0;
+    //if (m_lookupResult == null)
+    //  return 0;
     return m_lookupResult.getFloat("Latitude");
   }
   float getLongitude(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
-    if (m_lookupResult == null)
-      return 0;   
+    //if (m_lookupResult == null)
+    //  return 0;   
     return m_lookupResult.getFloat("Longitude");
   }
   String getAirportName(String code) {
