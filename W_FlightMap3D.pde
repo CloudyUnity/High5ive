@@ -12,7 +12,7 @@ class FlightMap3D extends Widget implements IDraggable {
   private PShader m_earthShader, m_sunShader, m_postProcessingShader, m_skyboxShader;
   private PImage m_starsTex;
 
-  private PVector m_earthRotation = new PVector(0, 90, 0);
+  private PVector m_earthRotation = new PVector(0, 0, 0);
   private PVector m_earthRotationalVelocity = new PVector(0, 0, 0);
   private final float m_earthRotationalFriction = 0.99;
 
@@ -22,14 +22,14 @@ class FlightMap3D extends Widget implements IDraggable {
   private boolean m_connectionsEnabled = true;
   private boolean m_textEnabled = true;
   private boolean m_markersEnabled = true;
-  private boolean m_movingEnabled = true;
+  private boolean m_lockTime = false;
 
   private boolean m_assetsLoaded = false;
   private boolean m_drawnLoadingScreen = false;
   private boolean m_flightDataLoaded = false;
 
   private float m_rotationYModified = 0;
-  private float m_lockedLastMillis;
+  private float m_totalTimeElapsed = 0;
 
   private HashMap<String, AirportPoint3DType> m_airportHashmap = new HashMap<String, AirportPoint3DType>();
 
@@ -41,28 +41,34 @@ class FlightMap3D extends Widget implements IDraggable {
 
     new Thread(() -> {
       m_earthModel = s_3D.createShape(SPHERE, EARTH_SPHERE_SIZE);
-      m_sunModel = s_3D.createShape(SPHERE, 120);
-      m_skySphere = s_3D.createShape(SPHERE, 3840);
       m_earthModel.disableStyle();
-      m_sunModel.disableStyle();
-      m_skySphere.disableStyle();
-
       m_earthDayTex = loadImage("data/Images/EarthDay2k.jpg");
       m_earthNightTex = loadImage("data/Images/EarthNight2k.jpg");
       m_earthNormalTex = loadImage("data/Images/EarthNormalAlt.jpg");
+      
+      m_earthShader = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
+      m_earthShader.set("texDay", m_earthDayTex);
+      m_earthShader.set("texNight", m_earthNightTex);
+      m_earthShader.set("normalMap", m_earthNormalTex);
+
+      if (DEBUG_3D_FAST_LOADING) {
+        m_assetsLoaded = true;
+        return;
+      }
+
+      m_sunModel = s_3D.createShape(SPHERE, 40);
+      m_skySphere = s_3D.createShape(SPHERE, 3840);
+      m_sunModel.disableStyle();
+      m_skySphere.disableStyle();
+
       m_sunTex = loadImage("data/Images/Sun2k.jpg");
       m_noiseImg = loadImage("data/Images/noise.png");
       m_earthSpecularMap = loadImage("data/Images/EarthSpecular2k.tif");
-
-      m_earthShader = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
       m_sunShader = loadShader("data/Shaders/SunFrag.glsl", "data/Shaders/BaseVert.glsl");
       m_postProcessingShader = loadShader("data/Shaders/PostProcessing.glsl");
       m_skyboxShader = loadShader("data/Shaders/SkyboxFrag.glsl", "data/Shaders/SkyboxVert.glsl");
 
-      m_earthShader.set("texDay", m_earthDayTex);
-      m_earthShader.set("texNight", m_earthNightTex);
       m_earthShader.set("specularMap", m_earthSpecularMap);
-      m_earthShader.set("normalMap", m_earthNormalTex);
       m_sunShader.set("tex", m_sunTex);
       m_postProcessingShader.set("noise", m_noiseImg);
       m_skyboxShader.set("tex", m_starsTex);
@@ -81,8 +87,7 @@ class FlightMap3D extends Widget implements IDraggable {
     public void draw() {
     super.draw();
 
-    if (m_movingEnabled)
-      m_earthRotation.add(m_earthRotationalVelocity);
+    m_earthRotation.add(m_earthRotationalVelocity);
     m_earthRotationalVelocity.mult(m_earthRotationalFriction);
     m_earthRotation.x = clamp(m_earthRotation.x, -VERTICAL_SCROLL_LIMIT, VERTICAL_SCROLL_LIMIT);
     m_arcFraction = (millis() - m_arcStartGrowMillis) / m_arcGrowMillis;
@@ -98,17 +103,16 @@ class FlightMap3D extends Widget implements IDraggable {
       return;
     }
 
-    float time;
-    if (m_movingEnabled)
-      time = millis() * DAY_CYCLE_SPEED;
-    else
-      time = m_lockedLastMillis;
+    if (!m_lockTime)
+      m_totalTimeElapsed += s_deltaTime * DAY_CYCLE_SPEED;
 
-    m_lockedLastMillis = time;
-    PVector lightDir = new PVector(cos(time), 0, sin(time));
+    PVector lightDir = new PVector(cos(m_totalTimeElapsed), 0, sin(m_totalTimeElapsed));
     m_earthShader.set("lightDir", lightDir);
-    m_sunShader.set("texTranslation", 0, time * 0.5f);
-    m_rotationYModified = m_earthRotation.y + time;
+    // m_earthShader.set("mousePos", (float)mouseX / (float)width, (float)mouseY / (float)height);
+    m_rotationYModified = m_earthRotation.y + m_totalTimeElapsed;
+
+    if (!DEBUG_3D_FAST_LOADING)
+      m_sunShader.set("texTranslation", 0, m_totalTimeElapsed * 0.5f);
 
     s_3D.beginDraw();
     s_3D.clear();
@@ -127,37 +131,41 @@ class FlightMap3D extends Widget implements IDraggable {
     s_3D.resetShader();
     s_3D.popMatrix();
 
-    PVector sunTranslation = lightDir.copy().mult(-3000);
-    s_3D.shader(m_sunShader);
-    s_3D.textureWrap(REPEAT);
+    if (!DEBUG_3D_FAST_LOADING) {
+      PVector sunTranslation = lightDir.copy().mult(-3000);
+      s_3D.shader(m_sunShader);
+      s_3D.textureWrap(REPEAT);
 
-    s_3D.pushMatrix();
-    s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
-    s_3D.rotateX(m_earthRotation.x);
-    s_3D.rotateY(m_rotationYModified);
-    s_3D.translate(sunTranslation.x, sunTranslation.y, sunTranslation.z);
+      s_3D.pushMatrix();
+      s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
+      s_3D.rotateX(m_earthRotation.x);
+      s_3D.rotateY(m_rotationYModified);
+      s_3D.translate(sunTranslation.x, sunTranslation.y, sunTranslation.z);
 
-    s_3D.shape(m_sunModel);
-    s_3D.popMatrix();
-    s_3D.resetShader();
-    s_3D.textureWrap(CLAMP);
+      s_3D.shape(m_sunModel);
+      s_3D.popMatrix();
+      s_3D.resetShader();
+      s_3D.textureWrap(CLAMP);
+    }
 
     drawMarkersAndConnections();
     if (m_textEnabled)
       drawMarkerText();
 
-    if (DITHER_MODE)
+    if (DITHER_MODE && !DEBUG_3D_FAST_LOADING)
       s_3D.filter(m_postProcessingShader);
 
-    s_3D.pushMatrix();
-    s_3D.shader(m_skyboxShader);
+    if (!DEBUG_3D_FAST_LOADING) {
+      s_3D.pushMatrix();
+      s_3D.shader(m_skyboxShader);
 
-    s_3D.rotateX(m_earthRotation.x);
-    s_3D.rotateY(m_rotationYModified - time);
+      s_3D.rotateX(m_earthRotation.x);
+      s_3D.rotateY(m_earthRotation.y);
 
-    s_3D.shape(m_skySphere);
-    s_3D.resetShader();
-    s_3D.popMatrix();
+      s_3D.shape(m_skySphere);
+      s_3D.resetShader();
+      s_3D.popMatrix();
+    }
 
     s_3D.endDraw();
 
@@ -217,9 +225,6 @@ class FlightMap3D extends Widget implements IDraggable {
   }
 
   private void onDraggedHandler(MouseDraggedEventInfoType e) {
-    if (!m_movingEnabled)
-      return;
-
     PVector deltaDrag = new PVector( -(e.Y - e.PreviousPos.y) * 2, e.X - e.PreviousPos.x);
     deltaDrag.mult(s_deltaTime).mult(VERTICAL_DRAG_SPEED);
     m_earthRotationalVelocity.add(deltaDrag);
@@ -307,8 +312,8 @@ class FlightMap3D extends Widget implements IDraggable {
     m_markersEnabled = enabled;
   }
 
-  public void setDraggingEnabled(boolean enabled) {
-    m_movingEnabled = enabled;
+  public void setLockTime(boolean enabled) {
+    m_lockTime = enabled;
   }
 
   public void loadFlights(FlightType[] flights, QueryManagerClass queries) {
@@ -346,6 +351,24 @@ class FlightMap3D extends Widget implements IDraggable {
     }
     m_flightDataLoaded = true;
   }
+
+  public void drawEarth(int radius, int vertexCount) {
+    int halfVertexCount = (int)(vertexCount * 0.5f);
+
+    for (int i = 0; i < vertexCount; i++) {
+      float phi = 2 * PI * i / vertexCount;
+      for (int j = 0; j < halfVertexCount; j++) {
+        float theta = PI * j / halfVertexCount;
+
+        float x = sin(theta) * cos(phi);
+        float y = cos(theta);
+        float z = sin(theta) * sin(phi);
+        normal(x, y, z);
+        vertex(x * radius, y * radius, z * radius);
+        // WIP
+      }
+    }
+  }
 }
 
 // Descending code authorship changes:
@@ -357,3 +380,5 @@ class FlightMap3D extends Widget implements IDraggable {
 // CKM, made minor edits to neaten up code 16:00 12/03
 // CKM, inital no spin setup 11:00 13/03
 // F. Wright, Implemented "Lock" checkbox, 12pm 13/03/24
+// F. Wright, Improved time locking options, more progress on normal mapping, 9pm 13/03/24
+// F. Wright, Finally got normal mapping working! Had to go deep into github repos and tiny forums for that one, 11am 14/03/24

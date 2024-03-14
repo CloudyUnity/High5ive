@@ -5,6 +5,7 @@ final int INPUT_ARRAY_LENGTH = 70000;
 final boolean FULLSCREEN_ENABLED = true;
 
 // Data/Files
+final int LINE_BYTE_SIZE = 24;
 final int NUMBER_OF_FLIGHT_FULL_LINES = 638995;
 final int NUMBER_OF_AIRPORTS = 374;
 final String DATA_DIRECTOR_PATH = "/data/Preprocessed Data/";
@@ -62,12 +63,13 @@ final int WESTERN_ALL_50 = 144;
 final int WESTERN_ALL_50_ALT = 216;
 
 // 3D Flight Map
+final boolean DEBUG_3D_FAST_LOADING = false;
 final int EARTH_Z = -20;
 final int EARTH_SPHERE_SIZE = 400;
 final float DAY_CYCLE_SPEED = 0.00005f;
 final float VERTICAL_SCROLL_LIMIT = 0.6f;
 final float VERTICAL_DRAG_SPEED = 0.000003f;
-final int ARC_SEGMENTS = 15;
+final int ARC_SEGMENTS = DEBUG_3D_FAST_LOADING ? 6 : 15;
 final float ARC_HEIGHT_MULT = 0.5f;
 final int ARC_SIZE = 1;
 final float MARKER_SIZE = 1f;

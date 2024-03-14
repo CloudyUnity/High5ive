@@ -264,45 +264,6 @@ class ScreenFlightMap extends Screen {
 
     currentUIPosY += 60;
 
-    RadioButtonGroupTypeUI dataSelectedGroup = new RadioButtonGroupTypeUI();
-    addWidgetGroup(dataSelectedGroup);
-
-    int radioButtonSize = 20;
-
-    RadioButtonUI flights2kRB = new RadioButtonUI(20, currentUIPosY, radioButtonSize, radioButtonSize, "2k");
-    // flights2kRB.getOnCheckedEvent().addHandler(e -> );
-    flights2kRB.setGrowMode(true);
-    dataSelectedGroup.addMember(flights2kRB);
-    flights2kRB.setTextSize(20);
-    flights2kRB.getLabel().setScale(40, 20);
-    flights2kRB.getLabel().setPos(15, currentUIPosY + radioButtonSize + 5);
-
-    RadioButtonUI flights10kRB = new RadioButtonUI(70, currentUIPosY, radioButtonSize, radioButtonSize, "10k");
-    // flights10kRB.getOnCheckedEvent().addHandler(e -> onCheckedRb2());
-    flights10kRB.setGrowMode(true);
-    dataSelectedGroup.addMember(flights10kRB);
-    flights10kRB.getLabel().setTextSize(20);
-    flights10kRB.getLabel().setScale(70, 20);
-    flights10kRB.getLabel().setPos(60, currentUIPosY + radioButtonSize + 5);
-
-    RadioButtonUI flights100kRB = new RadioButtonUI(120, currentUIPosY, radioButtonSize, radioButtonSize, "100k");
-    // flights100kRB.getOnCheckedEvent().addHandler(e -> onCheckedRb2());
-    flights100kRB.setGrowMode(true);
-    dataSelectedGroup.addMember(flights100kRB);
-    flights100kRB.getLabel().setTextSize(20);
-    flights100kRB.getLabel().setScale(50, 20);
-    flights100kRB.getLabel().setPos(105, currentUIPosY + radioButtonSize + 5);
-
-    RadioButtonUI flights500kRB = new RadioButtonUI(170, currentUIPosY, radioButtonSize, radioButtonSize, "500k");
-    // flights100kRB.getOnCheckedEvent().addHandler(e -> onCheckedRb2());
-    flights500kRB.setGrowMode(true);
-    dataSelectedGroup.addMember(flights500kRB);
-    flights500kRB.getLabel().setTextSize(20);
-    flights500kRB.getLabel().setScale(50, 20);
-    flights500kRB.getLabel().setPos(155, currentUIPosY + radioButtonSize + 5);
-
-    currentUIPosY += 30 + radioButtonSize;
-
     CheckboxUI connectionsEnabledCB = createCheckbox(20, currentUIPosY, 50, 50, "Connections");
     connectionsEnabledCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setConnectionsEnabled(connectionsEnabledCB.getChecked()));
     connectionsEnabledCB.setGrowMode(true);
@@ -336,14 +297,14 @@ class ScreenFlightMap extends Screen {
     
     currentUIPosY += 60;
 
-    CheckboxUI draggingCB = createCheckbox(20, currentUIPosY, 50, 50, "Locked");
-    draggingCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setDraggingEnabled(!draggingCB.getChecked()));
-    draggingCB.setGrowMode(true);
-    draggingCB.setChecked(false);
-    draggingCB.getLabel().setTextXOffset(0);
-    draggingCB.setTextSize(textSize);
-    draggingCB.getLabel().setCentreAligned(true);
-    draggingCB.getLabel().setScale(130, 50);
+    CheckboxUI lockTimeCB = createCheckbox(20, currentUIPosY, 50, 50, "Lock Time");
+    lockTimeCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setLockTime(lockTimeCB.getChecked()));
+    lockTimeCB.setGrowMode(true);
+    lockTimeCB.setChecked(false);
+    lockTimeCB.getLabel().setTextXOffset(0);
+    lockTimeCB.setTextSize(textSize);
+    lockTimeCB.getLabel().setCentreAligned(true);
+    lockTimeCB.getLabel().setScale(130, 50);
 
     currentUIPosY += 60;
 
@@ -420,15 +381,8 @@ class ScreenFlightMap extends Screen {
     
     currentUIPosY += 40;
     
-    
     TextboxUI ArrivalDelayOverSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-    addWidget(ArrivalDelayOverSearch);
-    
-    currentUIPosY += 40;
-    
-    
-    
-    
+    addWidget(ArrivalDelayOverSearch);       
   }
 
   public void startLoadingData(FlightType[] flights) {

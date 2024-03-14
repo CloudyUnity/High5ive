@@ -90,19 +90,12 @@ Inside the project files we have some interesting things to note
 - .gitignore
     Contains files that shouldn't be updated, e.g. individual scratch files
 - Docs.md  
-    Hey, that's me! 
-- LICENSE
-    Permission to use/copy/whatever our project, required by our data sources
+    Hey, that's me!
 - README.md  
     Contains team information, coding standard, information standards, and an approximate responsibility list
 - sketch.properties
     Points to the main (shouldn't be required if the folder name matches)
-- Sources.md
-    Contains attributions and citations
-- Specification.pdf
-    The spec for the assingment we need to adhere to/supercede
 
-  
 - Concept Sketches
     Brilliantly drawn outlines of what the various screens in the program should look like
 - data  
@@ -117,6 +110,15 @@ Inside the project files we have some interesting things to note
     Contains unused classes, in case they're needed in future
     - M_InputClass
         Legacy from when Finn thought it might be a game
+- Docs
+    - LICENSE
+    Permission to use/copy/whatever our project, required by our data sources
+    - Sources.md
+    Contains attributions and citations
+    - Specification.pdf
+    The spec for the assingment we need to adhere to/supercede
+    - TODO.md
+    List of things to implement for spec/completion
 - Helper Scripts  
     Contains random scripts from other languages generally used for pre-processing data.  
     - D_CsvModifier.pde  
