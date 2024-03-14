@@ -32,23 +32,39 @@ class ApplicationClass {
 
     ScreenFlightMap screenFlightMap3D = new ScreenFlightMap(displayWidth, displayHeight, SCREEN_FLIGHT_MAP_ID, m_queryManager);
     m_screens.add(screenFlightMap3D);
-    
-    m_screens.add(new AlexTestingScreen(700, 700, ALEX_TESTING_ID));
+
+    m_screens.add(new AlexTestingScreen(displayWidth, displayHeight, ALEX_TESTING_ID));
 
     m_currentScreen = m_screens.get(0);
 
     PVector windowSize = m_currentScreen.getScale();
     if (!FULLSCREEN_ENABLED)
-      resizeWindow((int)windowSize.x, (int)windowSize.y);    
+      resizeWindow((int)windowSize.x, (int)windowSize.y);
 
     if (DEBUG_DATA_LOADING) {
-      m_flightsManager.init("hex_flight_data.bin", 4, list -> {        
-        m_queryManager.queryFlights(list, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.US), m_queryManager.getIndex("SFO"), 4, queriedList -> {
+      m_flightsManager.init("hex_flight_data.bin", "hex_world_data.bin", 24, 6, 4, list -> {
+        println("+Load Done");
+        // s_DebugProfiler.startProfileTimer();
+        // screenFlightMap3D.startLoadingData(list.US);
+        // s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
+                
+        m_queryManager.queryFlights(list.US, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.US), 184, 4, queriedList -> {
+          println("+US Query Done");
           s_DebugProfiler.startProfileTimer();
           screenFlightMap3D.startLoadingData(queriedList);
+          println(queriedList.length);
           s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
         }
         );
+        
+        //m_queryManager.queryFlights(list.WORLD, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.WORLD), 3874, 1, queriedList -> {
+        //  println("+WORLD Query Done");
+        //  s_DebugProfiler.startProfileTimer();
+        //  screenFlightMap3D.startLoadingData(queriedList);
+        //  println(queriedList.length);
+        //  s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
+        //}
+        //);
       }
       );
     }
@@ -56,7 +72,7 @@ class ApplicationClass {
 
   void frame() {
     s_deltaTime = millis() - m_timeLastFrame;
-    m_timeLastFrame = millis();
+    m_timeLastFrame = millis();   
 
     if (m_fixedFrameCounter < millis()) {
       fixedFrame();
@@ -90,11 +106,10 @@ class ApplicationClass {
     if (m_currentScreen != null)
       m_currentScreen.onMouseClick();
   }
-  
-  void onMouseWheel(int wheelCount){
+
+  void onMouseWheel(int wheelCount) {
     if (m_currentScreen != null)
       m_currentScreen.getOnMouseWheelEvent().raise(new MouseWheelEventInfoType(mouseX, mouseY, wheelCount, m_currentScreen));
-    
   }
 
   public void onKeyPressed(char k, int kc) {
