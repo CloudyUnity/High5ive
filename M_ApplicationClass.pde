@@ -40,14 +40,22 @@ class ApplicationClass {
 
     if (DEBUG_DATA_LOADING) {
       m_flightsManager.init("hex_flight_data.bin", "hex_world_data.bin", 24, 6, 4, list -> {
-        println(list.WORLD[0].AirportDestIndex);
         println("+Load Done");
-        s_DebugProfiler.startProfileTimer();
-        screenFlightMap3D.startLoadingData(list.US);
-        s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
+        // s_DebugProfiler.startProfileTimer();
+        // screenFlightMap3D.startLoadingData(list.US);
+        // s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
+                
+        m_queryManager.queryFlights(list.US, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.US), 184, 4, queriedList -> {
+          println("+US Query Done");
+          s_DebugProfiler.startProfileTimer();
+          screenFlightMap3D.startLoadingData(queriedList);
+          println(queriedList.length);
+          s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
+        }
+        );
         
         //m_queryManager.queryFlights(list.WORLD, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.WORLD), 3874, 1, queriedList -> {
-        //  println("+Query Done");
+        //  println("+WORLD Query Done");
         //  s_DebugProfiler.startProfileTimer();
         //  screenFlightMap3D.startLoadingData(queriedList);
         //  println(queriedList.length);
