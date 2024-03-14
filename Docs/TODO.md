@@ -18,6 +18,10 @@
 
 - [x] Dont store m_flightList
 
+## Data
+
+- [ ] Try and scrape flightradar24 to replace the routes database to be better
+
 ## Widgets (Alex)
 
 - [X] Listbox
