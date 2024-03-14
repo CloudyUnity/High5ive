@@ -239,9 +239,14 @@ class TwoDMapScreen extends Screen {
     addWidget(m_flightMap);
    
 
-    ButtonUI uiBackground = createButton(0, 0, 200, displayHeight );
+
+    ButtonUI uiBackground = createButton(0, -1, 200, (displayHeight));
     uiBackground.setHighlightOutlineOnEnter(false);
     uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
+    
+    ButtonUI uiBackgroundTwo = createButton(0, (displayHeight-100), (displayWidth), (99));
+    uiBackgroundTwo.setHighlightOutlineOnEnter(false);
+    uiBackgroundTwo.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
 
     ButtonUI returnBttn = createButton(20, currentUIPosY, 160, 50);
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
