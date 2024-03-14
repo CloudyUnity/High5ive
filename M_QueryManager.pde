@@ -8,15 +8,9 @@ class QueryManagerClass {
   private boolean m_working;
 
   void init() {
-<<<<<<< HEAD
-    m_airlineTable = loadTable("data/Preprocessed Data/airlines.csv", "header");
-    m_airportTable = loadTable("data/Preprocessed Data/airports.csv", "header");
-    if (m_airportTable == null)
-=======
     m_airlineTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "airlines.csv", "header");
     m_airportTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "airports.csv", "header");
     if (m_airportTable == null || m_airlineTable == null) {
->>>>>>> 734b2547fb0b041e755f58ab9a54783ba121887d
       println("ERROR ON INIT QUERY MANAGER");
     }
 
@@ -49,11 +43,6 @@ class QueryManagerClass {
   }
   String getCode(int index) {
     m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
-<<<<<<< HEAD
-    //if (m_lookupResult == null)
-    //  return "ERROR";
-=======
->>>>>>> 734b2547fb0b041e755f58ab9a54783ba121887d
     return m_lookupResult.getString("IATA");
   }
   int getIndex(String code) {
