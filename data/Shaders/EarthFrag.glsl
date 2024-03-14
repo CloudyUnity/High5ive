@@ -31,9 +31,9 @@ void main() {
   vec3 day = texture2D(texDay, vertTexCoord.st).xyz;
   vec3 night = texture2D(texNight, vertTexCoord.st).xyz;
   vec3 specular = texture2D(specularMap, vertTexCoord.st).xyz;
+  
   vec3 norm = texture2D(normalMap, vertTexCoord.st).xyz * vec3(normalStrength, normalStrength, 1.0);
   norm = norm * 2.0 - 1.0;
-
   mat3 TBN = mat3(fragTangent, fragBinormal, normMapNormal);
   vec3 bump = normalize(TBN * norm);
   float bumpIntensity = max(0.15f, dot(bump, vec3(-0.5f, 0, 1)));
