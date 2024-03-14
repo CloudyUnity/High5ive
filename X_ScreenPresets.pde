@@ -237,24 +237,33 @@ class TwoDMapScreen extends Screen {
 
     m_flightMap = new FlightMap2DUI(100, 0, 100, 100);
     addWidget(m_flightMap);
-   
 
     ButtonUI uiBackground = createButton(0, -1, 200, (displayHeight));
     uiBackground.setHighlightOutlineOnEnter(false);
     uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
     
-    ButtonUI uiBackgroundTwo = createButton(0, (displayHeight-100), (displayWidth), (99));
+    ButtonUI uiBackgroundTwo = createButton(0, (displayHeight-101), (displayWidth), (99));
     uiBackgroundTwo.setHighlightOutlineOnEnter(false);
     uiBackgroundTwo.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
 
     ButtonUI returnBttn = createButton(20, currentUIPosY, 160, 50);
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
+    returnBttn.setBackgroundColour(color(CP_PINK));
     returnBttn.setGrowMode(true);
     returnBttn.setText("Return");
     returnBttn.setTextSize(textSize);
     returnBttn.getLabel().setCentreAligned(true);
-
     currentUIPosY += 60;
+    
+    ButtonUI testBttn = createButton(20, currentUIPosY, 160, 50);
+    testBttn.getOnClickEvent();
+    testBttn.setBackgroundColour(color(CP_PINK));
+    testBttn.setGrowMode(true);
+    testBttn.setText("test");
+    testBttn.setTextSize(textSize);
+    testBttn.getLabel().setCentreAligned(true);
+    currentUIPosY += 60;
+
   }
 }
 
