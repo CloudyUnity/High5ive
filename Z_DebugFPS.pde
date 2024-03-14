@@ -1,6 +1,4 @@
-import java.util.*;
-
-class DebugFPSClass {
+/*class DebugFPSClass {
   private Deque<Integer> m_frameTimes = new LinkedList<Integer>();
   public int m_timeAtLastFrame = 0;
   
@@ -24,6 +22,15 @@ class DebugFPSClass {
     return round(fps * 100.0f) / 100.0f;
   }
 }
-
+*/
+class DebugFPSClass {
+  public void addToFrameTimes(){
+    return;
+  }
+  public float calculateFPS(){
+    return round(frameRate);
+  }
+}
 // Descending code authorship changes:
 // F. Wright, Made FPS class to test performance of program, 6pm 06/03/24
+// CKM, Used native framerate function, 15:00 14/03
