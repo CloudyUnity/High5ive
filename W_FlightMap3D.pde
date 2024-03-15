@@ -12,6 +12,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   private PVector m_earthRotation = new PVector(0, 0, 0);
   private PVector m_earthRotationalVelocity = new PVector(0, 0, 0);
   private float m_zoomLevel = 1.0f;
+  private float m_dayCycleSpeed = 0.00005f;
 
   private float m_arcFraction = 1.0f;
   private float m_arcGrowMillis = 1.0f;
@@ -27,7 +28,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
 
   private float m_rotationYModified = 0;
   private float m_totalTimeElapsed = 0;
-  private int m_arcSegments = DEBUG_FAST_LOADING_3D ? 6 : 4;
+  private int m_arcSegments;
 
   private HashMap<String, AirportPoint3DType> m_airportHashmap = new HashMap<String, AirportPoint3DType>();
 
@@ -105,7 +106,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     }
 
     if (!m_lockTime)
-      m_totalTimeElapsed += s_deltaTime * DAY_CYCLE_SPEED_3D;
+      m_totalTimeElapsed += s_deltaTime * m_dayCycleSpeed;
 
     PVector lightDir = new PVector(cos(m_totalTimeElapsed), 0, sin(m_totalTimeElapsed));
     m_earthShader.set("lightDir", lightDir);
@@ -254,21 +255,10 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   }
 
   private AirportPoint3DType manualAddPoint(double latitude, double longitude, String code) {
-    PVector pos = coordsToPoint(latitude, longitude);
+    PVector pos = coordsToPointOnSphere(latitude, longitude, m_earthRadius);
     AirportPoint3DType point = new AirportPoint3DType(pos, code);
     m_airportHashmap.put(code, point);
     return point;
-  }
-
-  private PVector coordsToPoint(double latitude, double longitude) {
-    float radLat = radians((float)latitude);
-    float radLong = radians((float)(longitude+180));
-
-    float x = m_earthRadius * cos(radLat) * cos(radLong);
-    float y = m_earthRadius * -sin(radLat);
-    float z = m_earthRadius * cos(radLat) * sin(radLong);
-
-    return new PVector(x, y, z);
   }
 
   void drawGreatCircleArcFast(AirportPoint3DType point) {
@@ -336,6 +326,10 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   public void setLockTime(boolean enabled) {
     m_lockTime = enabled;
   }
+  
+  public void setDayCycleSpeed(float speed) {
+    m_dayCycleSpeed = speed;
+  }
 
   public void loadFlights(FlightType[] flights, QueryManagerClass queries) {
     m_flightDataLoaded = false;
@@ -385,25 +379,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     }
 
     m_flightDataLoaded = true;
-  }
-
-  public void drawEarth(int radius, int vertexCount) {
-    int halfVertexCount = (int)(vertexCount * 0.5f);
-
-    for (int i = 0; i < vertexCount; i++) {
-      float phi = 2 * PI * i / vertexCount;
-      for (int j = 0; j < halfVertexCount; j++) {
-        float theta = PI * j / halfVertexCount;
-
-        float x = sin(theta) * cos(phi);
-        float y = cos(theta);
-        float z = sin(theta) * sin(phi);
-        normal(x, y, z);
-        vertex(x * radius, y * radius, z * radius);
-        // WIP
-      }
-    }
-  }
+  }  
 }
 
 // Descending code authorship changes:

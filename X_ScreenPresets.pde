@@ -264,20 +264,21 @@ class ScreenFlightMap extends Screen {
   QueryManagerClass m_queryManager;
 
   public ScreenFlightMap(int scaleX, int scaleY, String screenId, QueryManagerClass query) {
-    super(scaleX, scaleY, screenId, DEFAULT_SCREEN_COLOUR);
+    super(scaleX, scaleY, screenId, color(0, 0, 0, 255));
 
     m_queryManager = query;
 
     int currentUIPosY = 60;
     int textSize = 20;
 
-    int dragWindowX = width - 200;
+    int dragWindowX = width - 400;
     int dragWindowY = height;
-    m_flightMap3D = new FlightMap3D(100, 0, dragWindowX, dragWindowY);
+    m_flightMap3D = new FlightMap3D(200, 0, dragWindowX, dragWindowY);
     addWidget(m_flightMap3D);
 
     // ATTENTION MATTHEW, SEE HERE!
-    UserQueryUI userQueryUI = new UserQueryUI(0, 0, 200, height, query);
+    UserQueryUI userQueryUI = new UserQueryUI(0, 60, 200, height, query);
+    addWidget(userQueryUI);
     userQueryUI.setOnLoadHandler(flights -> {
       m_flightMap3D.loadFlights(flights, query);
     }
@@ -358,6 +359,14 @@ class ScreenFlightMap extends Screen {
     resetArcGrow.getLabel().setCentreAligned(true);
 
     currentUIPosY += 60;
+    
+    SliderUI dayCycleSlider = createSlider(20, currentUIPosY, 160, 50, 0.00005f, 0.005f, 0.00001f);
+    dayCycleSlider.getOnDraggedEvent().addHandler(e -> m_flightMap3D.setDayCycleSpeed((float)dayCycleSlider.getValue()));
+    LabelUI sliderLabel = createLabel(20, currentUIPosY, 160, 50, "Time Speed");
+    sliderLabel.setTextSize(15);
+    sliderLabel.setCentreAligned(true);
+    
+    currentUIPosY += 60;
 
     LabelUI label = createLabel(20, 10, 150, 40, "3D Flight Map");
     label.setForegroundColour(color(255, 255, 255, 255));
@@ -437,10 +446,7 @@ class ScreenFlightMap extends Screen {
 
     TextboxUI ArrivalDelayOverSearch = new TextboxUI(20, currentUIPosY, 160, 30);
     ArrivalDelayOverSearch.setPlaceholderText("Origin");
-    addWidget(ArrivalDelayOverSearch);*/
-    
-    UserQueryUI searchOptions = new UserQueryUI(20, currentUIPosY, 600, 300, m_queryManager);
-    addWidget(searchOptions);
+    addWidget(ArrivalDelayOverSearch);*/   
   }
 
   public void startLoadingData(FlightType[] flights) {
