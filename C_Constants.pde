@@ -53,7 +53,7 @@ final PVector FORWARD_VECTOR = new PVector(0, 0, 1);
 // 3D Flight Map
 final boolean DEBUG_3D_FAST_LOADING = false;
 final int EARTH_Z = -20;
-final int EARTH_SPHERE_SIZE = 400;
+final int EARTH_SPHERE_SIZE = 500;
 final float DAY_CYCLE_SPEED = 0.00005f;
 final float VERTICAL_SCROLL_LIMIT = 0.6f;
 final float VERTICAL_DRAG_SPEED = 0.000003f;
