@@ -62,7 +62,7 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
   public void setText(String text) {
     m_text.setLength(0);
     m_text.append(text);
-    m_cursorPosition = text.length() - 1;
+    m_cursorPosition = text.length() /* - 1 */;  // -TO ALEX: Changed this from -1 since it broke when i tried to reset Search boxes, if this was necessary you can change it back 
   }
 
   public String getText() {

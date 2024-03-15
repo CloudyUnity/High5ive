@@ -478,19 +478,19 @@ class AlexTestingScreen extends Screen {
 
     testDropdown = new DropdownUI<String>(400, 90, 200, 400, 30, v -> v);
     testDropdown.add("One");
-    testDropdown.add("Too");
+    testDropdown.add("Two");
     testDropdown.add("Three");
     testDropdown.add("One");
-    testDropdown.add("Too");
+    testDropdown.add("Two");
     testDropdown.add("Three");
     testDropdown.add("One");
-    testDropdown.add("Too");
+    testDropdown.add("Two");
     testDropdown.add("Three");
     testDropdown.add("One");
-    testDropdown.add("Too");
+    testDropdown.add("Two");
     testDropdown.add("Three");
     testDropdown.add("One");
-    testDropdown.add("Too");
+    testDropdown.add("Two");
     testDropdown.add("Three");
 
     addWidget(box);
