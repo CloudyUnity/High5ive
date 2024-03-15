@@ -363,7 +363,7 @@ class ScreenFlightMap extends Screen {
     label.setForegroundColour(color(255, 255, 255, 255));
     label.setTextSize(30);
 
-    TextboxUI airportOriginSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+    /* TextboxUI airportOriginSearch = new TextboxUI(20, currentUIPosY, 160, 30);
     airportOriginSearch.setPlaceholderText("Origin");
     addWidget(airportOriginSearch);
 
@@ -437,7 +437,10 @@ class ScreenFlightMap extends Screen {
 
     TextboxUI ArrivalDelayOverSearch = new TextboxUI(20, currentUIPosY, 160, 30);
     ArrivalDelayOverSearch.setPlaceholderText("Origin");
-    addWidget(ArrivalDelayOverSearch);
+    addWidget(ArrivalDelayOverSearch);*/
+    
+    UserQueryUI searchOptions = new UserQueryUI(20, currentUIPosY, 600, 300, m_queryManager);
+    addWidget(searchOptions);
   }
 
   public void startLoadingData(FlightType[] flights) {
@@ -475,19 +478,19 @@ class AlexTestingScreen extends Screen {
 
     testDropdown = new DropdownUI<String>(400, 90, 200, 400, 30, v -> v);
     testDropdown.add("One");
-    testDropdown.add("Too");
+    testDropdown.add("Two");
     testDropdown.add("Three");
     testDropdown.add("One");
-    testDropdown.add("Too");
+    testDropdown.add("Two");
     testDropdown.add("Three");
     testDropdown.add("One");
-    testDropdown.add("Too");
+    testDropdown.add("Two");
     testDropdown.add("Three");
     testDropdown.add("One");
-    testDropdown.add("Too");
+    testDropdown.add("Two");
     testDropdown.add("Three");
     testDropdown.add("One");
-    testDropdown.add("Too");
+    testDropdown.add("Two");
     testDropdown.add("Three");
 
     addWidget(box);
