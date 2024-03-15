@@ -1,4 +1,4 @@
-class UserQueryUI extends Widget implements IClickable, IWheelInput {
+class UserQueryUI extends Widget implements IClickable, IWheelInput, IKeyInput{
 
   private Event<EventInfoType> m_onClickEvent;
   private Event<MouseMovedEventInfoType> m_onMouseMovedEvent;
@@ -10,11 +10,13 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput {
 
   QueryManagerClass m_queryManager;
   ArrayList <Widget> m_subWidgets = new ArrayList<Widget>();
+  private ArrayList<WidgetGroupType> m_groups;
   private TextboxUI m_day;
 
   UserQueryUI(int posX, int posY, int scaleX, int scaleY, QueryManagerClass queryManager) {
     super(posX, posY, scaleX, scaleY);
 
+    m_groups = new ArrayList<WidgetGroupType>();
     m_onClickEvent = new Event<EventInfoType>();
     m_onMouseMovedEvent = new Event<MouseMovedEventInfoType>();
     m_onMouseDraggedEvent = new Event<MouseDraggedEventInfoType>();
@@ -29,7 +31,7 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput {
 
     m_queryManager = queryManager;
 
-    m_day =  new TextboxUI(20, 20, 160, 30);
+    m_day =  new TextboxUI(20, 500, 160, 30);
     m_subWidgets.add(m_day);
     m_day.setPlaceholderText("Day");
 
@@ -60,6 +62,7 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput {
   }
 
   private void changeDataToUS() {
+    
   }
 
   private void changeDataToWorld() {
@@ -133,10 +136,26 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput {
     }
   }
 
-  private void onKeyPressed(KeyPressedEventInfoType e) {
+ /* private void onKeyPressed(KeyPressedEventInfoType e) {
     for (Widget child : m_subWidgets) {
       if (child instanceof IKeyInput && child.isFocused())
         ((IKeyInput)child).getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(e.X, e.Y, e.pressedKey, e.pressedKeyCode, child));
+    }
+  }
+}*/
+ private void onKeyPressed(KeyPressedEventInfoType e) {
+    for (Widget child : m_subWidgets) {
+      if (child instanceof IKeyInput && child.isFocused())
+        ((IKeyInput)child).getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(e.X, e.Y, e.pressedKey, e.pressedKeyCode, child));
+    }
+
+
+
+    for (WidgetGroupType group : this.m_groups) {
+      for (Widget child : group.getMembers()) {
+        if (child instanceof IKeyInput && child.isFocused())
+          ((IKeyInput)child).getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(e.X, e.Y, e.pressedKey, e.pressedKeyCode, child));
+      }
     }
   }
 }
