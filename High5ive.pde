@@ -8,7 +8,6 @@ import java.nio.channels.FileChannel;
 import java.util.concurrent.atomic.AtomicInteger;
 
 ApplicationClass s_ApplicationClass = new ApplicationClass();
-//InputClass s_InputClass = new InputClass();
 DebugProfilerClass s_DebugProfiler = new DebugProfilerClass();
 PGraphics s_3D;
 int s_deltaTime;
@@ -18,7 +17,7 @@ void setup() {
 
   s_DebugProfiler.startProfileTimer();
 
-  surface.setTitle("Flight Thing");
+  surface.setTitle("High5ive Flight Sim - 2024 v3.5.2b LTS");
   surface.setResizable(!FULLSCREEN_ENABLED);
   surface.setLocation(0, 0);
 

@@ -51,19 +51,19 @@ final PVector RIGHT_VECTOR = new PVector(1, 0, 0);
 final PVector FORWARD_VECTOR = new PVector(0, 0, 1);
 
 // 3D Flight Map
-final boolean DEBUG_3D_FAST_LOADING = false;
-final int EARTH_Z = -20;
-final int EARTH_SPHERE_SIZE = 500;
-final float DAY_CYCLE_SPEED = 0.00005f;
-final float VERTICAL_SCROLL_LIMIT = 0.6f;
-final float VERTICAL_DRAG_SPEED = 0.000003f;
-final int ARC_SEGMENTS = DEBUG_3D_FAST_LOADING ? 6 : 15;
-final float ARC_HEIGHT_MULT = 0.5f;
-final int ARC_SIZE = 1;
-final float MARKER_SIZE = 1f;
+final boolean DEBUG_FAST_LOADING_3D = false;
+final int EARTH_Z_3D = -20;
+final float DAY_CYCLE_SPEED_3D = 0.00005f;
+final float VERTICAL_SCROLL_LIMIT_3D = 0.9f;
+final float VERTICAL_DRAG_SPEED_3D = 0.000003f;
+final float EARTH_FRICTION_3D = 0.99f;
+final float ARC_HEIGHT_MULT_3D = 0.5f;
+final int ARC_SIZE_3D = 1;
+final float MARKER_SIZE_3D = 1f;
 final int TEXT_SIZE_3D = 12;
 final PVector TEXT_DISPLACEMENT_3D = new PVector(0, 10, 10);
-final boolean DITHER_MODE = false;
+final boolean DITHER_MODE_3D = false;
+final float MOUSE_SCROLL_STRENGTH_3D = 15;
 
 // Descending code authorship changes:
 // F. Wright, Set up constants for the Engine and Debug, 8pm 23/02/24
@@ -76,3 +76,4 @@ final boolean DITHER_MODE = false;
 // CKM, Updated 3D dataset constants, 10:00 13/03
 // M. Orlowski, Added Screen ID for 2D map, 11:00 13/03
 // CKM, slimmed down unessecary constants to prevent issues like earlier 00:00 15/03
+// F. Wright, Added more 3D constants and changed their names to have suffix "_3D", 10am 15/03/24
