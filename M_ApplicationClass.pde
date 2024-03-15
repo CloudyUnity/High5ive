@@ -42,8 +42,7 @@ class ApplicationClass {
       resizeWindow((int)windowSize.x, (int)windowSize.y);
 
     if (DEBUG_DATA_LOADING) {
-      m_flightsManager.init("hex_flight_data.bin", "hex_world_data.bin", US_LINE_BYTE_SIZE, WORLD_LINE_BYTE_SIZE, 4, list -> {
-        println("+Load Done");
+      m_flightsManager.init("hex_flight_data.bin", "hex_world_data.bin", 4, list -> {
         m_queryManager.queryFlights(list.WORLD, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.WORLD), m_queryManager.getIndex("DUB"), 4, queriedList -> {
           s_DebugProfiler.startProfileTimer();
           screenFlightMap3D.startLoadingData(queriedList);

@@ -328,9 +328,9 @@ class FlightMap3D extends Widget implements IDraggable {
       }        
 
       String originCode = queries.getCode(flights[i].AirportOriginIndex);
-      println("Origin: " + originCode);
+      // println("Origin: " + originCode);
       String destCode = queries.getCode(flights[i].AirportDestIndex);
-      println("Dest: " + destCode);
+      // println("Dest: " + destCode);
       AirportPoint3DType origin, dest;
 
       if (!m_airportHashmap.containsKey(originCode)) {
