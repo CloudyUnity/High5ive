@@ -1,5 +1,6 @@
 class UserQueryUI extends Widget implements IClickable, IWheelInput, IKeyInput{
 
+  
   private Event<EventInfoType> m_onClickEvent;
   private Event<MouseMovedEventInfoType> m_onMouseMovedEvent;
   private Event<MouseDraggedEventInfoType> m_onMouseDraggedEvent;
@@ -7,9 +8,13 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput, IKeyInput{
   private Event<MouseWheelEventInfoType> m_mouseWheelEvent;
   private Consumer<FlightType[]> m_onLoadDataEvent;
   private QueryLocation m_queryLocation; 
+ 
   
-  private QueryManagerClass m_queryManager;
+  
+  
+  QueryManagerClass m_queryManager;
   ArrayList <Widget> m_subWidgets = new ArrayList<Widget>();
+  private QueryManagerClass queryManager;
   private ArrayList<WidgetGroupType> m_groups;
   private ArrayList<String> m_queries;  // All query types are ordered like so (Day, Airline, FlightNum, Origin, Dest, SchDep, Dep, Depdelay, SchArr, Arr, ArrDelay, Cancelled, Dievrted, Miles  )
   private ArrayList<FlightQuery> m_flightQueries;
@@ -20,7 +25,6 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput, IKeyInput{
   private ButtonUI  addItemButton;
   private FlightQuery m_dayQuery;
   private int m_listCounter;
-  
 
   UserQueryUI(int posX, int posY, int scaleX, int scaleY, QueryManagerClass queryManager) {
     super(posX, posY, scaleX, scaleY);
@@ -40,31 +44,30 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput, IKeyInput{
 
     m_queryManager = queryManager;
 
-    m_queryList = new ListboxUI<String>(20, 650, 200, 400, 40, v -> v);
+    m_queryList = new ListboxUI<String>(20 + posX, 650 + posY, 200, 400, 40, v -> v);
     m_queries = new ArrayList<String>();
-
     m_flightQueries = new ArrayList<FlightQuery>();
+    m_subWidgets.add(m_queryList); 
     
-    addWidget(m_queryList); 
-
-    
-    addItemButton = new ButtonUI(20, 600, 80, 20);
-    addWidget(addItemButton);
+    addItemButton = new ButtonUI(20 + posX, 600 + posY, 80, 20);
+    m_subWidgets.add(addItemButton);
     addItemButton.setText("Add item");
     addItemButton.getOnClickEvent().addHandler(e -> saveQuery(m_day));
         
-    clearListButton = new ButtonUI(120, 600, 80, 20);
-    addWidget(clearListButton);
+    clearListButton = new ButtonUI(120 + posX, 600 + posY, 80, 20);
+    m_subWidgets.add(clearListButton);
     clearListButton.setText("Clear");
     clearListButton.getOnClickEvent().addHandler(e -> clearQueries());
 
-    removeSelectedButton = new ButtonUI(220, 600, 80, 20);
-    addWidget(removeSelectedButton);
+    removeSelectedButton = new ButtonUI(220 + posX, 600 + posY, 80, 20);
+    m_subWidgets.add(removeSelectedButton);
     removeSelectedButton.setText("Remove selected");
     removeSelectedButton.getOnClickEvent().addHandler(e -> m_queryList.removeSelected());
+    
+    
 
     m_day =  new TextboxUI(20 + posX, 500 + posY, 160, 30);
-    addWidget(m_day);
+    m_subWidgets.add(m_day);
     m_day.setPlaceholderText("Day");
     
     m_dayQuery = new FlightQuery(QueryType.DAY, QueryOperator.EQUAL, QueryLocation.US);
@@ -82,17 +85,16 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput, IKeyInput{
   }
 
   private void loadData() {
-    // Load data here. Take info from all user inputs to build queries and apply them
     FlightType[] result = null;
     int queryIndex = 0;
-    for(FlightQuery query : m_flightQueries){
-    
-      m_queryManager.queryFlights(result, query, convertToFormat(queryIndex, m_queries.get(queryIndex)), 4, m_onLoadDataEvent);
-    
+    // Load data here. Take info from all user inputs to build queries and apply them
+    for(FlightQuery query: m_flightQueries){
+      
+       queryFlights(result, query, queryManager.getIndex(m_queries.get(queryIndex)), 8, );
+      
     }
-    
      
-  
+    
     m_onLoadDataEvent.accept(result);
     
   }
@@ -108,9 +110,9 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput, IKeyInput{
     m_day.setText("");
   }
   
-  private void changeOperator(){
+  private void changeOperator(FlightQuery inputQuery, QueryOperator inputOperator){
   
-    
+    inputQuery.setOperator(inputOperator);
   
   }
 
@@ -121,41 +123,9 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput, IKeyInput{
 
   private void changeDataToUS() {
     
-    
-    
   }
 
   private void changeDataToWorld() {
-  }
-  
-  private int convertToFormat(int queryIndex, String query){
-    
-    if(queryIndex == 0 || queryIndex == 2 || queryIndex == 7 ||  queryIndex == 10  || queryIndex == 2){
-  
-      try{
-      return Integer.parseInt(query);
-      }
-      catch(Exception e){
-      return 0;
-    }
-    
-    }
-    else if (queryIndex == 1 || queryIndex == 3 || queryIndex == 4.3
-    
-    )
-      return m_queryManager.getIndex(query); 
-    else if (queryIndex == 6 ){}
-    else{
-      return 0;
-    }
-        
-       return 0;
-  
-  }
-  
-  private void addWidget(Widget widget){
-    m_subWidgets.add(widget);
-    widget.setParent(this);
   }
 
   @Override
