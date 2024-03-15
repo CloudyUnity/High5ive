@@ -104,10 +104,9 @@ class QueryManagerClass {
     FlightType[] joinedFlightArray = listOfFlightsLists.stream()
       .flatMap(Arrays::stream)
       .toArray(FlightType[]::new);
-    println("+Query Executor Shutdown");
     return joinedFlightArray;
   }
-  private FlightType[] processQueryFlightsChunk(FlightType[] flightsList, FlightQuery flightQuery, int queryValue) {    
+  private FlightType[] processQueryFlightsChunk(FlightType[] flightsList, FlightQuery flightQuery, int queryValue) {
     switch(flightQuery.Operator) {
     case EQUAL:
 
