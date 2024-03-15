@@ -52,6 +52,7 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput, IKeyInput{
     addWidget(addItemButton);
     addItemButton.setText("Add item");
     addItemButton.getOnClickEvent().addHandler(e -> saveQuery(m_day));
+    addItemButton.getOnClickEvent().addHandler(e -> loadData());
         
     clearListButton = new ButtonUI(120, 600, 80, 20);
     addWidget(clearListButton);
