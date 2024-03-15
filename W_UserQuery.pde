@@ -5,18 +5,24 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput, IKeyInput{
   private Event<MouseDraggedEventInfoType> m_onMouseDraggedEvent;
   private Event<KeyPressedEventInfoType> m_onKeyPressedEvent;
   private Event<MouseWheelEventInfoType> m_mouseWheelEvent;
-
   private Consumer<FlightType[]> m_onLoadDataEvent;
 
+  private QueryLocation m_queryLocation; 
+ 
+  
+  
+  
   QueryManagerClass m_queryManager;
   ArrayList <Widget> m_subWidgets = new ArrayList<Widget>();
   private ArrayList<WidgetGroupType> m_groups;
-  private ArrayList<String> m_queries;
+  private ArrayList<String> m_queries;  // All query types are ordered like so (Day, Airline, FlightNum, Origin, Dest, SchDep, Dep, Depdelay, SchArr, Arr, ArrDelay, Cancelled, Dievrted, Miles  )
+  private ArrayList<FlightQuery> m_flightQueries;
   private ListboxUI m_queryList;
   private TextboxUI m_day;
   private ButtonUI  clearListButton; 
   private ButtonUI  removeSelectedButton;
   private ButtonUI  addItemButton;
+  private FlightQuery m_dayQuery;
   private int m_listCounter;
 
   UserQueryUI(int posX, int posY, int scaleX, int scaleY, QueryManagerClass queryManager) {
@@ -39,6 +45,7 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput, IKeyInput{
 
     m_queryList = new ListboxUI<String>(20 + posX, 650 + posY, 200, 400, 40, v -> v);
     m_queries = new ArrayList<String>();
+    m_flightQueries = new ArrayList<FlightQuery>();
     m_subWidgets.add(m_queryList); 
     
     addItemButton = new ButtonUI(20 + posX, 600 + posY, 80, 20);
@@ -49,7 +56,7 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput, IKeyInput{
     clearListButton = new ButtonUI(120 + posX, 600 + posY, 80, 20);
     m_subWidgets.add(clearListButton);
     clearListButton.setText("Clear");
-    clearListButton.getOnClickEvent().addHandler(e -> clearListOnClick());
+    clearListButton.getOnClickEvent().addHandler(e -> clearQueries());
 
     removeSelectedButton = new ButtonUI(220 + posX, 600 + posY, 80, 20);
     m_subWidgets.add(removeSelectedButton);
@@ -59,6 +66,10 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput, IKeyInput{
     m_day =  new TextboxUI(20 + posX, 500 + posY, 160, 30);
     m_subWidgets.add(m_day);
     m_day.setPlaceholderText("Day");
+    
+    m_dayQuery = new FlightQuery(QueryType.DAY, QueryOperator.EQUAL, QueryLocation.US);
+    m_flightQueries.add(m_dayQuery);
+   
     
 
     // Initialise all UI elements
@@ -72,24 +83,33 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput, IKeyInput{
 
   private void loadData() {
     // Load data here. Take info from all user inputs to build queries and apply them
-
+    
+     
     FlightType[] result = null;
     m_onLoadDataEvent.accept(result);
+    
   }
 
   private void saveQuery( TextboxUI inputTextbox) {
     // Saves currently written user input into a query
     m_queries.add(inputTextbox.getText());
-    m_queryList.add(inputTextbox.getText() + m_listCounter);
-    m_listCounter++;
-    // Adds to query output field textbox thing
     
+    // Adds to query output field textbox thing
+    m_queryList.add(inputTextbox.getText());
+    m_listCounter++;
     // Set all user inputs back to default
     m_day.setText("");
+  }
+  
+  private void changeOperator(){
+  
+    
+  
   }
 
   private void clearQueries() {
     // Clear all currently saved user queries
+    m_queryList.clear();
   }
 
   private void changeDataToUS() {
@@ -167,13 +187,7 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput, IKeyInput{
     }
   }
 
- /* private void onKeyPressed(KeyPressedEventInfoType e) {
-    for (Widget child : m_subWidgets) {
-      if (child instanceof IKeyInput && child.isFocused())
-        ((IKeyInput)child).getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(e.X, e.Y, e.pressedKey, e.pressedKeyCode, child));
-    }
-  }
-}*/
+
  private void onKeyPressed(KeyPressedEventInfoType e) {
     for (Widget child : m_subWidgets) {
       if (child instanceof IKeyInput && child.isFocused())
@@ -190,9 +204,7 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput, IKeyInput{
     }
   }
  
-  private void clearListOnClick() {
-    m_queryList.clear();
-  }
+  
 }
 
 
@@ -202,7 +214,6 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput, IKeyInput{
 /*  TODO!!!!!!!!!!!!!
     1: Make loadData function as intended
     2: Test If you can add and seperate inputs from multiple textboxes at once
-    3: Fix issues with space being a delimiter for textBox input
     4: Figure out how the f%&£ to switch data sets without breaking program
     5: Other misc implementation (clearQueries, Seperate inputs etc)
 
