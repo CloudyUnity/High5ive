@@ -26,6 +26,7 @@ void setup() {
   textFont(createFont("Century Gothic Bold", 48, true));
 
   s_3D = createGraphics(width, height, P3D);
+  s_3D.hint(ENABLE_DEPTH_SORT);
   if (!s_3D.isGL()) {
     println("OpenGL is not available. Make sure hardware acceleration is enabled.");
   }

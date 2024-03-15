@@ -93,6 +93,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_earthRotationalVelocity.mult(EARTH_FRICTION_3D);
     m_earthRotation.x = clamp(m_earthRotation.x, -VERTICAL_SCROLL_LIMIT_3D, VERTICAL_SCROLL_LIMIT_3D);
     m_arcFraction = (millis() - m_arcStartGrowMillis) / m_arcGrowMillis;
+    m_arcFraction = clamp(m_arcFraction, 0.0f, 1.0f);
 
     if (!m_assetsLoaded || !m_drawnLoadingScreen || !m_flightDataLoaded) {
       image(m_starsTex, 0, 0, width, height);
@@ -197,7 +198,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     s_3D.rotateY(m_rotationYModified);
 
     for (AirportPoint3DType point : m_airportHashmap.values()) {
-      PVector endline = point.Pos.copy().mult(1.05f);
+      PVector endline = point.Pos.copy().mult(1 + (0.05f * m_arcFraction));
 
       if (m_markersEnabled) {
         s_3D.stroke(point.Color);
@@ -229,10 +230,11 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
       s_3D.rotateY(m_rotationYModified);
       s_3D.translate(point.Pos.x, point.Pos.y, point.Pos.z);
       s_3D.rotateY(-m_rotationYModified);
+      s_3D.rotateX(-m_earthRotation.x);
 
       s_3D.text(point.Name, 0, 0);
       s_3D.popMatrix();
-    }
+    }   
   }
 
   public Event<MouseDraggedEventInfoType> getOnDraggedEvent() {
