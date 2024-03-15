@@ -30,13 +30,15 @@ class FlightMap3D extends Widget implements IDraggable {
   private HashMap<String, AirportPoint3DType> m_airportHashmap = new HashMap<String, AirportPoint3DType>();
 
   private PVector m_earthPos;
+  private float m_earthRadius;
 
   public FlightMap3D(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
     m_starsTex = loadImage("data/Images/Stars2k.jpg");
+    m_earthRadius = height * 0.38f;
 
-    new Thread(() -> {
-      m_earthModel = s_3D.createShape(SPHERE, EARTH_SPHERE_SIZE);
+    new Thread(() -> {      
+      m_earthModel = s_3D.createShape(SPHERE, m_earthRadius);
       m_earthModel.disableStyle();
       m_earthDayTex = loadImage("data/Images/EarthDay2k.jpg");
       m_earthNightTex = loadImage("data/Images/EarthNight2k.jpg");
@@ -47,7 +49,7 @@ class FlightMap3D extends Widget implements IDraggable {
       m_earthShader.set("texNight", m_earthNightTex);
       m_earthShader.set("normalMap", m_earthNormalTex);
 
-      if (DEBUG_3D_FAST_LOADING) {
+      if (DEBUG_FAST_LOADING_3D) {
         m_assetsLoaded = true;
         return;
       }
@@ -74,7 +76,7 @@ class FlightMap3D extends Widget implements IDraggable {
     }
     ).start();
 
-    m_earthPos = new PVector(width * 0.5f + posX, height * 0.5f + posY, EARTH_Z);
+    m_earthPos = new PVector(width * 0.5f + posX, height * 0.5f + posY, EARTH_Z_3D);
 
     m_onDraggedEvent.addHandler(e -> onDraggedHandler(e));
   }
@@ -85,7 +87,7 @@ class FlightMap3D extends Widget implements IDraggable {
 
     m_earthRotation.add(m_earthRotationalVelocity);
     m_earthRotationalVelocity.mult(m_earthRotationalFriction);
-    m_earthRotation.x = clamp(m_earthRotation.x, -VERTICAL_SCROLL_LIMIT, VERTICAL_SCROLL_LIMIT);
+    m_earthRotation.x = clamp(m_earthRotation.x, -VERTICAL_SCROLL_LIMIT_3D, VERTICAL_SCROLL_LIMIT_3D);
     m_arcFraction = (millis() - m_arcStartGrowMillis) / m_arcGrowMillis;
 
     if (!m_assetsLoaded || !m_drawnLoadingScreen || !m_flightDataLoaded) {
@@ -100,14 +102,14 @@ class FlightMap3D extends Widget implements IDraggable {
     }
 
     if (!m_lockTime)
-      m_totalTimeElapsed += s_deltaTime * DAY_CYCLE_SPEED;
+      m_totalTimeElapsed += s_deltaTime * DAY_CYCLE_SPEED_3D;
 
     PVector lightDir = new PVector(cos(m_totalTimeElapsed), 0, sin(m_totalTimeElapsed));
     m_earthShader.set("lightDir", lightDir);
     // m_earthShader.set("mousePos", (float)mouseX / (float)width, (float)mouseY / (float)height);
     m_rotationYModified = m_earthRotation.y + m_totalTimeElapsed;
 
-    if (!DEBUG_3D_FAST_LOADING)
+    if (!DEBUG_FAST_LOADING_3D)
       m_sunShader.set("texTranslation", 0, m_totalTimeElapsed * 0.5f);
 
     s_3D.beginDraw();
@@ -127,7 +129,7 @@ class FlightMap3D extends Widget implements IDraggable {
     s_3D.resetShader();
     s_3D.popMatrix();
 
-    if (!DEBUG_3D_FAST_LOADING) {
+    if (!DEBUG_FAST_LOADING_3D) {
       PVector sunTranslation = lightDir.copy().mult(-3000);
       s_3D.shader(m_sunShader);
       s_3D.textureWrap(REPEAT);
@@ -148,10 +150,10 @@ class FlightMap3D extends Widget implements IDraggable {
     if (m_textEnabled)
       drawMarkerText();
 
-    if (DITHER_MODE && !DEBUG_3D_FAST_LOADING)
+    if (DITHER_MODE_3D && !DEBUG_FAST_LOADING_3D)
       s_3D.filter(m_postProcessingShader);
 
-    if (!DEBUG_3D_FAST_LOADING) {
+    if (!DEBUG_FAST_LOADING_3D) {
       s_3D.pushMatrix();
       s_3D.shader(m_skyboxShader);
 
@@ -169,7 +171,7 @@ class FlightMap3D extends Widget implements IDraggable {
   }
 
   void drawMarkersAndConnections() {
-    s_3D.strokeWeight(ARC_SIZE);
+    s_3D.strokeWeight(ARC_SIZE_3D);
     s_3D.noFill();
 
     s_3D.pushMatrix();
@@ -222,7 +224,7 @@ class FlightMap3D extends Widget implements IDraggable {
 
   private void onDraggedHandler(MouseDraggedEventInfoType e) {
     PVector deltaDrag = new PVector( -(e.Y - e.PreviousPos.y) * 2, e.X - e.PreviousPos.x);
-    deltaDrag.mult(s_deltaTime).mult(VERTICAL_DRAG_SPEED);
+    deltaDrag.mult(s_deltaTime).mult(VERTICAL_DRAG_SPEED_3D);
     m_earthRotationalVelocity.add(deltaDrag);
   }
 
@@ -234,14 +236,12 @@ class FlightMap3D extends Widget implements IDraggable {
   }
 
   private PVector coordsToPoint(double latitude, double longitude) {
-    float radius = EARTH_SPHERE_SIZE;
-
     float radLat = radians((float)latitude);
     float radLong = radians((float)(longitude+180));
 
-    float x = radius * cos(radLat) * cos(radLong);
-    float y = radius * -sin(radLat);
-    float z = radius * cos(radLat) * sin(radLong);
+    float x = m_earthRadius * cos(radLat) * cos(radLong);
+    float y = m_earthRadius * -sin(radLat);
+    float z = m_earthRadius * cos(radLat) * sin(radLong);
 
     return new PVector(x, y, z);
   }
@@ -273,13 +273,13 @@ class FlightMap3D extends Widget implements IDraggable {
     float distance = p1.dist(p2);
     float distMult = lerp(0.1f, 1.0f, distance / 700);
     ArrayList<PVector> cacheResult = new ArrayList<PVector>();
-    cacheResult.ensureCapacity(ARC_SEGMENTS+1);
+    cacheResult.ensureCapacity(ARC_SEGMENTS_3D+1);
     cacheResult.add(p1);
 
-    for (int i = 1; i < ARC_SEGMENTS; i++) {
-      float t = i / (float)ARC_SEGMENTS;
-      float bonusHeight = distMult * ARC_HEIGHT_MULT * t * (1-t) + 1;
-      PVector pointOnArc = slerp(p1, p2, t).mult(EARTH_SPHERE_SIZE * bonusHeight);
+    for (int i = 1; i < ARC_SEGMENTS_3D; i++) {
+      float t = i / (float)ARC_SEGMENTS_3D;
+      float bonusHeight = distMult * ARC_HEIGHT_MULT_3D * t * (1-t) + 1;
+      PVector pointOnArc = slerp(p1, p2, t).mult(m_earthRadius * bonusHeight);
       cacheResult.add(pointOnArc);
     }
 
@@ -317,16 +317,15 @@ class FlightMap3D extends Widget implements IDraggable {
     int count = flights.length;
 
     for (int i = 0; i < count; i++) {
+      
       if (DEBUG_MODE && DEBUG_PRINT_3D_LOADING) {
         println(flights[i].AirportOriginIndex + " " + flights[i].AirportDestIndex);
         println(flights[i].CarrierCodeIndex + " " + flights[i].FlightNumber);
         println("Flight " + i + " / " + flights.length);
       }
 
-      String originCode = queries.getCode(flights[i].AirportOriginIndex);
-      println("Origin: " + originCode);
+      String originCode = queries.getCode(flights[i].AirportOriginIndex);      
       String destCode = queries.getCode(flights[i].AirportDestIndex);
-      println("Dest: " + destCode);
       AirportPoint3DType origin, dest;
 
       if (!m_airportHashmap.containsKey(originCode)) {
@@ -383,3 +382,4 @@ class FlightMap3D extends Widget implements IDraggable {
 // F. Wright, Implemented "Lock" checkbox, 12pm 13/03/24
 // F. Wright, Improved time locking options, more progress on normal mapping, 9pm 13/03/24
 // F. Wright, Finally got normal mapping working! Had to go deep into github repos and tiny forums for that one, 11am 14/03/24
+// F. Wright, Changed earth size to depend on screen size, 10am 15/03/24

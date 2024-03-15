@@ -55,7 +55,6 @@ class QueryManagerClass {
   }
 
   public void queryFlights(FlightType[] flightsList, FlightQuery flightQuery, int queryValue, int threadCount, Consumer<FlightType[]> onTaskComplete) {
-    println("+Query Start");
     if (m_working) {
       println("Warning: m_working is true, queryFlights did not process correctly");
       return;
@@ -66,7 +65,6 @@ class QueryManagerClass {
       FlightType[] newFlightsList = queryFlightsAysnc(flightsList, flightQuery, queryValue, threadCount);
       s_DebugProfiler.printTimeTakenMillis("queryFlights");
 
-      println("+Query Lambda Call");
       m_working = false;
       onTaskComplete.accept(newFlightsList);
     }
@@ -85,22 +83,18 @@ class QueryManagerClass {
     }
     int chunkSize = flightsList.length / threadCount;
     ArrayList<FlightType[]> listOfFlightsLists = new ArrayList<>();
-    println("+Starting Query Chunks");
 
     for (int i = 0; i < threadCount; i++) {
       int startPosition = i * chunkSize;
       long endPosition = (i == threadCount - 1) ? flightsList.length : (i + 1) * chunkSize;
 
       executor.submit(() -> {
-        println("+Query Executor Start");
         listOfFlightsLists.add(processQueryFlightsChunk(Arrays.copyOfRange(flightsList, startPosition, (int)endPosition), flightQuery, queryValue));
-        println("+Query Executor End");
         latch.countDown();
       }
       );
     }
     try {
-      println("+Waiting for latches to finish");
       latch.await();
     }
     catch (InterruptedException e) {
@@ -113,18 +107,13 @@ class QueryManagerClass {
     println("+Query Executor Shutdown");
     return joinedFlightArray;
   }
-  private FlightType[] processQueryFlightsChunk(FlightType[] flightsList, FlightQuery flightQuery, int queryValue) {
-    println("+Query Chunk Starting Now " + queryValue + " " + flightQuery);
+  private FlightType[] processQueryFlightsChunk(FlightType[] flightsList, FlightQuery flightQuery, int queryValue) {    
     switch(flightQuery.Operator) {
     case EQUAL:
-      println("+EQUAL case found");
 
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) == queryValue)
         .toArray(FlightType[]::new);
-      //return Arrays.stream(flightsList)
-      //.filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) == queryValue)
-      //.toArray(FlightType[]::new);
     case NOT_EQUAL:
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) != queryValue)
@@ -210,7 +199,6 @@ class QueryManagerClass {
       .toArray(FlightType[]::new);
   }
   private int getFlightTypeFieldFromQueryType(FlightType flight, QueryType queryType) {
-    println("+Query " + queryType + " " + flight);
     switch(queryType) {
     case DAY:
       return (int)flight.Day;
