@@ -1,8 +1,3 @@
-import java.util.function.Function;
-import java.util.TreeMap;
-import java.util.Map;
-import java.util.function.Consumer;
-
 class ButtonUI extends Widget implements IClickable {
   private Event<EventInfoType> m_onClickEvent;
   private LabelUI m_label;
@@ -19,9 +14,9 @@ class ButtonUI extends Widget implements IClickable {
     getOnMouseEnterEvent().addHandler(e -> m_highlighted = true);
     getOnMouseExitEvent().addHandler(e -> m_highlighted = false);
   }
-  
+
   @ Override
-  protected void drawOutline() {
+    protected void drawOutline() {
     if (m_drawOutlineEnabled) {
       if (m_highlightOutlineOnEnter && m_highlighted)
         stroke(color(m_highlightedColour));
@@ -32,7 +27,7 @@ class ButtonUI extends Widget implements IClickable {
   }
 
   @ Override
-  public void draw() {
+    public void draw() {
     super.draw();
 
     fill(m_backgroundColour);

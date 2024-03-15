@@ -1,13 +1,11 @@
 // Engine
-final int FRAME_RATE = 60;
+final int FRAME_RATE = 75;
 final int FIXED_FRAME_INCREMENT = 50;
-final int INPUT_ARRAY_LENGTH = 70000;
 final boolean FULLSCREEN_ENABLED = true;
 
 // Data/Files
 final int US_LINE_BYTE_SIZE = 24;
 final int WORLD_LINE_BYTE_SIZE = 6;
-final int NUMBER_OF_FLIGHT_FULL_LINES = 638995;
 final String DATA_DIRECTOR_PATH = "/data/Preprocessed Data/";
 
 // Debug Options
@@ -52,40 +50,30 @@ final PVector UP_VECTOR = new PVector(0, 1, 0);
 final PVector RIGHT_VECTOR = new PVector(1, 0, 0);
 final PVector FORWARD_VECTOR = new PVector(0, 0, 1);
 
-// 2D Flight Map
-final int NORTHERN_LOWER_48 = 50;
-final int SOUTHERN_LOWER_48 = 24;
-final int EASTERN_LOWER_48 = -66;
-final int WESTERN_LOWER_48 = -125;
-final int NORTHERN_ALL_50 = 72;
-final int SOUTHERN_ALL_50 = -14;
-final int EASTERN_ALL_50 = -64;
-final int WESTERN_ALL_50 = 144;
-final int WESTERN_ALL_50_ALT = 216;
-
 // 3D Flight Map
-final boolean DEBUG_3D_FAST_LOADING = false;
-final int EARTH_Z = -20;
-final int EARTH_SPHERE_SIZE = 400;
-final float DAY_CYCLE_SPEED = 0.00005f;
-final float VERTICAL_SCROLL_LIMIT = 0.6f;
-final float VERTICAL_DRAG_SPEED = 0.000003f;
-final int ARC_SEGMENTS = DEBUG_3D_FAST_LOADING ? 6 : 15;
-final float ARC_HEIGHT_MULT = 0.5f;
-final int ARC_SIZE = 1;
-final float MARKER_SIZE = 1f;
+final boolean DEBUG_FAST_LOADING_3D = false;
+final int EARTH_Z_3D = -20;
+final float DAY_CYCLE_SPEED_3D = 0.00005f;
+final float VERTICAL_SCROLL_LIMIT_3D = 0.9f;
+final float VERTICAL_DRAG_SPEED_3D = 0.000003f;
+final float EARTH_FRICTION_3D = 0.99f;
+final float ARC_HEIGHT_MULT_3D = 0.5f;
+final int ARC_SIZE_3D = 1;
+final float MARKER_SIZE_3D = 1f;
 final int TEXT_SIZE_3D = 12;
-final PVector TEXT_DISPLACEMENT_3D = new PVector(0, 10, 10); 
-final boolean DITHER_MODE = false;
-final int MAX_DATA_LOADED = 700000;
+final PVector TEXT_DISPLACEMENT_3D = new PVector(0, 10, 10);
+final boolean DITHER_MODE_3D = false;
+final float MOUSE_SCROLL_STRENGTH_3D = 15;
 
 // Descending code authorship changes:
 // F. Wright, Set up constants for the Engine and Debug, 8pm 23/02/24
 // F. Wright, Added InputClass related constants such as INPUT_ARRAY_LENGTH, 9pm 23/02/24
 // F. Wright, Moved some default colour constants from classes to Constants tab, 6pm 04/03/24
 // F. Wright, Created time related math constants for conversions, 2pm 06/03/24
-// F. Wright, Added a lot of 3D flight map related constants, 2pm 09/03/24 
+// F. Wright, Added a lot of 3D flight map related constants, 2pm 09/03/24
 // CKM, Updated dataset constants, 23:00 11/03
 // CKM, Added datasets for 2D map, 00:00 12/03
 // CKM, Updated 3D dataset constants, 10:00 13/03
 // M. Orlowski, Added Screen ID for 2D map, 11:00 13/03
+// CKM, slimmed down unessecary constants to prevent issues like earlier 00:00 15/03
+// F. Wright, Added more 3D constants and changed their names to have suffix "_3D", 10am 15/03/24

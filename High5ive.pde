@@ -1,17 +1,23 @@
 import java.util.*;
+import java.nio.*;
+import java.io.*;
+import java.util.concurrent.*;
+import java.util.function.Function;
+import java.util.function.Consumer;
+import java.nio.channels.FileChannel;
+import java.util.concurrent.atomic.AtomicInteger;
 
 ApplicationClass s_ApplicationClass = new ApplicationClass();
-//InputClass s_InputClass = new InputClass();
 DebugProfilerClass s_DebugProfiler = new DebugProfilerClass();
 PGraphics s_3D;
 int s_deltaTime;
 
-void setup() {  
+void setup() {
   fullScreen(P2D, SPAN);
 
   s_DebugProfiler.startProfileTimer();
-  
-  surface.setTitle("Flight Thing");
+
+  surface.setTitle("High5ive Flight Sim - 2024 v3.5.2b LTS");
   surface.setResizable(!FULLSCREEN_ENABLED);
   surface.setLocation(0, 0);
 
@@ -71,6 +77,7 @@ void resizeWindow(int w, int h) {
 // F. Wright, Made mouse related functions for use in ApplicationClass and Widgets. Set up window resizing, 6pm 04/03/24
 // F. Wright, Modified and simplified UI code to fit coding standard. Combined all UI elements into the UI tab, 6pm 04/03/24
 // F. Wright, Used symbolic linking to allow us to put all UI pde files into subfolder, 11pm 05/03/24
-// M. Poole, Modified to add to add mouseWheel(), 1pm 12/3/24 
+// M. Poole, Modified to add to add mouseWheel(), 1pm 12/3/24
 // CKM, implemented working fullscreen 15:00 12/03
 // CKM, commented out deprecated input class 16:00 12/03
+// CKM, moved all imported libraries into main 00:00 15/03

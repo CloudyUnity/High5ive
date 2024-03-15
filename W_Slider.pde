@@ -1,8 +1,3 @@
-import java.util.function.Function;
-import java.util.TreeMap;
-import java.util.Map;
-import java.util.function.Consumer;
-
 // CKM : Proposed for Deprecation
 
 class SliderUI extends Widget implements IDraggable, IClickable {
@@ -34,13 +29,13 @@ class SliderUI extends Widget implements IDraggable, IClickable {
   @ Override
     public void draw() {
     super.draw();
-    
+
     fill(color(m_backgroundColour));
     rect(m_pos.x, m_pos.y + m_labelSpace, m_scale.x, m_scale.y - m_labelSpace);
-    
+
     fill(color(m_filledColour));
     rect(m_pos.x, m_pos.y + m_labelSpace, (int)(m_scale.x * ((m_value - m_min) / (m_max - m_min))), m_scale.y - m_labelSpace);
-    
+
     m_label.draw();
   }
 
@@ -63,18 +58,18 @@ class SliderUI extends Widget implements IDraggable, IClickable {
   private void onDraggedHandler(MouseDraggedEventInfoType e) {
     double percentAcross = clamp((double)(e.X - m_pos.x) / (double)(m_scale.x), 0.0, 1.0);
     double unrounded = ((double)m_min + percentAcross * (double)(m_max - m_min));
-    
+
     m_value = m_interval * (Math.round(unrounded/m_interval));
-    
+
     m_label.setText(String.format("Value: %.2f", m_value));
   }
 
   private void onClickHandler(EventInfoType e) {
     double percentAcross = clamp((double)(e.X - m_pos.x) / (double)(m_scale.x), 0.0, 1.0);
     double unrounded = ((double)m_min + percentAcross * (double)(m_max - m_min));
-    
+
     m_value = m_interval * (Math.round(unrounded/m_interval));
-    
+
     m_label.setText(String.format("Value: %.2f", m_value));
   }
 
