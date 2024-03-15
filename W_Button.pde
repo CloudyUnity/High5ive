@@ -8,8 +8,10 @@ class ButtonUI extends Widget implements IClickable {
   public ButtonUI(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
     m_onClickEvent = new Event<EventInfoType>();
-    m_label = new LabelUI(posX, posY, scaleX, scaleY, null);
+    m_label = new LabelUI(0, 0, 1, 1, null);
     m_label.setCentreAligned(true);
+    m_label.setParent(this);
+    
     m_highlightOutlineOnEnter = true;
     getOnMouseEnterEvent().addHandler(e -> m_highlighted = true);
     getOnMouseExitEvent().addHandler(e -> m_highlighted = false);

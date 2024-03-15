@@ -238,8 +238,6 @@ class TwoDMapScreen extends Screen {
     m_flightMap = new FlightMap2DUI(100, 0, 100, 100);
     addWidget(m_flightMap);
 
-
-
     ButtonUI uiBackground = createButton(0, -1, 200, (displayHeight));
     uiBackground.setHighlightOutlineOnEnter(false);
     uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
@@ -262,14 +260,12 @@ class TwoDMapScreen extends Screen {
 class ScreenFlightMap extends Screen {
   FlightMap3D m_flightMap3D;
   QueryManagerClass m_queryManager;
+  EmptyWidgetUI m_flightMapUIParent;
 
   public ScreenFlightMap(int scaleX, int scaleY, String screenId, QueryManagerClass query) {
     super(scaleX, scaleY, screenId, color(0, 0, 0, 255));
 
     m_queryManager = query;
-
-    int currentUIPosY = 60;
-    int textSize = 20;
 
     int dragWindowX = width - 400;
     int dragWindowY = height;
@@ -277,12 +273,16 @@ class ScreenFlightMap extends Screen {
     addWidget(m_flightMap3D);
 
     // ATTENTION MATTHEW, SEE HERE!
-    UserQueryUI userQueryUI = new UserQueryUI(0, 60, 200, height, query);
+    UserQueryUI userQueryUI = new UserQueryUI(0, 60, 1, 1, query);
     addWidget(userQueryUI);
     userQueryUI.setOnLoadHandler(flights -> {
       m_flightMap3D.loadFlights(flights, query);
     }
     );
+
+    m_flightMapUIParent = new EmptyWidgetUI(0, 0);
+    int currentUIPosY = 60;
+    int textSize = 20;
 
     ButtonUI uiBackground = createButton(0, 0, 200, 00);
     uiBackground.setHighlightOutlineOnEnter(false);
@@ -294,6 +294,7 @@ class ScreenFlightMap extends Screen {
     returnBttn.setText("Return");
     returnBttn.setTextSize(textSize);
     returnBttn.getLabel().setCentreAligned(true);
+    returnBttn.setParent(m_flightMapUIParent);
 
     currentUIPosY += 60;
 
@@ -304,6 +305,8 @@ class ScreenFlightMap extends Screen {
     dayNightCB.setTextSize(textSize);
     dayNightCB.getLabel().setCentreAligned(true);
     dayNightCB.getLabel().setScale(130, 50);
+    dayNightCB.getLabel().setParent(m_flightMapUIParent);
+    dayNightCB.setParent(m_flightMapUIParent);
 
     currentUIPosY += 60;
 
@@ -315,6 +318,8 @@ class ScreenFlightMap extends Screen {
     connectionsEnabledCB.setTextSize(textSize);
     connectionsEnabledCB.getLabel().setCentreAligned(true);
     connectionsEnabledCB.getLabel().setScale(130, 50);
+    connectionsEnabledCB.getLabel().setParent(m_flightMapUIParent);
+    connectionsEnabledCB.setParent(m_flightMapUIParent);
 
     currentUIPosY += 60;
 
@@ -326,6 +331,8 @@ class ScreenFlightMap extends Screen {
     markersEnabledCB.setTextSize(textSize);
     markersEnabledCB.getLabel().setCentreAligned(true);
     markersEnabledCB.getLabel().setScale(130, 50);
+    markersEnabledCB.getLabel().setParent(m_flightMapUIParent);
+    markersEnabledCB.setParent(m_flightMapUIParent);
 
     currentUIPosY += 60;
 
@@ -337,6 +344,8 @@ class ScreenFlightMap extends Screen {
     airportTextCB.setTextSize(textSize);
     airportTextCB.getLabel().setCentreAligned(true);
     airportTextCB.getLabel().setScale(130, 50);
+    airportTextCB.getLabel().setParent(m_flightMapUIParent);
+    airportTextCB.setParent(m_flightMapUIParent);
 
     currentUIPosY += 60;
 
@@ -348,6 +357,8 @@ class ScreenFlightMap extends Screen {
     lockTimeCB.setTextSize(textSize);
     lockTimeCB.getLabel().setCentreAligned(true);
     lockTimeCB.getLabel().setScale(130, 50);
+    lockTimeCB.getLabel().setParent(m_flightMapUIParent);
+    lockTimeCB.setParent(m_flightMapUIParent);
 
     currentUIPosY += 60;
 
@@ -357,100 +368,113 @@ class ScreenFlightMap extends Screen {
     resetArcGrow.setText("Reset Arcs");
     resetArcGrow.setTextSize(textSize);
     resetArcGrow.getLabel().setCentreAligned(true);
+    resetArcGrow.setParent(m_flightMapUIParent);
 
     currentUIPosY += 60;
-    
+
     SliderUI dayCycleSlider = createSlider(20, currentUIPosY, 160, 50, 0.00005f, 0.005f, 0.00001f);
     dayCycleSlider.getOnDraggedEvent().addHandler(e -> m_flightMap3D.setDayCycleSpeed((float)dayCycleSlider.getValue()));
+    dayCycleSlider.setParent(m_flightMapUIParent);
+
     LabelUI sliderLabel = createLabel(20, currentUIPosY, 160, 50, "Time Speed");
     sliderLabel.setTextSize(15);
     sliderLabel.setCentreAligned(true);
-    
+    sliderLabel.setParent(m_flightMapUIParent);
+
     currentUIPosY += 60;
 
     LabelUI label = createLabel(20, 10, 150, 40, "3D Flight Map");
     label.setForegroundColour(color(255, 255, 255, 255));
     label.setTextSize(30);
+    label.setParent(m_flightMapUIParent);   
 
     /* TextboxUI airportOriginSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-    airportOriginSearch.setPlaceholderText("Origin");
-    addWidget(airportOriginSearch);
-
-    currentUIPosY += 40;
-
-    TextboxUI airportDestSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-    airportDestSearch.setPlaceholderText("Origin");
-    addWidget(airportDestSearch);
-
-    currentUIPosY += 40;
-
-    TextboxUI airlineSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-    airlineSearch.setPlaceholderText("Origin");
-    addWidget(airlineSearch);
-
-    currentUIPosY += 40;
-
-    TextboxUI DateSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-    DateSearch.setPlaceholderText("Origin");
-    addWidget(DateSearch);
-
-    currentUIPosY += 40;
-
-    TextboxUI DepartBeforeSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-    DepartBeforeSearch.setPlaceholderText("Origin");
-    addWidget(DepartBeforeSearch);
-
-    currentUIPosY += 40;
-
-    TextboxUI DepartAfterSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-    DepartAfterSearch.setPlaceholderText("Origin");
-    addWidget(DepartAfterSearch);
-
-    currentUIPosY += 40;
-
-    TextboxUI DistanceAboveSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-    DistanceAboveSearch.setPlaceholderText("Origin");
-    addWidget(DistanceAboveSearch);
-
-    currentUIPosY += 40;
-
-    TextboxUI DepartDelayUnderSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-    DepartDelayUnderSearch.setPlaceholderText("Origin");
-    addWidget(DepartDelayUnderSearch);
-
-    currentUIPosY += 40;
-
-    TextboxUI DepartDelayOverSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-    DepartDelayOverSearch.setPlaceholderText("Origin");
-    addWidget(DepartDelayOverSearch);
-
-    currentUIPosY += 40;
-
-    TextboxUI ArriveBeforeSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-    ArriveBeforeSearch.setPlaceholderText("Origin");
-    addWidget(ArriveBeforeSearch );
-
-    currentUIPosY += 40;
-
-    TextboxUI ArriveAfterSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-    ArriveAfterSearch.setPlaceholderText("Origin");
-    addWidget(ArriveAfterSearch);
-
-    currentUIPosY += 40;
-
-    TextboxUI ArrivalDelayUnderSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-    ArrivalDelayUnderSearch.setPlaceholderText("Origin");
-    addWidget(ArrivalDelayUnderSearch);
-
-    currentUIPosY += 40;
-
-    TextboxUI ArrivalDelayOverSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-    ArrivalDelayOverSearch.setPlaceholderText("Origin");
-    addWidget(ArrivalDelayOverSearch);*/   
+     airportOriginSearch.setPlaceholderText("Origin");
+     addWidget(airportOriginSearch);
+     
+     currentUIPosY += 40;
+     
+     TextboxUI airportDestSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+     airportDestSearch.setPlaceholderText("Origin");
+     addWidget(airportDestSearch);
+     
+     currentUIPosY += 40;
+     
+     TextboxUI airlineSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+     airlineSearch.setPlaceholderText("Origin");
+     addWidget(airlineSearch);
+     
+     currentUIPosY += 40;
+     
+     TextboxUI DateSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+     DateSearch.setPlaceholderText("Origin");
+     addWidget(DateSearch);
+     
+     currentUIPosY += 40;
+     
+     TextboxUI DepartBeforeSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+     DepartBeforeSearch.setPlaceholderText("Origin");
+     addWidget(DepartBeforeSearch);
+     
+     currentUIPosY += 40;
+     
+     TextboxUI DepartAfterSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+     DepartAfterSearch.setPlaceholderText("Origin");
+     addWidget(DepartAfterSearch);
+     
+     currentUIPosY += 40;
+     
+     TextboxUI DistanceAboveSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+     DistanceAboveSearch.setPlaceholderText("Origin");
+     addWidget(DistanceAboveSearch);
+     
+     currentUIPosY += 40;
+     
+     TextboxUI DepartDelayUnderSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+     DepartDelayUnderSearch.setPlaceholderText("Origin");
+     addWidget(DepartDelayUnderSearch);
+     
+     currentUIPosY += 40;
+     
+     TextboxUI DepartDelayOverSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+     DepartDelayOverSearch.setPlaceholderText("Origin");
+     addWidget(DepartDelayOverSearch);
+     
+     currentUIPosY += 40;
+     
+     TextboxUI ArriveBeforeSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+     ArriveBeforeSearch.setPlaceholderText("Origin");
+     addWidget(ArriveBeforeSearch );
+     
+     currentUIPosY += 40;
+     
+     TextboxUI ArriveAfterSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+     ArriveAfterSearch.setPlaceholderText("Origin");
+     addWidget(ArriveAfterSearch);
+     
+     currentUIPosY += 40;
+     
+     TextboxUI ArrivalDelayUnderSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+     ArrivalDelayUnderSearch.setPlaceholderText("Origin");
+     addWidget(ArrivalDelayUnderSearch);
+     
+     currentUIPosY += 40;
+     
+     TextboxUI ArrivalDelayOverSearch = new TextboxUI(20, currentUIPosY, 160, 30);
+     ArrivalDelayOverSearch.setPlaceholderText("Origin");
+     addWidget(ArrivalDelayOverSearch);*/
   }
 
   public void startLoadingData(FlightType[] flights) {
     m_flightMap3D.loadFlights(flights, m_queryManager);
+  }
+  
+  @Override
+  public void draw(){
+    super.draw();
+    
+    // Use this to test widget parenting. See how all the UI elements belonging to m_flightMapUIParent now use relative positions and scales to its position
+    // m_flightMapUIParent.setPos(mouseX, 0); 
   }
 }
 
