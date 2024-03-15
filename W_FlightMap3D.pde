@@ -1,6 +1,7 @@
-class FlightMap3D extends Widget implements IDraggable {
+class FlightMap3D extends Widget implements IDraggable, IWheelInput {
 
   private Event<MouseDraggedEventInfoType> m_onDraggedEvent = new Event<MouseDraggedEventInfoType>();
+  private Event<MouseWheelEventInfoType> m_onWheelEvent = new Event<MouseWheelEventInfoType>();
 
   private PShape m_earthModel, m_sunModel, m_skySphere;
   private PImage m_earthDayTex, m_earthNightTex, m_sunTex;
@@ -10,7 +11,7 @@ class FlightMap3D extends Widget implements IDraggable {
 
   private PVector m_earthRotation = new PVector(0, 0, 0);
   private PVector m_earthRotationalVelocity = new PVector(0, 0, 0);
-  private final float m_earthRotationalFriction = 0.99;
+  private float m_zoomLevel = 1.0f;
 
   private float m_arcFraction = 1.0f;
   private float m_arcGrowMillis = 1.0f;
@@ -80,6 +81,7 @@ class FlightMap3D extends Widget implements IDraggable {
     m_earthPos = new PVector(width * 0.5f + posX, height * 0.5f + posY, EARTH_Z_3D);
 
     m_onDraggedEvent.addHandler(e -> onDraggedHandler(e));
+    m_onWheelEvent.addHandler(e -> onWheelHandler(e));
   }
 
   @ Override
@@ -87,7 +89,7 @@ class FlightMap3D extends Widget implements IDraggable {
     super.draw();
 
     m_earthRotation.add(m_earthRotationalVelocity);
-    m_earthRotationalVelocity.mult(m_earthRotationalFriction);
+    m_earthRotationalVelocity.mult(EARTH_FRICTION_3D);
     m_earthRotation.x = clamp(m_earthRotation.x, -VERTICAL_SCROLL_LIMIT_3D, VERTICAL_SCROLL_LIMIT_3D);
     m_arcFraction = (millis() - m_arcStartGrowMillis) / m_arcGrowMillis;
 
@@ -109,6 +111,7 @@ class FlightMap3D extends Widget implements IDraggable {
     m_earthShader.set("lightDir", lightDir);
     // m_earthShader.set("mousePos", (float)mouseX / (float)width, (float)mouseY / (float)height);
     m_rotationYModified = m_earthRotation.y + m_totalTimeElapsed;
+    m_earthPos.z = EARTH_Z_3D + m_zoomLevel;
 
     if (!DEBUG_FAST_LOADING_3D)
       m_sunShader.set("texTranslation", 0, m_totalTimeElapsed * 0.5f);
@@ -239,6 +242,15 @@ class FlightMap3D extends Widget implements IDraggable {
     PVector deltaDrag = new PVector( -(e.Y - e.PreviousPos.y) * 2, e.X - e.PreviousPos.x);
     deltaDrag.mult(s_deltaTime).mult(VERTICAL_DRAG_SPEED_3D);
     m_earthRotationalVelocity.add(deltaDrag);
+  }
+
+  public Event<MouseWheelEventInfoType> getOnMouseWheelEvent() {
+    return m_onWheelEvent;
+  }
+
+  private void onWheelHandler(MouseWheelEventInfoType e) {
+    m_zoomLevel -= e.wheelCount * MOUSE_SCROLL_STRENGTH_3D;
+    m_zoomLevel = clamp(m_zoomLevel, -500, 350);
   }
 
   private AirportPoint3DType manualAddPoint(double latitude, double longitude, String code) {
@@ -402,7 +414,8 @@ class FlightMap3D extends Widget implements IDraggable {
 // F. Wright, Skybox, shaders, fullscreen, UI, buttons, sun, connections, loading in data, etc, etc
 // CKM, made minor edits to neaten up code 16:00 12/03
 // CKM, inital no spin setup 11:00 13/03
-// F. Wright, Implemented "Lock" checkbox, 12pm 13/03/24
+// F. Wright, Implemented "Lock time" checkbox, 12pm 13/03/24
 // F. Wright, Improved time locking options, more progress on normal mapping, 9pm 13/03/24
 // F. Wright, Finally got normal mapping working! Had to go deep into github repos and tiny forums for that one, 11am 14/03/24
 // F. Wright, Changed earth size to depend on screen size, 10am 15/03/24
+// F. Wright, Implemented zooming and improved performance, 12pm 15/03/24

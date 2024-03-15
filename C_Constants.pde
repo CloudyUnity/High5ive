@@ -54,14 +54,16 @@ final PVector FORWARD_VECTOR = new PVector(0, 0, 1);
 final boolean DEBUG_FAST_LOADING_3D = false;
 final int EARTH_Z_3D = -20;
 final float DAY_CYCLE_SPEED_3D = 0.00005f;
-final float VERTICAL_SCROLL_LIMIT_3D = 0.6f;
+final float VERTICAL_SCROLL_LIMIT_3D = 0.9f;
 final float VERTICAL_DRAG_SPEED_3D = 0.000003f;
+final float EARTH_FRICTION_3D = 0.99f;
 final float ARC_HEIGHT_MULT_3D = 0.5f;
 final int ARC_SIZE_3D = 1;
 final float MARKER_SIZE_3D = 1f;
 final int TEXT_SIZE_3D = 12;
 final PVector TEXT_DISPLACEMENT_3D = new PVector(0, 10, 10);
 final boolean DITHER_MODE_3D = false;
+final float MOUSE_SCROLL_STRENGTH_3D = 15;
 
 // Descending code authorship changes:
 // F. Wright, Set up constants for the Engine and Debug, 8pm 23/02/24
