@@ -26,6 +26,7 @@ class FlightMap3D extends Widget implements IDraggable {
 
   private float m_rotationYModified = 0;
   private float m_totalTimeElapsed = 0;
+  private int m_arcSegments = DEBUG_FAST_LOADING_3D ? 6 : 4;
 
   private HashMap<String, AirportPoint3DType> m_airportHashmap = new HashMap<String, AirportPoint3DType>();
 
@@ -37,7 +38,7 @@ class FlightMap3D extends Widget implements IDraggable {
     m_starsTex = loadImage("data/Images/Stars2k.jpg");
     m_earthRadius = height * 0.38f;
 
-    new Thread(() -> {      
+    new Thread(() -> {
       m_earthModel = s_3D.createShape(SPHERE, m_earthRadius);
       m_earthModel.disableStyle();
       m_earthDayTex = loadImage("data/Images/EarthDay2k.jpg");
@@ -273,11 +274,11 @@ class FlightMap3D extends Widget implements IDraggable {
     float distance = p1.dist(p2);
     float distMult = lerp(0.1f, 1.0f, distance / 700);
     ArrayList<PVector> cacheResult = new ArrayList<PVector>();
-    cacheResult.ensureCapacity(ARC_SEGMENTS_3D+1);
+    cacheResult.ensureCapacity(m_arcSegments  + 1);
     cacheResult.add(p1);
 
-    for (int i = 1; i < ARC_SEGMENTS_3D; i++) {
-      float t = i / (float)ARC_SEGMENTS_3D;
+    for (int i = 1; i < m_arcSegments; i++) {
+      float t = i / (float)m_arcSegments;
       float bonusHeight = distMult * ARC_HEIGHT_MULT_3D * t * (1-t) + 1;
       PVector pointOnArc = slerp(p1, p2, t).mult(m_earthRadius * bonusHeight);
       cacheResult.add(pointOnArc);
@@ -316,15 +317,24 @@ class FlightMap3D extends Widget implements IDraggable {
     m_flightDataLoaded = false;
     int count = flights.length;
 
+    if (DEBUG_FAST_LOADING_3D)
+      m_arcSegments = 5;
+    else if (count <= 6_000)
+      m_arcSegments = 15;
+    else if (count <= 12_000)
+      m_arcSegments = 10;
+    else
+      m_arcSegments = 4;
+
     for (int i = 0; i < count; i++) {
-      
+
       if (DEBUG_MODE && DEBUG_PRINT_3D_LOADING) {
         println(flights[i].AirportOriginIndex + " " + flights[i].AirportDestIndex);
         println(flights[i].CarrierCodeIndex + " " + flights[i].FlightNumber);
         println("Flight " + i + " / " + flights.length);
       }
 
-      String originCode = queries.getCode(flights[i].AirportOriginIndex);      
+      String originCode = queries.getCode(flights[i].AirportOriginIndex);
       String destCode = queries.getCode(flights[i].AirportDestIndex);
       AirportPoint3DType origin, dest;
 
@@ -349,6 +359,7 @@ class FlightMap3D extends Widget implements IDraggable {
       dest.Connections.add(originCode);
       origin.ConnectionArcPoints.add(cacheArcPoints(origin.Pos, dest.Pos));
     }
+
     m_flightDataLoaded = true;
   }
 

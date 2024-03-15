@@ -51,12 +51,11 @@ final PVector RIGHT_VECTOR = new PVector(1, 0, 0);
 final PVector FORWARD_VECTOR = new PVector(0, 0, 1);
 
 // 3D Flight Map
-final boolean DEBUG_FAST_LOADING_3D = true;
+final boolean DEBUG_FAST_LOADING_3D = false;
 final int EARTH_Z_3D = -20;
 final float DAY_CYCLE_SPEED_3D = 0.00005f;
 final float VERTICAL_SCROLL_LIMIT_3D = 0.6f;
 final float VERTICAL_DRAG_SPEED_3D = 0.000003f;
-final int ARC_SEGMENTS_3D = DEBUG_FAST_LOADING_3D ? 6 : 15;
 final float ARC_HEIGHT_MULT_3D = 0.5f;
 final int ARC_SIZE_3D = 1;
 final float MARKER_SIZE_3D = 1f;
