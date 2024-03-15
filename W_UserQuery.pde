@@ -37,27 +37,27 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput, IKeyInput{
 
     m_queryManager = queryManager;
 
-    m_queryList = new ListboxUI<String>(20 + posX, 650 + posY, 200, 400, 40, v -> v);
+    m_queryList = new ListboxUI<String>(20, 650, 200, 400, 40, v -> v);
     m_queries = new ArrayList<String>();
-    m_subWidgets.add(m_queryList); 
+    addWidget(m_queryList); 
     
-    addItemButton = new ButtonUI(20 + posX, 600 + posY, 80, 20);
-    m_subWidgets.add(addItemButton);
+    addItemButton = new ButtonUI(20, 600, 80, 20);
+    addWidget(addItemButton);
     addItemButton.setText("Add item");
     addItemButton.getOnClickEvent().addHandler(e -> saveQuery(m_day));
         
-    clearListButton = new ButtonUI(120 + posX, 600 + posY, 80, 20);
-    m_subWidgets.add(clearListButton);
+    clearListButton = new ButtonUI(120, 600, 80, 20);
+    addWidget(clearListButton);
     clearListButton.setText("Clear");
     clearListButton.getOnClickEvent().addHandler(e -> clearListOnClick());
 
-    removeSelectedButton = new ButtonUI(220 + posX, 600 + posY, 80, 20);
-    m_subWidgets.add(removeSelectedButton);
+    removeSelectedButton = new ButtonUI(220, 600, 80, 20);
+    addWidget(removeSelectedButton);
     removeSelectedButton.setText("Remove selected");
     removeSelectedButton.getOnClickEvent().addHandler(e -> m_queryList.removeSelected());
 
-    m_day =  new TextboxUI(20 + posX, 500 + posY, 160, 30);
-    m_subWidgets.add(m_day);
+    m_day =  new TextboxUI(20, 500, 160, 30);
+    addWidget(m_day);
     m_day.setPlaceholderText("Day");
     
 
@@ -97,6 +97,11 @@ class UserQueryUI extends Widget implements IClickable, IWheelInput, IKeyInput{
   }
 
   private void changeDataToWorld() {
+  }
+  
+  private void addWidget(Widget widget){
+    m_subWidgets.add(widget);
+    widget.setParent(this);
   }
 
   @Override
