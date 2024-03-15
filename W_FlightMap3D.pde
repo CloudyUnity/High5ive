@@ -113,6 +113,29 @@ class FlightMap3D extends Widget implements IDraggable {
     if (!DEBUG_FAST_LOADING_3D)
       m_sunShader.set("texTranslation", 0, m_totalTimeElapsed * 0.5f);
 
+    drawEarth();
+
+    if (!DEBUG_FAST_LOADING_3D) {
+      drawSun(lightDir);
+    }
+
+    drawMarkersAndConnections();
+    if (m_textEnabled)
+      drawMarkerText();
+
+    if (DITHER_MODE_3D && !DEBUG_FAST_LOADING_3D)
+      s_3D.filter(m_postProcessingShader);
+
+    if (!DEBUG_FAST_LOADING_3D) {
+      drawSkybox();
+    }
+
+    s_3D.endDraw();
+
+    image(s_3D, 0, 0);
+  }
+
+  void drawEarth() {
     s_3D.beginDraw();
     s_3D.clear();
     s_3D.noStroke();
@@ -129,46 +152,35 @@ class FlightMap3D extends Widget implements IDraggable {
     s_3D.shape(m_earthModel);
     s_3D.resetShader();
     s_3D.popMatrix();
+  }
 
-    if (!DEBUG_FAST_LOADING_3D) {
-      PVector sunTranslation = lightDir.copy().mult(-3000);
-      s_3D.shader(m_sunShader);
-      s_3D.textureWrap(REPEAT);
+  void drawSun(PVector lightDir) {
+    PVector sunTranslation = lightDir.copy().mult(-3000);
+    s_3D.shader(m_sunShader);
+    s_3D.textureWrap(REPEAT);
 
-      s_3D.pushMatrix();
-      s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
-      s_3D.rotateX(m_earthRotation.x);
-      s_3D.rotateY(m_rotationYModified);
-      s_3D.translate(sunTranslation.x, sunTranslation.y, sunTranslation.z);
+    s_3D.pushMatrix();
+    s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
+    s_3D.rotateX(m_earthRotation.x);
+    s_3D.rotateY(m_rotationYModified);
+    s_3D.translate(sunTranslation.x, sunTranslation.y, sunTranslation.z);
 
-      s_3D.shape(m_sunModel);
-      s_3D.popMatrix();
-      s_3D.resetShader();
-      s_3D.textureWrap(CLAMP);
-    }
+    s_3D.shape(m_sunModel);
+    s_3D.popMatrix();
+    s_3D.resetShader();
+    s_3D.textureWrap(CLAMP);
+  }
 
-    drawMarkersAndConnections();
-    if (m_textEnabled)
-      drawMarkerText();
+  void drawSkybox() {
+    s_3D.pushMatrix();
+    s_3D.shader(m_skyboxShader);
 
-    if (DITHER_MODE_3D && !DEBUG_FAST_LOADING_3D)
-      s_3D.filter(m_postProcessingShader);
+    s_3D.rotateX(m_earthRotation.x);
+    s_3D.rotateY(m_earthRotation.y);
 
-    if (!DEBUG_FAST_LOADING_3D) {
-      s_3D.pushMatrix();
-      s_3D.shader(m_skyboxShader);
-
-      s_3D.rotateX(m_earthRotation.x);
-      s_3D.rotateY(m_earthRotation.y);
-
-      s_3D.shape(m_skySphere);
-      s_3D.resetShader();
-      s_3D.popMatrix();
-    }
-
-    s_3D.endDraw();
-
-    image(s_3D, 0, 0);
+    s_3D.shape(m_skySphere);
+    s_3D.resetShader();
+    s_3D.popMatrix();
   }
 
   void drawMarkersAndConnections() {
