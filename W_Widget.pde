@@ -13,7 +13,8 @@ class WidgetGroupType {
 abstract class Widget {
 
   protected PVector m_pos, m_scale;
-  protected final PVector m_basePos, m_baseScale;
+  protected PVector m_basePos, m_baseScale;
+  protected Widget m_parentWidget = null;
 
   protected int m_backgroundColour = DEFAULT_BACKGROUND_COLOUR;
   protected int m_foregroundColour = DEFAULT_FOREGROUND_COLOUR;
@@ -26,6 +27,7 @@ abstract class Widget {
   protected Event<EventInfoType> m_onFocusLostEvent = new Event<EventInfoType>();
 
   private boolean m_growMode = false;
+  private float m_growMult = 1.0f;
   protected boolean m_mouseHovered = false;
   protected boolean m_focused = false;
 
@@ -85,6 +87,10 @@ abstract class Widget {
     return m_scale;
   }
 
+  public void setParent(Widget parent) {
+    m_parentWidget = parent;
+  }
+
   public void setGrowMode(boolean enabled) {
     m_growMode = enabled;
   }
@@ -99,14 +105,16 @@ abstract class Widget {
     if (x < 0 || y < 0)
       throw new IllegalArgumentException("Position cannot be negative.");
 
-    m_pos = new PVector(x, y);
+    m_basePos = new PVector(x, y);
+    m_pos = m_basePos.copy();
   }
 
   public void setPos(PVector newPos) {
     if (newPos.x < 0 || newPos.y < 0)
       throw new IllegalArgumentException("Position cannot be negative.");
 
-    m_pos = newPos;
+    m_basePos = newPos;
+    m_pos = m_basePos.copy();
   }
 
   /**
@@ -119,14 +127,16 @@ abstract class Widget {
     if (w < 0 || h < 0)
       throw new IllegalArgumentException("Scale cannot be negative.");
 
-    m_scale = new PVector(w, h);
+    m_baseScale = new PVector(w, h);
+    m_scale = m_baseScale.copy();
   }
 
   public void setScale(PVector newScale) {
     if (newScale.x < 0 || newScale.y < 0)
       throw new IllegalArgumentException("Scale cannot be negative.");
 
-    m_scale = newScale;
+    m_baseScale = newScale;
+    m_scale = m_baseScale.copy();
   }
 
   public boolean isPositionInside(int mx, int my) {
@@ -145,18 +155,25 @@ abstract class Widget {
   public void draw() {
     drawOutline();
 
+    m_pos = m_basePos.copy();
+    m_scale = m_baseScale.copy();
+
     if (m_growMode) {
-      float mult = 1.1f;
       float lerpSpeed = m_mouseHovered ? 0.2 : 0.1;
-
-      PVector baseScaleCopy = m_baseScale.copy();
-      if (m_mouseHovered)
-        baseScaleCopy.mult(mult);
-
-      m_scale = PVector.lerp(m_scale, baseScaleCopy, lerpSpeed);
+      float targetMult = m_mouseHovered ? WIDGET_GROW_MODE_MULT : 1.0f;
+      m_growMult = lerp(m_growMult, targetMult, lerpSpeed);
+      m_scale.mult(m_growMult);
 
       PVector extension = m_scale.copy().sub(m_baseScale);
       m_pos = m_basePos.copy().sub(extension.mult(0.5));
+    }
+
+    Widget curParent = m_parentWidget;
+    while (curParent != null) {
+      m_pos.add(curParent.m_basePos);
+      m_scale.x *= curParent.m_baseScale.x;
+      m_scale.y *= curParent.m_baseScale.y;
+      curParent = curParent.m_parentWidget;
     }
   }
 
@@ -197,7 +214,14 @@ abstract class Widget {
   }
 }
 
+class EmptyWidgetUI extends Widget {
+  EmptyWidgetUI(int posX, int posY) {
+    super(posX, posY, 1, 1);
+  }
+}
+
 // Descending code authorship changes:
 // A. Robertson, Created widget base class and widget group, 12pm 04/03/24
 // F. Wright, Modified and simplified code to fit coding standard. Combined all Widget related classes/structs into the Widget tab, 6pm 04/03/24
 // F. Wright, Implemented new "grow mode" for any widgets which makes them feel jucier when hovered, 1pm 07/03/24
+// F. Wright, Implemented a widget parenting system, 1pm 15/03/24
