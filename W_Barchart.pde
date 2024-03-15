@@ -1,8 +1,3 @@
-import java.util.function.Function;
-import java.util.TreeMap;
-import java.util.Map;
-import java.util.function.Consumer;
-
 class BarChartUI<T> extends Widget implements IChart<T> {
   private TreeMap<String, Integer> m_map;
   private Integer m_maxValue = null; // Can be null
@@ -24,7 +19,7 @@ class BarChartUI<T> extends Widget implements IChart<T> {
     m_numberTextBoxWidth = m_sidePadding = (int)((double)m_scale.x * 0.1);
     m_foregroundColour = color(#F000CD);
   }
-  
+
   public void addData(T[] data, Function<T, String> getKey) {
     for (var value : data) {
       String k = getKey.apply(value);
@@ -67,7 +62,7 @@ class BarChartUI<T> extends Widget implements IChart<T> {
       if (value > m_maxValue)
         m_maxValue = value;
     }
-    
+
     m_scaleInterval = 1;
     for (int tmp = m_maxValue; tmp > 1; tmp /= 10)
       m_scaleInterval *= 10;
@@ -78,13 +73,13 @@ class BarChartUI<T> extends Widget implements IChart<T> {
     m_maxValue = null;
     m_barWidth = null;
   }
-  
+
   public void setTitle(String title) {
     m_title = title;
   }
 
   @ Override
-  public void draw() {
+    public void draw() {
     super.draw();
     fill(color(m_backgroundColour));
     rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y);
@@ -93,10 +88,10 @@ class BarChartUI<T> extends Widget implements IChart<T> {
 
     textAlign(CENTER, CENTER);
     fill(0);
-    
-    if (m_title != null) 
+
+    if (m_title != null)
       text(m_title, m_pos.x + m_sidePadding, m_pos.y, m_scale.x - m_sidePadding, m_topPadding);
-    
+
     text("0", m_pos.x, m_pos.y + m_scale.y - m_bottomPadding - m_numberTextBoxHeight * 0.5, m_numberTextBoxWidth, m_numberTextBoxHeight);
     for (int i = 1; i <= (m_maxScaleValue / m_scaleInterval); i++) {
       float numberYPos = m_pos.y + m_scale.y - m_bottomPadding - // Align to bottom of bar draw section
@@ -104,12 +99,12 @@ class BarChartUI<T> extends Widget implements IChart<T> {
         - m_numberTextBoxHeight * 0.5; // Make centre of number at the value
       text(((Integer)(i * m_scaleInterval)).toString(), m_pos.x, numberYPos, m_numberTextBoxWidth, m_numberTextBoxHeight);
     }
-    
+
     int i = 0;
     for (Map.Entry<String, Integer> entry : m_map.entrySet()) {
       int barHeight = (int)(((double)entry.getValue() / (double)m_maxScaleValue) * (double)(m_scale.y - m_bottomPadding - m_topPadding));
       int barTop = (int)(m_pos.y + m_scale.y - m_bottomPadding - barHeight);
-      
+
       int valTextYTop = Math.min((int)(m_pos.y + m_scale.y - m_bottomPadding - m_numberTextBoxHeight), barTop); // Write the value of each bar inside it if possible, else just above the bottom
 
       fill(color(m_foregroundColour));

@@ -89,8 +89,6 @@ Inside the project files we have some interesting things to note
 
 - .gitignore
     Contains files that shouldn't be updated, e.g. individual scratch files
-- Docs.md  
-    Hey, that's me!
 - README.md  
     Contains team information, coding standard, information standards, and an approximate responsibility list
 - sketch.properties
@@ -108,9 +106,15 @@ Inside the project files we have some interesting things to note
         Vertex and Fragment scripts run by the GPU to render triangles using matrix math. Unless you're in the 3D turbo team you don't need to understand what I just said. 
 - Deprecated
     Contains unused classes, in case they're needed in future
+    - M_DataPreprocesser
+        Used for converting CSV files en masse, doesn't run with program
     - M_InputClass
         Legacy from when Finn thought it might be a game
+    - Z_DebugFPS
+        Replaced with more accurate native processing function
 - Docs
+    - Docs.md  
+        Hey, that's me! ^-^
     - LICENSE
     Permission to use/copy/whatever our project, required by our data sources
     - Sources.md
@@ -121,12 +125,12 @@ Inside the project files we have some interesting things to note
     List of things to implement for spec/completion
 - Helper Scripts  
     Contains random scripts from other languages generally used for pre-processing data.  
-    - D_CsvModifier.pde  
+    - D_CsvModifier
         Used for editing CSV files en masse
         Has US and World versions
-    - M_DataPreprocesser.pde
-        Used for converting CSV files en masse
-    - write_text_byte_file.zig
+    - D_frScraper
+        Coming soon!
+    - write_text_byte_file
         Generates random data for testing input at an easier scale than 650k flights
  
 

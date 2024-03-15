@@ -16,8 +16,8 @@ class FlightType { // 23 bytes total
   FlightType(
     byte day, short carrierCodeIndex, short flightNumber,
     short airportOriginIndex, short airportDestIndex, short scheduledDepartureTime,
-    short departureTime, short departureDelay, short scheduledArrivalTime, 
-    short arrivalTime, short arrivalDelay, byte cancelledOrDiverted, 
+    short departureTime, short departureDelay, short scheduledArrivalTime,
+    short arrivalTime, short arrivalDelay, byte cancelledOrDiverted,
     short milesDistance) {
 
     this.Day = day;

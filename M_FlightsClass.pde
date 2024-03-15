@@ -1,13 +1,3 @@
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.concurrent.*;
-import java.util.HashMap;
-import java.nio.channels.FileChannel;
-import java.nio.*;
-import java.io.*;
-
 class FlightLists {
   public FlightType[] US;
   public FlightType[] WORLD;
@@ -20,8 +10,8 @@ class FlightLists {
 class FlightsManagerClass {
   private boolean m_working;
 
-  public void init(String usFileName, String worldFileName, int usLineByteSize, int worldLineByteSize, int threadCount, Consumer<FlightLists> onTaskComplete) { //  Consumer<FlightType[]> onWorldTaskComplete
-    boolean result = convertBinaryFileToFlightType(usFileName, worldFileName, usLineByteSize, worldLineByteSize, threadCount, onTaskComplete);
+  public void init(String usFileName, String worldFileName, int threadCount, Consumer<FlightLists> onTaskComplete) { //  Consumer<FlightType[]> onWorldTaskComplete
+    boolean result = convertBinaryFileToFlightType(usFileName, worldFileName, US_LINE_BYTE_SIZE, WORLD_LINE_BYTE_SIZE, threadCount, onTaskComplete);
     if (!result)
       return;
   }
@@ -34,7 +24,7 @@ class FlightsManagerClass {
     new Thread(() -> {
       s_DebugProfiler.startProfileTimer();
       FlightLists flightsLists = new FlightLists(convertBinaryFileToFlightTypeAsync(usFileName, threadCount, QueryLocation.US, usLineByteSize),
-      convertBinaryFileToFlightTypeAsync(worldFileName, threadCount, QueryLocation.WORLD, worldLineByteSize));
+        convertBinaryFileToFlightTypeAsync(worldFileName, threadCount, QueryLocation.WORLD, worldLineByteSize));
       s_DebugProfiler.printTimeTakenMillis("Raw files pre-processing");
       onTaskComplete.accept(flightsLists);
       m_working = false;
@@ -110,7 +100,7 @@ class FlightsManagerClass {
         buffer.getShort(offset+19),
         buffer.get(offset+21),
         buffer.getShort(offset+22)
-      );
+        );
     }
     s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
   }
@@ -125,7 +115,7 @@ class FlightsManagerClass {
         buffer.getShort(offset),
         buffer.getShort(offset+2),
         buffer.getShort(offset+4)
-      );
+        );
     }
     s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
   }

@@ -1,6 +1,3 @@
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicInteger;
-
 class QueryManagerClass {
   Table m_airlineTable;
   Table m_airportTable;
@@ -13,7 +10,6 @@ class QueryManagerClass {
     if (m_airportTable == null || m_airlineTable == null) {
       println("ERROR ON INIT QUERY MANAGER");
     }
-
   }
   //a series of function for lookup tables - the lookup tables are loaded directly into processing as spreadsheets
   //the findRow functions allow the spreadsheet to be searched, and a pointer to that row is passed as a variable
@@ -26,7 +22,7 @@ class QueryManagerClass {
   float getLongitude(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     //if (m_lookupResult == null)
-    //  return 0;   
+    //  return 0;
     return m_lookupResult.getFloat("Longitude");
   }
   String getAirportName(String code) {
@@ -57,9 +53,8 @@ class QueryManagerClass {
     m_lookupResult = m_airlineTable.findRow(String.valueOf(airlineIndex), "Key");
     return m_lookupResult.getString("Airline");
   }
-  
+
   public void queryFlights(FlightType[] flightsList, FlightQuery flightQuery, int queryValue, int threadCount, Consumer<FlightType[]> onTaskComplete) {
-    println("+Query Start");
     if (m_working) {
       println("Warning: m_working is true, queryFlights did not process correctly");
       return;
@@ -69,8 +64,7 @@ class QueryManagerClass {
       s_DebugProfiler.startProfileTimer();
       FlightType[] newFlightsList = queryFlightsAysnc(flightsList, flightQuery, queryValue, threadCount);
       s_DebugProfiler.printTimeTakenMillis("queryFlights");
-      
-      println("+Query Lambda Call");
+
       m_working = false;
       onTaskComplete.accept(newFlightsList);
     }
@@ -89,22 +83,18 @@ class QueryManagerClass {
     }
     int chunkSize = flightsList.length / threadCount;
     ArrayList<FlightType[]> listOfFlightsLists = new ArrayList<>();
-    println("+Starting Query Chunks");
 
     for (int i = 0; i < threadCount; i++) {
       int startPosition = i * chunkSize;
       long endPosition = (i == threadCount - 1) ? flightsList.length : (i + 1) * chunkSize;
 
       executor.submit(() -> {
-        println("+Query Executor Start");
         listOfFlightsLists.add(processQueryFlightsChunk(Arrays.copyOfRange(flightsList, startPosition, (int)endPosition), flightQuery, queryValue));
-        println("+Query Executor End");
         latch.countDown();
       }
       );
     }
     try {
-      println("+Waiting for latches to finish");
       latch.await();
     }
     catch (InterruptedException e) {
@@ -114,21 +104,15 @@ class QueryManagerClass {
     FlightType[] joinedFlightArray = listOfFlightsLists.stream()
       .flatMap(Arrays::stream)
       .toArray(FlightType[]::new);
-    println("+Query Executor Shutdown");
     return joinedFlightArray;
   }
   private FlightType[] processQueryFlightsChunk(FlightType[] flightsList, FlightQuery flightQuery, int queryValue) {
-    println("+Query Chunk Starting Now " + queryValue + " " + flightQuery);
     switch(flightQuery.Operator) {
     case EQUAL:
-      println("+EQUAL case found");
 
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) == queryValue)
         .toArray(FlightType[]::new);
-        //return Arrays.stream(flightsList)
-        //.filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) == queryValue)
-        //.toArray(FlightType[]::new);
     case NOT_EQUAL:
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) != queryValue)
@@ -182,12 +166,12 @@ class QueryManagerClass {
       return flightsList;
     }
 
-    int chunkSize = NUMBER_OF_FLIGHT_FULL_LINES / threadCount;
+    int chunkSize = flightsList.length / threadCount;
     ArrayList<FlightType[]> listOfFlightsLists = new ArrayList<>();
 
     for (int i = 0; i < threadCount; i++) {
       int startPosition = i * chunkSize;
-      long endPosition = (i == threadCount - 1) ? NUMBER_OF_FLIGHT_FULL_LINES : (i + 1) * chunkSize;
+      long endPosition = (i == threadCount - 1) ? flightsList.length : (i + 1) * chunkSize;
 
       executor.submit(() -> {
         listOfFlightsLists.add(processQueryFlightsWithinRangeChunk(Arrays.copyOfRange(flightsList, startPosition, (int)endPosition), flightRangeQuery, start, end));
@@ -214,7 +198,6 @@ class QueryManagerClass {
       .toArray(FlightType[]::new);
   }
   private int getFlightTypeFieldFromQueryType(FlightType flight, QueryType queryType) {
-    println("+Query " + queryType + " " + flight);
     switch(queryType) {
     case DAY:
       return (int)flight.Day;
