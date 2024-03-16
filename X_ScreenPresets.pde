@@ -273,7 +273,7 @@ class ScreenFlightMap extends Screen {
     addWidget(m_flightMap3D);
 
     // ATTENTION MATTHEW, SEE HERE!
-    UserQueryUI userQueryUI = new UserQueryUI(0, 60, 1, 1, query);
+    UserQueryUI userQueryUI = new UserQueryUI(0, 60, 1, 1, query, this);
     addWidget(userQueryUI);
     userQueryUI.setOnLoadHandler(flights -> {
       m_flightMap3D.loadFlights(flights, query);

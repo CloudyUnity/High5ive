@@ -348,12 +348,12 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
 
     for (int i = 0; i < count; i++) {
 
-      if (DEBUG_MODE && DEBUG_PRINT_3D_LOADING) {
+   /*   if (DEBUG_MODE && DEBUG_PRINT_3D_LOADING) {
         println(flights[i].AirportOriginIndex + " " + flights[i].AirportDestIndex);
         println(flights[i].CarrierCodeIndex + " " + flights[i].FlightNumber);
         println("Flight " + i + " / " + flights.length);
       }
-
+*/
       String originCode = queries.getCode(flights[i].AirportOriginIndex);
       String destCode = queries.getCode(flights[i].AirportDestIndex);
       AirportPoint3DType origin, dest;
