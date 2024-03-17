@@ -28,7 +28,7 @@ class UserQueryUI extends Widget {
     m_queries = new ArrayList<String>();
 
     m_flightQueries = new ArrayList<FlightQuery>();
-    m_flights =  m_flightsManager.convertBinaryFileToFlightTypeAsync("data/Preprocessed_Data/hex_flight_data.csv", 4,  QueryLocation.US, 16);
+    m_flights =  m_flightsManager.convertBinaryFileToFlightTypeAsync("data/Preprocessed_Data/hex_flight_data.csv", 4,  QueryLocation.US, 24);
     addWidget(m_queryList); 
    
 
@@ -36,7 +36,7 @@ class UserQueryUI extends Widget {
     addWidget(addItemButton);
     addItemButton.setText("Add item");
     addItemButton.getOnClickEvent().addHandler(e -> saveQuery(m_day));
-    addItemButton.getOnClickEvent().addHandler(e -> loadData(m_flights));
+   
 
     clearListButton = new ButtonUI(120, 600, 80, 20);
     addWidget(clearListButton);
@@ -67,13 +67,13 @@ class UserQueryUI extends Widget {
     m_onLoadDataEvent = dataEvent;
   }
 
-  private void loadData(FlightType[] flights) {
+  private void loadData() {
     // Load data here. Take info from all user inputs to build queries and apply them
-    FlightType[] result = flights;
+    FlightType[] result = m_flights;
     int queryIndex = 0;
     for(FlightQuery query : m_flightQueries){
     
-      m_queryManager.queryFlights(result, query, convertToFormat(queryIndex, m_queries.get(queryIndex)), 8, m_onLoadDataEvent);
+      m_queryManager.queryFlights(result, query, convertToFormat(queryIndex, m_queries.get(queryIndex)), 4, m_onLoadDataEvent);
     
     }
     
@@ -90,6 +90,9 @@ class UserQueryUI extends Widget {
     // Adds to query output field textbox thing
     m_queryList.add(inputTextbox.getText());
     m_listCounter++;
+    
+    //Load New Query
+    loadData(); 
 
     // Set all user inputs back to default
     m_day.setText("");
