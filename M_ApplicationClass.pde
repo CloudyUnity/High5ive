@@ -41,12 +41,7 @@ class ApplicationClass {
 
     if (DEBUG_DATA_LOADING) {
       m_flightsManager.init("hex_flight_data.bin", "hex_world_data.bin", 4, list -> {
-        m_queryManager.queryFlights(list.WORLD, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.WORLD), m_queryManager.getIndex("DUB"), 4, queriedList -> {
-          s_DebugProfiler.startProfileTimer();
-          screenFlightMap3D.startLoadingData(queriedList);
-          s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
-        }
-        );
+        screenFlightMap3D.insertFlightData(list);
       }
       );
     }
