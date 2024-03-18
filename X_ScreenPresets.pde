@@ -261,6 +261,7 @@ class ScreenFlightMap extends Screen {
   FlightMap3D m_flightMap3D;
   QueryManagerClass m_queryManager;
   EmptyWidgetUI m_flightMapUIParent;
+  UserQueryUI m_userQueryUI;
 
   public ScreenFlightMap(int scaleX, int scaleY, String screenId, QueryManagerClass query) {
     super(scaleX, scaleY, screenId, color(0, 0, 0, 255));
@@ -273,9 +274,9 @@ class ScreenFlightMap extends Screen {
     // addWidget(m_flightMap3D);
 
     // ATTENTION MATTHEW, SEE HERE!
-    UserQueryUI userQueryUI = new UserQueryUI(0, 60, 1, 1, query, this);
-    addWidget(userQueryUI);
-    userQueryUI.setOnLoadHandler(flights -> {
+    m_userQueryUI = new UserQueryUI(0, 60, 1, 1, query, this);
+    addWidget(m_userQueryUI);
+    m_userQueryUI.setOnLoadHandler(flights -> {
       m_flightMap3D.loadFlights(flights, query);
     }
     );
@@ -387,94 +388,11 @@ class ScreenFlightMap extends Screen {
     label.setForegroundColour(color(255, 255, 255, 255));
     label.setTextSize(30);
     label.setParent(m_flightMapUIParent);   
-
-    /* TextboxUI airportOriginSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-     airportOriginSearch.setPlaceholderText("Origin");
-     addWidget(airportOriginSearch);
-     
-     currentUIPosY += 40;
-     
-     TextboxUI airportDestSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-     airportDestSearch.setPlaceholderText("Origin");
-     addWidget(airportDestSearch);
-     
-     currentUIPosY += 40;
-     
-     TextboxUI airlineSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-     airlineSearch.setPlaceholderText("Origin");
-     addWidget(airlineSearch);
-     
-     currentUIPosY += 40;
-     
-     TextboxUI DateSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-     DateSearch.setPlaceholderText("Origin");
-     addWidget(DateSearch);
-     
-     currentUIPosY += 40;
-     
-     TextboxUI DepartBeforeSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-     DepartBeforeSearch.setPlaceholderText("Origin");
-     addWidget(DepartBeforeSearch);
-     
-     currentUIPosY += 40;
-     
-     TextboxUI DepartAfterSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-     DepartAfterSearch.setPlaceholderText("Origin");
-     addWidget(DepartAfterSearch);
-     
-     currentUIPosY += 40;
-     
-     TextboxUI DistanceAboveSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-     DistanceAboveSearch.setPlaceholderText("Origin");
-     addWidget(DistanceAboveSearch);
-     
-     currentUIPosY += 40;
-     
-     TextboxUI DepartDelayUnderSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-     DepartDelayUnderSearch.setPlaceholderText("Origin");
-     addWidget(DepartDelayUnderSearch);
-     
-     currentUIPosY += 40;
-     
-     TextboxUI DepartDelayOverSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-     DepartDelayOverSearch.setPlaceholderText("Origin");
-     addWidget(DepartDelayOverSearch);
-     
-     currentUIPosY += 40;
-     
-     TextboxUI ArriveBeforeSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-     ArriveBeforeSearch.setPlaceholderText("Origin");
-     addWidget(ArriveBeforeSearch );
-     
-     currentUIPosY += 40;
-     
-     TextboxUI ArriveAfterSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-     ArriveAfterSearch.setPlaceholderText("Origin");
-     addWidget(ArriveAfterSearch);
-     
-     currentUIPosY += 40;
-     
-     TextboxUI ArrivalDelayUnderSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-     ArrivalDelayUnderSearch.setPlaceholderText("Origin");
-     addWidget(ArrivalDelayUnderSearch);
-     
-     currentUIPosY += 40;
-     
-     TextboxUI ArrivalDelayOverSearch = new TextboxUI(20, currentUIPosY, 160, 30);
-     ArrivalDelayOverSearch.setPlaceholderText("Origin");
-     addWidget(ArrivalDelayOverSearch);*/
   }
 
-  public void startLoadingData(FlightType[] flights) {
-    m_flightMap3D.loadFlights(flights, m_queryManager);
-  }
-  
-  @Override
-  public void draw(){
-    super.draw();
-    
-    // Use this to test widget parenting. See how all the UI elements belonging to m_flightMapUIParent now use relative positions and scales to its position
-    // m_flightMapUIParent.setPos(mouseX, 0); 
+  public void insertFlightData(FlightLists flights) {
+    // m_flightMap3D.loadFlights(flights, m_queryManager);
+    m_userQueryUI.insertBaseData(flights);
   }
 }
 

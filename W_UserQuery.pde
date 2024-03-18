@@ -11,6 +11,8 @@ class UserQueryUI extends Widget {
   private ButtonUI  addItemButton;
   private int m_listCounter;
   
+  private FlightLists m_flightsLists;
+
   private Screen m_screen;
 
   UserQueryUI(int posX, int posY, int scaleX, int scaleY, QueryManagerClass queryManager, Screen screen) {
@@ -47,12 +49,17 @@ class UserQueryUI extends Widget {
     //   For example, the "save" button should call saveQuery() when clicked
   }
 
+  public void insertBaseData(FlightLists flightData) {
+    m_flightsLists = flightData;
+    println("The first flights day in US: " + m_flightsLists.US[0].Day);
+  }
+
   public void setOnLoadHandler(Consumer<FlightType[]> dataEvent) {
     m_onLoadDataEvent = dataEvent;
   }
 
   private void loadData() {
-    // Load data here. Take info from all user inputs to build queries and apply them
+    // Apply all saved queries to m_flightLists and apply result to the Consumer (m_onLoadDataEvent.accept(result))
 
     FlightType[] result = null;
     m_onLoadDataEvent.accept(result);
