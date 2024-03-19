@@ -1258,13 +1258,13 @@ Shamattawa Airport,Shamattawa,Canada,ZTM,55.86560059,-92.08139801,1255,04E7
 Ignace Municipal Airport,Ignace,Canada,ZUC,49.42969894,-91.71779633,1256,04E8
 Churchill Falls Airport,Churchill Falls,Canada,ZUM,53.56190109,-64.10639954,1257,04E9
 Wollaston Lake Airport,Wollaston Lake,Canada,ZWL,58.10689926,-103.1719971,1258,04EA
-Rabil Airport,Boa Vista,Cape Verde,BVC,16.1364994,-22.88890076,1259,04EB
-Maio Airport,Maio,Cape Verde,MMO,15.1559,-23.21369934,1260,04EC
-Praia International Airport,"Praia, Santiago Island",Cape Verde,RAI,14.92450047,-23.49349976,1261,04ED
-São Filipe Airport,"Sao Filipe, Fogo Island",Cape Verde,SFL,14.88500023,-24.47999954,1262,04EE
-Amílcar Cabral International Airport,Amilcar Cabral,Cape Verde,SID,16.7414,-22.9494,1263,04EF
-Preguiça Airport,Sao Nocolau Island,Cape Verde,SNE,16.58839989,-24.28470039,1264,04F0
-São Pedro Airport,Sao Vicente Island,Cape Verde,VXE,16.83320045,-25.05529976,1265,04F1
+Rabil Airport,Boa Vista,Cabo Verde,BVC,16.1364994,-22.88890076,1259,04EB
+Maio Airport,Maio,Cabo Verde,MMO,15.1559,-23.21369934,1260,04EC
+Praia International Airport,"Praia, Santiago Island",Cabo Verde,RAI,14.92450047,-23.49349976,1261,04ED
+São Filipe Airport,"Sao Filipe, Fogo Island",Cabo Verde,SFL,14.88500023,-24.47999954,1262,04EE
+Amílcar Cabral International Airport,Amilcar Cabral,Cabo Verde,SID,16.7414,-22.9494,1263,04EF
+Preguiça Airport,Sao Nocolau Island,Cabo Verde,SNE,16.58839989,-24.28470039,1264,04F0
+São Pedro Airport,Sao Vicente Island,Cabo Verde,VXE,16.83320045,-25.05529976,1265,04F1
 Gerrard Smith International Airport,Cayman Brac,Cayman Islands,CYB,19.68700027,-79.88279724,1266,04F2
 Owen Roberts International Airport,Georgetown,Cayman Islands,GCM,19.2928009,-81.35769653,1267,04F3
 Edward Bodden Airfield,Little Cayman,Cayman Islands,LYB,19.660161,-80.088826,1268,04F4
@@ -1634,51 +1634,51 @@ Ouani Airport,Anjouan,Comoros,AJN,-12.13169956,44.43030167,1631,065F
 Prince Said Ibrahim International Airport,Moroni,Comoros,HAH,-11.5337,43.2719,1632,0660
 Mohéli Bandar Es Eslam Airport,Moheli,Comoros,NWA,-12.29810047,43.76639938,1633,0661
 Iconi Airport,Moroni,Comoros,YVA,-11.71080017,43.2439003,1634,0662
-Maya-Maya Airport,Brazzaville,Congo (Brazzaville),BZV,-4.251699924,15.25300026,1635,0663
-Ngot Nzoungou Airport,Loubomo,Congo (Brazzaville),DIS,-4.20635,12.6599,1636,0664
-Impfondo Airport,Impfondo,Congo (Brazzaville),ION,1.616999984,18.06699944,1637,0665
-Oyo Ollombo Airport,Oyo,Congo (Brazzaville),OLL,-1.226666,15.91,1638,0666
-Pointe Noire Airport,Pointe-noire,Congo (Brazzaville),PNR,-4.816030025,11.88659954,1639,0667
-Gbadolite Airport,Gbadolite,Congo (Kinshasa),BDT,4.253210068,20.97529984,1640,0668
-Bukavu Kavumu Airport,Bukavu/kavumu,Congo (Kinshasa),BKY,-2.308979988,28.80879974,1641,0669
-Bumbar Airport,Bumba,Congo (Kinshasa),BMB,2.18278,22.481701,1642,066A
-Boende Airport,Boende,Congo (Kinshasa),BNB,-0.216999993,20.85000038,1643,066B
-Beni Airport,Beni,Congo (Kinshasa),BNC,0.575,29.4739,1644,066C
-Boma Airport,Boma,Congo (Kinshasa),BOA,-5.854000092,13.06400013,1645,066D
-Basankusu Airport,Basankusu,Congo (Kinshasa),BSU,1.224720001,19.78890038,1646,066E
-Bunia Airport,Bunia,Congo (Kinshasa),BUX,1.565719962,30.2208004,1647,066F
-Buta Zega Airport,Buta Zega,Congo (Kinshasa),BZU,2.818350077,24.79369926,1648,0670
-Lubumbashi International Airport,Lubumashi,Congo (Kinshasa),FBM,-11.59130001,27.53089905,1649,0671
-Bandundu Airport,Bandoundu,Congo (Kinshasa),FDU,-3.311320066,17.38170052,1650,0672
-Ndjili International Airport,Kinshasa,Congo (Kinshasa),FIH,-4.38575,15.4446,1651,0673
-Bangoka International Airport,Kisangani,Congo (Kinshasa),FKI,0.481638998,25.33799934,1652,0674
-Kalemie Airport,Kalemie,Congo (Kinshasa),FMI,-5.875559807,29.25,1653,0675
-Owando Airport,Owando,Congo (Kinshasa),FTX,-0.531350017,15.95009995,1654,0676
-Gemena Airport,Gemena,Congo (Kinshasa),GMA,3.235369921,19.77129936,1655,0677
-Goma International Airport,Goma,Congo (Kinshasa),GOM,-1.670809984,29.2385006,1656,0678
-Ikela Airport,Ikela,Congo (Kinshasa),IKL,-1.048109,23.372501,1657,0679
-Inongo Airport,Inongo,Congo (Kinshasa),INO,-1.947219968,18.28580093,1658,067A
-Matari Airport,Isiro,Congo (Kinshasa),IRP,2.827610016,27.5883007,1659,067B
-Tunta Airport,Kabinda,Congo (Kinshasa),KBN,-6.132999897,24.4829998,1660,067C
-Kananga Airport,Kananga,Congo (Kinshasa),KGA,-5.900050163,22.46920013,1661,067D
-Kikwit Airport,Kikwit,Congo (Kinshasa),KKW,-5.035769939,18.78560066,1662,067E
-Kotakoli Airport,Kotakoli,Congo (Kinshasa),KLI,4.15763998,21.65089989,1663,067F
-Kamina Base Airport,Kamina Base,Congo (Kinshasa),KMN,-8.642020226,25.25289917,1664,0680
-Kindu Airport,Kindu,Congo (Kinshasa),KND,-2.919179916,25.91539955,1665,0681
-Kongolo Airport,Kongolo,Congo (Kinshasa),KOO,-5.39444,26.99,1666,0682
-Basango Mboliasa Airport,Kiri,Congo (Kinshasa),KRZ,-1.434999943,19.02400017,1667,0683
-Kolwezi Airport,Kolwezi,Congo (Kinshasa),KWZ,-10.76589966,25.50569916,1668,0684
-Lisala Airport,Lisala,Congo (Kinshasa),LIQ,2.17066,21.496901,1669,0685
-Lodja Airport,Lodja,Congo (Kinshasa),LJA,-3.417000055,23.45000076,1670,0686
-Tshimpi Airport,Matadi,Congo (Kinshasa),MAT,-5.799610138,13.44040012,1671,0687
-Mbandaka Airport,Mbandaka,Congo (Kinshasa),MDK,0.022600001,18.2887001,1672,0688
-Mbuji Mayi Airport,Mbuji-mayi,Congo (Kinshasa),MJM,-6.121240139,23.56900024,1673,0689
-Muanda Airport,Muanda,Congo (Kinshasa),MNB,-5.930860043,12.35179996,1674,068A
-Nioki Airport,Nioki,Congo (Kinshasa),NIO,-2.717499971,17.68470001,1675,068B
-Ndolo Airport,Kinshasa,Congo (Kinshasa),NLO,-4.326660156,15.32750034,1676,068C
-Ouesso Airport,Ouesso,Congo (Kinshasa),OUE,1.615990043,16.03790092,1677,068D
-Ilebo Airport,Ilebo,Congo (Kinshasa),PFR,-4.329919,20.590124,1678,068E
-Tshikapa Airport,Tshikapa,Congo (Kinshasa),TSH,-6.43833,20.794701,1679,068F
+Maya-Maya Airport,Brazzaville,Congo (Rep),BZV,-4.251699924,15.25300026,1635,0663
+Ngot Nzoungou Airport,Loubomo,Congo (Rep),DIS,-4.20635,12.6599,1636,0664
+Impfondo Airport,Impfondo,Congo (Rep),ION,1.616999984,18.06699944,1637,0665
+Oyo Ollombo Airport,Oyo,Congo (Rep),OLL,-1.226666,15.91,1638,0666
+Pointe Noire Airport,Pointe-noire,Congo (Rep),PNR,-4.816030025,11.88659954,1639,0667
+Gbadolite Airport,Gbadolite,DR Congo,BDT,4.253210068,20.97529984,1640,0668
+Bukavu Kavumu Airport,Bukavu/kavumu,DR Congo,BKY,-2.308979988,28.80879974,1641,0669
+Bumbar Airport,Bumba,DR Congo,BMB,2.18278,22.481701,1642,066A
+Boende Airport,Boende,DR Congo,BNB,-0.216999993,20.85000038,1643,066B
+Beni Airport,Beni,DR Congo,BNC,0.575,29.4739,1644,066C
+Boma Airport,Boma,DR Congo,BOA,-5.854000092,13.06400013,1645,066D
+Basankusu Airport,Basankusu,DR Congo,BSU,1.224720001,19.78890038,1646,066E
+Bunia Airport,Bunia,DR Congo,BUX,1.565719962,30.2208004,1647,066F
+Buta Zega Airport,Buta Zega,DR Congo,BZU,2.818350077,24.79369926,1648,0670
+Lubumbashi International Airport,Lubumashi,DR Congo,FBM,-11.59130001,27.53089905,1649,0671
+Bandundu Airport,Bandoundu,DR Congo,FDU,-3.311320066,17.38170052,1650,0672
+Ndjili International Airport,Kinshasa,DR Congo,FIH,-4.38575,15.4446,1651,0673
+Bangoka International Airport,Kisangani,DR Congo,FKI,0.481638998,25.33799934,1652,0674
+Kalemie Airport,Kalemie,DR Congo,FMI,-5.875559807,29.25,1653,0675
+Owando Airport,Owando,DR Congo,FTX,-0.531350017,15.95009995,1654,0676
+Gemena Airport,Gemena,DR Congo,GMA,3.235369921,19.77129936,1655,0677
+Goma International Airport,Goma,DR Congo,GOM,-1.670809984,29.2385006,1656,0678
+Ikela Airport,Ikela,DR Congo,IKL,-1.048109,23.372501,1657,0679
+Inongo Airport,Inongo,DR Congo,INO,-1.947219968,18.28580093,1658,067A
+Matari Airport,Isiro,DR Congo,IRP,2.827610016,27.5883007,1659,067B
+Tunta Airport,Kabinda,DR Congo,KBN,-6.132999897,24.4829998,1660,067C
+Kananga Airport,Kananga,DR Congo,KGA,-5.900050163,22.46920013,1661,067D
+Kikwit Airport,Kikwit,DR Congo,KKW,-5.035769939,18.78560066,1662,067E
+Kotakoli Airport,Kotakoli,DR Congo,KLI,4.15763998,21.65089989,1663,067F
+Kamina Base Airport,Kamina Base,DR Congo,KMN,-8.642020226,25.25289917,1664,0680
+Kindu Airport,Kindu,DR Congo,KND,-2.919179916,25.91539955,1665,0681
+Kongolo Airport,Kongolo,DR Congo,KOO,-5.39444,26.99,1666,0682
+Basango Mboliasa Airport,Kiri,DR Congo,KRZ,-1.434999943,19.02400017,1667,0683
+Kolwezi Airport,Kolwezi,DR Congo,KWZ,-10.76589966,25.50569916,1668,0684
+Lisala Airport,Lisala,DR Congo,LIQ,2.17066,21.496901,1669,0685
+Lodja Airport,Lodja,DR Congo,LJA,-3.417000055,23.45000076,1670,0686
+Tshimpi Airport,Matadi,DR Congo,MAT,-5.799610138,13.44040012,1671,0687
+Mbandaka Airport,Mbandaka,DR Congo,MDK,0.022600001,18.2887001,1672,0688
+Mbuji Mayi Airport,Mbuji-mayi,DR Congo,MJM,-6.121240139,23.56900024,1673,0689
+Muanda Airport,Muanda,DR Congo,MNB,-5.930860043,12.35179996,1674,068A
+Nioki Airport,Nioki,DR Congo,NIO,-2.717499971,17.68470001,1675,068B
+Ndolo Airport,Kinshasa,DR Congo,NLO,-4.326660156,15.32750034,1676,068C
+Ouesso Airport,Ouesso,DR Congo,OUE,1.615990043,16.03790092,1677,068D
+Ilebo Airport,Ilebo,DR Congo,PFR,-4.329919,20.590124,1678,068E
+Tshikapa Airport,Tshikapa,DR Congo,TSH,-6.43833,20.794701,1679,068F
 Aitutaki Airport,Aitutaki,Cook Islands,AIT,-18.83090019,-159.7640076,1680,0690
 Enua Airport,Atiu Island,Cook Islands,AIU,-19.96780014,-158.1190033,1681,0691
 Mangaia Island Airport,Mangaia Island,Cook Islands,MGS,-21.89598656,-157.906662,1682,0692
@@ -1761,14 +1761,14 @@ Ercan International Airport,Nicosia,Cyprus,ECN,35.15470123,33.49610138,1758,06DE
 Lefkoniko Airport,Geçitkale,Cyprus,GEC,35.235947,33.724358,1759,06DF
 Larnaca International Airport,Larnaca,Cyprus,LCA,34.87509918,33.62490082,1760,06E0
 Paphos International Airport,Paphos,Cyprus,PFO,34.7179985,32.4856987,1761,06E1
-Brno-Tuřany Airport,Brno,Czech Republic,BRQ,49.15129852,16.69440079,1762,06E2
-Karlovy Vary International Airport,Karlovy Vary,Czech Republic,KLV,50.20299911,12.91499996,1763,06E3
-Ostrava Leos Janáček Airport,Ostrava,Czech Republic,OSR,49.69630051,18.11109924,1764,06E4
-Pardubice Airport,Pardubice,Czech Republic,PED,50.01340103,15.73859978,1765,06E5
-Václav Havel Airport Prague,Prague,Czech Republic,PRG,50.1008,14.26,1766,06E6
-Přerov Air Base,Prerov,Czech Republic,PRV,49.42580032,17.40469933,1767,06E7
-Kunovice Airport,Kunovice,Czech Republic,UHE,49.02939987,17.43969917,1768,06E8
-Vodochody Airport,Vodochody,Czech Republic,VOD,50.216599,14.3958,1769,06E9
+Brno-Tuřany Airport,Brno,Czechia,BRQ,49.15129852,16.69440079,1762,06E2
+Karlovy Vary International Airport,Karlovy Vary,Czechia,KLV,50.20299911,12.91499996,1763,06E3
+Ostrava Leos Janáček Airport,Ostrava,Czechia,OSR,49.69630051,18.11109924,1764,06E4
+Pardubice Airport,Pardubice,Czechia,PED,50.01340103,15.73859978,1765,06E5
+Václav Havel Airport Prague,Prague,Czechia,PRG,50.1008,14.26,1766,06E6
+Přerov Air Base,Prerov,Czechia,PRV,49.42580032,17.40469933,1767,06E7
+Kunovice Airport,Kunovice,Czechia,UHE,49.02939987,17.43969917,1768,06E8
+Vodochody Airport,Vodochody,Czechia,VOD,50.216599,14.3958,1769,06E9
 Aalborg Airport,Aalborg,Denmark,AAL,57.09275891,9.849243164,1770,06EA
 Aarhus Airport,Aarhus,Denmark,AAR,56.29999924,10.61900043,1771,06EB
 Billund Airport,Billund,Denmark,BLL,55.74029922,9.151780128,1772,06EC
@@ -2973,7 +2973,7 @@ Kobe Airport,Kobe,Japan,UKB,34.63280106,135.223999,2970,0B9A
 Wakkanai Airport,Wakkanai,Japan,WKJ,45.40420151,141.8009949,2971,0B9B
 Miho Yonago Airport,Miho,Japan,YGJ,35.49219894,133.2359924,2972,0B9C
 Jersey Airport,Jersey,Jersey,JER,49.207901,-2.195509911,2973,0B9D
-Johnston Atoll Airport,Johnston Island,Johnston Atoll,JON,16.72859955,-169.5339966,2974,0B9E
+Johnston Atoll Airport,Johnston Island,United States Minor Outlying Islands,JON,16.72859955,-169.5339966,2974,0B9E
 Amman-Marka International Airport,Amman,Jordan,ADJ,31.97270012,35.99160004,2975,0B9F
 Queen Alia International Airport,Amman,Jordan,AMM,31.72260094,35.99319839,2976,0BA0
 Aqaba King Hussein International Airport,Aqaba,Jordan,AQJ,29.61160088,35.01810074,2977,0BA1
@@ -3101,8 +3101,8 @@ Panevėžys Air Base,Panevezys,Lithuania,PNV,55.72940063,24.46080017,3097,0C19
 Vilnius International Airport,Vilnius,Lithuania,VNO,54.634102,25.285801,3099,0C1B
 Luxembourg-Findel International Airport,Luxemburg,Luxembourg,LUX,49.6233333,6.2044444,3100,0C1C
 Macau International Airport,Macau,Macau,MFM,22.149599,113.592003,3101,0C1D
-Ohrid St. Paul the Apostle Airport,Ohrid,Macedonia,OHD,41.18,20.7423,3102,0C1E
-Skopje Alexander the Great Airport,Skopje,Macedonia,SKP,41.961601,21.621401,3103,0C1F
+Ohrid St. Paul the Apostle Airport,Ohrid,North Macedonia,OHD,41.18,20.7423,3102,0C1E
+Skopje Alexander the Great Airport,Skopje,North Macedonia,SKP,41.961601,21.621401,3103,0C1F
 Ambilobe Airport,Ambilobe,Madagascar,AMB,-13.18840027,48.98799896,3104,0C20
 Antsirabato Airport,Antalaha,Madagascar,ANM,-14.99940014,50.32020187,3105,0C21
 Antsirabe Airport,Antsirabe,Madagascar,ATJ,-19.83922148,47.06371307,3106,0C22
@@ -3315,7 +3315,7 @@ Kosrae International Airport,Kosrae,Micronesia,KSA,5.35698,162.957993,3312,0CF0
 Pohnpei International Airport,Pohnpei,Micronesia,PNI,6.985099792,158.2089996,3313,0CF1
 Chuuk International Airport,Chuuk,Micronesia,TKK,7.461870193,151.8430023,3314,0CF2
 Yap International Airport,Yap,Micronesia,YAP,9.49891,138.082993,3315,0CF3
-Henderson Field,Midway,Midway Islands,MDY,28.20170021,-177.3809967,3316,0CF4
+Henderson Field,Midway,United States Minor Outlying Islands,MDY,28.20170021,-177.3809967,3316,0CF4
 Bălți International Airport,Saltsy,Moldova,BZY,47.843056,27.777222,3317,0CF5
 Chişinău International Airport,Chisinau,Moldova,KIV,46.92770004,28.93099976,3318,0CF6
 Monaco Heliport,Fontvieille,Monaco,MCM,43.725883,7.419719,3319,0CF7
@@ -3435,11 +3435,11 @@ Maastricht Aachen Airport,Maastricht,Netherlands,MST,50.911701,5.77014,3432,0D68
 Rotterdam The Hague Airport,Rotterdam,Netherlands,RTM,51.956902,4.43722,3433,0D69
 Soesterberg Air Base,Soesterberg,Netherlands,UTC,52.12730026,5.276189804,3434,0D6A
 Woensdrecht Air Base,Woensdrecht,Netherlands,WOE,51.4491,4.34203,3435,0D6B
-Flamingo International Airport,Kralendijk,Netherlands Antilles,BON,12.13099957,-68.26850128,3436,0D6C
-Hato International Airport,Willemstad,Netherlands Antilles,CUR,12.1889,-68.959801,3437,0D6D
-F. D. Roosevelt Airport,Oranjestad,Netherlands Antilles,EUX,17.49650002,-62.97940063,3438,0D6E
-Juancho E. Yrausquin Airport,Saba,Netherlands Antilles,SAB,17.64500046,-63.22000122,3439,0D6F
-Princess Juliana International Airport,Philipsburg,Netherlands Antilles,SXM,18.04100037,-63.10889816,3440,0D70
+Flamingo International Airport,Kralendijk,Bonaire,BON,12.13099957,-68.26850128,3436,0D6C
+Hato International Airport,Willemstad,Curacao,CUR,12.1889,-68.959801,3437,0D6D
+F. D. Roosevelt Airport,Oranjestad,Aruba,EUX,17.49650002,-62.97940063,3438,0D6E
+Juancho E. Yrausquin Airport,Saba,Saba,SAB,17.64500046,-63.22000122,3439,0D6F
+Princess Juliana International Airport,Philipsburg,Sint Maarten,SXM,18.04100037,-63.10889816,3440,0D70
 Île Art - Waala Airport,Waala,New Caledonia,BMY,-19.72060013,163.6609955,3441,0D71
 Nouméa Magenta Airport,Noumea,New Caledonia,GEA,-22.25830078,166.4730072,3442,0D72
 Île des Pins Airport,Île des Pins,New Caledonia,ILP,-22.58889961,167.4559937,3443,0D73
@@ -4384,8 +4384,8 @@ Johan Adolf Pengel International Airport,Zandery,Suriname,PBM,5.452829838,-55.18
 Stoelmanseiland Airport,Stoelmans Eiland,Suriname,SMZ,4.349999905,-54.41666794,4382,111E
 Totness Airport,Totness,Suriname,TOT,5.865829945,-56.32749939,4383,111F
 Washabo Airport,Washabo,Suriname,WSO,5.215277,-57.185302,4384,1120
-Matsapha Airport,Manzini,Swaziland,MTS,-26.52899933,31.30750084,4385,1121
-King Mswati III International Airport,Manzini,Swaziland,SHO,-26.358611,31.716944,4386,1122
+Matsapha Airport,Manzini,Eswatini,MTS,-26.52899933,31.30750084,4385,1121
+King Mswati III International Airport,Manzini,Eswatini,SHO,-26.358611,31.716944,4386,1122
 Ängelholm-Helsingborg Airport,Ängelholm,Sweden,AGH,56.29610062,12.84710026,4387,1123
 Arvidsjaur Airport,Arvidsjaur,Sweden,AJR,65.59030151,19.28190041,4388,1124
 Stockholm-Arlanda Airport,Stockholm,Sweden,ARN,59.65190125,17.91860008,4389,1125
@@ -4564,69 +4564,69 @@ Sfax Thyna International Airport,Sfax,Tunisia,SFA,34.7179985,10.69099998,4561,11
 Tabarka 7 Novembre Airport,Tabarka,Tunisia,TBJ,36.97999954,8.876939774,4562,11D2
 Tozeur Nefta International Airport,Tozeur,Tunisia,TOE,33.93970108,8.110560417,4563,11D3
 Tunis Carthage International Airport,Tunis,Tunisia,TUN,36.85100174,10.22719955,4564,11D4
-Adana Airport,Adana,Turkey,ADA,36.98220062,35.28039932,4565,11D5
-Adnan Menderes International Airport,Izmir,Turkey,ADB,38.29240036,27.15699959,4566,11D6
-Adıyaman Airport,Adiyaman,Turkey,ADF,37.73139954,38.46889877,4567,11D7
-Afyon Airport,Afyon,Turkey,AFY,38.72639847,30.60110092,4568,11D8
-Ağrı Airport,Agri,Turkey,AJI,39.65454102,43.02597809,4569,11D9
-Etimesgut Air Base,Ankara,Turkey,ANK,39.94979858,32.68859863,4570,11DA
-Anadolu Airport,Eskissehir,Turkey,AOE,39.809898,30.5194,4571,11DB
-Kayseri Erkilet Airport,Kayseri,Turkey,ASR,38.770401,35.49539948,4572,11DC
-Antalya International Airport,Antalya,Turkey,AYT,36.898701,30.800501,4573,11DD
-Batman Airport,Batman,Turkey,BAL,37.92900085,41.11660004,4574,11DE
-Bandırma Airport,Bandirma,Turkey,BDM,40.31800079,27.97769928,4575,11DF
-Bingöl Çeltiksuyu Airport,Bingol,Turkey,BGG,38.85926056,40.59596252,4576,11E0
-Milas Bodrum International Airport,Bodrum,Turkey,BJV,37.25059891,27.66430092,4577,11E1
-Bursa Airport,Bursa,Turkey,BTZ,40.23329926,29.00919914,4578,11E2
-Imsık Airport,Bodrum,Turkey,BXN,37.14009857,27.66970062,4579,11E3
-Balıkesir Merkez Airport,Balikesir,Turkey,BZI,39.61930084,27.9260006,4580,11E4
-Çanakkale Airport,Canakkale,Turkey,CKZ,40.13769913,26.42679977,4581,11E5
-Diyarbakir Airport,Diyabakir,Turkey,DIY,37.89390183,40.20100021,4582,11E6
-Dalaman International Airport,Dalaman,Turkey,DLM,36.71310043,28.79249954,4583,11E7
-Çardak Airport,Denizli,Turkey,DNZ,37.78559875,29.70129967,4584,11E8
-Balıkesir Körfez Airport,Balikesir Korfez,Turkey,EDO,39.55459976,27.01379967,4585,11E9
-Erzincan Airport,Erzincan,Turkey,ERC,39.71020126,39.52700043,4586,11EA
-Erzurum International Airport,Erzurum,Turkey,ERZ,39.95650101,41.17020035,4587,11EB
-Esenboğa International Airport,Ankara,Turkey,ESB,40.12810135,32.99509811,4588,11EC
-Eskişehir Air Base,Eskisehir,Turkey,ESK,39.78409958,30.58209991,4589,11ED
-Elazığ Airport,Elazig,Turkey,EZS,38.60689926,39.29140091,4590,11EE
-Şanlıurfa GAP Airport,Sanliurfa,Turkey,GNY,37.445663,38.895592,4591,11EF
-Gazipaşa Airport,Alanya,Turkey,GZP,36.299217,32.300598,4592,11F0
-Gaziantep International Airport,Gaziantep,Turkey,GZT,36.94720078,37.47869873,4593,11F1
-Hatay Airport,Hatay,Turkey,HTY,36.36277771,36.28222275,4594,11F2
-Iğdır Airport,Igdir,Turkey,IGD,39.97662735,43.87664795,4595,11F3
-Çiğli Airport,Izmir,Turkey,IGL,38.51300049,27.01009941,4596,11F4
-Süleyman Demirel International Airport,Isparta,Turkey,ISE,37.85540009,30.36840057,4597,11F5
-Atatürk International Airport,Istanbul,Turkey,ISL,40.976898,28.8146,4598,11F6
-Istanbul Airport,Istanbul,Turkey,IST,41.275278,28.751944,4599,11F7
-Kahramanmaraş Airport,Kahramanmaras,Turkey,KCM,37.53882599,36.95352173,4600,11F8
-Cengiz Topel Airport,Topel,Turkey,KCO,40.73500061,30.08329964,4601,11F9
-Kastamonu Airport,Kastamonu,Turkey,KFS,41.31420135,33.79579926,4602,11FA
-Kars Airport,Kars,Turkey,KSY,40.56219864,43.11500168,4603,11FB
-Konya Airport,Konya,Turkey,KYA,37.979,32.561901,4604,11FC
-Zafer Airport,Kutahya,Turkey,KZR,39.113079,30.128111,4605,11FD
-Malatya Erhaç Airport,Malatya,Turkey,MLX,38.43529892,38.0909996,4606,11FE
-Mardin Airport,Mardin,Turkey,MQM,37.22330093,40.63169861,4607,11FF
-Muş Airport,Mus,Turkey,MSR,38.74779892,41.66120148,4608,1200
-Amasya Merzifon Airport,Merzifon,Turkey,MZH,40.829399,35.521999,4609,1201
-Nevşehir Kapadokya Airport,Nevsehir,Turkey,NAV,38.7719,34.5345,4610,1202
-Şırnak Şerafettin Elçi Airport,Cizre,Turkey,NKT,37.3647,42.0582,4611,1203
-Sinop Airport,Sinop,Turkey,NOP,42.01580048,35.06639862,4612,1204
-Ordu Giresun Airport,Ordu-Giresun,Turkey,OGU,40.966047,38.080994,4613,1205
-Zonguldak Airport,Zonguldak,Turkey,ONQ,41.50640106,32.08860016,4614,1206
-Sabiha Gökçen International Airport,Istanbul,Turkey,SAW,40.89860153,29.30920029,4615,1207
-Şanlıurfa Airport,Sanliurfa,Turkey,SFQ,37.09429932,38.8470993,4616,1208
-Siirt Airport,Siirt,Turkey,SXZ,37.97890091,41.8404007,4617,1209
-Samsun Çarşamba Airport,Samsun,Turkey,SZF,41.254501,36.567101,4618,120A
-Tekirdağ Çorlu Airport,Çorlu,Turkey,TEQ,41.13819885,27.91909981,4619,120B
-Tokat Airport,Tokat,Turkey,TJK,40.30743027,36.36740875,4620,120C
-Trabzon International Airport,Trabzon,Turkey,TZX,40.99509811,39.78969955,4621,120D
-İncirlik Air Base,Adana,Turkey,UAB,37.0021019,35.42589951,4622,120E
-Uşak Airport,Usak,Turkey,USQ,38.68149948,29.47170067,4623,120F
-Van Ferit Melen Airport,Van,Turkey,VAN,38.46820068,43.33229828,4624,1210
-Sivas Nuri Demirağ Airport,Sivas,Turkey,VAS,39.813801,36.9035,4625,1211
-Bursa Yenişehir Airport,Yenisehir,Turkey,YEI,40.25519943,29.56259918,4626,1212
-Hakkari Yüksekova Airport,Hakkari,Turkey,YKO,37.5497,44.2381,4627,1213
+Adana Airport,Adana,Turkiye,ADA,36.98220062,35.28039932,4565,11D5
+Adnan Menderes International Airport,Izmir,Turkiye,ADB,38.29240036,27.15699959,4566,11D6
+Adıyaman Airport,Adiyaman,Turkiye,ADF,37.73139954,38.46889877,4567,11D7
+Afyon Airport,Afyon,Turkiye,AFY,38.72639847,30.60110092,4568,11D8
+Ağrı Airport,Agri,Turkiye,AJI,39.65454102,43.02597809,4569,11D9
+Etimesgut Air Base,Ankara,Turkiye,ANK,39.94979858,32.68859863,4570,11DA
+Anadolu Airport,Eskissehir,Turkiye,AOE,39.809898,30.5194,4571,11DB
+Kayseri Erkilet Airport,Kayseri,Turkiye,ASR,38.770401,35.49539948,4572,11DC
+Antalya International Airport,Antalya,Turkiye,AYT,36.898701,30.800501,4573,11DD
+Batman Airport,Batman,Turkiye,BAL,37.92900085,41.11660004,4574,11DE
+Bandırma Airport,Bandirma,Turkiye,BDM,40.31800079,27.97769928,4575,11DF
+Bingöl Çeltiksuyu Airport,Bingol,Turkiye,BGG,38.85926056,40.59596252,4576,11E0
+Milas Bodrum International Airport,Bodrum,Turkiye,BJV,37.25059891,27.66430092,4577,11E1
+Bursa Airport,Bursa,Turkiye,BTZ,40.23329926,29.00919914,4578,11E2
+Imsık Airport,Bodrum,Turkiye,BXN,37.14009857,27.66970062,4579,11E3
+Balıkesir Merkez Airport,Balikesir,Turkiye,BZI,39.61930084,27.9260006,4580,11E4
+Çanakkale Airport,Canakkale,Turkiye,CKZ,40.13769913,26.42679977,4581,11E5
+Diyarbakir Airport,Diyabakir,Turkiye,DIY,37.89390183,40.20100021,4582,11E6
+Dalaman International Airport,Dalaman,Turkiye,DLM,36.71310043,28.79249954,4583,11E7
+Çardak Airport,Denizli,Turkiye,DNZ,37.78559875,29.70129967,4584,11E8
+Balıkesir Körfez Airport,Balikesir Korfez,Turkiye,EDO,39.55459976,27.01379967,4585,11E9
+Erzincan Airport,Erzincan,Turkiye,ERC,39.71020126,39.52700043,4586,11EA
+Erzurum International Airport,Erzurum,Turkiye,ERZ,39.95650101,41.17020035,4587,11EB
+Esenboğa International Airport,Ankara,Turkiye,ESB,40.12810135,32.99509811,4588,11EC
+Eskişehir Air Base,Eskisehir,Turkiye,ESK,39.78409958,30.58209991,4589,11ED
+Elazığ Airport,Elazig,Turkiye,EZS,38.60689926,39.29140091,4590,11EE
+Şanlıurfa GAP Airport,Sanliurfa,Turkiye,GNY,37.445663,38.895592,4591,11EF
+Gazipaşa Airport,Alanya,Turkiye,GZP,36.299217,32.300598,4592,11F0
+Gaziantep International Airport,Gaziantep,Turkiye,GZT,36.94720078,37.47869873,4593,11F1
+Hatay Airport,Hatay,Turkiye,HTY,36.36277771,36.28222275,4594,11F2
+Iğdır Airport,Igdir,Turkiye,IGD,39.97662735,43.87664795,4595,11F3
+Çiğli Airport,Izmir,Turkiye,IGL,38.51300049,27.01009941,4596,11F4
+Süleyman Demirel International Airport,Isparta,Turkiye,ISE,37.85540009,30.36840057,4597,11F5
+Atatürk International Airport,Istanbul,Turkiye,ISL,40.976898,28.8146,4598,11F6
+Istanbul Airport,Istanbul,Turkiye,IST,41.275278,28.751944,4599,11F7
+Kahramanmaraş Airport,Kahramanmaras,Turkiye,KCM,37.53882599,36.95352173,4600,11F8
+Cengiz Topel Airport,Topel,Turkiye,KCO,40.73500061,30.08329964,4601,11F9
+Kastamonu Airport,Kastamonu,Turkiye,KFS,41.31420135,33.79579926,4602,11FA
+Kars Airport,Kars,Turkiye,KSY,40.56219864,43.11500168,4603,11FB
+Konya Airport,Konya,Turkiye,KYA,37.979,32.561901,4604,11FC
+Zafer Airport,Kutahya,Turkiye,KZR,39.113079,30.128111,4605,11FD
+Malatya Erhaç Airport,Malatya,Turkiye,MLX,38.43529892,38.0909996,4606,11FE
+Mardin Airport,Mardin,Turkiye,MQM,37.22330093,40.63169861,4607,11FF
+Muş Airport,Mus,Turkiye,MSR,38.74779892,41.66120148,4608,1200
+Amasya Merzifon Airport,Merzifon,Turkiye,MZH,40.829399,35.521999,4609,1201
+Nevşehir Kapadokya Airport,Nevsehir,Turkiye,NAV,38.7719,34.5345,4610,1202
+Şırnak Şerafettin Elçi Airport,Cizre,Turkiye,NKT,37.3647,42.0582,4611,1203
+Sinop Airport,Sinop,Turkiye,NOP,42.01580048,35.06639862,4612,1204
+Ordu Giresun Airport,Ordu-Giresun,Turkiye,OGU,40.966047,38.080994,4613,1205
+Zonguldak Airport,Zonguldak,Turkiye,ONQ,41.50640106,32.08860016,4614,1206
+Sabiha Gökçen International Airport,Istanbul,Turkiye,SAW,40.89860153,29.30920029,4615,1207
+Şanlıurfa Airport,Sanliurfa,Turkiye,SFQ,37.09429932,38.8470993,4616,1208
+Siirt Airport,Siirt,Turkiye,SXZ,37.97890091,41.8404007,4617,1209
+Samsun Çarşamba Airport,Samsun,Turkiye,SZF,41.254501,36.567101,4618,120A
+Tekirdağ Çorlu Airport,Çorlu,Turkiye,TEQ,41.13819885,27.91909981,4619,120B
+Tokat Airport,Tokat,Turkiye,TJK,40.30743027,36.36740875,4620,120C
+Trabzon International Airport,Trabzon,Turkiye,TZX,40.99509811,39.78969955,4621,120D
+İncirlik Air Base,Adana,Turkiye,UAB,37.0021019,35.42589951,4622,120E
+Uşak Airport,Usak,Turkiye,USQ,38.68149948,29.47170067,4623,120F
+Van Ferit Melen Airport,Van,Turkiye,VAN,38.46820068,43.33229828,4624,1210
+Sivas Nuri Demirağ Airport,Sivas,Turkiye,VAS,39.813801,36.9035,4625,1211
+Bursa Yenişehir Airport,Yenisehir,Turkiye,YEI,40.25519943,29.56259918,4626,1212
+Hakkari Yüksekova Airport,Hakkari,Turkiye,YKO,37.5497,44.2381,4627,1213
 Ashgabat International Airport,Ashkhabad,Turkmenistan,ASB,37.986801,58.361,4628,1214
 Turkmenabat Airport,Chardzhou,Turkmenistan,CRZ,39.08330154,63.61330032,4629,1215
 Turkmenbashi Airport,Krasnovodsk,Turkmenistan,KRW,40.063301,53.007198,4630,1216
@@ -6245,11 +6245,11 @@ Dong Hoi Airport,Dong Hoi,Vietnam,VDH,17.515,106.590556,6242,1862
 Van Don International Airport,Quang Ninh,Vietnam,VDO,21.117778,107.414167,6243,1863
 Vinh Airport,Vinh,Vietnam,VII,18.73760033,105.6709976,6244,1864
 Rach Gia Airport,Rach Gia,Vietnam,VKG,9.958029972,105.1323795,6245,1865
-Charlotte Amalie Harbor Seaplane Base,Charlotte Amalie,Virgin Islands,SPB,18.33860016,-64.94069672,6246,1866
-Christiansted Harbor Seaplane Base,Christiansted,Virgin Islands,SSB,17.746929,-64.707515,6247,1867
-Cyril E. King Airport,St. Thomas,Virgin Islands,STT,18.33729935,-64.9733963,6248,1868
-Henry E Rohlsen Airport,St. Croix Island,Virgin Islands,STX,17.70190048,-64.79859924,6249,1869
-Wake Island Airfield,Wake Island,Wake Island,AWK,19.28210068,166.6360016,6250,186A
+Charlotte Amalie Harbor Seaplane Base,Charlotte Amalie,US Virgin Islands,SPB,18.33860016,-64.94069672,6246,1866
+Christiansted Harbor Seaplane Base,Christiansted,US Virgin Islands,SSB,17.746929,-64.707515,6247,1867
+Cyril E. King Airport,St. Thomas,US Virgin Islands,STT,18.33729935,-64.9733963,6248,1868
+Henry E Rohlsen Airport,St. Croix Island,US Virgin Islands,STX,17.70190048,-64.79859924,6249,1869
+Wake Island Airfield,Wake Island,United States Minor Outlying Islands,AWK,19.28210068,166.6360016,6250,186A
 Pointe Vele Airport,Futuna Island,Wallis and Futuna,FUT,-14.31140041,-178.0659943,6251,186B
 Hihifo Airport,Wallis,Wallis and Futuna,WLS,-13.23830032,-176.1990051,6252,186C
 Hassan I Airport,El Aaiún,Western Sahara,EUN,27.151699,-13.2192,6253,186D
