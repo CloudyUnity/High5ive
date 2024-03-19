@@ -6305,9 +6305,9 @@ Masvingo International Airport,Masvingo,ZW,Zimbabwe,UTA,-20.05529976,30.85910034
 Mutare Airport,Mutare,ZW,Zimbabwe,VFA,-18.99749947,32.62720108,6303,189F
 Victoria Falls International Airport,Victoria Falls,ZW,Zimbabwe,WKI,-18.09589958,25.8390007,6304,18A0
 Hwange (Town) Airport,Hwange,ZW,Zimbabwe,XMU,-18.362967,26.519791,6305,18A1
-,,,,AFO,,,6306,18A2
-,,,,AIC,,,6307,18A3
-,,,,AIO,,,6308,18A4
+Afton Municipal Airport,Afton,US,United States,AFO,42.708771,-110.94217,6306,18A2
+Ailinglaplap Airok Airport,Airok,MH,Marshall Islands,AIC,7.279167,168.825556,6307,18A3
+Atlantic Municipal Airport,Atlantic,US,United States,AIO,41.403833,-95.048749,6308,18A4
 ,,,,ANA,,,6309,18A5
 ,,,,ARG,,,6310,18A6
 ,,,,ARX,,,6311,18A7
@@ -6367,16 +6367,16 @@ Hwange (Town) Airport,Hwange,ZW,Zimbabwe,XMU,-18.362967,26.519791,6305,18A1
 ,,,,FSK,,,6365,18DD
 ,,,,GBI,,,6366,18DE
 ,,,,GBL,,,6367,18DF
-,,,,GCY,,,6368,18E0
-,,,,GDB,,,6369,18E1
-,,,,GEM,,,6370,18E2
-,,,,GGJ,,,6371,18E3
-,,,,GHS,,,6372,18E4
-,,,,GHV,,,6373,18E5
-,,,,GKT,,,6374,18E6
-,,,,GOX,,,6375,18E7
-,,,,GOY,,,6376,18E8
-,,,,GRD,,,6377,18E9
+,,,,GCY,,,6368,1.80E+01
+,,,,GDB,,,6369,1.80E+02
+,,,,GEM,,,6370,1.80E+03
+,,,,GGJ,,,6371,1.80E+04
+,,,,GHS,,,6372,1.80E+05
+,,,,GHV,,,6373,1.80E+06
+,,,,GKT,,,6374,1.80E+07
+,,,,GOX,,,6375,1.80E+08
+,,,,GOY,,,6376,1.80E+09
+,,,,GRD,,,6377,1.80E+10
 ,,,,GRN,,,6378,18EA
 ,,,,GSH,,,6379,18EB
 ,,,,GTS,,,6380,18EC
@@ -6623,16 +6623,16 @@ Hwange (Town) Airport,Hwange,ZW,Zimbabwe,XMU,-18.362967,26.519791,6305,18A1
 ,,,,SDW,,,6621,19DD
 ,,,,SEG,,,6622,19DE
 ,,,,SET,,,6623,19DF
-,,,,SGT,,,6624,19E0
-,,,,SHQ,,,6625,19E1
-,,,,SHS,,,6626,19E2
-,,,,SHU,,,6627,19E3
-,,,,SLR,,,6628,19E4
-,,,,SLT,,,6629,19E5
-,,,,SPX,,,6630,19E6
-,,,,SPZ,,,6631,19E7
-,,,,SRC,,,6632,19E8
-,,,,SUM,,,6633,19E9
+,,,,SGT,,,6624,1.90E+01
+,,,,SHQ,,,6625,1.90E+02
+,,,,SHS,,,6626,1.90E+03
+,,,,SHU,,,6627,1.90E+04
+,,,,SLR,,,6628,1.90E+05
+,,,,SLT,,,6629,1.90E+06
+,,,,SPX,,,6630,1.90E+07
+,,,,SPZ,,,6631,1.90E+08
+,,,,SRC,,,6632,1.90E+09
+,,,,SUM,,,6633,1.90E+10
 ,,,,SWW,,,6634,19EA
 ,,,,SYI,,,6635,19EB
 ,,,,SZC,,,6636,19EC
