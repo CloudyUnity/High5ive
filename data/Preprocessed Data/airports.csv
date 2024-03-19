@@ -6539,24 +6539,24 @@ Hale County Airport,Plainview,,United States,PVW,,,6526,197E
 ,,,,QBS,,,6536,1988
 ,,,,QCB,,,6537,1989
 ,,,,QCD,,,6538,198A
-,,,,QCH,,,6539,198B
+,Colatina,,Brazil,QCH,,,6539,198B
 ,,,,QCI,,,6540,198C
 ,,,,QCM,,,6541,198D
 ,,,,QCP,,,6542,198E
 ,,,,QCQ,,,6543,198F
 ,,,,QCS,,,6544,1990
-,,,,QCU,,,6545,1991
+,Akunnaaq,,Greenland,QCU,68.747222,-52.333332,6545,1991
 ,,,,QCV,,,6546,1992
 ,,,,QCX,,,6547,1993
 ,,,,QCZ,,,6548,1994
-,,,,QEI,,,6549,1995
+Off-line Pt,Crailsheim,,Germany,QEI,,,6549,1995
 ,,,,QEP,,,6550,1996
 ,,,,QER,,,6551,1997
 ,,,,QEW,,,6552,1998
 ,,,,QEZ,,,6553,1999
 ,,,,QFC,,,6554,199A
-,,,,QGP,,,6555,199B
-,,,,QGY,,,6556,199C
+Garanhuns Airport,Garanhuns,,Brazil,QGP,,,6555,199B
+Gyor-Pr International Airport,Gyor-Pr,,Hungary,QGY,47.627097,17.808347,6556,199C
 ,,,,QHD,,,6557,199D
 ,,,,QHS,,,6558,199E
 ,,,,QHT,,,6559,199F
@@ -6564,27 +6564,27 @@ Hale County Airport,Plainview,,United States,PVW,,,6526,197E
 ,,,,QKE,,,6561,19A1
 ,,,,QKF,,,6562,19A2
 ,,,,QKM,,,6563,19A3
-,,,,QKN,,,6564,19A4
-,,,,QMK,,,6565,19A5
+,Kairouan,,Tunisia,QKN,,,6564,19A4
+Niaqornaarsuk Heliport,Niaqornaarsuk,,Greenland,QMK,,,6565,19A5
 ,,,,QOV,,,6566,19A6
 ,,,,QOZ,,,6567,19A7
 ,,,,QPK,,,6568,19A8
-,,,,QQA,,,6569,19A9
-,,,,QQB,,,6570,19AA
-,,,,QQC,,,6571,19AB
+Off-line Pt,Britrail Rail Zone A,,United Kingdom,QQA,,,6569,19A9
+Off-line Pt,Britrail Rail Zone B,,United Kingdom,QQB,,,6570,19AA
+Off-line Pt,Britrail Rail Zone C,,United Kingdom,QQC,,,6571,19AB
 ,,,,QQD,,,6572,19AC
-,,,,QQF,,,6573,19AD
-,,,,QQG,,,6574,19AE
-,,,,QQK,,,6575,19AF
-,,,,QQL,,,6576,19B0
-,,,,QQN,,,6577,19B1
-,,,,QQP,,,6578,19B2
+Off-line Pt,Britrail Rail Zone F,,United Kingdom,QQF,,,6573,19AD
+Off-line Pt,Britrail Rail Zone G,,United Kingdom,QQG,,,6574,19AE
+Kings Cross Railway Station,London,,United Kingdom,QQK,,,6575,19AF
+Off-line Pt,Britrail Rail Zone L,,United Kingdom,QQL,,,6576,19B0
+New Street Railway Station,Birmingham,,United Kingdom,QQN,,,6577,19B1
+Paddington Railway Station,London,,United Kingdom,QQP,,,6578,19B2
 ,,,,QQQ,,,6579,19B3
 ,,,,QQR,,,6580,19B4
-,,,,QQW,,,6581,19B5
-,,,,QQX,,,6582,19B6
-,,,,QQY,,,6583,19B7
-,,,,QQZ,,,6584,19B8
+Waterloo Railway Station,London,,United Kingdom,QQW,,,6581,19B5
+Railway Station,Bath,,United Kingdom,QQX,,,6582,19B6
+Railway Station,York,,United Kingdom,QQY,,,6583,19B7
+Off-line Pt,Britrail Rail Zone Z,,United Kingdom,QQZ,,,6584,19B8
 ,,,,QSB,,,6585,19B9
 ,,,,QSD,,,6586,19BA
 ,,,,QSE,,,6587,19BB
@@ -6596,128 +6596,128 @@ Hale County Airport,Plainview,,United States,PVW,,,6526,197E
 ,,,,QSV,,,6593,19C1
 ,,,,QSY,,,6594,19C2
 ,,,,QTA,,,6595,19C3
-,,,,QTB,,,6596,19C4
+,Tubaro,,Brazil,QTB,,,6596,19C4
 ,,,,QTC,,,6597,19C5
 ,,,,QTF,,,6598,19C6
 ,,,,QTG,,,6599,19C7
-,,,,QTH,,,6600,19C8
-,,,,QTJ,,,6601,19C9
+Bus Station,Thredbo,,Australia,QTH,,,6600,19C8
+Champol,Chartres,,France,QTJ,48.458889,1.523889,6601,19C9
 ,,,,QTM,,,6602,19CA
 ,,,,QTP,,,6603,19CB
 ,,,,QTQ,,,6604,19CC
 ,,,,QTS,,,6605,19CD
 ,,,,QTT,,,6606,19CE
 ,,,,QTV,,,6607,19CF
-,,,,QTW,,,6608,19D0
+ROKAF,Taejon,,Republic of Korea (South Korea),QTW,,,6608,19D0
 ,,,,QTY,,,6609,19D1
 ,,,,QTZ,,,6610,19D2
-,,,,QUP,,,6611,19D3
-,,,,QXB,,,6612,19D4
+,Saqqaq,,Greenland,QUP,70.016667,-51.933332,6611,19D3
+Off-line Pt,Aix-en-Provence,,France,QXB,,,6612,19D4
 ,,,,QYA,,,6613,19D5
 ,,,,QYC,,,6614,19D6
-,,,,QYE,,,6615,19D7
-,,,,QYF,,,6616,19D8
-,,,,QYG,,,6617,19D9
+Railway Station,Enschede,,Netherlands,QYE,,,6615,19D7
+Railway Service,German Railways Zone F,,Germany,QYF,,,6616,19D8
+Railway Service,Railway - Germany,,Germany,QYG,,,6617,19D9
 ,,,,QYK,,,6618,19DA
-,,,,QYL,,,6619,19DB
-,,,,QYM,,,6620,19DC
-,,,,QYR,,,6621,19DD
+Railway Station,Almelo,,Netherlands,QYL,,,6619,19DB
+Railway Station,Amersfoort,,Netherlands,QYM,,,6620,19DC
+Barberey,Troyes,,France,QYR,48.321619,4.016622,6621,19DD
 ,,,,QYT,,,6622,19DE
 ,,,,QYU,,,6623,19DF
-,,,,QYV,,,6624,1.90E+01
-,,,,QYZ,,,6625,1.90E+02
+Railway Station,Deventer,,Netherlands,QYV,,,6624,1.90E+01
+Bus Station,Heerenveen,,Netherlands,QYZ,,,6625,1.90E+02
 ,,,,QZH,,,6626,1.90E+03
 ,,,,QZK,,,6627,1.90E+04
-,,,,RBG,,,6628,1.90E+05
-,,,,RBW,,,6629,1.90E+06
-,,,,RIE,,,6630,1.90E+07
-,,,,RLO,,,6631,1.90E+08
-,,,,RMO,,,6632,1.90E+09
+Roseburg Regional,Roseburg,,United States,RBG,,,6628,1.90E+05
+Lowcountry Regional,Walterboro,,United States,RBW,,,6629,1.90E+06
+Rice Lake Regional/Carl's Field,Rice Lake,,United States,RIE,,,6630,1.90E+07
+Valle del Conlara Airport,Merlo,,Argentina,RLO,,,6631,1.90E+08
+,Chisinau,,Moldova,RMO,,,6632,1.90E+09
 ,,,,RMZ,,,6633,1.90E+10
-,,,,RNH,,,6634,19EA
-,,,,ROG,,,6635,19EB
-,,,,RON,,,6636,19EC
-,,,,RQY,,,6637,19ED
-,,,,RRJ,,,6638,19EE
-,,,,RSI,,,6639,19EF
-,,,,RSN,,,6640,19F0
-,,,,RUP,,,6641,19F1
+New Richmond Regional,New Richmond,,United States,RNH,,,6634,19EA
+Rogers Exec - Carter Field,Rogers,,United States,ROG,,,6635,19EB
+Juan Jos Rondn Airport,Paipa,,Colombia,RON,,,6636,19EC
+Kuvempu Airport,Shivamogga,,India,RQY,,,6637,19ED
+Jacarepagu-Roberto Marinho Airport,Rio de Janeiro,,Brazil,RRJ,-22.986666,-43.371943,6638,19EE
+Red Sea International Airport,Hanak,,Saudi Arabia,RSI,25.630278,37.078333,6639,19EF
+Ruston Regional,Ruston,,United States,RSN,,,6640,19F0
+,Rupsi,,India,RUP,,,6641,19F1
 ,,,,RXE,,,6642,19F2
-,,,,RZV,,,6643,19F3
-,,,,SAI,,,6644,19F4
-,,,,SAU,,,6645,19F5
-,,,,SBX,,,6646,19F6
-,,,,SCR,,,6647,19F7
-,,,,SDW,,,6648,19F8
-,,,,SEG,,,6649,19F9
-,,,,SET,,,6650,19FA
-,,,,SGT,,,6651,19FB
-,,,,SHQ,,,6652,19FC
-,,,,SHS,,,6653,19FD
-,,,,SHU,,,6654,19FE
-,,,,SLR,,,6655,19FF
-,,,,SLT,,,6656,1A00
-,,,,SPX,,,6657,1A01
-,,,,SPZ,,,6658,1A02
-,,,,SRC,,,6659,1A03
-,,,,SUM,,,6660,1A04
-,,,,SWW,,,6661,1A05
-,,,,SYI,,,6662,1A06
-,,,,SZC,,,6663,1A07
-,,,,TAD,,,6664,1A08
-,,,,TDW,,,6665,1A09
-,,,,TDZ,,,6666,1A0A
-,,,,TEK,,,6667,1A0B
-,,,,TFU,,,6668,1A0C
-,,,,THA,,,6669,1A0D
-,,,,THV,,,6670,1A0E
-,,,,TKY,,,6671,1A0F
-,,,,TQO,,,6672,1A10
-,,,,TQP,,,6673,1A11
-,,,,TQR,,,6674,1A12
+Rize-Artvin Airpot,Rize,,Turkey,RZV,41.169167,40.828889,6643,19F3
+Siem Reap-Angkor International Airport,Siem Reap,,Cambodia,SAI,13.369167,104.223056,6644,19F4
+Tardamu,Sabu,,Indonesia,SAU,,,6645,19F5
+,Shelby,,United States,SBX,48.540694,-111.871249,6646,19F6
+Scandinavia Mountains Airport,Slen,,Sweden,SCR,61.158056,12.841111,6647,19F7
+,Malvan,,India,SDW,,,6648,19F8
+Penn Valley Airport,Selinsgrove,,United States,SEG,,,6649,19F9
+Santa Magalhes Airport,Serra Talhada,,Brazil,SET,,,6650,19FA
+Stuttgart Municipal Carl Humphrey Field,Stuttgart,,United States,SGT,,,6651,19FB
+,Southport,,Australia,SHQ,-27.921666,153.371389,6652,19FC
+Jingzhou Shashi Airport,Jingzhou,,China,SHS,30.283,112.45,6653,19FD
+,Smith Point,,Australia,SHU,,,6654,19FE
+Sulphur Springs Municipal Airport,Sulphur Springs,,United States,SLR,,,6655,19FF
+Salida/Harriett Alexander Field,Salida,,United States,SLT,,,6656,1A00
+Sphinx International Airport,Giza,,Egypt,SPX,30.114117,30.910528,6657,1A01
+Springdale Municipal Airport,Springdale,,United States,SPZ,,,6658,1A02
+Searcy Regional,Searcy,,United States,SRC,,,6659,1A03
+,Sumter,,United States,SUM,33.995026,-80.361328,6660,1A04
+Avenger Field,Sweetwater,,United States,SWW,,,6661,1A05
+Bomar Field/Shelbyville Municipal Airport,Shelbyville,,United States,SYI,,,6662,1A06
+Guanacaste,Santa Cruz,,Costa Rica,SZC,,,6663,1A07
+Perry Stokes Airport,Trinidad,,United States,TAD,,,6664,1A08
+Tradewind Airport,Amarillo,,United States,TDW,,,6665,1A09
+Toledo Exec Airport,Toledo,,United States,TDZ,,,6666,1A0A
+,Tatitlek,,United States,TEK,60.872389,-146.691166,6667,1A0B
+Tianfu International Airport,Chengdu,,China,TFU,30.302222,104.449461,6668,1A0C
+Tullahoma Regional/William Northern Field,Tullahoma,,United States,THA,,,6669,1A0D
+,York,,United States,THV,39.917,-76.873027,6670,1A0E
+,Turkey Creek,,Australia,TKY,,,6671,1A0F
+Felipe Carrillo Puerto International Airport,Tulum,,Mxico,TQO,,,6672,1A10
+Trepell Airport,Trepell,,Australia,TQP,,,6673,1A11
+San Domino Island Heliport,San Domino,,Italy,TQR,,,6674,1A12
 ,,,,TRT,,,6675,1A13
-,,,,TTO,,,6676,1A14
-,,,,TTX,,,6677,1A15
-,,,,TWA,,,6678,1A16
-,,,,TYD,,,6679,1A17
+Britton Municipal Airport,Britton,,United States,TTO,,,6676,1A14
+,Truscott-Mungalalu,,Australia,TTX,-14.089721,126.380833,6677,1A15
+,Twin Hills,,United States,TWA,,,6678,1A16
+,Tynda,,Russian Federation (Russia),TYD,55.283333,124.777222,6679,1A17
 ,,,,TYQ,,,6680,1A18
-,,,,TZN,,,6681,1A19
-,,,,UBN,,,6682,1A1A
-,,,,UBU,,,6683,1A1B
-,,,,UCY,,,6684,1A1C
-,,,,UES,,,6685,1A1D
-,,,,UIR,,,6686,1A1E
-,,,,UIT,,,6687,1A1F
-,,,,UKE,,,6688,1A20
-,,,,ULL,,,6689,1A21
-,,,,UVI,,,6690,1A22
-,,,,VCB,,,6691,1A23
+South Andros Airport,Congo Town,,Bahamas,TZN,,,6681,1A19
+Chinggis Khaan International Airport,Ulan Bator,,Mongolia,UBN,,,6682,1A1A
+,Kalumburu,,Australia,UBU,,,6683,1A1B
+Everett-Stewart Regional,Union City,,United States,UCY,,,6684,1A1C
+Waukesha County Airport,Waukesha,,United States,UES,,,6685,1A1D
+,Quirindi,,Australia,UIR,,,6686,1A1E
+Jaluit Airport,Jabor Jaluit Atoll,,Marshall Islands,UIT,5.906667,169.641667,6687,1A1F
+Sevastopol International Airport,Sevastopol,,Ukraine,UKE,,,6688,1A20
+,Glenforsa,,United Kingdom,ULL,,,6689,1A21
+Jos Cleto Airport,Unio da Vitria,,Brazil,UVI,,,6690,1A22
+Nut Tree Airport,Vacaville,,United States,VCB,,,6691,1A23
 ,,,,VDF,,,6692,1A24
 ,,,,VIP,,,6693,1A25
-,,,,VJI,,,6694,1A26
-,,,,VPG,,,6695,1A27
-,,,,VUU,,,6696,1A28
-,,,,WAH,,,6697,1A29
+Virginia Highlands Airport,Abingdon,,United States,VJI,,,6694,1A26
+Vipingo Estate Airstrip,Vipingo,,Kenya,VPG,,,6695,1A27
+Mvuu Camp Airport,Liwonde,,Malawi,VUU,,,6696,1A28
+Harry Stern Airport,Wahpeton,,United States,WAH,,,6697,1A29
 ,,,,WDB,,,6698,1A2A
-,,,,WDG,,,6699,1A2B
-,,,,WGO,,,6700,1A2C
-,,,,WHA,,,6701,1A2D
-,,,,WHD,,,6702,1A2E
-,,,,WJA,,,6703,1A2F
-,,,,WLE,,,6704,1A30
-,,,,WLP,,,6705,1A31
-,,,,WPL,,,6706,1A32
-,,,,WSG,,,6707,1A33
-,,,,WSH,,,6708,1A34
-,,,,WSK,,,6709,1A35
-,,,,WTD,,,6710,1A36
-,,,,WTO,,,6711,1A37
-,,,,WUD,,,6712,1A38
-,,,,WUI,,,6713,1A39
-,,,,WZA,,,6714,1A3A
-,,,,XPR,,,6715,1A3B
-,,,,YAQ,,,6716,1A3C
-,,,,YHS,,,6717,1A3D
-,,,,YLX,,,6718,1A3E
-,,,,YTW,,,6719,1A3F
-,,,,ZFL,,,6720,1A40
+Enid Woodring Regional,Enid,,United States,WDG,,,6699,1A2B
+Winchester Regional,Winchester,,United States,WGO,,,6700,1A2C
+Wuhu Xuanzhou Airport,Wuhu,,China,WHA,31.104167,118.666667,6701,1A2D
+Hyder SPB,Hyder,,United States,WHD,55.90332,-130.006702,6702,1A2E
+,Woja,,Marshall Islands,WJA,,,6703,1A2F
+Miles Aerodrome,Miles,,Australia,WLE,,,6704,1A30
+West Angelas Airport,West Angelas,,Australia,WLP,,,6705,1A31
+Powell Lake Water Aerodrome,Powell River,,Canada,WPL,49.883,-124.533,6706,1A32
+Washington County Airport,Washington,,United States,WSG,,,6707,1A33
+Brookhaven Airport,Shirley,,United States,WSH,,,6708,1A34
+Chongqing Wushan Airport,Wushan,,China,WSK,,,6709,1A35
+,West End,,Bahamas,WTD,,,6710,1A36
+,Wotho Island,,Marshall Islands,WTO,,,6711,1A37
+,Wudinna,,Australia,WUD,,,6712,1A38
+Murrin Murrin Airport,Murrin Murrin,,Australia,WUI,,,6713,1A39
+Wa Airport,Wa,,Ghana,WZA,,,6714,1A3A
+,Pine Ridge,,United States,XPR,43.021274,-102.506605,6715,1A3B
+,Maple Bay,,Canada,YAQ,,,6716,1A3C
+Sunshine Coast Regional Airport,Sechelt-Gibsons,,Canada,YHS,,,6717,1A3D
+Yulin Fumian Airport,Yulin,,China,YLX,22.433333,110.120278,6718,1A3E
+Yutian Wanfang Airport,Yutian County,,China,YTW,36.810833,81.780833,6719,1A3F
+Zhaosu Tianma Airport,Zhaosu,,China,ZFL,43.1075,81.160556,6720,1A40
