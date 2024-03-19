@@ -10,9 +10,11 @@ class UserQueryUI extends Widget {
   private ButtonUI  clearListButton;
   private ButtonUI  removeSelectedButton;
   private ButtonUI  addItemButton;
+  private QueryLocationType m_location;
+  public int m_listCounter;
   private FlightQueryType m_dayQuery;
   private FlightType[] m_flights;
-  private int m_listCounter;
+  
 
   
   private FlightMultiDataType m_flightsLists;
@@ -91,11 +93,11 @@ class UserQueryUI extends Widget {
     m_queries.add(inputTextbox.getText());
 
     // Adds to query output field textbox thing
-    m_queryList.add(inputTextbox.getText());
+    m_queryList.add(inputTextbox.getText() );
     m_listCounter++;
     
     //Load New Query
-    loadData(); 
+    //loadData(); 
 
     // Set all user inputs back to default
     m_day.setText("");
@@ -109,18 +111,26 @@ class UserQueryUI extends Widget {
 
   private void clearQueries() {
     // Clear all currently saved user queries
+    m_queries.clear();
     m_queryList.clear();
+    
   }
 
   private void changeDataToUS() {
+    
+    m_location = QueryLocationType.US;
 
   }
 
   private void changeDataToWorld() {
+    
+    m_location = QueryLocationType.US;
+    
   }
 
   
   private int convertToFormat(int queryIndex, String query){
+    // If this is eventually redundant, feel free to remove it
     
     if(queryIndex == 0 || queryIndex == 2 || queryIndex == 7 ||  queryIndex == 10  || queryIndex == 2){
   

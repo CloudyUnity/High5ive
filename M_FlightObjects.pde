@@ -95,6 +95,31 @@ class FlightSortQueryType {
     this.SortDirection = sortDirection;
   }
 }
+class UserQuery {
+
+   public ArrayList<FlightQueryType> FlightQueries; 
+   
+   UserQuery(){
+   
+     FlightQueries = new ArrayList<FlightQueryType>(); 
+     
+   
+   }
+   
+   public void addQuery(FlightQueryType inputQuery){
+     FlightQueries.add(inputQuery);
+   }
+   
+   public void removeQuery(int indexRemoved){
+   FlightQueries.remove(indexRemoved);
+   }
+   public void clearQueries(){
+   
+     FlightQueries.clear();
+   
+   }
+
+}
 
 
 public enum QueryType {
