@@ -1,77 +1,59 @@
 class ApplicationClass {
   private int m_timeLastFrame = 0;
-  private int m_fixedFrameCounter = 0;
 
   private ArrayList<Screen> m_screens = new ArrayList<Screen>();
   private Screen m_currentScreen;
 
   private FlightsManagerClass m_flightsManager = new FlightsManagerClass();
   private QueryManagerClass m_queryManager = new QueryManagerClass();
-  private DebugFPSClass m_fpsClass = new DebugFPSClass();
 
-  private Event<SwitchScreenEventInfoType> m_onSwitchEvent = new Event<SwitchScreenEventInfoType>();
+  private EventType<SwitchScreenEventInfoType> m_onSwitchEvent = new EventType<SwitchScreenEventInfoType>();
 
   void init() {
     m_queryManager.init();
 
     m_onSwitchEvent.addHandler(e -> switchScreen(e));
 
-    Screen1 screen1 = new Screen1(displayWidth, displayHeight, SCREEN_1_ID);
+    Screen1 screen1 = new Screen1(SCREEN_1_ID);
     m_screens.add(screen1);
 
-    Screen2 screen2 = new Screen2(displayWidth, displayHeight, SCREEN_2_ID);
+    Screen2 screen2 = new Screen2(SCREEN_2_ID);
     m_screens.add(screen2);
 
-    Screen screenDemo = new FlightCodesBarchartDemo(displayWidth, displayHeight, SWITCH_TO_DEMO_ID);
+    Screen screenDemo = new FlightCodesBarchartDemo(SWITCH_TO_DEMO_ID);
     m_screens.add(screenDemo);
 
-    TwoDMapScreen screenFlightMap2D = new TwoDMapScreen(displayWidth, displayHeight, SCREEN_TWOD_MAP_ID, m_queryManager);
+    TwoDMapScreen screenFlightMap2D = new TwoDMapScreen(SCREEN_TWOD_MAP_ID, m_queryManager);
     m_screens.add(screenFlightMap2D);
 
-    ScreenFlightMap screenFlightMap3D = new ScreenFlightMap(displayWidth, displayHeight, SCREEN_FLIGHT_MAP_ID, m_queryManager);
+    ScreenFlightMap screenFlightMap3D = new ScreenFlightMap(SCREEN_FLIGHT_MAP_ID, m_queryManager);
     m_screens.add(screenFlightMap3D);
 
-    m_screens.add(new AlexTestingScreen(displayWidth, displayHeight, ALEX_TESTING_ID));
+    m_screens.add(new AlexTestingScreen(ALEX_TESTING_ID));
 
     m_currentScreen = m_screens.get(0);
-
     PVector windowSize = m_currentScreen.getScale();
     if (!FULLSCREEN_ENABLED)
       resizeWindow((int)windowSize.x, (int)windowSize.y);
 
-    if (DEBUG_DATA_LOADING) {
-      m_flightsManager.init("hex_flight_data.bin", "hex_world_data.bin", 4, list -> {
-        m_queryManager.queryFlights(list.WORLD, new FlightQuery(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperator.EQUAL, QueryLocation.WORLD), m_queryManager.getIndex("DUB"), 4, queriedList -> {
-          s_DebugProfiler.startProfileTimer();
-          screenFlightMap3D.startLoadingData(queriedList);
-          s_DebugProfiler.printTimeTakenMillis("Loading flight data into 3D flight map");
-        }
-        );
-      }
-      );
+    m_flightsManager.loadUSAndWorldFromFiles("hex_flight_data.bin", "hex_world_data.bin", 4, list -> {
+      screenFlightMap3D.insertFlightData(list);
     }
+    );
   }
 
   void frame() {
-
     s_deltaTime = millis() - m_timeLastFrame;
     m_timeLastFrame = millis();
-
-    if (m_fixedFrameCounter < millis()) {
-      fixedFrame();
-      m_fixedFrameCounter += FIXED_FRAME_INCREMENT;
-    }
 
     m_currentScreen.draw();
 
     if (DEBUG_MODE && DEBUG_FPS_ENABLED) {
       fill(255, 0, 0, 255);
       textSize(15);
-      text("FPS: " + m_fpsClass.calculateFPS(), width - 100, 10, 100, 100);
+      float fps =  round(frameRate * 100.0) / 100.0;
+      text("FPS: " + fps, width - 100, 10, 100, 100);
     }
-  }
-
-  void fixedFrame() {
   }
 
   void onMouseMoved() {
@@ -99,7 +81,7 @@ class ApplicationClass {
       m_currentScreen.getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(mouseX, mouseY, k, kc, m_currentScreen));
   }
 
-  public Event<SwitchScreenEventInfoType> getOnSwitchEvent() {
+  public EventType<SwitchScreenEventInfoType> getOnSwitchEvent() {
     return m_onSwitchEvent;
   }
 

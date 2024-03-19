@@ -9,10 +9,10 @@ class EventInfoType {
   }
 }
 
-class Event<T extends EventInfoType> {
+class EventType<T extends EventInfoType> {
   ArrayList<Consumer<T>> m_eventHandlers;
 
-  public Event() {
+  public EventType() {
     m_eventHandlers = new ArrayList<Consumer<T>>();
   }
 
@@ -71,12 +71,11 @@ class SwitchScreenEventInfoType extends EventInfoType {
     NewScreenId = newScreenId;
   }
 }
-class MouseWheelEventInfoType extends EventInfoType {
 
+class MouseWheelEventInfoType extends EventInfoType {
   public int wheelCount;
 
   public MouseWheelEventInfoType(int x, int y, int wheelCount, Widget widget) {
-
     super(x, y, widget);
     this.wheelCount = wheelCount;
   }

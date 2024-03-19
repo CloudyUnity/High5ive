@@ -1,6 +1,5 @@
 // Engine
 final int FRAME_RATE = 75;
-final int FIXED_FRAME_INCREMENT = 50;
 final boolean FULLSCREEN_ENABLED = true;
 
 // Data/Files
@@ -11,7 +10,6 @@ final String DATA_DIRECTOR_PATH = "/data/Preprocessed Data/";
 // Debug Options
 final boolean DEBUG_MODE = true; // Turns on various stats or console logging
 final int DEBUG_FPS_COUNTER_STORAGE = 30;
-final boolean DEBUG_DATA_LOADING = true;
 final boolean DEBUG_FPS_ENABLED = true;
 final boolean DEBUG_PRINT_3D_LOADING = false;
 
@@ -34,6 +32,7 @@ final int DEFAULT_SLIDER_FILLED_COLOUR = CP_BLUE;
 final int DEFAULT_TEXT_COLOUR_INSIDE = CP_BLACK;
 final int DEFAULT_TEXT_COLOUR_OUTSIDE = CP_WHITE;
 final int DEFAULT_SCREEN_COLOUR = CP_LIGHT_BLUE;
+final float WIDGET_GROW_MODE_MULT = 1.1f;
 
 // IDs
 final String SCREEN_1_ID = "Screen 1";
@@ -53,7 +52,6 @@ final PVector FORWARD_VECTOR = new PVector(0, 0, 1);
 // 3D Flight Map
 final boolean DEBUG_FAST_LOADING_3D = false;
 final int EARTH_Z_3D = -20;
-final float DAY_CYCLE_SPEED_3D = 0.00005f;
 final float VERTICAL_SCROLL_LIMIT_3D = 0.9f;
 final float VERTICAL_DRAG_SPEED_3D = 0.000003f;
 final float EARTH_FRICTION_3D = 0.99f;

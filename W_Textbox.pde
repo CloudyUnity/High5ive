@@ -3,9 +3,9 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
   private StringBuilder m_text;
   private int m_cursorPosition = 0;
 
-  private Event<KeyPressedEventInfoType> m_onKeyPressedEvent;
-  private Event<EventInfoType> m_onClickEvent;
-  private Event<StringEnteredEventInfoType> m_onStringEnteredEvent;
+  private EventType<KeyPressedEventInfoType> m_onKeyPressedEvent;
+  private EventType<EventInfoType> m_onClickEvent;
+  private EventType<StringEnteredEventInfoType> m_onStringEnteredEvent;
 
   private int m_timer = 30;
   private boolean m_drawBar = true;
@@ -17,9 +17,9 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
     m_backgroundColour = #FFFFFF;
     m_foregroundColour = 0;
     m_text = new StringBuilder();
-    m_onKeyPressedEvent = new Event<KeyPressedEventInfoType>();
-    m_onClickEvent = new Event<EventInfoType>();
-    m_onStringEnteredEvent = new Event<StringEnteredEventInfoType>();
+    m_onKeyPressedEvent = new EventType<KeyPressedEventInfoType>();
+    m_onClickEvent = new EventType<EventInfoType>();
+    m_onStringEnteredEvent = new EventType<StringEnteredEventInfoType>();
 
     m_onKeyPressedEvent.addHandler(e -> onKeyPressed(e));
   }
@@ -110,15 +110,15 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
     return m_userModifiable;
   }
 
-  public Event<EventInfoType> getOnClickEvent() {
+  public EventType<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
 
-  public Event<StringEnteredEventInfoType> getOnStringEnteredEvent() {
+  public EventType<StringEnteredEventInfoType> getOnStringEnteredEvent() {
     return m_onStringEnteredEvent;
   }
 
-  public Event<KeyPressedEventInfoType> getOnKeyPressedEvent() {
+  public EventType<KeyPressedEventInfoType> getOnKeyPressedEvent() {
     return m_onKeyPressedEvent;
   }
 }
