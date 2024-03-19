@@ -13,7 +13,10 @@ class UserQueryUI extends Widget {
   private FlightQuery m_dayQuery;
   private FlightType[] m_flights;
   private int m_listCounter;
-  private FlightsManagerClass m_flightsManager = new FlightsManagerClass();
+
+  
+  private FlightMultiDataType m_flightsLists;
+
 
   private Screen m_screen;
 
@@ -63,22 +66,22 @@ class UserQueryUI extends Widget {
     //   For example, the "save" button should call saveQuery() when clicked
   }
 
+  public void insertBaseData(FlightMultiDataType flightData) {
+    m_flightsLists = flightData;
+    m_onLoadDataEvent.accept(flightData.WORLD);
+    println("The first flights day in US: " + m_flightsLists.US[0].Day);
+  }
+
   public void setOnLoadHandler(Consumer<FlightType[]> dataEvent) {
     m_onLoadDataEvent = dataEvent;
   }
 
   private void loadData() {
-    // Load data here. Take info from all user inputs to build queries and apply them
-    FlightType[] result = m_flights;
-    int queryIndex = 0;
-    for(FlightQuery query : m_flightQueries){
-    
-      m_queryManager.queryFlights(result, query, convertToFormat(queryIndex, m_queries.get(queryIndex)), 4, m_onLoadDataEvent);
-    
-    }
-    
-     
-  
+
+    // Apply all saved queries to m_flightLists and apply result to the Consumer (m_onLoadDataEvent.accept(result))
+
+    FlightType[] result = null;
+
     m_onLoadDataEvent.accept(result);
     
   }
@@ -154,7 +157,7 @@ class UserQueryUI extends Widget {
 // M.Poole   fixed issue with key input not detecting and implemented Listbox Functionality
 
 /*  TODO!!!!!!!!!!!!!
-<<<<<<< HEAD
+
     1: Make loadData function as intended
     2: Test If you can add and seperate inputs from multiple textboxes at once
     4: Figure out how the f%&£ to switch data sets without breaking program

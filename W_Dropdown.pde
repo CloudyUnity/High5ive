@@ -1,6 +1,6 @@
 class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
-  private Event<EventInfoType> m_onClickEvent;
-  private Event<MouseWheelEventInfoType> m_onMouseWheelMoved;
+  private EventType<EventInfoType> m_onClickEvent;
+  private EventType<MouseWheelEventInfoType> m_onMouseWheelMoved;
 
   private Function<T, String> m_getDisplayString;
 
@@ -14,8 +14,8 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
 
     m_getDisplayString = getDisplayString;
 
-    m_onClickEvent = new Event<EventInfoType>();
-    m_onMouseWheelMoved = new Event<MouseWheelEventInfoType>();
+    m_onClickEvent = new EventType<EventInfoType>();
+    m_onMouseWheelMoved = new EventType<MouseWheelEventInfoType>();
 
     m_onClickEvent.addHandler(e -> onClick(e));
     m_onMouseWheelMoved.addHandler(e -> onMouseWheelMoved(e));
@@ -74,11 +74,11 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
     }
   }
 
-  public Event<EventInfoType> getOnClickEvent() {
+  public EventType<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
 
-  public Event<MouseWheelEventInfoType> getOnMouseWheelEvent() {
+  public EventType<MouseWheelEventInfoType> getOnMouseWheelEvent() {
     return m_onMouseWheelMoved;
   }
 

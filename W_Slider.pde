@@ -5,13 +5,13 @@ class SliderUI extends Widget implements IDraggable, IClickable {
   private int m_labelSpace;
   private double m_min, m_max, m_interval, m_value;
   private int m_filledColour;
-  private Event<MouseDraggedEventInfoType> m_onDraggedEvent;
-  private Event<EventInfoType> m_onClickEvent;
+  private EventType<MouseDraggedEventInfoType> m_onDraggedEvent;
+  private EventType<EventInfoType> m_onClickEvent;
 
   public SliderUI(int posX, int posY, int scaleX, int scaleY, double min, double max, double interval) {
     super(posX, posY, scaleX, scaleY);
-    m_onDraggedEvent = new Event<MouseDraggedEventInfoType>();
-    m_onClickEvent = new Event<EventInfoType>();
+    m_onDraggedEvent = new EventType<MouseDraggedEventInfoType>();
+    m_onClickEvent = new EventType<EventInfoType>();
     m_min = min;
     m_max = max;
     m_value = min;
@@ -47,11 +47,11 @@ class SliderUI extends Widget implements IDraggable, IClickable {
     return m_value;
   }
 
-  public Event<MouseDraggedEventInfoType> getOnDraggedEvent() {
+  public EventType<MouseDraggedEventInfoType> getOnDraggedEvent() {
     return m_onDraggedEvent;
   }
 
-  public Event<EventInfoType> getOnClickEvent() {
+  public EventType<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
 

@@ -1,6 +1,6 @@
 class FlightType { // 23 bytes total
   public byte Day;                      // supports all querys
-  public short CarrierCodeIndex;         // only supports EQUAL or NOT_EQUAL
+  public short CarrierCodeIndex;        // only supports EQUAL or NOT_EQUAL
   public short FlightNumber;            // only supports EQUAL or NOT_EQUAL
   public short AirportOriginIndex;      // only supports EQUAL or NOT_EQUAL
   public short AirportDestIndex;        // only supports EQUAL or NOT_EQUAL
@@ -45,13 +45,23 @@ class FlightType { // 23 bytes total
   }
 }
 
-class FlightQuery {
+class FlightMultiDataType {
+  public FlightType[] US;
+  public FlightType[] WORLD;
+  
+  FlightMultiDataType(FlightType[] us, FlightType[] world) {
+    this.US = us;
+    this.WORLD = world;
+  }
+}
+
+class FlightQueryType {
   public QueryType Type;
-  public QueryOperator Operator;
-  public QueryLocation Location;
+  public QueryOperatorType Operator;
+  public QueryLocationType Location;
 
 
-  FlightQuery(QueryType type, QueryOperator operator, QueryLocation location) {
+  FlightQueryType(QueryType type, QueryOperatorType operator, QueryLocationType location) {
     this.Type = type;
     this.Operator = operator;
     this.Location = location;
@@ -66,21 +76,21 @@ class FlightQuery {
   
 }
 
-class FlightRangeQuery {
+class FlightRangeQueryType {
   public QueryType Type;
-  public QueryLocation Location;
+  public QueryLocationType Location;
 
-  FlightRangeQuery(QueryType type, QueryLocation location) {
+  FlightRangeQueryType(QueryType type, QueryLocationType location) {
     this.Type = type;
     this.Location = location;
   }
 }
 
-class FlightSortQuery {
+class FlightSortQueryType {
   public QueryType Type;
-  public QuerySortDirection SortDirection;
+  public QuerySortDirectionType SortDirection;
 
-  FlightSortQuery(QueryType type, QuerySortDirection sortDirection) {
+  FlightSortQueryType(QueryType type, QuerySortDirectionType sortDirection) {
     this.Type = type;
     this.SortDirection = sortDirection;
   }
@@ -103,7 +113,7 @@ public enum QueryType {
   KILOMETRES_DISTANCE,
 }
 
-public enum QueryOperator {
+public enum QueryOperatorType {
   EQUAL,
   NOT_EQUAL,
   LESS_THAN,
@@ -112,12 +122,12 @@ public enum QueryOperator {
   GREATER_THAN_EQUAL,
 }
 
-public enum QuerySortDirection {
+public enum QuerySortDirectionType {
   ASCENDING,
   DESCENDING,
 }
 
-public enum QueryLocation {
+public enum QueryLocationType {
   US,
   WORLD,
 }

@@ -25,11 +25,6 @@ class DebugProfilerClass {
   }
 }
 
-class DebugFPSClass {
-  public float calculateFPS() {
-    return round(frameRate);
-  }
-}
-
 // Descending code authorship changes:
 // F. Wright, Created and implemented DebugProfilerClass using a stack, 2pm 06/03/24
+// F. Wright, Deleted DebugFPSClass, 9am 19/03/24

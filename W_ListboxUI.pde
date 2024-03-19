@@ -1,7 +1,7 @@
 class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
-  private Event<EventInfoType> m_onClickEvent;
-  private Event<ListboxSelectedEntryChangedEventInfoType<T>> m_onSelectedEntryChangedEvent;
-  private Event<MouseWheelEventInfoType> m_mouseWheelMovedEvent;
+  private EventType<EventInfoType> m_onClickEvent;
+  private EventType<ListboxSelectedEntryChangedEventInfoType<T>> m_onSelectedEntryChangedEvent;
+  private EventType<MouseWheelEventInfoType> m_mouseWheelMovedEvent;
   private ArrayList<ListboxEntry<T>> m_entries;
   private Function<T, String> m_getDisplayString;
   private int m_entryHeight;
@@ -14,9 +14,9 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
   public ListboxUI(int x, int y, int width, int maxHeight, int entryHeight, Function<T, String> getDisplayString) {
     super(x, y, width, maxHeight);
     m_getDisplayString = getDisplayString;
-    m_onClickEvent = new Event<EventInfoType>();
-    m_onSelectedEntryChangedEvent = new Event<ListboxSelectedEntryChangedEventInfoType<T>>();
-    m_mouseWheelMovedEvent = new Event<MouseWheelEventInfoType>();
+    m_onClickEvent = new EventType<EventInfoType>();
+    m_onSelectedEntryChangedEvent = new EventType<ListboxSelectedEntryChangedEventInfoType<T>>();
+    m_mouseWheelMovedEvent = new EventType<MouseWheelEventInfoType>();
     m_entries = new ArrayList<ListboxEntry<T>>();
     m_entryHeight = entryHeight;
     m_entryWidth = (int)m_scale.x;
@@ -51,15 +51,15 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
     }
   }
 
-  public Event<EventInfoType> getOnClickEvent() {
+  public EventType<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
 
-  public Event<ListboxSelectedEntryChangedEventInfoType<T>> getOnSelectedEntryChangedEvent() {
+  public EventType<ListboxSelectedEntryChangedEventInfoType<T>> getOnSelectedEntryChangedEvent() {
     return m_onSelectedEntryChangedEvent;
   }
 
-  public Event<MouseWheelEventInfoType> getOnMouseWheelEvent() {
+  public EventType<MouseWheelEventInfoType> getOnMouseWheelEvent() {
     return m_mouseWheelMovedEvent;
   }
 

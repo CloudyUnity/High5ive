@@ -2,10 +2,10 @@ import java.util.*;
 import java.nio.*;
 import java.io.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Consumer;
 import java.nio.channels.FileChannel;
-import java.util.concurrent.atomic.AtomicInteger;
 
 ApplicationClass s_ApplicationClass = new ApplicationClass();
 DebugProfilerClass s_DebugProfiler = new DebugProfilerClass();
@@ -37,21 +37,12 @@ void setup() {
 }
 
 void draw() {
-  //s_InputClass.frame();
   s_ApplicationClass.frame();
 }
 
-// Yes the application class one is necessary for the keypressed events, thats what broke the textbox.
-
 void keyPressed() {
-
-  //s_InputClass.setKeyState(key, true);
   s_ApplicationClass.onKeyPressed(key, keyCode);
 }
-
-//void keyReleased() {
-//  s_InputClass.setKeyState(key, false);
-//}
 
 void mousePressed() {
   s_ApplicationClass.onMouseClick();
@@ -65,7 +56,6 @@ void mouseDragged() {
   s_ApplicationClass.onMouseDragged();
 }
 void mouseWheel(MouseEvent event) {
-
   s_ApplicationClass.onMouseWheel(event.getCount());
 }
 void resizeWindow(int w, int h) {
