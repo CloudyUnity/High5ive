@@ -4,13 +4,13 @@ class UserQueryUI extends Widget {
 
   QueryManagerClass m_queryManager;
   private ArrayList<String> m_queries; // All query types are ordered like so (Day, Airline, FlightNum, Origin, Dest, SchDep, Dep, Depdelay, SchArr, Arr, ArrDelay, Cancelled, Dievrted, Miles  )
-  private ArrayList<FlightQuery> m_flightQueries;
+  private ArrayList<FlightQueryType> m_flightQueries;
   private ListboxUI m_queryList;
   private TextboxUI m_day;
   private ButtonUI  clearListButton;
   private ButtonUI  removeSelectedButton;
   private ButtonUI  addItemButton;
-  private FlightQuery m_dayQuery;
+  private FlightQueryType m_dayQuery;
   private FlightType[] m_flights;
   private int m_listCounter;
 
@@ -30,8 +30,8 @@ class UserQueryUI extends Widget {
     m_queryList = new ListboxUI<String>(20, 650, 200, 400, 40, v -> v);
     m_queries = new ArrayList<String>();
 
-    m_flightQueries = new ArrayList<FlightQuery>();
-    m_flights =  m_flightsManager.convertBinaryFileToFlightTypeAsync("data/Preprocessed_Data/hex_flight_data.csv", 4,  QueryLocation.US, 24);
+    m_flightQueries = new ArrayList<FlightQueryType>();
+    
     addWidget(m_queryList); 
    
 
@@ -56,7 +56,7 @@ class UserQueryUI extends Widget {
     m_day.setPlaceholderText("Day");
 
     
-    m_dayQuery = new FlightQuery(QueryType.DAY, QueryOperator.EQUAL, QueryLocation.US);
+    m_dayQuery = new FlightQueryType(QueryType.DAY, QueryOperatorType.EQUAL, QueryLocationType.US);
     m_flightQueries.add(m_dayQuery);
     //   m_flights = convertBinaryFileToFlightTypeAsync(String filename, int threadCount, QueryLocation queryLocation, int lineByteSize)
 
