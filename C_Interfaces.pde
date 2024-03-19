@@ -1,17 +1,17 @@
 interface IClickable {
-  public Event<EventInfoType> getOnClickEvent();
+  public EventType<EventInfoType> getOnClickEvent();
 }
 
 interface IDraggable {
-  public Event<MouseDraggedEventInfoType> getOnDraggedEvent();
+  public EventType<MouseDraggedEventInfoType> getOnDraggedEvent();
 }
 
 interface IKeyInput {
-  public Event<KeyPressedEventInfoType> getOnKeyPressedEvent();
+  public EventType<KeyPressedEventInfoType> getOnKeyPressedEvent();
 }
 
 interface IWheelInput {
-  public Event<MouseWheelEventInfoType> getOnMouseWheelEvent();
+  public EventType<MouseWheelEventInfoType> getOnMouseWheelEvent();
 }
 
 interface IChart<T> {

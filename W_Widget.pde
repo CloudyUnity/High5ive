@@ -21,10 +21,10 @@ abstract class Widget {
   protected int m_outlineColour = DEFAULT_OUTLINE_COLOUR;
 
   protected boolean m_drawOutlineEnabled = true;
-  protected Event<EventInfoType> m_onMouseEnterEvent = new Event<EventInfoType>();
-  protected Event<EventInfoType> m_onMouseExitEvent = new Event<EventInfoType>();
-  protected Event<EventInfoType> m_onFocusGainedEvent = new Event<EventInfoType>();
-  protected Event<EventInfoType> m_onFocusLostEvent = new Event<EventInfoType>();
+  protected EventType<EventInfoType> m_onMouseEnterEvent = new EventType<EventInfoType>();
+  protected EventType<EventInfoType> m_onMouseExitEvent = new EventType<EventInfoType>();
+  protected EventType<EventInfoType> m_onFocusGainedEvent = new EventType<EventInfoType>();
+  protected EventType<EventInfoType> m_onFocusLostEvent = new EventType<EventInfoType>();
 
   private boolean m_growMode = false;
   private float m_growMult = 1.0f;
@@ -197,19 +197,19 @@ abstract class Widget {
       m_onFocusLostEvent.raise(new EventInfoType(x, y, this));
   }
 
-  public Event<EventInfoType> getOnMouseEnterEvent() {
+  public EventType<EventInfoType> getOnMouseEnterEvent() {
     return m_onMouseEnterEvent;
   }
 
-  public Event<EventInfoType> getOnMouseExitEvent() {
+  public EventType<EventInfoType> getOnMouseExitEvent() {
     return m_onMouseExitEvent;
   }
 
-  public Event<EventInfoType> getOnFocusGainedEvent() {
+  public EventType<EventInfoType> getOnFocusGainedEvent() {
     return m_onFocusGainedEvent;
   }
 
-  public Event<EventInfoType> getOnFocusLostEvent() {
+  public EventType<EventInfoType> getOnFocusLostEvent() {
     return m_onFocusLostEvent;
   }
 }

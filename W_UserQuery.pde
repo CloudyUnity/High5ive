@@ -11,7 +11,7 @@ class UserQueryUI extends Widget {
   private ButtonUI  addItemButton;
   private int m_listCounter;
   
-  private FlightLists m_flightsLists;
+  private FlightMultiDataType m_flightsLists;
 
   private Screen m_screen;
 
@@ -49,8 +49,9 @@ class UserQueryUI extends Widget {
     //   For example, the "save" button should call saveQuery() when clicked
   }
 
-  public void insertBaseData(FlightLists flightData) {
+  public void insertBaseData(FlightMultiDataType flightData) {
     m_flightsLists = flightData;
+    m_onLoadDataEvent.accept(flightData.WORLD);
     println("The first flights day in US: " + m_flightsLists.US[0].Day);
   }
 
