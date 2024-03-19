@@ -39,10 +39,10 @@ for i in airports:
                 output.write(f",{i}," + j[8:11] + '\n')
 
         else:
-            print(f"Failed to retrieve data for airport {i}")
+            print(f"No routes from {i}")
 
     else:
-        print(f"Error code {response.status_code} for airport {i}")
+        print(f"Error code {response.status_code} for  {i}")
 
     time.sleep(random.randint(5, 10))
 
