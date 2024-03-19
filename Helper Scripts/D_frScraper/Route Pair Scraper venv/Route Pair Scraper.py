@@ -44,6 +44,6 @@ for i in airports:
     else:
         print(f"Error code {response.status_code} for airport {i}")
 
-    time.sleep(random.randint(10, 20))
+    time.sleep(random.randint(5, 10))
 
 output.close()
