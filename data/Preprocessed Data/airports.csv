@@ -6312,11 +6312,11 @@ Atlantic Municipal Airport,Atlantic,US,United States,AIO,41.403833,-95.048749,63
 George Downer Airport,Aliceville,,United States,AIV,,,6309,18A5
 ,Maasai Mara Game Reserve,,Kenya,ANA,,,6310,18A6
 Walnut Ridge Regional,Walnut Ridge,,United States,ARG,,,6311,18A7
-Drago do Mar Airport,Aracati,,Brazil,ARX,-4.56861,-37.804721,6312,18A8
+Drago do Mar Airport,Aracati,BR,Brazil,ARX,-4.56861,-37.804721,6312,18A8
 Aurora Municipal Airport,Chicago/Aurora,,United States,AUZ,,,6313,18A9
 West Memphis Municipal Airport,West Memphis,,United States,AWM,,,6314,18AA
 Neil Armstrong Airport,Wapakoneta,,United States,AXV,,,6315,18AB
-Maryada Purushottam Shri Ram International Airport,Ayodhya,,India,AYJ,26.753333,82.150278,6316,18AC
+Maryada Purushottam Shri Ram International Airport,Ayodhya,IN,India,AYJ,26.753333,82.150278,6316,18AC
 Broken Bow Municipal/Keith Glaze Field,Broken Bow,,United States,BBW,,,6317,18AD
 Virginia Tech / Montgomery Executive Airport,Blacksburg,,United States,BCB,,,6318,18AE
 Blanding Municipal Airport,Blanding,,United States,BDG,,,6319,18AF
@@ -6326,9 +6326,9 @@ Brookings Regional,Brookings,,United States,BKX,,,6322,18B2
 Monmouth Exec Airport,Belmar/Farmingdale,,United States,BLM,,,6323,18B3
 ,,,,BPA,,,6324,18B4
 ,Balgo Hill,,Australia,BQW,,,6325,18B5
-Aeropuerto Barreirinhas,Barreirinhas,,Brazil,BRB,-2.756666,-42.804443,6326,18B6
+Aeropuerto Barreirinhas,Barreirinhas,BR,Brazil,BRB,-2.756666,-42.804443,6326,18B6
 ,Blakely Island,,United States,BYW,,,6327,18B7
-Bazhong Enyang Airport,Bazhong,,China,BZX,31.737778,106.642778,6328,18B8
+Bazhong Enyang Airport,Bazhong,CN,China,BZX,31.737778,106.642778,6328,18B8
 Wexford County Airport,Cadillac,,United States,CAD,,,6329,18B9
 ,Cape Barren Island,,Australia,CBI,,,6330,18BA
 Shalz Field,Colby,,United States,CBK,,,6331,18BB
@@ -6336,19 +6336,19 @@ Crookston Municipal/Kirkwood Field,Crookston,,United States,CKN,,,6332,18BC
 ,Merritt Island,,United States,COI,28.341611,-80.685471,6333,18BD
 ,Coll Island,,United Kingdom,COL,,,6334,18BE
 St. Louis Downtown Airport,Cahokia/St. Louis,,United States,CPS,,,6335,18BF
-Chongqing Xiannvshan Airport,Wulong,,China,CQW,29.465833,107.692222,6336,18C0
+Chongqing Xiannvshan Airport,Wulong,CN,China,CQW,29.465833,107.692222,6336,18C0
 ,Collarenebri,,Australia,CRB,,,6337,18C1
 C David Campbell Field-Corsicana Municipal Airport,Corsicana,,United States,CRS,,,6338,18C2
 Lauriston,Hillsborough,,Grenada,CRU,,,6339,18C3
-,Carson City,,United States,CSN,39.192304,-119.73257,6340,18C4
+,Carson City,US,United States,CSN,39.192304,-119.73257,6340,18C4
 Clinton-Sampson County Airport,Clinton,,United States,CTZ,,,6341,18C5
 ,,,,CWF,,,6342,18C6
-Cat Cay Airport,North Cat Cay,,Bahamas,CXY,25.568,-79.292,6343,18C7
+Cat Cay Airport,North Cat Cay,BS,Bahamas,CXY,25.568,-79.292,6343,18C7
 Caye Chapel Airport,Caye Chapel,,Belize,CYC,,,6344,18C8
 ,Chisana,,United States,CZN,,,6345,18C9
 ,Darbhanga,,India,DBR,26.192786,85.916886,6346,18CA
 Defiance Memorial Airport,Defiance,,United States,DFI,,,6347,18CB
-Deoghar International Airport,Deoghar,,India,DGH,24.446667,86.705,6348,18CC
+Deoghar International Airport,Deoghar,IN,India,DGH,24.446667,86.705,6348,18CC
 ,Delta Junction,,United States,DJN,,,6349,18CD
 Katsina Airport,Katsina,,Nigeria,DKA,13.007831,7.66045,6350,18CE
 ,Dillon,,United States,DLN,45.255361,-112.552499,6351,18CF
