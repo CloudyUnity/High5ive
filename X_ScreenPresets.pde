@@ -1,6 +1,6 @@
 class Screen1 extends Screen {
-  public Screen1(int scaleX, int scaleY, String screenId) {
-    super(scaleX, scaleY, screenId, DEFAULT_SCREEN_COLOUR);
+  public Screen1(String screenId) {
+    super(screenId, DEFAULT_SCREEN_COLOUR);
 
     /* ButtonUI redBtn = createButton(50, 50, 200, 100);
      redBtn.getOnClickEvent().addHandler(e -> redButtonOnClick(e));
@@ -88,8 +88,8 @@ class Screen2 extends Screen {
   private BarChartUI m_barChart;
   private ArrayList<String> m_data;
 
-  public Screen2(int scaleX, int scaleY, String screenId) {
-    super(scaleX, scaleY, screenId, DEFAULT_SCREEN_COLOUR);
+  public Screen2(String screenId) {
+    super(screenId, DEFAULT_SCREEN_COLOUR);
 
     ButtonUI switchToScreen1Btn = createButton(width / 2 - 50, height / 2 - 50, 100, 100);
     switchToScreen1Btn.getOnMouseEnterEvent().addHandler(e -> changeOutlineColourOnEnter(e));
@@ -163,8 +163,8 @@ class FlightCodesBarchartDemo extends Screen {
   private BarChartUI<FlightType> chart;
   private ArrayList<FlightType> data;
 
-  public FlightCodesBarchartDemo(int scaleX, int scaleY, String screenId) {
-    super(scaleX, scaleY, screenId, color(150, 150, 150, 255));
+  public FlightCodesBarchartDemo(String screenId) {
+    super(screenId, color(150, 150, 150, 255));
 
     ButtonUI returnBtn = new ButtonUI(20, 20, 50, 50);
     returnBtn.setText("<-");
@@ -228,8 +228,8 @@ class TwoDMapScreen extends Screen {
   FlightMap2DUI m_flightMap;
   QueryManagerClass m_twodQueryManager;
 
-  public TwoDMapScreen (int scaleX, int scaleY, String screenId, QueryManagerClass query) {
-    super(scaleX, scaleY, screenId, DEFAULT_SCREEN_COLOUR);
+  public TwoDMapScreen (String screenId, QueryManagerClass query) {
+    super(screenId, DEFAULT_SCREEN_COLOUR);
 
     m_twodQueryManager = query;
     int currentUIPosY = 20;
@@ -257,145 +257,6 @@ class TwoDMapScreen extends Screen {
   }
 }
 
-class ScreenFlightMap extends Screen {
-  FlightMap3D m_flightMap3D;
-  QueryManagerClass m_queryManager;
-  EmptyWidgetUI m_flightMapUIParent;
-  UserQueryUI m_userQueryUI;
-
-  public ScreenFlightMap(int scaleX, int scaleY, String screenId, QueryManagerClass query) {
-    super(scaleX, scaleY, screenId, color(0, 0, 0, 255));
-
-    m_queryManager = query;
-
-    int dragWindowX = width - 400;
-    int dragWindowY = height;
-    m_flightMap3D = new FlightMap3D(200, 0, dragWindowX, dragWindowY);
-    // addWidget(m_flightMap3D);
-
-    // ATTENTION MATTHEW, SEE HERE!
-    m_userQueryUI = new UserQueryUI(0, 60, 1, 1, query, this);
-    addWidget(m_userQueryUI);
-    m_userQueryUI.setOnLoadHandler(flights -> {
-      m_flightMap3D.loadFlights(flights, query);
-    }
-    );
-
-    m_flightMapUIParent = new EmptyWidgetUI(0, 0);
-    int currentUIPosY = 60;
-    int textSize = 20;
-
-    ButtonUI uiBackground = createButton(0, 0, 200, 00);
-    uiBackground.setHighlightOutlineOnEnter(false);
-    uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
-
-    ButtonUI returnBttn = createButton(20, currentUIPosY, 160, 50);
-    returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
-    returnBttn.setGrowMode(true);
-    returnBttn.setText("Return");
-    returnBttn.setTextSize(textSize);
-    returnBttn.getLabel().setCentreAligned(true);
-    returnBttn.setParent(m_flightMapUIParent);
-
-    currentUIPosY += 60;
-
-    CheckboxUI dayNightCB = createCheckbox(20, currentUIPosY, 50, 50, "Perma-Day");
-    dayNightCB.setGrowMode(true);
-    dayNightCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setPermaDay(dayNightCB.getChecked()));
-    dayNightCB.getLabel().setTextXOffset(0);
-    dayNightCB.setTextSize(textSize);
-    dayNightCB.getLabel().setCentreAligned(true);
-    dayNightCB.getLabel().setScale(130, 50);
-    dayNightCB.getLabel().setParent(m_flightMapUIParent);
-    dayNightCB.setParent(m_flightMapUIParent);
-
-    currentUIPosY += 60;
-
-    CheckboxUI connectionsEnabledCB = createCheckbox(20, currentUIPosY, 50, 50, "Connections");
-    connectionsEnabledCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setConnectionsEnabled(connectionsEnabledCB.getChecked()));
-    connectionsEnabledCB.setGrowMode(true);
-    connectionsEnabledCB.setChecked(true);
-    connectionsEnabledCB.getLabel().setTextXOffset(0);
-    connectionsEnabledCB.setTextSize(textSize);
-    connectionsEnabledCB.getLabel().setCentreAligned(true);
-    connectionsEnabledCB.getLabel().setScale(130, 50);
-    connectionsEnabledCB.getLabel().setParent(m_flightMapUIParent);
-    connectionsEnabledCB.setParent(m_flightMapUIParent);
-
-    currentUIPosY += 60;
-
-    CheckboxUI markersEnabledCB = createCheckbox(20, currentUIPosY, 50, 50, "Markers");
-    markersEnabledCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setMarkersEnabled(markersEnabledCB.getChecked()));
-    markersEnabledCB.setGrowMode(true);
-    markersEnabledCB.setChecked(true);
-    markersEnabledCB.getLabel().setTextXOffset(0);
-    markersEnabledCB.setTextSize(textSize);
-    markersEnabledCB.getLabel().setCentreAligned(true);
-    markersEnabledCB.getLabel().setScale(130, 50);
-    markersEnabledCB.getLabel().setParent(m_flightMapUIParent);
-    markersEnabledCB.setParent(m_flightMapUIParent);
-
-    currentUIPosY += 60;
-
-    CheckboxUI airportTextCB = createCheckbox(20, currentUIPosY, 50, 50, "Text");
-    airportTextCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setTextEnabled(airportTextCB.getChecked()));
-    airportTextCB.setGrowMode(true);
-    airportTextCB.setChecked(true);
-    airportTextCB.getLabel().setTextXOffset(0);
-    airportTextCB.setTextSize(textSize);
-    airportTextCB.getLabel().setCentreAligned(true);
-    airportTextCB.getLabel().setScale(130, 50);
-    airportTextCB.getLabel().setParent(m_flightMapUIParent);
-    airportTextCB.setParent(m_flightMapUIParent);
-
-    currentUIPosY += 60;
-
-    CheckboxUI lockTimeCB = createCheckbox(20, currentUIPosY, 50, 50, "Lock Time");
-    lockTimeCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setLockTime(lockTimeCB.getChecked()));
-    lockTimeCB.setGrowMode(true);
-    lockTimeCB.setChecked(false);
-    lockTimeCB.getLabel().setTextXOffset(0);
-    lockTimeCB.setTextSize(textSize);
-    lockTimeCB.getLabel().setCentreAligned(true);
-    lockTimeCB.getLabel().setScale(130, 50);
-    lockTimeCB.getLabel().setParent(m_flightMapUIParent);
-    lockTimeCB.setParent(m_flightMapUIParent);
-
-    currentUIPosY += 60;
-
-    ButtonUI resetArcGrow = createButton(20, currentUIPosY, 160, 50);
-    resetArcGrow.getOnClickEvent().addHandler(e -> m_flightMap3D.setArcGrowMillis(10_000, 0));
-    resetArcGrow.setGrowMode(true);
-    resetArcGrow.setText("Reset Arcs");
-    resetArcGrow.setTextSize(textSize);
-    resetArcGrow.getLabel().setCentreAligned(true);
-    resetArcGrow.setParent(m_flightMapUIParent);
-
-    currentUIPosY += 60;
-
-    SliderUI dayCycleSlider = createSlider(20, currentUIPosY, 160, 50, 0.00005f, 0.005f, 0.00001f);
-    dayCycleSlider.getOnDraggedEvent().addHandler(e -> m_flightMap3D.setDayCycleSpeed((float)dayCycleSlider.getValue()));
-    dayCycleSlider.setParent(m_flightMapUIParent);
-
-    LabelUI sliderLabel = createLabel(20, currentUIPosY, 160, 50, "Time Speed");
-    sliderLabel.setTextSize(15);
-    sliderLabel.setCentreAligned(true);
-    sliderLabel.setParent(m_flightMapUIParent);
-
-    currentUIPosY += 60;
-
-    LabelUI label = createLabel(20, 10, 150, 40, "3D Flight Map");
-    label.setForegroundColour(color(255, 255, 255, 255));
-    label.setTextSize(30);
-    label.setParent(m_flightMapUIParent);   
-  }
-
-  public void insertFlightData(FlightLists flights) {
-    // m_flightMap3D.loadFlights(flights, m_queryManager);
-    m_userQueryUI.insertBaseData(flights);
-  }
-}
-
 class AlexTestingScreen extends Screen {
   private TextboxUI box;
   private ListboxUI<String> list;
@@ -406,8 +267,8 @@ class AlexTestingScreen extends Screen {
   private ImageUI imageBox;
   private int counter = 0;
 
-  public AlexTestingScreen(int scaleX, int scaleY, String screenId) {
-    super(scaleX, scaleY, screenId, color(220, 220, 220, 255));
+  public AlexTestingScreen(String screenId) {
+    super(screenId, color(220, 220, 220, 255));
     box = new TextboxUI(50, 70, 200, 50);
     list = new ListboxUI<String>(50, 170, 200, 400, 40, v -> v);
     imageBox = new ImageUI(400, 50, 60, 60);

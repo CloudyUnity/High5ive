@@ -1,7 +1,7 @@
 class CheckboxUI extends Widget implements IClickable {
   private LabelUI m_label;
   private int m_textPadding;
-  private Event<EventInfoType> m_onClickEvent;
+  private EventType<EventInfoType> m_onClickEvent;
   private boolean m_checked;
   private color m_checkedColour = DEFAULT_CHECKBOX_CHECKED_COLOUR;
 
@@ -11,7 +11,7 @@ class CheckboxUI extends Widget implements IClickable {
     m_label.setForegroundColour(DEFAULT_TEXT_COLOUR_OUTSIDE);
     m_textPadding = 5;
 
-    m_onClickEvent = new Event<EventInfoType>();
+    m_onClickEvent = new EventType<EventInfoType>();
     m_onClickEvent.addHandler(e -> {
       m_checked = !m_checked;
     }
@@ -28,7 +28,7 @@ class CheckboxUI extends Widget implements IClickable {
     m_label.draw();
   }
 
-  public Event<EventInfoType> getOnClickEvent() {
+  public EventType<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
 

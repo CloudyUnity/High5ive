@@ -1,13 +1,12 @@
 class FlightMap3D extends Widget implements IDraggable, IWheelInput {
 
-  private Event<MouseDraggedEventInfoType> m_onDraggedEvent = new Event<MouseDraggedEventInfoType>();
-  private Event<MouseWheelEventInfoType> m_onWheelEvent = new Event<MouseWheelEventInfoType>();
+  private EventType<MouseDraggedEventInfoType> m_onDraggedEvent = new EventType<MouseDraggedEventInfoType>();
+  private EventType<MouseWheelEventInfoType> m_onWheelEvent = new EventType<MouseWheelEventInfoType>();
 
-  private PShape m_earthModel, m_sunModel, m_skySphere;
-  private PImage m_earthDayTex, m_earthNightTex, m_sunTex;
-  private PImage m_earthNormalTex, m_earthSpecularMap, m_noiseImg;
-  private PShader m_earthShader, m_sunShader, m_postProcessingShader, m_skyboxShader;
-  private PImage m_starsTex;
+  private PShape m_modelEarth, m_modelSun, m_modelSkySphere;
+  private PImage m_texEarthDay, m_texEarthNight, m_texSun, m_texSkySphereStars;
+  private PImage m_texEarthNormalMap, m_texEarthSpecularMap, m_texDitherNoise;
+  private PShader m_shaderEarth, m_shaderSun, m_shaderPP, m_shaderSkySphere;
 
   private PVector m_earthRotation = new PVector(0, 0, 0);
   private PVector m_earthRotationalVelocity = new PVector(0, 0, 0);
@@ -35,47 +34,17 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   private PVector m_earthPos;
   private float m_earthRadius;
 
+  //================================================
+  // ASSET LOADING
+  //================================================
+
   public FlightMap3D(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
-    m_starsTex = loadImage("data/Images/Stars2k.jpg");
+    m_texSkySphereStars = loadImage("data/Images/Stars2k.jpg"); // Loaded early for loading screen image
     m_earthRadius = height * 0.38f;
 
     new Thread(() -> {
-      m_earthModel = s_3D.createShape(SPHERE, m_earthRadius);
-      m_earthModel.disableStyle();
-      m_earthDayTex = loadImage("data/Images/EarthDay2k.jpg");
-      m_earthNightTex = loadImage("data/Images/EarthNight2k.jpg");
-      m_earthNormalTex = loadImage("data/Images/EarthNormalAlt.jpg");
-
-      m_earthShader = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
-      m_earthShader.set("texDay", m_earthDayTex);
-      m_earthShader.set("texNight", m_earthNightTex);
-      m_earthShader.set("normalMap", m_earthNormalTex);
-
-      if (DEBUG_FAST_LOADING_3D) {
-        m_assetsLoaded = true;
-        return;
-      }
-
-      m_sunModel = s_3D.createShape(SPHERE, 40);
-      m_skySphere = s_3D.createShape(SPHERE, 3840);
-      m_sunModel.disableStyle();
-      m_skySphere.disableStyle();
-
-      m_sunTex = loadImage("data/Images/Sun2k.jpg");
-      m_noiseImg = loadImage("data/Images/noise.png");
-      m_earthSpecularMap = loadImage("data/Images/EarthSpecular2k.tif");
-      m_sunShader = loadShader("data/Shaders/SunFrag.glsl", "data/Shaders/BaseVert.glsl");
-      m_postProcessingShader = loadShader("data/Shaders/PostProcessing.glsl");
-      m_skyboxShader = loadShader("data/Shaders/SkyboxFrag.glsl", "data/Shaders/SkyboxVert.glsl");
-
-      m_earthShader.set("specularMap", m_earthSpecularMap);
-      m_sunShader.set("tex", m_sunTex);
-      m_postProcessingShader.set("noise", m_noiseImg);
-      m_skyboxShader.set("tex", m_starsTex);
-      setPermaDay(false);
-
-      m_assetsLoaded = true;
+      initAssetsAsync();
     }
     ).start();
 
@@ -85,252 +54,42 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_onWheelEvent.addHandler(e -> onWheelHandler(e));
   }
 
-  @ Override
-    public void draw() {
-    super.draw();
+  private void initAssetsAsync() {
+    m_modelEarth = s_3D.createShape(SPHERE, m_earthRadius);
+    m_modelEarth.disableStyle();
+    m_texEarthDay = loadImage("data/Images/EarthDay2k.jpg");
+    m_texEarthNight = loadImage("data/Images/EarthNight2k.jpg");
+    m_texEarthNormalMap = loadImage("data/Images/EarthNormalAlt.jpg");
 
-    m_earthRotation.add(m_earthRotationalVelocity);
-    m_earthRotationalVelocity.mult(EARTH_FRICTION_3D);
-    m_earthRotation.x = clamp(m_earthRotation.x, -VERTICAL_SCROLL_LIMIT_3D, VERTICAL_SCROLL_LIMIT_3D);
-    m_arcFraction = (millis() - m_arcStartGrowMillis) / m_arcGrowMillis;
-    m_arcFraction = clamp(m_arcFraction, 0.0f, 1.0f);
+    m_shaderEarth = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
+    m_shaderEarth.set("texDay", m_texEarthDay);
+    m_shaderEarth.set("texNight", m_texEarthNight);
+    m_shaderEarth.set("normalMap", m_texEarthNormalMap);
 
-    if (!m_assetsLoaded || !m_drawnLoadingScreen || !m_flightDataLoaded) {
-      image(m_starsTex, 0, 0, width, height);
-
-      textAlign(CENTER);
-      fill(255, 255, 255, 255);
-      textSize(50);
-      text("Loading...", width/2, height/2);
-      m_drawnLoadingScreen = true;
+    if (DEBUG_FAST_LOADING_3D) {
+      m_assetsLoaded = true;
       return;
     }
 
-    if (!m_lockTime)
-      m_totalTimeElapsed += s_deltaTime * m_dayCycleSpeed;
+    m_modelSun = s_3D.createShape(SPHERE, 40);
+    m_modelSkySphere = s_3D.createShape(SPHERE, 3840);
+    m_modelSun.disableStyle();
+    m_modelSkySphere.disableStyle();
 
-    PVector lightDir = new PVector(cos(m_totalTimeElapsed), 0, sin(m_totalTimeElapsed));
-    m_earthShader.set("lightDir", lightDir);
-    // m_earthShader.set("mousePos", (float)mouseX / (float)width, (float)mouseY / (float)height);
-    m_rotationYModified = m_earthRotation.y + m_totalTimeElapsed;
-    m_earthPos.z = EARTH_Z_3D + m_zoomLevel;
+    m_texSun = loadImage("data/Images/Sun2k.jpg");
+    m_texDitherNoise = loadImage("data/Images/noise.png");
+    m_texEarthSpecularMap = loadImage("data/Images/EarthSpecular2k.tif");
+    m_shaderSun = loadShader("data/Shaders/SunFrag.glsl", "data/Shaders/BaseVert.glsl");
+    m_shaderPP = loadShader("data/Shaders/PostProcessing.glsl");
+    m_shaderSkySphere = loadShader("data/Shaders/SkyboxFrag.glsl", "data/Shaders/SkyboxVert.glsl");
 
-    if (!DEBUG_FAST_LOADING_3D)
-      m_sunShader.set("texTranslation", 0, m_totalTimeElapsed * 0.5f);
+    m_shaderEarth.set("specularMap", m_texEarthSpecularMap);
+    m_shaderSun.set("tex", m_texSun);
+    m_shaderPP.set("noise", m_texDitherNoise);
+    m_shaderSkySphere.set("tex", m_texSkySphereStars);
+    setPermaDay(false);
 
-    drawEarth();
-
-    if (!DEBUG_FAST_LOADING_3D) {
-      drawSun(lightDir);
-    }
-
-    drawMarkersAndConnections();
-    if (m_textEnabled)
-      drawMarkerText();
-
-    if (DITHER_MODE_3D && !DEBUG_FAST_LOADING_3D)
-      s_3D.filter(m_postProcessingShader);
-
-    if (!DEBUG_FAST_LOADING_3D) {
-      drawSkybox();
-    }
-
-    s_3D.endDraw();
-
-    image(s_3D, 0, 0);
-  }
-
-  void drawEarth() {
-    s_3D.beginDraw();
-    s_3D.clear();
-    s_3D.noStroke();
-    s_3D.fill(255);
-
-    s_3D.pushMatrix();
-    s_3D.shader(m_earthShader);
-    s_3D.textureWrap(CLAMP);
-
-    s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
-    s_3D.rotateX(m_earthRotation.x);
-    s_3D.rotateY(m_rotationYModified);
-
-    s_3D.shape(m_earthModel);
-    s_3D.resetShader();
-    s_3D.popMatrix();
-  }
-
-  void drawSun(PVector lightDir) {
-    PVector sunTranslation = lightDir.copy().mult(-3000);
-    s_3D.shader(m_sunShader);
-    s_3D.textureWrap(REPEAT);
-
-    s_3D.pushMatrix();
-    s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
-    s_3D.rotateX(m_earthRotation.x);
-    s_3D.rotateY(m_rotationYModified);
-    s_3D.translate(sunTranslation.x, sunTranslation.y, sunTranslation.z);
-
-    s_3D.shape(m_sunModel);
-    s_3D.popMatrix();
-    s_3D.resetShader();
-    s_3D.textureWrap(CLAMP);
-  }
-
-  void drawSkybox() {
-    s_3D.pushMatrix();
-    s_3D.shader(m_skyboxShader);
-
-    s_3D.rotateX(m_earthRotation.x);
-    s_3D.rotateY(m_earthRotation.y);
-
-    s_3D.shape(m_skySphere);
-    s_3D.resetShader();
-    s_3D.popMatrix();
-  }
-
-  void drawMarkersAndConnections() {
-    s_3D.strokeWeight(ARC_SIZE_3D);
-    s_3D.noFill();
-
-    s_3D.pushMatrix();
-    s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
-    s_3D.rotateX(m_earthRotation.x);
-    s_3D.rotateY(m_rotationYModified);
-
-    for (AirportPoint3DType point : m_airportHashmap.values()) {
-      PVector endline = point.Pos.copy().mult(1 + (0.05f * m_arcFraction));
-
-      if (m_markersEnabled) {
-        s_3D.stroke(point.Color);
-        s_3D.line(point.Pos.x, point.Pos.y, point.Pos.z, endline.x, endline.y, endline.z);
-      }
-
-      if (m_connectionsEnabled) {
-        s_3D.stroke(255, 255, 255, 255);
-        drawGreatCircleArcFast(point);
-      }
-    }
-
-    s_3D.fill(255);
-    s_3D.noStroke();
-    s_3D.popMatrix();
-  }
-
-  void drawMarkerText() {
-    s_3D.fill(255, 255, 255, 255);
-    s_3D.textAlign(CENTER);
-    s_3D.textSize(TEXT_SIZE_3D);
-
-    for (AirportPoint3DType point : m_airportHashmap.values()) {
-      float verticalDisplacement = point.Pos.y > 0 ? TEXT_DISPLACEMENT_3D.y : -TEXT_DISPLACEMENT_3D.y;
-
-      s_3D.pushMatrix();
-      s_3D.translate(m_earthPos.x, m_earthPos.y + verticalDisplacement, m_earthPos.z + TEXT_DISPLACEMENT_3D.z);
-      s_3D.rotateX(m_earthRotation.x);
-      s_3D.rotateY(m_rotationYModified);
-      s_3D.translate(point.Pos.x, point.Pos.y, point.Pos.z);
-      s_3D.rotateY(-m_rotationYModified);
-      s_3D.rotateX(-m_earthRotation.x);
-
-      s_3D.text(point.Name, 0, 0);
-      s_3D.popMatrix();
-    }   
-  }
-
-  public Event<MouseDraggedEventInfoType> getOnDraggedEvent() {
-    return m_onDraggedEvent;
-  }
-
-  private void onDraggedHandler(MouseDraggedEventInfoType e) {
-    PVector deltaDrag = new PVector( -(e.Y - e.PreviousPos.y) * 2, e.X - e.PreviousPos.x);
-    deltaDrag.mult(s_deltaTime).mult(VERTICAL_DRAG_SPEED_3D);
-    m_earthRotationalVelocity.add(deltaDrag);
-  }
-
-  public Event<MouseWheelEventInfoType> getOnMouseWheelEvent() {
-    return m_onWheelEvent;
-  }
-
-  private void onWheelHandler(MouseWheelEventInfoType e) {
-    m_zoomLevel -= e.wheelCount * MOUSE_SCROLL_STRENGTH_3D;
-    m_zoomLevel = clamp(m_zoomLevel, -500, 350);
-  }
-
-  private AirportPoint3DType manualAddPoint(double latitude, double longitude, String code) {
-    PVector pos = coordsToPointOnSphere(latitude, longitude, m_earthRadius);
-    AirportPoint3DType point = new AirportPoint3DType(pos, code);
-    m_airportHashmap.put(code, point);
-    return point;
-  }
-
-  void drawGreatCircleArcFast(AirportPoint3DType point) {
-    for (var connection : point.ConnectionArcPoints) {
-      PVector lastPos = connection.get(0);
-
-      float connectionSize = connection.size();
-      for (int i = 1; i < connection.size(); i++) {
-        PVector pointOnArc = connection.get(i);
-        float t = i / connectionSize;
-
-        if (t > m_arcFraction) {
-          float lastT = (i-1) / connectionSize;
-          float frac = (m_arcFraction - lastT) / (t - lastT);
-          pointOnArc = PVector.lerp(lastPos, pointOnArc, frac);
-          s_3D.line(lastPos.x, lastPos.y, lastPos.z, pointOnArc.x, pointOnArc.y, pointOnArc.z);
-          break;
-        }
-
-        s_3D.line(lastPos.x, lastPos.y, lastPos.z, pointOnArc.x, pointOnArc.y, pointOnArc.z);
-        lastPos = pointOnArc;
-      }
-    }
-  }
-
-  ArrayList<PVector> cacheArcPoints(PVector p1, PVector p2) {
-    float distance = p1.dist(p2);
-    float distMult = lerp(0.1f, 1.0f, distance / 700);
-    ArrayList<PVector> cacheResult = new ArrayList<PVector>();
-    cacheResult.ensureCapacity(m_arcSegments  + 1);
-    cacheResult.add(p1);
-
-    for (int i = 1; i < m_arcSegments; i++) {
-      float t = i / (float)m_arcSegments;
-      float bonusHeight = distMult * ARC_HEIGHT_MULT_3D * t * (1-t) + 1;
-      PVector pointOnArc = slerp(p1, p2, t).mult(m_earthRadius * bonusHeight);
-      cacheResult.add(pointOnArc);
-    }
-
-    cacheResult.add(p2);
-    return cacheResult;
-  }
-
-  public void setArcGrowMillis(float timeTakenMillis, int delay) {
-    m_arcStartGrowMillis = millis() + delay;
-    m_arcGrowMillis = timeTakenMillis;
-  }
-
-  public void setPermaDay(boolean enabled) {
-    m_earthShader.set("permaDay", enabled ? 10.0f : 0.0f);
-  }
-
-  public void setConnectionsEnabled(boolean enabled) {
-    m_connectionsEnabled = enabled;
-  }
-
-  public void setTextEnabled(boolean enabled) {
-    m_textEnabled = enabled;
-  }
-
-  public void setMarkersEnabled(boolean enabled) {
-    m_markersEnabled = enabled;
-  }
-
-  public void setLockTime(boolean enabled) {
-    m_lockTime = enabled;
-  }
-  
-  public void setDayCycleSpeed(float speed) {
-    m_dayCycleSpeed = speed;
+    m_assetsLoaded = true;
   }
 
   public void loadFlights(FlightType[] flights, QueryManagerClass queries) {
@@ -381,7 +140,267 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     }
 
     m_flightDataLoaded = true;
-  }  
+  }
+
+  private AirportPoint3DType manualAddPoint(double latitude, double longitude, String code) {
+    PVector pos = coordsToPointOnSphere(latitude, longitude, m_earthRadius);
+    AirportPoint3DType point = new AirportPoint3DType(pos, code);
+    m_airportHashmap.put(code, point);
+    return point;
+  }
+
+  ArrayList<PVector> cacheArcPoints(PVector p1, PVector p2) {
+    float distance = p1.dist(p2);
+    float distMult = lerp(0.1f, 1.0f, distance / 700);
+    ArrayList<PVector> cacheResult = new ArrayList<PVector>();
+    cacheResult.ensureCapacity(m_arcSegments  + 1);
+    cacheResult.add(p1);
+
+    for (int i = 1; i < m_arcSegments; i++) {
+      float t = i / (float)m_arcSegments;
+      float bonusHeight = distMult * ARC_HEIGHT_MULT_3D * t * (1-t) + 1;
+      PVector pointOnArc = slerp(p1, p2, t).mult(m_earthRadius * bonusHeight);
+      cacheResult.add(pointOnArc);
+    }
+
+    cacheResult.add(p2);
+    return cacheResult;
+  }
+
+  //================================================
+  // RENDERING
+  //================================================
+
+  @ Override
+    public void draw() {
+    super.draw();
+
+    m_earthRotation.add(m_earthRotationalVelocity);
+    m_earthRotationalVelocity.mult(EARTH_FRICTION_3D);
+    m_earthRotation.x = clamp(m_earthRotation.x, -VERTICAL_SCROLL_LIMIT_3D, VERTICAL_SCROLL_LIMIT_3D);
+    m_arcFraction = (millis() - m_arcStartGrowMillis) / m_arcGrowMillis;
+    m_arcFraction = clamp(m_arcFraction, 0.0f, 1.0f);
+
+    if (!m_assetsLoaded || !m_drawnLoadingScreen || !m_flightDataLoaded) {
+      image(m_texSkySphereStars, 0, 0, width, height);
+
+      textAlign(CENTER);
+      fill(255, 255, 255, 255);
+      textSize(50);
+      text("Loading...", width/2, height/2);
+      m_drawnLoadingScreen = true;
+      return;
+    }
+
+    if (!m_lockTime)
+      m_totalTimeElapsed += s_deltaTime * m_dayCycleSpeed;
+
+    PVector lightDir = new PVector(cos(m_totalTimeElapsed), 0, sin(m_totalTimeElapsed));
+    m_shaderEarth.set("lightDir", lightDir);
+    // m_earthShader.set("mousePos", (float)mouseX / (float)width, (float)mouseY / (float)height);
+    m_rotationYModified = m_earthRotation.y + m_totalTimeElapsed;
+    m_earthPos.z = EARTH_Z_3D + m_zoomLevel;
+
+    if (!DEBUG_FAST_LOADING_3D)
+      m_shaderSun.set("texTranslation", 0, m_totalTimeElapsed * 0.5f);
+
+    drawEarth();
+
+    if (!DEBUG_FAST_LOADING_3D) {
+      drawSun(lightDir);
+    }
+
+    drawMarkersAndConnections();
+    if (m_textEnabled)
+      drawMarkerText();
+
+    if (DEBUG_MODE && DITHER_MODE_3D && !DEBUG_FAST_LOADING_3D)
+      s_3D.filter(m_shaderPP);
+
+    if (!DEBUG_FAST_LOADING_3D) {
+      drawSkybox();
+    }
+
+    s_3D.endDraw();
+
+    image(s_3D, 0, 0);
+  }
+
+  void drawEarth() {
+    s_3D.beginDraw();
+    s_3D.clear();
+    s_3D.noStroke();
+    s_3D.fill(255);
+
+    s_3D.pushMatrix();
+    s_3D.shader(m_shaderEarth);
+    s_3D.textureWrap(CLAMP);
+
+    s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
+    s_3D.rotateX(m_earthRotation.x);
+    s_3D.rotateY(m_rotationYModified);
+
+    s_3D.shape(m_modelEarth);
+    s_3D.resetShader();
+    s_3D.popMatrix();
+  }
+
+  void drawSun(PVector lightDir) {
+    PVector sunTranslation = lightDir.copy().mult(-3000);
+    s_3D.shader(m_shaderSun);
+    s_3D.textureWrap(REPEAT);
+
+    s_3D.pushMatrix();
+    s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
+    s_3D.rotateX(m_earthRotation.x);
+    s_3D.rotateY(m_rotationYModified);
+    s_3D.translate(sunTranslation.x, sunTranslation.y, sunTranslation.z);
+
+    s_3D.shape(m_modelSun);
+    s_3D.popMatrix();
+    s_3D.resetShader();
+    s_3D.textureWrap(CLAMP);
+  }
+
+  void drawSkybox() {
+    s_3D.pushMatrix();
+    s_3D.shader(m_shaderSkySphere);
+
+    s_3D.rotateX(m_earthRotation.x);
+    s_3D.rotateY(m_earthRotation.y);
+
+    s_3D.shape(m_modelSkySphere);
+    s_3D.resetShader();
+    s_3D.popMatrix();
+  }
+
+  void drawMarkersAndConnections() {
+    s_3D.strokeWeight(ARC_SIZE_3D);
+    s_3D.noFill();
+
+    s_3D.pushMatrix();
+    s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
+    s_3D.rotateX(m_earthRotation.x);
+    s_3D.rotateY(m_rotationYModified);
+
+    for (AirportPoint3DType point : m_airportHashmap.values()) {
+      PVector endline = point.Pos.copy().mult(1 + (0.05f * m_arcFraction));
+
+      if (m_markersEnabled) {
+        s_3D.stroke(point.Color);
+        s_3D.line(point.Pos.x, point.Pos.y, point.Pos.z, endline.x, endline.y, endline.z);
+      }
+
+      if (m_connectionsEnabled) {
+        s_3D.stroke(255, 255, 255, 255);
+        drawGreatCircleArcFast(point);
+      }
+    }
+
+    s_3D.fill(255);
+    s_3D.noStroke();
+    s_3D.popMatrix();
+  }
+
+  void drawMarkerText() {
+    s_3D.fill(255, 255, 255, 255);
+    s_3D.textAlign(CENTER);
+    s_3D.textSize(TEXT_SIZE_3D);
+
+    for (AirportPoint3DType point : m_airportHashmap.values()) {
+      float verticalDisplacement = point.Pos.y > 0 ? TEXT_DISPLACEMENT_3D.y : -TEXT_DISPLACEMENT_3D.y;
+
+      s_3D.pushMatrix();
+      s_3D.translate(m_earthPos.x, m_earthPos.y + verticalDisplacement, m_earthPos.z + TEXT_DISPLACEMENT_3D.z);
+      s_3D.rotateX(m_earthRotation.x);
+      s_3D.rotateY(m_rotationYModified);
+      s_3D.translate(point.Pos.x, point.Pos.y, point.Pos.z);
+      s_3D.rotateY(-m_rotationYModified);
+      s_3D.rotateX(-m_earthRotation.x);
+
+      s_3D.text(point.Name, 0, 0);
+      s_3D.popMatrix();
+    }
+  }
+
+  void drawGreatCircleArcFast(AirportPoint3DType point) {
+    for (var connection : point.ConnectionArcPoints) {
+      PVector lastPos = connection.get(0);
+
+      float connectionSize = connection.size();
+      for (int i = 1; i < connection.size(); i++) {
+        PVector pointOnArc = connection.get(i);
+        float t = i / connectionSize;
+
+        if (t > m_arcFraction) {
+          float lastT = (i-1) / connectionSize;
+          float frac = (m_arcFraction - lastT) / (t - lastT);
+          pointOnArc = PVector.lerp(lastPos, pointOnArc, frac);
+          s_3D.line(lastPos.x, lastPos.y, lastPos.z, pointOnArc.x, pointOnArc.y, pointOnArc.z);
+          break;
+        }
+
+        s_3D.line(lastPos.x, lastPos.y, lastPos.z, pointOnArc.x, pointOnArc.y, pointOnArc.z);
+        lastPos = pointOnArc;
+      }
+    }
+  }
+
+  //================================================
+  // INPUT
+  //================================================
+
+  public EventType<MouseDraggedEventInfoType> getOnDraggedEvent() {
+    return m_onDraggedEvent;
+  }
+
+  private void onDraggedHandler(MouseDraggedEventInfoType e) {
+    PVector deltaDrag = new PVector( -(e.Y - e.PreviousPos.y) * 2, e.X - e.PreviousPos.x);
+    deltaDrag.mult(s_deltaTime).mult(VERTICAL_DRAG_SPEED_3D);
+    m_earthRotationalVelocity.add(deltaDrag);
+  }
+
+  public EventType<MouseWheelEventInfoType> getOnMouseWheelEvent() {
+    return m_onWheelEvent;
+  }
+
+  private void onWheelHandler(MouseWheelEventInfoType e) {
+    m_zoomLevel -= e.wheelCount * MOUSE_SCROLL_STRENGTH_3D;
+    m_zoomLevel = clamp(m_zoomLevel, -500, 350);
+  }
+
+  //================================================
+  // SETTINGS
+  //================================================
+
+  public void setArcGrowMillis(float timeTakenMillis, int delay) {
+    m_arcStartGrowMillis = millis() + delay;
+    m_arcGrowMillis = timeTakenMillis;
+  }
+
+  public void setPermaDay(boolean enabled) {
+    m_shaderEarth.set("permaDay", enabled ? 10.0f : 0.0f);
+  }
+
+  public void setConnectionsEnabled(boolean enabled) {
+    m_connectionsEnabled = enabled;
+  }
+
+  public void setTextEnabled(boolean enabled) {
+    m_textEnabled = enabled;
+  }
+
+  public void setMarkersEnabled(boolean enabled) {
+    m_markersEnabled = enabled;
+  }
+
+  public void setLockTime(boolean enabled) {
+    m_lockTime = enabled;
+  }
+
+  public void setDayCycleSpeed(float speed) {
+    m_dayCycleSpeed = speed;
+  }
 }
 
 // Descending code authorship changes:
