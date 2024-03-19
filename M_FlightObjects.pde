@@ -66,6 +66,14 @@ class FlightQueryType {
     this.Operator = operator;
     this.Location = location;
   }
+  
+  public void setOperator(QueryOperator inputOperator){
+      //Needed since Ill be declaring all FlightQueries at the start then adjusting them to user input
+      Operator = inputOperator;
+  
+  }
+  
+  
 }
 
 class FlightRangeQueryType {
