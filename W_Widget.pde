@@ -95,12 +95,12 @@ abstract class Widget {
   public void setGrowScale(float value) {
     m_growScale = value;
   }
-  
+
   public void setRendering(boolean enabled) {
     m_rendered = enabled;
   }
-  
-  public boolean getRenderingEnabled(){
+
+  public boolean getRenderingEnabled() {
     return m_rendered;
   }
 
@@ -161,7 +161,7 @@ abstract class Widget {
       noStroke();
   }
 
-  public void draw() { 
+  public void draw() {
     drawOutline();
 
     m_pos = m_basePos.copy();

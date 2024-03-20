@@ -41,28 +41,28 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
   }
 
   @ Override
-  public void draw() {
+    public void draw() {
     super.draw();
     if (!m_dataLoaded)
       return;
-      
+
     int total = 0;
-    for (var val : m_map.values()){
+    for (var val : m_map.values()) {
       total += val;
     }
-    
+
     float lastAngle = 0;
     int i = 0;
     for (var val : m_map.values()) {
-      float arcSize = 2 * PI * (val / (float)total); 
+      float arcSize = 2 * PI * (val / (float)total);
       fill(randomColor(i));
       arc(m_pos.x, m_pos.y, m_scale.x, m_scale.x, lastAngle, lastAngle + arcSize, PIE);
       lastAngle += arcSize;
       i++;
-    }    
+    }
   }
-  
-  private color randomColor(int seed){
+
+  private color randomColor(int seed) {
     randomSeed(seed * 4639);
     colorMode(HSB, 360, 100, 100);
     color result = color(random(360), random(100), random(100));
