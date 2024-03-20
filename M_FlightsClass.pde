@@ -26,7 +26,7 @@ class FlightsManagerClass {
       onTaskComplete.accept(flightsLists);
       m_working = false;
     }
-    ).start();
+    ).start();  
 
 
     m_working = true;
