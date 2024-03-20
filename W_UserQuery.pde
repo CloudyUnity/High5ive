@@ -58,7 +58,7 @@ class UserQueryUI extends Widget {
     m_day.setPlaceholderText("Day");
 
     
-    m_dayQuery = new FlightQueryType(QueryType.DAY, QueryOperatorType.EQUAL, QueryLocationType.US);
+    m_dayQuery = new FlightQueryType(QueryType.DAY, QueryOperatorType.EQUAL, QueryLocationType.US, queryManager);
     m_flightQueries.add(m_dayQuery);
     //   m_flights = convertBinaryFileToFlightTypeAsync(String filename, int threadCount, QueryLocation queryLocation, int lineByteSize)
 
