@@ -92,12 +92,6 @@ class UserQueryUI extends Widget {
 
     m_queryManager.queryFlights(m_flightsLists.US, m_dayQuery, m_dayQuery.QueryValue, 4, m_onLoadDataEvent);
 
-<<<<<<< HEAD
-    
-    
-=======
-    m_onLoadDataEvent.accept(result);
->>>>>>> 1eb42331cceef3c7833a79cf4291a0210b9626c2
   }
 
   private void saveQuery( TextboxUI inputTextbox) {
