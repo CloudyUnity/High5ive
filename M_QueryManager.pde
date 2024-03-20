@@ -79,7 +79,7 @@ class QueryManagerClass {
     ).start();
 
     m_working = true;
-    return;
+    return ;
   }
 
   private FlightType[] queryFlightsAysnc(FlightType[] flightsList, FlightQueryType flightQuery, int queryValue, int threadCount) {
