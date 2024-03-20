@@ -253,7 +253,7 @@ class QueryManagerClass {
       return -1;
     }
   }
-  
+
   private boolean isLegalQuery(FlightQueryType flightQuery) {
     if (flightQuery.Location == QueryLocationType.US) {
       switch(flightQuery.Type) {
@@ -281,7 +281,7 @@ class QueryManagerClass {
       return false;
     }
   }
-  
+
   private boolean isLegalQuery(FlightRangeQueryType flightRangeQuery) {
     if (flightRangeQuery.Location != QueryLocationType.WORLD)
       return false;
@@ -297,7 +297,7 @@ class QueryManagerClass {
       return true;
     }
   }
-  
+
   public FlightType[] sort(FlightType[] flightsList, FlightSortQueryType flightSortQuery) {
     Comparator<FlightType> flightComparator;
     switch(flightSortQuery.Type) {
@@ -338,14 +338,14 @@ class QueryManagerClass {
       println("Error: FlightSortQuery.Type invalid");
       return flightsList;
     }
-    
+
     if (flightSortQuery.SortDirection == QuerySortDirectionType.DESCENDING)
-      flightComparator = flightComparator.reversed();   
+      flightComparator = flightComparator.reversed();
 
     Arrays.sort(flightsList, flightComparator);
     return flightsList;
   }
-  
+
   public int queryFrequency(FlightType[] flightsList, FlightQueryType flightQuery, int queryValue, int threadCount) {
     AtomicInteger frequency = new AtomicInteger(0);
     queryFlights(flightsList, flightQuery, queryValue, threadCount, returnedList -> {
@@ -354,7 +354,7 @@ class QueryManagerClass {
     );
     return frequency.get();
   }
-  
+
   public int queryRangeFrequency(FlightType[] flightsList, FlightRangeQueryType flightRangeQuery, int start, int end, int threadCount) {
     AtomicInteger frequency = new AtomicInteger(0);
     queryFlightsWithinRange(flightsList, flightRangeQuery, start, end, threadCount, returnedList -> {
@@ -363,15 +363,15 @@ class QueryManagerClass {
     );
     return frequency.get();
   }
-  
+
   public FlightType[] getHead(FlightType[] flightList, int numberOfItems) {
     return Arrays.copyOfRange(flightList, 0, numberOfItems);
   }
-  
+
   public FlightType[] getFoot(FlightType[] flightList, int numberOfItems) {
     return Arrays.copyOfRange(flightList, numberOfItems, flightList.length);
   }
-  
+
   public FlightType[] getWithinRange(FlightType[] flightList, int start, int end) {
     return Arrays.copyOfRange(flightList, start, end);
   }

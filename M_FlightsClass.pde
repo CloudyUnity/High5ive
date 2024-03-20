@@ -26,7 +26,7 @@ class FlightsManagerClass {
       onTaskComplete.accept(flightsLists);
       m_working = false;
     }
-    ).start();  
+    ).start();
 
 
     m_working = true;
@@ -58,23 +58,22 @@ class FlightsManagerClass {
         executor.submit(() -> {
           if (queryLocation == QueryLocationType.US) {
             processUSConvertBinaryFileToFlightTypeChunk(flightsList, buffer, processingSize, startPosition, lineByteSize);
-          } 
-          else {
+          } else {
             processWorldConvertBinaryFileToFlightTypeChunk(flightsList, buffer, processingSize, startPosition, lineByteSize);
           }
-          
+
           latch.countDown();
         }
         );
       }
-      
+
       try {
         latch.await();
       }
       catch (InterruptedException e) {
         e.printStackTrace();
       }
-      
+
       executor.shutdown();
       return flightsList;
     }
@@ -102,9 +101,9 @@ class FlightsManagerClass {
         buffer.get(offset+21),
         buffer.getShort(offset+22)
         );
-    }   
+    }
   }
-  
+
   // (carrier_code, origin, dest)short, short, short
   private void processWorldConvertBinaryFileToFlightTypeChunk(FlightType[] flightsList, MappedByteBuffer buffer, long processingSize, int startPosition, int lineByteSize) {
     long maxI = startPosition + processingSize;

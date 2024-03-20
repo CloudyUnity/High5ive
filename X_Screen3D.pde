@@ -128,7 +128,7 @@ class ScreenFlightMap extends Screen {
     LabelUI label = createLabel(20, 10, 150, 40, "3D Flight Map");
     label.setForegroundColour(color(255, 255, 255, 255));
     label.setTextSize(30);
-    label.setParent(m_flightMapUIParent);   
+    label.setParent(m_flightMapUIParent);
   }
 
   public void insertFlightData(FlightMultiDataType flights) {
