@@ -68,12 +68,12 @@ class ScreenCharts extends Screen {
     DropdownUI fieldSelector = new DropdownUI<QueryType>(20, 200, 300, 200, 50, v -> v.toString());
     addWidget(fieldSelector);
     fieldSelector.getOnSelectionChanged().addHandler(e -> {
-      
+
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
       m_histQuery = (QueryType)elistbox.data;
-      
+
       if (m_histQuery == null)
-        return;
+      return;
 
       reloadData();
     }
@@ -113,7 +113,7 @@ class ScreenCharts extends Screen {
       addWidget(m_histogram);
       addWidget(m_pieChart);
     }
-    
+
     m_cachedFlights = flights;
     reloadData();
   }
@@ -127,11 +127,12 @@ class ScreenCharts extends Screen {
       return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_histQuery);
     }
     );
-    
+
     m_pieChart.removeData();
-    m_pieChart.addData(m_cachedFlights,f -> {
+    m_pieChart.addData(m_cachedFlights, f -> {
       return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_histQuery);
-    });
+    }
+    );
   }
 
   public void selectHistogram() {
