@@ -6376,58 +6376,58 @@ Masvingo International Airport,Masvingo,ZW,Zimbabwe,UTA,-20.05529976,30.85910034
 Mutare Airport,Mutare,ZW,Zimbabwe,VFA,-18.99749947,32.62720108,6374,1.80E+07
 Victoria Falls International Airport,Victoria Falls,ZW,Zimbabwe,WKI,-18.09589958,25.8390007,6375,1.80E+08
 Hwange (Town) Airport,Hwange,ZW,Zimbabwe,XMU,-18.362967,26.519791,6376,1.80E+09
-Adado Airport,Adado,,Somalia,AAD,,,6377,1.80E+10
-George Downer Airport,Aliceville,,United States,AIV,,,6378,18EA
+Adado Airport,Adado,SO,Somalia,AAD,6.096111,46.6375,6377,1.80E+10
+George Downer Airport,Aliceville,US,United States,AIV,33.106744,-88.197174,6378,18EA
 Gaudncio Machado Ramos Airport,Alegrete,BR,Brazil,ALQ,-29.812666,-55.893441,6379,18EB
-,Maasai Mara Game Reserve,,Kenya,ANA,,,6380,18EC
-Walnut Ridge Regional,Walnut Ridge,,United States,ARG,,,6381,18ED
-,Aur Island,,Marshall Islands,AUL,,,6382,18EE
-Aurora Municipal Airport,Chicago/Aurora,,United States,AUZ,,,6383,18EF
-West Memphis Municipal Airport,West Memphis,,United States,AWM,,,6384,18F0
-Altus/Quartz Mountain Regional,Altus,,United States,AXS,,,6385,18F1
-Neil Armstrong Airport,Wapakoneta,,United States,AXV,,,6386,18F2
-Broken Bow Municipal/Keith Glaze Field,Broken Bow,,United States,BBW,,,6387,18F3
-Virginia Tech / Montgomery Executive Airport,Blacksburg,,United States,BCB,,,6388,18F4
-Blanding Municipal Airport,Blanding,,United States,BDG,,,6389,18F5
-Webb AFB,Big Spring,,United States,BGS,,,6390,18F6
-Beatrice Municipal Airport,Beatrice,,United States,BIE,,,6391,18F7
-Brookings Regional,Brookings,,United States,BKX,,,6392,18F8
-Monmouth Exec Airport,Belmar/Farmingdale,,United States,BLM,,,6393,18F9
-,,,,BPA,,,6394,18FA
-,Balgo Hill,,Australia,BQW,,,6395,18FB
-Johnson County Airport,Buffalo,,United States,BYG,,,6396,18FC
-,Blakely Island,,United States,BYW,,,6397,18FD
-Wexford County Airport,Cadillac,,United States,CAD,,,6398,18FE
-,Cape Barren Island,,Australia,CBI,,,6399,18FF
-Shalz Field,Colby,,United States,CBK,,,6400,1900
-Canela,Canela,,Brazil,CEL,,,6401,1901
-,,,,CFM,,,6402,1902
-Arthur N Neu Airport,Carroll,,United States,CIN,,,6403,1903
-Crookston Municipal/Kirkwood Field,Crookston,,United States,CKN,,,6404,1904
-,Christmas Creek Mine,,Australia,CKW,,,6405,1905
-,Merritt Island,,United States,COI,28.341611,-80.685471,6406,1906
-,Coll Island,,United Kingdom,COL,,,6407,1907
-St. Louis Downtown Airport,Cahokia/St. Louis,,United States,CPS,,,6408,1908
-,Collarenebri,,Australia,CRB,,,6409,1909
-C David Campbell Field-Corsicana Municipal Airport,Corsicana,,United States,CRS,,,6410,190A
-Lauriston,Hillsborough,,Grenada,CRU,,,6411,190B
-Roscoe Turner Airport,Corinth,,United States,CRX,,,6412,190C
-,Carson City,,United States,CSN,39.192304,-119.73257,6413,190D
-Luiz Beck da Silva Airport,Santa Cruz do Sul,,Brazil,CSU,,,6414,190E
-Clinton-Sampson County Airport,Clinton,,United States,CTZ,,,6415,190F
-,,,,CWF,,,6416,1910
-Caye Chapel Airport,Caye Chapel,,Belize,CYC,,,6417,1911
-,Chisana,,United States,CZN,,,6418,1912
-,Darbhanga,,India,DBR,26.192786,85.916886,6419,1913
+Angama Airport,Maasai Mara Game Reserve,KE,Kenya,ANA,-1.271582,34.955194,6380,18EC
+Walnut Ridge Regional,Walnut Ridge,US,United States,ARG,36.124667,-90.92511,6381,18ED
+Aur Island,Aur Island,MH,Marshall Islands,AUL,8.145278,171.173056,6382,18EE
+Aurora Municipal Airport,Chicago/Aurora,US,United States,AUZ,41.771917,-88.475666,6383,18EF
+West Memphis Municipal Airport,West Memphis,US,United States,AWM,35.135056,-90.234443,6384,18F0
+Altus/Quartz Mountain Regional,Altus,US,United States,AXS,34.698806,-99.338471,6385,18F1
+Neil Armstrong Airport,Wapakoneta,US,United States,AXV,40.493548,-84.298073,6386,18F2
+Broken Bow Municipal/Keith Glaze Field,Broken Bow,US,United States,BBW,41.436444,-99.642166,6387,18F3
+Virginia Tech / Montgomery Executive Airport,Blacksburg,US,United States,BCB,37.209387,-80.412089,6388,18F4
+Blanding Municipal Airport,Blanding,US,United States,BDG,37.583333,-109.483277,6389,18F5
+Webb AFB,Big Spring,US,United States,BGS,32.218056,-101.521389,6390,18F6
+Beatrice Municipal Airport,Beatrice,US,United States,BIE,40.301278,-96.75411,6391,18F7
+Brookings Regional,Brookings,US,United States,BKX,44.304528,-96.818916,6392,18F8
+Monmouth Exec Airport,Belmar/Farmingdale,US,United States,BLM,40.186778,-74.124555,6393,18F9
+Borongan Airport,Borongan,PH,Philippines,BPA,11.674167,125.467778,6394,18FA
+Balgo Hill,Balgo Hill,AU,Australia,BQW,-20.148332,127.973333,6395,18FB
+Johnson County Airport,Buffalo,US,United States,BYG,44.381083,-106.721805,6396,18FC
+Blakely Island,Blakely Island,US,United States,BYW,48.578992,-122.82629,6397,18FD
+Wexford County Airport,Cadillac,US,United States,CAD,44.275333,-85.418916,6398,18FE
+Cape Barren Island,Cape Barren Island,AU,Australia,CBI,-40.389721,148.015833,6399,18FF
+Shalz Field,Colby,US,United States,CBK,39.427459,-101.046619,6400,1900
+Canela,Canela,BR,Brazil,CEL,-29.370241,-50.83196,6401,1901
+Conklin (Leismer) Airport,Conklin,CA,Canada,CFM,55.696111,-111.279444,6402,1902
+Arthur N Neu Airport,Carroll,US,United States,CIN,42.046667,-94.788693,6403,1903
+Crookston Municipal/Kirkwood Field,Crookston,US,United States,CKN,47.841657,-96.621453,6404,1904
+Christmas Creek Mine,Christmas Creek Mine,AU,Australia,CKW,-22.355,119.643,6405,1905
+Merritt Island,Merritt Island,US,United States,COI,28.341611,-80.685471,6406,1906
+Coll Island,Coll Island,UK,United Kingdom,COL,56.601944,-6.617777,6407,1907
+St. Louis Downtown Airport,Cahokia/St. Louis,US,United States,CPS,38.570361,-90.155082,6408,1908
+Collarenebri,Collarenebri,AU,Australia,CRB,-29.521943,148.58223,6409,1909
+C David Campbell Field-Corsicana Municipal Airport,Corsicana,US,United States,CRS,32.028056,-96.400582,6410,190A
+Lauriston,Hillsborough,GD,Grenada,CRU,12.476944,-61.472221,6411,190B
+Roscoe Turner Airport,Corinth,US,United States,CRX,34.914967,-88.603483,6412,190C
+Carson City,Carson City,US,United States,CSN,39.192304,-119.73257,6413,190D
+Luiz Beck da Silva Airport,Santa Cruz do Sul,BR,Brazil,CSU,-29.684105,-52.412185,6414,190E
+Clinton-Sampson County Airport,Clinton,US,United States,CTZ,34.974935,-78.365629,6415,190F
+Chennault International Airport,Lake Charles,US,United States,CWF,30.210587,-93.143188,6416,1910
+Caye Chapel Airport,Caye Chapel,BZ,Belize,CYC,17.683889,-88.044999,6417,1911
+Chisana,Chisana,US,United States,CZN,62.07175,-142.049349,6418,1912
+Darbhanga Airport,Darbhanga,IN,India,DBR,26.192786,85.916886,6419,1913
 Dhaalu Airport,Kudahuvadhoo,MV,Maldives,DDD,2.666111,72.885833,6420,1914
-Defiance Memorial Airport,Defiance,,United States,DFI,,,6421,1915
-Dalnegorsk Airport,Dalnegorsk,,Russia,DHG,,,6422,1916
-Diomede Heliport,Diomede,,United States,DIO,,,6423,1917
-,Delta Junction,,United States,DJN,,,6424,1918
-,Dillon,,United States,DLN,45.255361,-112.552499,6425,1919
-,Delissaville,,Australia,DLV,,,6426,191A
-Sedalia Regional,Sedalia,,United States,DMO,,,6427,191B
-,,,,DPB,,,6428,191C
+Defiance Memorial Airport,Defiance,US,United States,DFI,41.3375,-84.428805,6421,1915
+Dalnegorsk Airport,Dalnegorsk,RU,Russia,DHG,44.558611,135.49,6422,1916
+Diomede Heliport,Diomede,US,United States,DIO,65.758611,-168.953055,6423,1917
+Delta Junction,Delta Junction,US,United States,DJN,64.050117,-145.722464,6424,1918
+Dillon,Dillon,US,United States,DLN,45.255361,-112.552499,6425,1919
+Delissaville,Delissaville,AU,Australia,DLV,-12.550552,130.685562,6426,191A
+Sedalia Regional,Sedalia,US,United States,DMO,38.707417,-93.175916,6427,191B
+Pampa Guanaco Airport,Camerón,CL,Chile,DPB,-54.05,-68.808333,6428,191C
 ,Deputatskij,,Russia,DPT,,,6429,191D
 ,,,,DRP,,,6430,191E
 ,Davenport Downs,,Australia,DVP,,,6431,191F
