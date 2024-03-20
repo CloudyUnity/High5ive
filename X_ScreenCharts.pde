@@ -105,7 +105,7 @@ class ScreenCharts extends Screen {
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
     returnBttn.setText("Return");
     returnBttn.setTextSize(25);
-    returnBttn.setGrowMode(true);
+    // returnBttn.setGrowMode(true);
   }
 
   public void loadData(FlightType[] flights) {
