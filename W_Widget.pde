@@ -26,7 +26,7 @@ abstract class Widget {
   protected EventType<EventInfoType> m_onFocusGainedEvent = new EventType<EventInfoType>();
   protected EventType<EventInfoType> m_onFocusLostEvent = new EventType<EventInfoType>();
 
-  private boolean m_growMode = false;
+  private float m_growScale = 1.0f;
   private float m_growMult = 1.0f;
   protected boolean m_mouseHovered = false;
   protected boolean m_focused = false;
@@ -91,8 +91,8 @@ abstract class Widget {
     m_parentWidget = parent;
   }
 
-  public void setGrowMode(boolean enabled) {
-    m_growMode = enabled;
+  public void setGrowScale(float value) {
+    m_growScale = value;
   }
 
   /**
@@ -152,21 +152,19 @@ abstract class Widget {
       noStroke();
   }
 
-  public void draw() {
+  public void draw() { 
     drawOutline();
 
     m_pos = m_basePos.copy();
     m_scale = m_baseScale.copy();
 
-    if (m_growMode) {
-      float lerpSpeed = m_mouseHovered ? 0.2 : 0.1;
-      float targetMult = m_mouseHovered ? WIDGET_GROW_MODE_MULT : 1.0f;
-      m_growMult = lerp(m_growMult, targetMult, lerpSpeed);
-      m_scale.mult(m_growMult);
+    float lerpSpeed = m_mouseHovered ? 0.2 : 0.1;
+    float targetMult = m_mouseHovered ? m_growScale : 1.0f;
+    m_growMult = lerp(m_growMult, targetMult, lerpSpeed);
+    m_scale.mult(m_growMult);
 
-      PVector extension = m_scale.copy().sub(m_baseScale);
-      m_pos = m_basePos.copy().sub(extension.mult(0.5));
-    }
+    PVector extension = m_scale.copy().sub(m_baseScale);
+    m_pos = m_basePos.copy().sub(extension.mult(0.5));
 
     Widget curParent = m_parentWidget;
     while (curParent != null) {
