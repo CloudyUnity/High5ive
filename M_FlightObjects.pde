@@ -48,7 +48,7 @@ class FlightType { // 23 bytes total
 class FlightMultiDataType {
   public FlightType[] US;
   public FlightType[] WORLD;
-  
+
   FlightMultiDataType(FlightType[] us, FlightType[] world) {
     this.US = us;
     this.WORLD = world;
@@ -56,24 +56,71 @@ class FlightMultiDataType {
 }
 
 class FlightQueryType {
+  QueryManagerClass queryManager;
+  
+  public int QueryValue;
   public QueryType Type;
   public QueryOperatorType Operator;
   public QueryLocationType Location;
 
 
-  FlightQueryType(QueryType type, QueryOperatorType operator, QueryLocationType location) {
+  FlightQueryType(QueryType type, QueryOperatorType operator, QueryLocationType location, QueryManagerClass queryManager) {
     this.Type = type;
     this.Operator = operator;
     this.Location = location;
+    this.queryManager = queryManager;
   }
-  
-  public void setOperator(QueryOperatorType inputOperator){
-      //Needed since Ill be declaring all FlightQueries at the start then adjusting them to user input
-      Operator = inputOperator;
-  
+
+  public void setOperator(QueryOperatorType inputOperator) {
+    //Needed since Ill be declaring all FlightQueries at the start then adjusting them to user input
+    Operator = inputOperator;
   }
-  
-  
+  /* TO IMPLEMENT 
+
+   CANCELLED_OR_DIVERTED,
+
+   }*/
+  private int formatQueryValue(String inputString) {
+
+    int result;
+
+    if (Type == QueryType.DAY || Type == QueryType.FLIGHT_NUMBER || Type == QueryType.KILOMETRES_DISTANCE || Type == QueryType.DEPARTURE_DELAY || Type == QueryType.ARRIVAL_DELAY ) {
+      try {
+        return Integer.parseInt(inputString);
+      }
+      catch(Exception e) {
+        return 0;
+      }
+    } else if (Type == QueryType.SCHEDULED_DEPARTURE_TIME || Type == QueryType.DEPARTURE_TIME || Type == QueryType.SCHEDULED_ARRIVAL_TIME || Type == QueryType.ARRIVAL_TIME) {
+
+      /*NOTE FOR ANYONE READING THIS!!!!!! We need to decide on an expected User inputted format for these, since that will decide how this is formatted.
+       for now I will assume that flightTimes will be entered as formatted in the data set (i,e 1922 == 19:22) however I am seperating these if statements despite them being the
+       same. In the event that we decide this format works then we can change this*/
+
+      try {
+        return Integer.parseInt(inputString);
+      }
+      catch(Exception e) {
+        return 0;
+      }
+    } else if (Type == QueryType.CARRIER_CODE_INDEX || Type == QueryType. AIRPORT_ORIGIN_INDEX || Type == QueryType.AIRPORT_DEST_INDEX) {
+     
+      return queryManager.getIndex(inputString);
+      
+    }
+    else {
+    
+    return 0; 
+    
+    }
+
+    
+  }
+
+  public void setQueryValue(String inputString) {
+
+    QueryValue = formatQueryValue(inputString);
+  }
 }
 
 class FlightRangeQueryType {
@@ -97,64 +144,60 @@ class FlightSortQueryType {
 }
 class UserQuery {
 
-   public ArrayList<FlightQueryType> FlightQueries; 
-   
-   UserQuery(){
-   
-     FlightQueries = new ArrayList<FlightQueryType>(); 
-     
-   
-   }
-   
-   public void addQuery(FlightQueryType inputQuery){
-     FlightQueries.add(inputQuery);
-   }
-   
-   public void removeQuery(int indexRemoved){
-   FlightQueries.remove(indexRemoved);
-   }
-   public void clearQueries(){
-   
-     FlightQueries.clear();
-   
-   }
+  public ArrayList<FlightQueryType> FlightQueries;
 
+  UserQuery() {
+
+    FlightQueries = new ArrayList<FlightQueryType>();
+  }
+
+  public void addQuery(FlightQueryType inputQuery) {
+    FlightQueries.add(inputQuery);
+  }
+
+  public void removeQuery(int indexRemoved) {
+    FlightQueries.remove(indexRemoved);
+  }
+  public void clearQueries() {
+
+    FlightQueries.clear();
+  }
 }
 
 
 public enum QueryType {
   DAY,
-  CARRIER_CODE_INDEX,
-  FLIGHT_NUMBER,
-  AIRPORT_ORIGIN_INDEX,
-  AIRPORT_DEST_INDEX,
-  SCHEDULED_DEPARTURE_TIME,
-  DEPARTURE_TIME,
-  DEPARTURE_DELAY,
-  SCHEDULED_ARRIVAL_TIME,
-  ARRIVAL_TIME,
-  ARRIVAL_DELAY,
-  CANCELLED_OR_DIVERTED,
-  KILOMETRES_DISTANCE,
+    CARRIER_CODE_INDEX,
+    FLIGHT_NUMBER,
+    AIRPORT_ORIGIN_INDEX,
+    AIRPORT_DEST_INDEX,
+    SCHEDULED_DEPARTURE_TIME,
+    DEPARTURE_TIME,
+    DEPARTURE_DELAY,
+    SCHEDULED_ARRIVAL_TIME,
+    ARRIVAL_TIME,
+    ARRIVAL_DELAY,
+    CANCELLED_OR_DIVERTED,
+    KILOMETRES_DISTANCE,
 }
 
 public enum QueryOperatorType {
   EQUAL,
-  NOT_EQUAL,
-  LESS_THAN,
-  LESS_THAN_EQUAL,
-  GREATER_THAN,
-  GREATER_THAN_EQUAL,
+    NOT_EQUAL,
+    LESS_THAN,
+    LESS_THAN_EQUAL,
+    GREATER_THAN,
+    GREATER_THAN_EQUAL,
 }
 
 public enum QuerySortDirectionType {
   ASCENDING,
-  DESCENDING,
+    DESCENDING,
 }
 
 public enum QueryLocationType {
   US,
-  WORLD,
+    WORLD,
 }
 
 class CoordType {

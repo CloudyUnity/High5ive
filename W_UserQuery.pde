@@ -128,32 +128,7 @@ class UserQueryUI extends Widget {
   }
 
   
-  private int convertToFormat(int queryIndex, String query){
-    // If this is eventually redundant, feel free to remove it
-    
-    if(queryIndex == 0 || queryIndex == 2 || queryIndex == 7 ||  queryIndex == 10  || queryIndex == 2){
-  
-      try{
-      return Integer.parseInt(query);
-      }
-      catch(Exception e){
-      return 0;
-    }
-    
-    }
-    else if (queryIndex == 1 || queryIndex == 3 || queryIndex == 4.3
-    
-    )
-      return m_queryManager.getIndex(query); 
-    else if (queryIndex == 6 ){}
-    else{
-      return 0;
-    }
-        
-       return 0;
-  
-  }
-
+ 
   private void addWidget(Widget widget) {
     m_screen.addWidget(widget);
     widget.setParent(this);
