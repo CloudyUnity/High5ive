@@ -58,7 +58,9 @@ class UserQueryUI extends Widget {
     m_day.setPlaceholderText("Day");
 
 
-    m_dayQuery = new FlightQueryType(QueryType.DAY, QueryOperatorType.EQUAL, QueryLocationType.US);
+    
+    m_dayQuery = new FlightQueryType(QueryType.DAY, QueryOperatorType.EQUAL, QueryLocationType.US, queryManager);
+
     m_flightQueries.add(m_dayQuery);
     //   m_flights = convertBinaryFileToFlightTypeAsync(String filename, int threadCount, QueryLocation queryLocation, int lineByteSize)
 
@@ -109,7 +111,7 @@ class UserQueryUI extends Widget {
     // Clear all currently saved user queries
     m_queries.clear();
     m_queryList.clear();
-  }
+https://github.com/CloudyUnity/High5ive/pull/290/conflict?name=W_UserQuery.pde&ancestor_oid=60a2e07e6de1a0f5baadd27634406172c785a754&base_oid=780bfbdbbd762c7709adad064c68aa9959c678b9&head_oid=5c486813ebac8a92f9ea13bd3455f579dd77545e  }
 
   private void changeDataToUS() {
 
@@ -122,28 +124,7 @@ class UserQueryUI extends Widget {
   }
 
 
-  private int convertToFormat(int queryIndex, String query) {
-    // If this is eventually redundant, feel free to remove it
-
-    if (queryIndex == 0 || queryIndex == 2 || queryIndex == 7 ||  queryIndex == 10  || queryIndex == 2) {
-
-      try {
-        return Integer.parseInt(query);
-      }
-      catch(Exception e) {
-        return 0;
-      }
-    } else if (queryIndex == 1 || queryIndex == 3 || queryIndex == 4.3
-
-      )
-      return m_queryManager.getIndex(query);
-    else if (queryIndex == 6 ) {
-    } else {
-      return 0;
-    }
-
-    return 0;
-  }
+ 
 
   private void addWidget(Widget widget) {
     m_screen.addWidget(widget);

@@ -56,20 +56,67 @@ class FlightMultiDataType {
 }
 
 class FlightQueryType {
+  QueryManagerClass queryManager;
+  
+  public int QueryValue;
   public QueryType Type;
   public QueryOperatorType Operator;
   public QueryLocationType Location;
 
 
-  FlightQueryType(QueryType type, QueryOperatorType operator, QueryLocationType location) {
+  FlightQueryType(QueryType type, QueryOperatorType operator, QueryLocationType location, QueryManagerClass queryManager) {
     this.Type = type;
     this.Operator = operator;
     this.Location = location;
+    this.queryManager = queryManager;
   }
 
   public void setOperator(QueryOperatorType inputOperator) {
     //Needed since Ill be declaring all FlightQueries at the start then adjusting them to user input
     Operator = inputOperator;
+  }
+
+  private int formatQueryValue(String inputString) {
+
+    int result;
+
+    if (Type == QueryType.DAY || Type == QueryType.FLIGHT_NUMBER || Type == QueryType.KILOMETRES_DISTANCE || Type == QueryType.DEPARTURE_DELAY || Type == QueryType.ARRIVAL_DELAY ) {
+      try {
+        return Integer.parseInt(inputString);
+      }
+      catch(Exception e) {
+        return 0;
+      }
+    } else if (Type == QueryType.SCHEDULED_DEPARTURE_TIME || Type == QueryType.DEPARTURE_TIME || Type == QueryType.SCHEDULED_ARRIVAL_TIME || Type == QueryType.ARRIVAL_TIME) {
+
+      /*NOTE FOR ANYONE READING THIS!!!!!! We need to decide on an expected User inputted format for these, since that will decide how this is formatted.
+       for now I will assume that flightTimes will be entered as formatted in the data set (i,e 1922 == 19:22) however I am seperating these if statements despite them being the
+       same. In the event that we decide this format works then we can change this*/
+
+      try {
+        return Integer.parseInt(inputString);
+      }
+      catch(Exception e) {
+        return 0;
+      }
+    } else if (Type == QueryType.CARRIER_CODE_INDEX || Type == QueryType. AIRPORT_ORIGIN_INDEX || Type == QueryType.AIRPORT_DEST_INDEX) {
+     
+      return queryManager.getIndex(inputString);
+      
+    }
+    else {
+    
+    return 0; 
+    
+    }
+
+    
+  }
+
+  public void setQueryValue(String inputString) {
+
+    QueryValue = formatQueryValue(inputString);
+
   }
 }
 
@@ -101,9 +148,11 @@ class UserQuery {
     FlightQueries = new ArrayList<FlightQueryType>();
   }
 
+
   public void addQuery(FlightQueryType inputQuery) {
     FlightQueries.add(inputQuery);
   }
+
 
   public void removeQuery(int indexRemoved) {
     FlightQueries.remove(indexRemoved);
