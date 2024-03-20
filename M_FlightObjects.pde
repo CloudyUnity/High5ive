@@ -66,6 +66,14 @@ class FlightQueryType {
     this.Operator = operator;
     this.Location = location;
   }
+  
+  public void setOperator(QueryOperatorType inputOperator){
+      //Needed since Ill be declaring all FlightQueries at the start then adjusting them to user input
+      Operator = inputOperator;
+  
+  }
+  
+  
 }
 
 class FlightRangeQueryType {
@@ -86,6 +94,31 @@ class FlightSortQueryType {
     this.Type = type;
     this.SortDirection = sortDirection;
   }
+}
+class UserQuery {
+
+   public ArrayList<FlightQueryType> FlightQueries; 
+   
+   UserQuery(){
+   
+     FlightQueries = new ArrayList<FlightQueryType>(); 
+     
+   
+   }
+   
+   public void addQuery(FlightQueryType inputQuery){
+     FlightQueries.add(inputQuery);
+   }
+   
+   public void removeQuery(int indexRemoved){
+   FlightQueries.remove(indexRemoved);
+   }
+   public void clearQueries(){
+   
+     FlightQueries.clear();
+   
+   }
+
 }
 
 
