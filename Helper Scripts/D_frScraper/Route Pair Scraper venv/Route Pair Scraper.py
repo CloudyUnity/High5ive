@@ -34,9 +34,9 @@ for i in airports:
         soupHS = soup.head.find_all('script')
         if str(soupHS[21])[12:21] == "arrRoutes":
             arrRoutes = str(soupHS[21])[24:-10].split("},{")
-            print(f"Found {len(arrRoutes)} routes for {i}")
             for j in arrRoutes:
                 output.write(f",{i}," + j[8:11] + '\n')
+            print(f"Found {len(arrRoutes)} routes for {i}")
 
         else:
             print(f"No routes from {i}")
