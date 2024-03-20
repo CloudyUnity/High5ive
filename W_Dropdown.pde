@@ -1,6 +1,7 @@
 class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
   private EventType<EventInfoType> m_onClickEvent;
   private EventType<MouseWheelEventInfoType> m_onMouseWheelMoved;
+  private EventType<ListboxSelectedEntryChangedEventInfoType> m_onSelectionChanged;
 
   private Function<T, String> m_getDisplayString;
 
@@ -16,6 +17,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
 
     m_onClickEvent = new EventType<EventInfoType>();
     m_onMouseWheelMoved = new EventType<MouseWheelEventInfoType>();
+    m_onSelectionChanged = new EventType<ListboxSelectedEntryChangedEventInfoType>();
 
     m_onClickEvent.addHandler(e -> onClick(e));
     m_onMouseWheelMoved.addHandler(e -> onMouseWheelMoved(e));
@@ -61,7 +63,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
 
   public int getSelectedIndex() {
     return m_listbox.getSelectedIndex();
-  }
+  } 
 
   @ Override
     public boolean isPositionInside(int mx, int my) {
@@ -80,6 +82,10 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
 
   public EventType<MouseWheelEventInfoType> getOnMouseWheelEvent() {
     return m_onMouseWheelMoved;
+  }
+  
+  public EventType<ListboxSelectedEntryChangedEventInfoType> getOnSelectionChanged(){
+    return m_onSelectionChanged;
   }
 
   private void onClick(EventInfoType e) {
@@ -104,6 +110,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
   private void onListboxSelectionChanged(ListboxSelectedEntryChangedEventInfoType<T> e) {
     m_textbox.setText(m_getDisplayString.apply(e.data));
     closeList();
+    m_onSelectionChanged.raise(e);
   }
 
   private void onListboxClick(EventInfoType e) {
