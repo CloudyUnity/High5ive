@@ -1,87 +1,65 @@
 class Screen1 extends Screen {
   public Screen1(String screenId) {
     super(screenId, DEFAULT_SCREEN_COLOUR);
-
     /* ButtonUI redBtn = createButton(50, 50, 200, 100);
      redBtn.getOnClickEvent().addHandler(e -> redButtonOnClick(e));
      redBtn.setText("Red");
      redBtn.setTextSize(30);
-     redBtn.setGrowMode(true);
+     redBtn.setGrowScale(1.05);
      
      ButtonUI greenBtn = createButton(50, 200, 200, 100);
      greenBtn.getOnClickEvent().addHandler(e -> greenButtonOnClick(e));
      greenBtn.setText("Green");
      greenBtn.setTextSize(30);
-     greenBtn.setGrowMode(true);
+     greenBtn.setGrowScale(1.05);
      
      ButtonUI blueBtn = createButton(50, 350, 200, 100);
      blueBtn.getOnClickEvent().addHandler(e -> blueButtonOnClick(e));
      blueBtn.setText("Blue");
      blueBtn.setTextSize(30);
-     blueBtn.setGrowMode(true);*/
+     blueBtn.setGrowScale(1.05);*/
+    float growScale = 1.05;
 
     ButtonUI switchToTextboxDemo = createButton(20, 170, 250, 100);
     switchToTextboxDemo.getOnClickEvent().addHandler(e -> switchToTextBoxDemoOnClick(e));
     switchToTextboxDemo.setText("Alex testing");
     switchToTextboxDemo.setTextSize(30);
-    switchToTextboxDemo.setGrowMode(true);
+    switchToTextboxDemo.setGrowScale(growScale);
 
     ButtonUI switchToScreen2Btn = createButton(20, 320, 250, 100);
     switchToScreen2Btn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_2_ID));
     switchToScreen2Btn.setText("Screen 2");
     switchToScreen2Btn.setTextSize(25);
-    switchToScreen2Btn.setGrowMode(true);
+    switchToScreen2Btn.setGrowScale(growScale);
 
     ButtonUI switchToDemo = createButton(20, 470, 250, 100);
     switchToDemo.getOnClickEvent().addHandler(e -> switchScreen(e, SWITCH_TO_DEMO_ID));
     switchToDemo.setText("Barchart demo");
     switchToDemo.setTextSize(25);
-    switchToDemo.setGrowMode(true);
+    switchToDemo.setGrowScale(growScale);
 
     ButtonUI switchTo2D = createButton(20, 20, 100, 100);
     switchTo2D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_TWOD_MAP_ID));
     switchTo2D.setText("2D (WIP)");
     switchTo2D.setTextSize(25);
-    switchTo2D.setGrowMode(true);
+    switchTo2D.setGrowScale(growScale);
 
     ButtonUI switchTo3D = createButton(170, 20, 100, 100);
     switchTo3D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_FLIGHT_MAP_ID));
-    switchTo3D.setText("3D (WIP)");
+    switchTo3D.setText("3D");
     switchTo3D.setTextSize(25);
-    switchTo3D.setGrowMode(true);
-
-    /*  CheckboxUI cb = createCheckbox(400, 500, 200, 50, "My checkbox");
-     cb.setCheckedColour(color(255, 255, 0, 255));
-     cb.setGrowMode(true);*/
+    switchTo3D.setGrowScale(growScale);
+    
+    ButtonUI switchToCharts = createButton(500, 20, 100, 100);
+    switchToCharts.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_CHARTS_ID));
+    switchToCharts.setText("Charts (WIP)");
+    switchToCharts.setTextSize(25);
+    // switchToCharts.setGrowMode(1.05);
   }
 
   private void switchToTextBoxDemoOnClick(EventInfoType e) {
     switchScreen(e, ALEX_TESTING_ID);
   }
-
-  /* private void redButtonOnClick(EventInfoType e) {
-   ButtonUI btn = (ButtonUI)e.Widget;
-   if (btn.getBackgroundColour() == color(#FF0000))
-   btn.setBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
-   else
-   btn.setBackgroundColour(#FF0000);
-   }
-   
-   private void greenButtonOnClick(EventInfoType e) {
-   ButtonUI btn = (ButtonUI)e.Widget;
-   if (btn.getBackgroundColour() == color(#00FF00))
-   btn.setBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
-   else
-   btn.setBackgroundColour(#00FF00);
-   }
-   
-   private void blueButtonOnClick(EventInfoType e) {
-   ButtonUI btn = (ButtonUI)e.Widget;
-   if (btn.getBackgroundColour() == color(#0000FF))
-   btn.setBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
-   else
-   btn.setBackgroundColour(#0000FF);
-   }*/
 }
 
 class Screen2 extends Screen {
@@ -103,12 +81,12 @@ class Screen2 extends Screen {
 
     RadioButtonUI rb1 = new RadioButtonUI(100, 100, 100, 20, "Show data");
     rb1.getOnCheckedEvent().addHandler(e -> onCheckedRb1());
-    rb1.setGrowMode(true);
+    rb1.setGrowScale(1.05);
     group.addMember(rb1);
 
     RadioButtonUI rb2 = new RadioButtonUI(100, 200, 100, 20, "Don't show data");
     rb2.getOnCheckedEvent().addHandler(e -> onCheckedRb2());
-    rb2.setGrowMode(true);
+    rb2.setGrowScale(1.05);
     group.addMember(rb2);
 
     ImageUI i1 = new ImageUI(50, 50, 300, 300);
@@ -160,7 +138,7 @@ class Screen2 extends Screen {
 }
 
 class FlightCodesBarchartDemo extends Screen {
-  private BarChartUI<FlightType> chart;
+  private BarChartUI<FlightType, String> chart;
   private ArrayList<FlightType> data;
 
   public FlightCodesBarchartDemo(String screenId) {
@@ -170,7 +148,7 @@ class FlightCodesBarchartDemo extends Screen {
     returnBtn.setText("<-");
     returnBtn.setTextSize(25);
     returnBtn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
-    addWidget(returnBtn);
+    addWidget(returnBtn);   
 
     data = new ArrayList<FlightType>();
     FlightType ft1 = new FlightType();
@@ -186,7 +164,7 @@ class FlightCodesBarchartDemo extends Screen {
     data.add(ft2);
     data.add(ft3);
 
-    chart = new BarChartUI<FlightType>(100, 100, (int)m_scale.x - 200, (int)m_scale.y - 200);
+    chart = new BarChartUI<FlightType, String>(100, 100, (int)m_scale.x - 200, (int)m_scale.y - 200);
     addWidget(chart);
 
     RadioButtonUI destination = new RadioButtonUI( 100, (int)m_scale.y - 80, 200, 20, "Destination");
@@ -248,7 +226,7 @@ class TwoDMapScreen extends Screen {
 
     ButtonUI returnBttn = createButton(20, currentUIPosY, 160, 50);
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
-    returnBttn.setGrowMode(true);
+    returnBttn.setGrowScale(1.05);
     returnBttn.setText("Return");
     returnBttn.setTextSize(textSize);
     returnBttn.getLabel().setCentreAligned(true);
@@ -312,7 +290,7 @@ class AlexTestingScreen extends Screen {
     ButtonUI returnBttn = createButton(20, displayHeight - 60, 160, 50);
 
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
-    returnBttn.setGrowMode(true);
+    returnBttn.setGrowScale(1.05);
     returnBttn.setText("<-");
     returnBttn.setTextSize(20);
     returnBttn.getLabel().setCentreAligned(true);
