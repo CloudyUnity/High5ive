@@ -29,15 +29,16 @@ class ApplicationClass {
     ScreenFlightMap screenFlightMap3D = new ScreenFlightMap(SCREEN_FLIGHT_MAP_ID, m_queryManager);
     m_screens.add(screenFlightMap3D);
 
+    ScreenCharts screenCharts = new ScreenCharts(SCREEN_CHARTS_ID, m_queryManager);
+    m_screens.add(screenCharts);
+
     m_screens.add(new AlexTestingScreen(ALEX_TESTING_ID));
 
-    m_currentScreen = m_screens.get(0);
-    PVector windowSize = m_currentScreen.getScale();
-    if (!FULLSCREEN_ENABLED)
-      resizeWindow((int)windowSize.x, (int)windowSize.y);
+    m_currentScreen = screen1;
 
     m_flightsManager.loadUSAndWorldFromFiles("hex_flight_data.bin", "hex_world_data.bin", 4, list -> {
       screenFlightMap3D.insertFlightData(list);
+      screenCharts.loadData(list.US);
     }
     );
   }

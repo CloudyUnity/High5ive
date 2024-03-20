@@ -48,7 +48,7 @@ class FlightType { // 23 bytes total
 class FlightMultiDataType {
   public FlightType[] US;
   public FlightType[] WORLD;
-  
+
   FlightMultiDataType(FlightType[] us, FlightType[] world) {
     this.US = us;
     this.WORLD = world;
@@ -66,14 +66,11 @@ class FlightQueryType {
     this.Operator = operator;
     this.Location = location;
   }
-  
-  public void setOperator(QueryOperatorType inputOperator){
-      //Needed since Ill be declaring all FlightQueries at the start then adjusting them to user input
-      Operator = inputOperator;
-  
+
+  public void setOperator(QueryOperatorType inputOperator) {
+    //Needed since Ill be declaring all FlightQueries at the start then adjusting them to user input
+    Operator = inputOperator;
   }
-  
-  
 }
 
 class FlightRangeQueryType {
@@ -97,64 +94,60 @@ class FlightSortQueryType {
 }
 class UserQuery {
 
-   public ArrayList<FlightQueryType> FlightQueries; 
-   
-   UserQuery(){
-   
-     FlightQueries = new ArrayList<FlightQueryType>(); 
-     
-   
-   }
-   
-   public void addQuery(FlightQueryType inputQuery){
-     FlightQueries.add(inputQuery);
-   }
-   
-   public void removeQuery(int indexRemoved){
-   FlightQueries.remove(indexRemoved);
-   }
-   public void clearQueries(){
-   
-     FlightQueries.clear();
-   
-   }
+  public ArrayList<FlightQueryType> FlightQueries;
 
+  UserQuery() {
+
+    FlightQueries = new ArrayList<FlightQueryType>();
+  }
+
+  public void addQuery(FlightQueryType inputQuery) {
+    FlightQueries.add(inputQuery);
+  }
+
+  public void removeQuery(int indexRemoved) {
+    FlightQueries.remove(indexRemoved);
+  }
+  public void clearQueries() {
+
+    FlightQueries.clear();
+  }
 }
 
 
 public enum QueryType {
   DAY,
-  CARRIER_CODE_INDEX,
-  FLIGHT_NUMBER,
-  AIRPORT_ORIGIN_INDEX,
-  AIRPORT_DEST_INDEX,
-  SCHEDULED_DEPARTURE_TIME,
-  DEPARTURE_TIME,
-  DEPARTURE_DELAY,
-  SCHEDULED_ARRIVAL_TIME,
-  ARRIVAL_TIME,
-  ARRIVAL_DELAY,
-  CANCELLED_OR_DIVERTED,
-  KILOMETRES_DISTANCE,
+    CARRIER_CODE_INDEX,
+    FLIGHT_NUMBER,
+    AIRPORT_ORIGIN_INDEX,
+    AIRPORT_DEST_INDEX,
+    SCHEDULED_DEPARTURE_TIME,
+    DEPARTURE_TIME,
+    DEPARTURE_DELAY,
+    SCHEDULED_ARRIVAL_TIME,
+    ARRIVAL_TIME,
+    ARRIVAL_DELAY,
+    CANCELLED_OR_DIVERTED,
+    KILOMETRES_DISTANCE,
 }
 
 public enum QueryOperatorType {
   EQUAL,
-  NOT_EQUAL,
-  LESS_THAN,
-  LESS_THAN_EQUAL,
-  GREATER_THAN,
-  GREATER_THAN_EQUAL,
+    NOT_EQUAL,
+    LESS_THAN,
+    LESS_THAN_EQUAL,
+    GREATER_THAN,
+    GREATER_THAN_EQUAL,
 }
 
 public enum QuerySortDirectionType {
   ASCENDING,
-  DESCENDING,
+    DESCENDING,
 }
 
 public enum QueryLocationType {
   US,
-  WORLD,
+    WORLD,
 }
 
 class CoordType {
