@@ -1,21 +1,32 @@
-import java.util.function.Function;
-import java.util.TreeMap;
-import java.util.Map;
-import java.util.function.Consumer;
-
 class ButtonUI extends Widget implements IClickable {
-  private Event<EventInfoType> m_onClickEvent;
+  private EventType<EventInfoType> m_onClickEvent;
   private LabelUI m_label;
   private boolean m_highlightOutlineOnEnter;
+  private int m_highlightedColour = DEFAULT_HIGHLIGHT_COLOR;
+  private boolean m_highlighted = false;
 
   public ButtonUI(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
-    m_onClickEvent = new Event<EventInfoType>();
-    m_label = new LabelUI(posX, posY, scaleX, scaleY, null);
+    m_onClickEvent = new EventType<EventInfoType>();
+    m_label = new LabelUI(0, 0, 1, 1, null);
     m_label.setCentreAligned(true);
+    m_label.setParent(this);
+
     m_highlightOutlineOnEnter = true;
-    getOnMouseEnterEvent().addHandler(e -> changeOutlineColourOnEnter(e));
-    getOnMouseExitEvent().addHandler(e -> changeOutlineColourOnExit(e));
+    getOnMouseEnterEvent().addHandler(e -> m_highlighted = true);
+    getOnMouseExitEvent().addHandler(e -> m_highlighted = false);
+  }
+
+  @ Override
+    protected void drawOutline() {
+    if (m_drawOutlineEnabled) {
+      strokeWeight(DEFAULT_WIDGET_STROKE);
+      if (m_highlightOutlineOnEnter && m_highlighted)
+        stroke(color(m_highlightedColour));
+      else
+        stroke(color(m_outlineColour));
+    } else
+      noStroke();
   }
 
   @ Override
@@ -23,12 +34,12 @@ class ButtonUI extends Widget implements IClickable {
     super.draw();
 
     fill(m_backgroundColour);
-    rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y);
+    rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y, DEFAULT_WIDGET_ROUNDNESS_1);
 
     m_label.draw();
   }
 
-  public Event<EventInfoType> getOnClickEvent() {
+  public EventType<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
 
@@ -38,18 +49,8 @@ class ButtonUI extends Widget implements IClickable {
 
   public void setHighlightOutlineOnEnter(boolean highlightOutlineOnEnter) {
     if (!highlightOutlineOnEnter)
-      setOutlineColour(#000000);
+      setOutlineColour(color(m_outlineColour));
     m_highlightOutlineOnEnter = highlightOutlineOnEnter;
-  }
-
-  private void changeOutlineColourOnExit(EventInfoType e) {
-    if (m_highlightOutlineOnEnter)
-      e.Widget.setOutlineColour(#000000);
-  }
-
-  private void changeOutlineColourOnEnter(EventInfoType e) {
-    if (m_highlightOutlineOnEnter)
-      e.Widget.setOutlineColour(#FFFFFF);
   }
 
   public void setTextSize(int textSize) {

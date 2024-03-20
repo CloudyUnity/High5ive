@@ -1,8 +1,3 @@
-import java.util.function.Function;
-import java.util.TreeMap;
-import java.util.Map;
-import java.util.function.Consumer;
-
 class LabelUI extends Widget {
   private boolean m_centreAligned;
   private String m_text; // Can be null

@@ -1,21 +1,18 @@
-import java.util.function.Function;
-import java.util.function.Consumer;
-
 class FlightMap2DUI extends Widget {
 
   private PImage m_mapImage;
-  
+
   public FlightMap2DUI(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
-    m_mapImage = loadImage("data/Images/EarthDay2k.jpg");
+    m_mapImage = loadImage("data/Images/EarthDay2kNoIce.jpg");
   }
 
   @ Override
     public void draw() {
     super.draw();
-           
+
     fill(m_backgroundColour);
-    image(m_mapImage, 128, 0, 2048, 1024);
+    image(m_mapImage, 200, 0, (displayWidth-200), (displayHeight-100));
   }
 }
 

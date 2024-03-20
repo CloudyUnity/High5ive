@@ -3,9 +3,9 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
   private StringBuilder m_text;
   private int m_cursorPosition = 0;
 
-  private Event<KeyPressedEventInfoType> m_onKeyPressedEvent;
-  private Event<EventInfoType> m_onClickEvent;
-  private Event<StringEnteredEventInfoType> m_onStringEnteredEvent;
+  private EventType<KeyPressedEventInfoType> m_onKeyPressedEvent;
+  private EventType<EventInfoType> m_onClickEvent;
+  private EventType<StringEnteredEventInfoType> m_onStringEnteredEvent;
 
   private int m_timer = 30;
   private boolean m_drawBar = true;
@@ -17,15 +17,14 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
     m_backgroundColour = #FFFFFF;
     m_foregroundColour = 0;
     m_text = new StringBuilder();
-    m_onKeyPressedEvent = new Event<KeyPressedEventInfoType>();
-    m_onClickEvent = new Event<EventInfoType>();
-    m_onStringEnteredEvent = new Event<StringEnteredEventInfoType>();
+    m_onKeyPressedEvent = new EventType<KeyPressedEventInfoType>();
+    m_onClickEvent = new EventType<EventInfoType>();
+    m_onStringEnteredEvent = new EventType<StringEnteredEventInfoType>();
 
     m_onKeyPressedEvent.addHandler(e -> onKeyPressed(e));
-
   }
-  
-  
+
+
 
   void draw() {
     super.draw();
@@ -35,16 +34,13 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
     textAlign(LEFT, CENTER);
     fill(m_foregroundColour);
     textSize(fontSize);
-    if (!isFocused() && m_text.toString() != ""){
+    if (!isFocused() && m_text.toString() != "") {
       m_foregroundColour = 0;
       text(m_text.toString(), m_pos.x, m_pos.y, m_scale.x, m_scale.y);
-    }
-    else if(!isFocused() && m_text.toString() == ""){
+    } else if (!isFocused() && m_text.toString() == "") {
       m_foregroundColour = 120;
       text(m_emptyText, m_pos.x, m_pos.y, m_scale.x, m_scale.y);
-      
-    }
-    else {
+    } else {
       m_timer -= 1;
       if (m_timer == 0) {
         m_timer = 30;
@@ -57,17 +53,16 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
       text(output.toString(), m_pos.x, m_pos.y, m_scale.x, m_scale.y);
     }
   }
-  
-  public void setPlaceholderText(String EmptyText){
-    
+
+  public void setPlaceholderText(String EmptyText) {
+
     m_emptyText = EmptyText;
-  
   }
 
   public void setText(String text) {
     m_text.setLength(0);
     m_text.append(text);
-    m_cursorPosition = text.length() - 1;
+    m_cursorPosition = text.length() /* - 1 */;  // -TO ALEX: Changed this from -1 since it broke when i tried to reset Search boxes, if this was necessary you can change it back
   }
 
   public String getText() {
@@ -104,7 +99,6 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
         m_text.append(e.pressedKey);
         m_cursorPosition++;
       }
-      
     }
   }
 
@@ -116,15 +110,15 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
     return m_userModifiable;
   }
 
-  public Event<EventInfoType> getOnClickEvent() {
+  public EventType<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
 
-  public Event<StringEnteredEventInfoType> getOnStringEnteredEvent() {
+  public EventType<StringEnteredEventInfoType> getOnStringEnteredEvent() {
     return m_onStringEnteredEvent;
   }
 
-  public Event<KeyPressedEventInfoType> getOnKeyPressedEvent() {
+  public EventType<KeyPressedEventInfoType> getOnKeyPressedEvent() {
     return m_onKeyPressedEvent;
   }
 }
