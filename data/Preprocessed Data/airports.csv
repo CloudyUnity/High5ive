@@ -6461,20 +6461,20 @@ Masvingo International Airport,Masvingo,ZW,Zimbabwe,UTA,-20.05529976,30.85910034
 Mutare Airport,Mutare,ZW,Zimbabwe,VFA,-18.99749947,32.62720108,6459,193B
 Victoria Falls International Airport,Victoria Falls,ZW,Zimbabwe,WKI,-18.09589958,25.8390007,6460,193C
 Hwange (Town) Airport,Hwange,ZW,Zimbabwe,XMU,-18.362967,26.519791,6461,193D
-Greenwood County Airport,Greenwood,,United States,GRD,,,6462,193E
-Gordon Municipal Airport,Gordon,,United States,GRN,,,6463,193F
-Goshen Municipal Airport,Goshen,,United States,GSH,,,6464,1940
-,The Granites,,Australia,GTS,,,6465,1941
-Guriel Airstrip,Guriel,,Somalia,GUO,,,6466,1942
-,,,,GYB,,,6467,1943
-,,,,GYZ,,,6468,1944
-Hacaritama Airport,Aguachica,,Colombia,HAY,,,6469,1945
-,,,,HBK,,,6470,1946
-,,,,HCA,,,6471,1947
-Hermiston Municipal Airport,Hermiston,,United States,HES,,,6472,1948
-Hardy-Anders Field/Natchez-Adams County Airport,Natchez,,United States,HEZ,,,6473,1949
-Mara North Conservancy Airstrip,Maasai Mara Game Reserve,,Kenya,HKR,,,6474,194A
-Hawkins Field,Jackson,,United States,HKS,,,6475,194B
+Greenwood County Airport,Greenwood,US,United States,GRD,34.250394,-82.157808,6462,193E
+Gordon Municipal Airport,Gordon,US,United States,GRN,42.805972,-102.175249,6463,193F
+Goshen Municipal Airport,Goshen,US,United States,GSH,41.526133,-85.794269,6464,1940
+The Granites,The Granites,AU,Australia,GTS,-20.54861,130.350556,6465,1941
+Guriel Airstrip,Guriel,SO,Somalia,GUO,5.318056,45.986111,6466,1942
+Wodgina Airport,Wodgina,AU,Australia,GYB,-21.1397729,118.6933762,6467,1943
+Gruyere Mine Airport,Gruyere,AU,Australia,GYZ,-28.0339912,123.8140464,6468,1944
+Hacaritama Airport,Aguachica,CO,Colombia,HAY,8.3,-73.630555,6469,1945
+Holbrook Municipal Airport,Holbrook,US,United States,HBK,34.940833,-110.138611,6470,1946
+Big Spring McMahon-Wrinkle Airport,Big Spring,US,United States,HCA,32.2125,-101.521667,6471,1947
+Hermiston Municipal Airport,Hermiston,US,United States,HES,45.828222,-119.259166,6472,1948
+Hardy-Anders Field/Natchez-Adams County Airport,Natchez,US,United States,HEZ,31.613661,-91.297335,6473,1949
+Mara North Conservancy Airstrip,Maasai Mara Game Reserve,KE,Kenya,HKR,-1.145499,35.124667,6474,194A
+Hawkins Field,Jackson,US,United States,HKS,32.334778,-90.222527,6475,194B
 ,,,,HMS,,,6476,194C
 Hemet-Ryan Airport,Hemet,,United States,HMT,,,6477,194D
 ,Huntingburg,,United States,HNB,38.249017,-86.952818,6478,194E
