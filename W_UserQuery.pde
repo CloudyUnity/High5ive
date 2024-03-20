@@ -71,7 +71,6 @@ class UserQueryUI extends Widget {
   public void insertBaseData(FlightMultiDataType flightData) {
     m_flightsLists = flightData;
     m_onLoadDataEvent.accept(flightData.WORLD);
-    println("The first flights day in US: " + m_flightsLists.US[0].Day);
   }
 
   public void setOnLoadHandler(Consumer<FlightType[]> dataEvent) {
