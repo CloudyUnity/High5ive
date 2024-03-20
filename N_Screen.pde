@@ -2,7 +2,7 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
 
   private ArrayList<Widget> m_children;
   private ArrayList<WidgetGroupType> m_groups;
-  
+
   private String m_screenId;
   private color m_backgroundColor;
 
@@ -40,7 +40,7 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
         child.draw();
 
     for (WidgetGroupType group : m_groups) {
-      for (Widget child : group.getMembers()) 
+      for (Widget child : group.getMembers())
         if (child.getRenderingEnabled())
           child.draw();
     }
