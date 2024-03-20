@@ -30,6 +30,7 @@ abstract class Widget {
   private float m_growMult = 1.0f;
   protected boolean m_mouseHovered = false;
   protected boolean m_focused = false;
+  protected boolean m_rendered = true;
 
   public Widget(PVector pos, PVector scale) {
     m_pos = pos;
@@ -93,6 +94,14 @@ abstract class Widget {
 
   public void setGrowMode(boolean enabled) {
     m_growMode = enabled;
+  }
+  
+  public void setRendering(boolean enabled) {
+    m_rendered = enabled;
+  }
+  
+  public boolean getRenderingEnabled(){
+    return m_rendered;
   }
 
   /**
