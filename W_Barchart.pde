@@ -1,28 +1,28 @@
-class BarChartUI<T> extends Widget implements IChart<T> {
-  private TreeMap<String, Integer> m_map;
-  private Integer m_maxValue = null; // Can be null
-  private Integer m_barWidth = null; // Can be null
-  private int m_bottomPadding;
-  private int m_topPadding;
-  private int m_sidePadding;
-  private Integer m_maxScaleValue;
-  private Integer m_scaleInterval;
-  private String m_title;
-  private int m_numberTextBoxWidth;
-  private int m_numberTextBoxHeight;
+class BarChartUI<T, TData> extends Widget implements IChart<T, TData> {
+  private TreeMap<TData, Integer> m_map;
+  private Integer m_maxValue = -1; // Can be null
+  private Integer m_barWidth = -1; // Can be null
+  private int m_bottomPadding = 0;
+  private int m_topPadding = 0;
+  private int m_sidePadding = 0;
+  private Integer m_maxScaleValue = 1;
+  private Integer m_scaleInterval = 1;
+  private String m_title = "ERROR";
+  private int m_numberTextBoxWidth = 0;
+  private int m_numberTextBoxHeight = 0;
 
   public BarChartUI(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
-    m_map = new TreeMap<String, Integer>();
+    m_map = new TreeMap<TData, Integer>();
     m_numberTextBoxHeight = m_bottomPadding = (int)((double)m_scale.y * 0.1);
     m_topPadding = (int)((double)m_scale.y * 0.1);
     m_numberTextBoxWidth = m_sidePadding = (int)((double)m_scale.x * 0.1);
     m_foregroundColour = color(#F000CD);
   }
 
-  public void addData(T[] data, Function<T, String> getKey) {
+  public void addData(T[] data, Function<T, TData> getKey) {          
     for (var value : data) {
-      String k = getKey.apply(value);
+      TData k = getKey.apply(value);
       Integer entryValue = m_map.get(k);
 
       if (entryValue == null)
@@ -34,9 +34,9 @@ class BarChartUI<T> extends Widget implements IChart<T> {
     setUpAfterDataAdded();
   }
 
-  public <I extends Iterable<T>> void addData(I data, Function<T, String> getKey) {
+  public <I extends Iterable<T>> void addData(I data, Function<T, TData> getKey) {
     for (var value : data) {
-      String k = getKey.apply(value);
+      TData k = getKey.apply(value);
       Integer entryValue = m_map.get(k);
 
       if (entryValue == null)
@@ -54,9 +54,6 @@ class BarChartUI<T> extends Widget implements IChart<T> {
     if (m_map.size() == 0)
       return;
 
-    if (m_maxValue != null)
-      return;
-
     m_maxValue = 0;
     for (var value : m_map.values()) {
       if (value > m_maxValue)
@@ -64,14 +61,15 @@ class BarChartUI<T> extends Widget implements IChart<T> {
     }
 
     m_scaleInterval = 1;
-    for (int tmp = m_maxValue; tmp > 1; tmp /= 10)
+    for (int i = m_maxValue; i > 1; i /= 10)
       m_scaleInterval *= 10;
     m_maxScaleValue = m_scaleInterval * ((m_maxValue + m_scaleInterval - 1) / m_scaleInterval); // Round up to the nearest m_scaleInterval.
   }
+  
   public void removeData() {
-    m_map = new TreeMap<String, Integer>();
-    m_maxValue = null;
-    m_barWidth = null;
+    m_map = new TreeMap<TData, Integer>();
+    m_maxValue = -1;
+    m_barWidth = -1;
   }
 
   public void setTitle(String title) {
@@ -81,8 +79,13 @@ class BarChartUI<T> extends Widget implements IChart<T> {
   @ Override
     public void draw() {
     super.draw();
+    
     fill(color(m_backgroundColour));
     rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y);
+    
+    if (m_maxValue == -1 || m_barWidth == -1)
+      return;
+       
     if (m_map.size() == 0)
       return;
 
@@ -101,7 +104,7 @@ class BarChartUI<T> extends Widget implements IChart<T> {
     }
 
     int i = 0;
-    for (Map.Entry<String, Integer> entry : m_map.entrySet()) {
+    for (Map.Entry<TData, Integer> entry : m_map.entrySet()) {              
       int barHeight = (int)(((double)entry.getValue() / (double)m_maxScaleValue) * (double)(m_scale.y - m_bottomPadding - m_topPadding));
       int barTop = (int)(m_pos.y + m_scale.y - m_bottomPadding - barHeight);
 
@@ -111,7 +114,7 @@ class BarChartUI<T> extends Widget implements IChart<T> {
       rect(m_pos.x + m_sidePadding + i * m_barWidth, m_pos.y + m_scale.y - barHeight - m_bottomPadding, m_barWidth, barHeight);
 
       fill(0);
-      text(entry.getKey(), m_pos.x + m_sidePadding + i * m_barWidth, m_pos.y + m_scale.y - m_bottomPadding, m_barWidth, m_bottomPadding);
+      text(entry.getKey().toString(), m_pos.x + m_sidePadding + i * m_barWidth, m_pos.y + m_scale.y - m_bottomPadding, m_barWidth, m_bottomPadding);
       text(entry.getValue().toString(), m_pos.x + m_sidePadding + i * m_barWidth, valTextYTop, m_barWidth, m_numberTextBoxHeight);
 
       i++;
