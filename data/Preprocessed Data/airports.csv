@@ -6723,101 +6723,102 @@ Masvingo International Airport,Masvingo,ZW,Zimbabwe,UTA,-20.05529976,30.85910034
 Mutare Airport,Mutare,ZW,Zimbabwe,VFA,-18.99749947,32.62720108,6728,1A41
 Victoria Falls International Airport,Victoria Falls,ZW,Zimbabwe,WKI,-18.09589958,25.8390007,6729,1A42
 Hwange (Town) Airport,Hwange,ZW,Zimbabwe,XMU,-18.362967,26.519791,6730,1A43
-,,,,QAC,,,6731,1A44
-,,,,QBA,,,6732,1A45
-,,,,QBB,,,6733,1A46
-,,,,QBD,,,6734,1A47
-,,,,QBF,,,6735,1A48
-,,,,QBG,,,6736,1A49
-,,,,QBH,,,6737,1A4A
-,,,,QBL,,,6738,1A4B
-,,,,QBN,,,6739,1A4C
-,,,,QBO,,,6740,1A4D
-,,,,QBP,,,6741,1A4E
-,,,,QBR,,,6742,1A4F
-,,,,QBS,,,6743,1A50
-,,,,QBT,,,6744,1A51
-,,,,QBU,,,6745,1A52
-,,,,QBY,,,6746,1A53
-,,,,QCB,,,6747,1A54
-,,,,QCD,,,6748,1A55
-,,,,QCF,,,6749,1A56
-,,,,QCI,,,6750,1A57
-,,,,QCM,,,6751,1A58
-,,,,QCO,,,6752,1A59
-,,,,QCP,,,6753,1A5A
-,,,,QCQ,,,6754,1A5B
-,,,,QCS,,,6755,1A5C
-,,,,QCV,,,6756,1A5D
-,,,,QCX,,,6757,1A5E
-,,,,QCZ,,,6758,1A5F
-,,,,QEP,,,6759,1A60
-,,,,QER,,,6760,1A61
-,,,,QEW,,,6761,1A62
-,,,,QEZ,,,6762,1A63
-,,,,QFC,,,6763,1A64
-,,,,QHB,,,6764,1A65
-,,,,QHD,,,6765,1A66
-,,,,QHS,,,6766,1A67
-,,,,QHT,,,6767,1A68
-,,,,QIB,,,6768,1A69
-,,,,QKE,,,6769,1A6A
-,,,,QKF,,,6770,1A6B
-,,,,QKM,,,6771,1A6C
-,,,,QOV,,,6772,1A6D
-,,,,QOZ,,,6773,1A6E
-,,,,QPK,,,6774,1A6F
-,,,,QPR,,,6775,1A70
-,,,,QQA,,,6776,1A71
-,,,,QQB,,,6777,1A72
-,,,,QQC,,,6778,1A73
-,,,,QQD,,,6779,1A74
-,,,,QQF,,,6780,1A75
-,,,,QQG,,,6781,1A76
-,,,,QQK,,,6782,1A77
-,,,,QQL,,,6783,1A78
-,,,,QQN,,,6784,1A79
-,,,,QQP,,,6785,1A7A
-,,,,QQQ,,,6786,1A7B
-,,,,QQR,,,6787,1A7C
-,,,,QQW,,,6788,1A7D
-,,,,QQX,,,6789,1A7E
-,,,,QQY,,,6790,1A7F
-,,,,QQZ,,,6791,1A80
-,,,,QSB,,,6792,1A81
-,,,,QSD,,,6793,1A82
-,,,,QSE,,,6794,1A83
-,,,,QSH,,,6795,1A84
-,,,,QSJ,,,6796,1A85
-,,,,QSK,,,6797,1A86
-,,,,QSM,,,6798,1A87
-,,,,QSQ,,,6799,1A88
-,,,,QSV,,,6800,1A89
-,,,,QSY,,,6801,1A8A
-,,,,QTA,,,6802,1A8B
-,,,,QTC,,,6803,1A8C
-,,,,QTF,,,6804,1A8D
-,,,,QTG,,,6805,1A8E
-,,,,QTM,,,6806,1A8F
-,,,,QTN,,,6807,1A90
-,,,,QTP,,,6685,1A91
-,,,,QTQ,,,6660,1A92
-,,,,QTS,,,6661,1A93
-,,,,QTT,,,6808,1A94
-,,,,QTV,,,6686,1A95
-,,,,QTY,,,6687,1A96
-,,,,QTZ,,,6809,1A97
-,,,,QYA,,,6810,1A98
-,,,,QYC,,,6688,1A99
-,,,,QYE,,,6689,1A9A
-,,,,QYF,,,6811,1A9B
-,,,,QYG,,,6812,1A9C
-,,,,QYK,,,6813,1A9D
-,,,,QYL,,,6814,1A9E
-,,,,QYM,,,6815,1A9F
-,,,,QYT,,,6816,1AA0
-,,,,QYU,,,6817,1AA1
-,,,,QYV,,,6818,1AA2
-,,,,QYZ,,,6819,1AA3
-,,,,QZH,,,6820,1AA4
-,,,,QZK,,,6821,1AA5
+Carrapateena Airport,,,Australia,QAC,,,6731,1A44
+Brisbane Archerfield Airport,,,Australia,QBA,,,6732,1A45
+Beverley Airport,,,Australia,QBB,,,6733,1A46
+Lombadine Airport,,,Australia,QBD,,,6734,1A47
+Forrestania Airport,,,Australia,QBF,,,6735,1A48
+Golden Grove Airport,,,Australia,QBG,,,6736,1A49
+Mount Holland Airport,,,Australia,QBH,,,6737,1A4A
+Labona Airport,,,Australia,QBL,,,6738,1A4B
+Jundee Airport,,,Australia,QBN,,,6739,1A4C
+Fortnum Airport,,,Australia,QBO,,,6740,1A4D
+Adelaide Parafield Airport,,,Australia,QBP,,,6741,1A4E
+Redcliffe Airport,,,Australia,QBR,,,6742,1A4F
+Skardon River Airport,,,Australia,QBS,,,6743,1A50
+Tropicana Airport,,,Australia,QBT,,,6744,1A51
+Bellevue Airport,,,Australia,QBU,,,6745,1A52
+Rothsay Mine Airport,,,Australia,QBY,,,6746,1A53
+Bamberg Beritenau Airport,,,Germany,QCB,,,6747,1A54
+Diepholz Air Base,,,Germany,QCD,,,6748,1A55
+Freiburg Airport,,,Germany,QCF,,,6749,1A56
+Koblenz Winningen Airport,,,Germany,QCI,,,6750,1A57
+Mengen Hohentengen Airport,,,Germany,QCM,,,6751,1A58
+Donaueschingen Villingen Airport,,,Germany,QCO,,,6752,1A59
+Schwabisch Hall Adolf Wurth Airport,,,Germany,QCP,,,6753,1A5A
+Ganderkesee Airport,,,Germany,QCQ,,,6754,1A5B
+Speyer Airport,,,Germany,QCS,,,6755,1A5C
+Vilshofen Airport,,,Germany,QCV,,,6756,1A5D
+Rotenburg Wumme Airport,,,Germany,QCX,,,6757,1A5E
+Trebbin Schonhagen Airport,,,Germany,QCZ,,,6758,1A5F
+Hunxe Schwarze Heide Airport,,,Germany,QEP,,,6759,1A60
+Reichelsheim Airport,,,Germany,QER,,,6760,1A61
+Wiener Neustadt East Airport,,,Austria,QEW,,,6761,1A62
+Mainz Finthen Airport,,,Germany,QEZ,,,6762,1A63
+Chalon Champgorgeuil Airport,,,France,QFC,,,6763,1A64
+Budel Kempen Airport,,,Netherlands,QHB,,,6764,1A65
+Szeged Airport,,,Hungary,QHD,,,6765,1A66
+Breda International Airport,,,Netherlands,QHS,,,6766,1A67
+Teuge International Airport,,,Netherlands,QHT,,,6767,1A68
+Bresso Airport,,,Italy,QIB,,,6768,1A69
+London Elstree Aerodrome,,,United Kingdom,QKE,,,6769,1A6A
+Woking Fairoaks Airport,,,United Kingdom,QKF,,,6770,1A6B
+Leeds East Airport,,,United Kingdom,QKM,,,6771,1A6C
+Sankt Johann Airport,,,Austria,QOJ,,,6772,1A6D
+Vienna Voslau Airport,,,Austria,QOV,,,6773,1A6E
+Zell am See Airport,,,Austria,QOZ,,,6774,1A6F
+Kielce Airport,,,Poland,QPK,,,6775,1A70
+Krosno Airport,,,Poland,QPR,,,6776,1A71
+Minneapolis Anoka County Blaine Airport,,,United States,QQA,,,6777,1A72
+New Smyrna Beach Municipal Airport,,,United States,QQB,,,6778,1A73
+Canton Cherokee County Regional Airport,,,United States,QQC,,,6779,1A74
+Denton Enterprise Airport,,,United States,QQD,,,6780,1A75
+Bunnell Flagler County Airport,,,United States,QQF,,,6781,1A76
+,,,,QQG,,,6782,1A77
+,,,,QQK,,,6783,1A78
+,,,,QQL,,,6784,1A79
+,,,,QQN,,,6785,1A7A
+,,,,QQP,,,6786,1A7B
+,,,,QQQ,,,6787,1A7C
+,,,,QQR,,,6788,1A7D
+,,,,QQW,,,6789,1A7E
+,,,,QQX,,,6790,1A7F
+,,,,QQY,,,6791,1A80
+,,,,QQZ,,,6792,1A81
+,,,,QSB,,,6793,1A82
+,,,,QSD,,,6794,1A83
+,,,,QSE,,,6795,1A84
+,,,,QSH,,,6796,1A85
+,,,,QSJ,,,6797,1A86
+,,,,QSK,,,6798,1A87
+,,,,QSM,,,6799,1A88
+,,,,QSQ,,,6800,1A89
+,,,,QSV,,,6801,1A8A
+,,,,QSY,,,6802,1A8B
+,,,,QTA,,,6803,1A8C
+,,,,QTC,,,6804,1A8D
+,,,,QTF,,,6805,1A8E
+,,,,QTG,,,6806,1A8F
+,,,,QTM,,,6807,1A90
+,,,,QTN,,,6685,1A91
+,,,,QTP,,,6660,1A92
+,,,,QTQ,,,6661,1A93
+,,,,QTS,,,6808,1A94
+,,,,QTT,,,6686,1A95
+,,,,QTV,,,6687,1A96
+,,,,QTY,,,6809,1A97
+,,,,QTZ,,,6810,1A98
+,,,,QYA,,,6688,1A99
+,,,,QYC,,,6689,1A9A
+,,,,QYE,,,6811,1A9B
+,,,,QYF,,,6812,1A9C
+,,,,QYG,,,6813,1A9D
+,,,,QYK,,,6814,1A9E
+,,,,QYL,,,6815,1A9F
+,,,,QYM,,,6816,1AA0
+,,,,QYT,,,6817,1AA1
+,,,,QYU,,,6818,1AA2
+,,,,QYV,,,6819,1AA3
+,,,,QYZ,,,6820,1AA4
+,,,,QZH,,,6821,1AA5
+,,,,QZK,,,,
