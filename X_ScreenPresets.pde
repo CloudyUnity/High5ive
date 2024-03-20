@@ -49,12 +49,14 @@ class Screen1 extends Screen {
     switchTo3D.setText("3D");
     switchTo3D.setTextSize(25);
     switchTo3D.setGrowScale(growScale);
-    
+
     ButtonUI switchToCharts = createButton(500, 20, 100, 100);
     switchToCharts.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_CHARTS_ID));
     switchToCharts.setText("Charts (WIP)");
     switchToCharts.setTextSize(25);
+
     switchToCharts.setGrowScale(1.05);
+
   }
 
   private void switchToTextBoxDemoOnClick(EventInfoType e) {
@@ -148,7 +150,7 @@ class FlightCodesBarchartDemo extends Screen {
     returnBtn.setText("<-");
     returnBtn.setTextSize(25);
     returnBtn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
-    addWidget(returnBtn);   
+    addWidget(returnBtn);
 
     data = new ArrayList<FlightType>();
     FlightType ft1 = new FlightType();

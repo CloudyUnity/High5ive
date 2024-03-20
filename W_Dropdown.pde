@@ -63,7 +63,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
 
   public int getSelectedIndex() {
     return m_listbox.getSelectedIndex();
-  } 
+  }
 
   @ Override
     public boolean isPositionInside(int mx, int my) {
@@ -83,8 +83,8 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
   public EventType<MouseWheelEventInfoType> getOnMouseWheelEvent() {
     return m_onMouseWheelMoved;
   }
-  
-  public EventType<ListboxSelectedEntryChangedEventInfoType> getOnSelectionChanged(){
+
+  public EventType<ListboxSelectedEntryChangedEventInfoType> getOnSelectionChanged() {
     return m_onSelectionChanged;
   }
 

@@ -75,11 +75,7 @@ class FlightQueryType {
     //Needed since Ill be declaring all FlightQueries at the start then adjusting them to user input
     Operator = inputOperator;
   }
-  /* TO IMPLEMENT 
 
-   CANCELLED_OR_DIVERTED,
-
-   }*/
   private int formatQueryValue(String inputString) {
 
     int result;
@@ -120,6 +116,7 @@ class FlightQueryType {
   public void setQueryValue(String inputString) {
 
     QueryValue = formatQueryValue(inputString);
+
   }
 }
 
@@ -151,9 +148,11 @@ class UserQuery {
     FlightQueries = new ArrayList<FlightQueryType>();
   }
 
+
   public void addQuery(FlightQueryType inputQuery) {
     FlightQueries.add(inputQuery);
   }
+
 
   public void removeQuery(int indexRemoved) {
     FlightQueries.remove(indexRemoved);
