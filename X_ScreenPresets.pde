@@ -233,7 +233,7 @@ class TwoDMapScreen extends Screen {
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
 
     returnBttn.setBackgroundColour(color(CP_WHITE));
-    returnBttn.setGrowMode(true);
+    // returnBttn.setGrowMode(true);
     returnBttn.setText("Return");
     returnBttn.setTextSize(textSize);
     returnBttn.getLabel().setCentreAligned(true);
@@ -242,7 +242,7 @@ class TwoDMapScreen extends Screen {
     ButtonUI testBttn = createButton(20, currentUIPosY, 160, 50);
     testBttn.getOnClickEvent();
     testBttn.setBackgroundColour(color(CP_WHITE));
-    testBttn.setGrowMode(true);
+    // testBttn.setGrowMode(true);
     testBttn.setText("test");
     testBttn.setTextSize(textSize);
     testBttn.getLabel().setCentreAligned(true);
