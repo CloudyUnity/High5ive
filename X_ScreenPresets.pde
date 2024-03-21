@@ -222,7 +222,7 @@ class TwoDMapScreen extends Screen {
     uiBackground.setHighlightOutlineOnEnter(false);
     uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
 
-    ButtonUI uiBackgroundTwo = createButton(0, (displayHeight-101), (displayWidth), (99));
+    ButtonUI uiBackgroundTwo = createButton(0, (displayHeight-100), (displayWidth), (100));
     uiBackgroundTwo.setHighlightOutlineOnEnter(false);
     uiBackgroundTwo.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
 
@@ -232,6 +232,14 @@ class TwoDMapScreen extends Screen {
     returnBttn.setText("Return");
     returnBttn.setTextSize(textSize);
     returnBttn.getLabel().setCentreAligned(true);
+    currentUIPosY += 60;
+    
+    ButtonUI resetArcGrow = createButton(20, currentUIPosY, 160, 50);
+    resetArcGrow.getOnClickEvent();
+    resetArcGrow.setGrowScale(1.05);
+    resetArcGrow.setText("Reset Arcs");
+    resetArcGrow.setTextSize(textSize);
+    resetArcGrow.getLabel().setCentreAligned(true);
     currentUIPosY += 60;
     
     CheckboxUI connectionsEnabledCB = createCheckbox(20, currentUIPosY, 50, 50, "Connections");
