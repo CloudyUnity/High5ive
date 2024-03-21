@@ -54,7 +54,9 @@ class Screen1 extends Screen {
     switchToCharts.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_CHARTS_ID));
     switchToCharts.setText("Charts (WIP)");
     switchToCharts.setTextSize(25);
-    // switchToCharts.setGrowMode(1.05);
+
+    switchToCharts.setGrowScale(1.05);
+
   }
 
   private void switchToTextBoxDemoOnClick(EventInfoType e) {
@@ -280,6 +282,8 @@ class AlexTestingScreen extends Screen {
     testDropdown.add("One");
     testDropdown.add("Two");
     testDropdown.add("Three");
+    
+    testDropdown.setSearchable(true);
 
     addWidget(box);
     addWidget(list);
