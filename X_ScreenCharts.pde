@@ -55,9 +55,13 @@ class ScreenCharts extends Screen {
   public ScreenCharts(String screenId, QueryManagerClass query) {
     super(screenId, DEFAULT_SCREEN_COLOUR);
 
-    m_queryRef = query;
-
-    UserQueryUI uqui = new UserQueryUI(0, 0, 1, 1, query, this);
+    m_queryRef = query;    
+  }
+  
+  @Override
+  public void init(){    
+    super.init();
+    UserQueryUI uqui = new UserQueryUI(0, 0, 1, 1, m_queryRef, this);
     addWidget(uqui);
     uqui.setOnLoadHandler(flights -> {
       loadData(flights);
@@ -117,19 +121,17 @@ class ScreenCharts extends Screen {
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
     returnBttn.setText("Return");
     returnBttn.setTextSize(25);
-
     returnBttn.setGrowScale(1.05);
-
   }
 
   public void loadData(FlightType[] flights) {
     m_cachedFlights = flights;
-    reloadData();
+    // reloadData();
   }
 
   public void reloadData() {
     if (m_cachedFlights == null)
-      return;
+      return;     
 
     m_histogram.removeData();
     m_histogram.addData(m_cachedFlights, f -> {

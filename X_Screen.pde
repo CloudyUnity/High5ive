@@ -5,6 +5,7 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
 
   private String m_screenId;
   private color m_backgroundColor;
+  private boolean m_initialised;
 
   private EventType<EventInfoType> m_onClickEvent;
   private EventType<MouseMovedEventInfoType> m_onMouseMovedEvent;
@@ -44,6 +45,10 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
         if (child.getRenderingEnabled() && child.getActive())
           child.draw();
     }
+  }
+  
+  public void init(){
+    m_initialised = true;
   }
 
   public void addWidget(Widget widget) {

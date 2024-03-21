@@ -1,24 +1,13 @@
 class Screen1 extends Screen {
   public Screen1(String screenId) {
     super(screenId, DEFAULT_SCREEN_COLOUR);
-    /* ButtonUI redBtn = createButton(50, 50, 200, 100);
-     redBtn.getOnClickEvent().addHandler(e -> redButtonOnClick(e));
-     redBtn.setText("Red");
-     redBtn.setTextSize(30);
-     redBtn.setGrowScale(1.05);
-     
-     ButtonUI greenBtn = createButton(50, 200, 200, 100);
-     greenBtn.getOnClickEvent().addHandler(e -> greenButtonOnClick(e));
-     greenBtn.setText("Green");
-     greenBtn.setTextSize(30);
-     greenBtn.setGrowScale(1.05);
-     
-     ButtonUI blueBtn = createButton(50, 350, 200, 100);
-     blueBtn.getOnClickEvent().addHandler(e -> blueButtonOnClick(e));
-     blueBtn.setText("Blue");
-     blueBtn.setTextSize(30);
-     blueBtn.setGrowScale(1.05);*/
-    float growScale = 1.05;
+  }
+
+  @Override
+    public void init() {
+    super.init();
+    
+    float growScale = 1.05f;
 
     ButtonUI switchToTextboxDemo = createButton(20, 170, 250, 100);
     switchToTextboxDemo.getOnClickEvent().addHandler(e -> switchToTextBoxDemoOnClick(e));
@@ -56,7 +45,6 @@ class Screen1 extends Screen {
     switchToCharts.setTextSize(25);
 
     switchToCharts.setGrowScale(1.05);
-
   }
 
   private void switchToTextBoxDemoOnClick(EventInfoType e) {
@@ -70,7 +58,11 @@ class Screen2 extends Screen {
 
   public Screen2(String screenId) {
     super(screenId, DEFAULT_SCREEN_COLOUR);
+  }
 
+  @Override
+    public void init() {
+    super.init();
     ButtonUI switchToScreen1Btn = createButton(width / 2 - 50, height / 2 - 50, 100, 100);
     switchToScreen1Btn.getOnMouseEnterEvent().addHandler(e -> changeOutlineColourOnEnter(e));
     switchToScreen1Btn.getOnMouseExitEvent().addHandler(e -> changeOutlineColourOnExit(e));
@@ -145,7 +137,11 @@ class FlightCodesBarchartDemo extends Screen {
 
   public FlightCodesBarchartDemo(String screenId) {
     super(screenId, color(150, 150, 150, 255));
+  }
 
+  @Override
+    public void init() {
+    super.init();
     ButtonUI returnBtn = new ButtonUI(20, 20, 50, 50);
     returnBtn.setText("<-");
     returnBtn.setTextSize(25);
@@ -210,8 +206,12 @@ class TwoDMapScreen extends Screen {
 
   public TwoDMapScreen (String screenId, QueryManagerClass query) {
     super(screenId, DEFAULT_SCREEN_COLOUR);
-
     m_twodQueryManager = query;
+  }
+
+  @Override
+    public void init() {
+    super.init();
     int currentUIPosY = 20;
     int textSize = 20;
 
@@ -223,7 +223,7 @@ class TwoDMapScreen extends Screen {
     uiBackground.setHighlightOutlineOnEnter(false);
     uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
 
-    
+
     ButtonUI uiBackgroundTwo = createButton(0, (displayHeight-101), (displayWidth), (99));
 
     uiBackgroundTwo.setHighlightOutlineOnEnter(false);
@@ -238,7 +238,7 @@ class TwoDMapScreen extends Screen {
     returnBttn.setTextSize(textSize);
     returnBttn.getLabel().setCentreAligned(true);
     currentUIPosY += 60;
-    
+
     ButtonUI testBttn = createButton(20, currentUIPosY, 160, 50);
     testBttn.getOnClickEvent();
     testBttn.setBackgroundColour(color(CP_WHITE));
@@ -247,7 +247,6 @@ class TwoDMapScreen extends Screen {
     testBttn.setTextSize(textSize);
     testBttn.getLabel().setCentreAligned(true);
     currentUIPosY += 60;
-
   }
 }
 
@@ -264,10 +263,15 @@ class AlexTestingScreen extends Screen {
 
   public AlexTestingScreen(String screenId) {
     super(screenId, color(220, 220, 220, 255));
+  }
+
+  @Override
+    public void init() {
+    super.init();
     box = new TextboxUI(50, 70, 200, 50);
     list = new ListboxUI<String>(50, 170, 200, 400, 40, v -> v);
     imageBox = new ImageUI(400, 50, 60, 60);
-    
+
     box.setPlaceholderText("Placeholder...");
 
     addItemButton = createButton(300, 50, 80, 20);
@@ -298,7 +302,7 @@ class AlexTestingScreen extends Screen {
     testDropdown.add("One");
     testDropdown.add("Two");
     testDropdown.add("Three");
-    
+
     testDropdown.setSearchable(true);
 
     addWidget(box);

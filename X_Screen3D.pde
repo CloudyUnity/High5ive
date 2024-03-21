@@ -13,12 +13,17 @@ class ScreenFlightMap extends Screen {
     int dragWindowY = height;
     m_flightMap3D = new FlightMap3D(200, 0, dragWindowX, dragWindowY);
     addWidget(m_flightMap3D);
+  }
+
+  @Override
+    public void init() {
+    super.init();
 
     // ATTENTION MATTHEW, SEE HERE!
-    m_userQueryUI = new UserQueryUI(0, 60, 1, 1, query, this);
+    m_userQueryUI = new UserQueryUI(0, 60, 1, 1, m_queryManager, this);
     addWidget(m_userQueryUI);
     m_userQueryUI.setOnLoadHandler(flights -> {
-      m_flightMap3D.loadFlights(flights, query);
+      m_flightMap3D.loadFlights(flights, m_queryManager);
     }
     );
 
@@ -133,6 +138,11 @@ class ScreenFlightMap extends Screen {
 
   public void insertFlightData(FlightMultiDataType flights) {
     m_userQueryUI.insertBaseData(flights);
+  }
+
+  public void insertDebug(FlightType[] flights) {
+    println(m_queryManager);
+    m_flightMap3D.loadFlights(flights, m_queryManager);
   }
 }
 
