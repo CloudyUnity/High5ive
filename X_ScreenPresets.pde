@@ -253,6 +253,8 @@ class AlexTestingScreen extends Screen {
     box = new TextboxUI(50, 70, 200, 50);
     list = new ListboxUI<String>(50, 170, 200, 400, 40, v -> v);
     imageBox = new ImageUI(400, 50, 60, 60);
+    
+    box.setPlaceholderText("Placeholder...");
 
     addItemButton = createButton(300, 50, 80, 20);
     addItemButton.setText("Add item");
