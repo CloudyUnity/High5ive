@@ -32,13 +32,19 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
       fill(m_backgroundColour);
       rect(m_pos.x, m_pos.y, m_scale.x, shownHeight());
 
+      int drawIndex = 0;
+
       textAlign(LEFT, CENTER);
-      for (int i = 0; i < m_entries.size() && ((i + 1) * m_entryHeight) <= m_scale.y; i++) {
+      for (int i = 0; i < m_entries.size() && ((drawIndex + 1) * m_entryHeight) <= m_scale.y; i++) {
         int entry = i + m_topItem;
-        fill(m_entries.get(entry).getSelected() ? m_entries.get(entry).getSelectedColour() : m_entries.get(entry).getBackgroundColour());
-        rect(m_pos.x, m_pos.y + i * m_entryHeight, m_entryWidth, m_entryHeight);
-        fill(m_entries.get(entry).getTextColour());
-        text(m_getDisplayString.apply(m_entries.get(entry).getData()), m_pos.x, m_pos.y + i * m_entryHeight, m_entryWidth, m_entryHeight);
+        if (m_entries.get(entry).getShown()) {
+
+          fill(m_entries.get(entry).getSelected() ? m_entries.get(entry).getSelectedColour() : m_entries.get(entry).getBackgroundColour());
+          rect(m_pos.x, m_pos.y + drawIndex * m_entryHeight, m_entryWidth, m_entryHeight);
+          fill(m_entries.get(entry).getTextColour());
+          text(m_getDisplayString.apply(m_entries.get(entry).getData()), m_pos.x, m_pos.y + drawIndex * m_entryHeight, m_entryWidth, m_entryHeight);
+          drawIndex++;
+        }
       }
 
       if (m_scrollBar) {
@@ -65,6 +71,12 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
 
   public void setOnlyUseNeededHeight(boolean onlyUseNeededHeight) {
     m_onlyUseNeededHeight = onlyUseNeededHeight;
+  }
+  
+  public void filterEntries(Function<T, boolean> f) {
+    for (ListboxEntry<T> entry : m_entries) {
+      entry.setShown(f.apply(entry.getData()));
+    }
   }
 
   public void add(T entry) {
@@ -94,7 +106,7 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
     for (Iterator<ListboxEntry<T>> it = m_entries.iterator(); it.hasNext(); ) {
       ListboxEntry<T> e = it.next();
       if (e.getSelected())
-        it.remove();
+      it.remove();
     }
     if (m_scrollBar && (m_entries.size() * m_entryHeight) <= m_scale.y) {
       m_scrollBar = false;
@@ -119,7 +131,7 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
   public T getSelectedEntry() {
     for (var entry : m_entries) {
       if (entry.getSelected())
-        return entry.getData();
+      return entry.getData();
     }
     return null;
   }
@@ -127,7 +139,7 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
   public int getSelectedIndex() {
     for (int i = 0; i < m_entries.size(); i++) {
       if (m_entries.get(i).getSelected())
-        return i;
+      return i;
     }
     return -1;
   }
@@ -162,9 +174,9 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
   private void onMouseWheelMoved(MouseWheelEventInfoType e) {
     if (m_scrollBar) {
       if (e.wheelCount < 0 && m_topItem > 0)
-        m_topItem--;
+      m_topItem--;
       else if (e.wheelCount > 0 && m_topItem < m_entries.size() - maxNumberOfFittingEntries())
-        m_topItem++;
+      m_topItem++;
     }
   }
 
@@ -187,6 +199,8 @@ class ListboxEntry<T> {
   private int m_backgroundColour = #FFFFFF;
   private int m_selectedColour = #ADD8E6;
   private boolean m_selected = false;
+  private boolean m_shown = true;
+
   public ListboxEntry(T data) {
     m_data = data;
   }
@@ -225,6 +239,14 @@ class ListboxEntry<T> {
 
   public int getSelectedColour() {
     return m_selectedColour;
+  }
+
+  public void setShown(boolean shown) {
+    m_shown = shown;
+  }
+  
+  public boolean getShown() {
+    return m_shown;
   }
 }
 
