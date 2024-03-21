@@ -223,3 +223,4 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
 // A. Robertson, Created screen class to represent an individual screen 12pm 04/03/24
 // F. Wright, Modified and simplified code to fit coding standard, 6pm 04/03/24
 // M. Poole, Created onMouseWheel method 1pm 12/03/24
+// A. Robertson, Updated to send events to child widgets, 21/03/24
