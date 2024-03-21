@@ -8,7 +8,6 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
   private ListboxUI<T> m_listbox;
   private TextboxUI m_textbox;
   private ButtonUI m_dropdownButton;
-  private boolean m_showList = false;
 
   public DropdownUI(int posX, int posY, int width, int height, int entryHeight, Function<T, String> getDisplayString) {
     super(posX, posY, width, height);
@@ -28,6 +27,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
     m_listbox = new ListboxUI<T>((int)m_pos.x, (int)m_pos.y + (int)m_textbox.getScale().y, (int)m_scale.x, (int)(m_scale.y - m_textbox.getScale().y), entryHeight, getDisplayString);
 
     m_listbox.setOnlyUseNeededHeight(true);
+    m_listbox.setActive(false);
 
     m_textbox.setUserModifiable(false);
 
@@ -51,7 +51,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
     super.draw();
     m_textbox.draw();
     m_dropdownButton.draw();
-    if (m_showList)
+    if (m_listbox.getActive())
       m_listbox.draw();
   }
 
@@ -73,7 +73,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
 
   @ Override
     public boolean isPositionInside(int mx, int my) {
-    if (m_showList) {
+    if (m_listbox.getActive()) {
       return  mx >= m_pos.x && mx <= (m_pos.x + m_scale.x) &&
         my >= m_pos.y && my <= (m_pos.y + m_textbox.getScale().y + m_listbox.shownHeight());
     } else {
@@ -101,7 +101,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
   }
 
   private void onDropdownButtonClicked(EventInfoType e) {
-    if (m_showList) {
+    if (m_listbox.getActive()) {
       closeList();
     } else {
       openList();
@@ -143,12 +143,12 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
   }
 
   private void openList() {
-    m_showList = true;
+    m_listbox.setActive(true);
     m_dropdownButton.setText("-");
   }
 
   private void closeList() {
-    m_showList = false;
+    m_listbox.setActive(false);
     m_dropdownButton.setText("+");
   }
 }

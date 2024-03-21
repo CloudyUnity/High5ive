@@ -32,6 +32,7 @@ abstract class Widget {
   protected boolean m_mouseHovered = false;
   protected boolean m_focused = false;
   protected boolean m_rendered = true;
+  protected boolean m_active = true;
 
   public Widget(PVector pos, PVector scale) {
     m_pos = pos;
@@ -55,6 +56,14 @@ abstract class Widget {
 
     getOnMouseEnterEvent().addHandler(e -> m_mouseHovered = true);
     getOnMouseExitEvent().addHandler(e -> m_mouseHovered = false);
+  }
+  
+  public boolean getActive() {
+    return m_active;
+  }
+  
+  public void setActive(boolean active) {
+    m_active = active;
   }
   
   public ArrayList<Widget> getChildren() {
