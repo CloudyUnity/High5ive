@@ -37,11 +37,13 @@ class ApplicationClass {
     m_currentScreen = screen1;
     screen1.init();
 
-    m_flightsManager.loadUSAndWorldFromFiles("hex_flight_data.bin", "hex_world_data.bin", 4, list -> {                
-      m_queryManager.queryFlights(list.US,new FlightQueryType(QueryType.AIRPORT_DEST_INDEX, QueryOperatorType.EQUAL, QueryLocationType.WORLD, m_queryManager),m_queryManager.getIndex("SEA"),4,list2 -> {        
-        screenFlightMap3D.insertDebug(list2);
-        screenCharts.loadData(list2);
-      });
+    m_flightsManager.loadUSAndWorldFromFiles("hex_flight_data.bin", "hex_world_data.bin", 4, list -> {
+      screenFlightMap3D.insertDebug(list.WORLD);
+      screenCharts.loadData(list.US);
+
+      //m_queryManager.queryFlights(list.US,new FlightQueryType(QueryType.AIRPORT_DEST_INDEX, QueryOperatorType.EQUAL, QueryLocationType.WORLD, m_queryManager),m_queryManager.getIndex("SEA"),4,list2 -> {
+
+      //});
     }
     );
   }
