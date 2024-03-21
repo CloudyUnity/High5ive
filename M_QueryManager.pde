@@ -121,10 +121,14 @@ class QueryManagerClass {
       return (int)flight.ScheduledDepartureTime;
     case DEPARTURE_TIME:
       return (int)flight.DepartureTime;
+    case DEPARTURE_DELAY:
+      return (int)flight.DepartureDelay;
     case SCHEDULED_ARRIVAL_TIME:
       return (int)flight.ScheduledArrivalTime;
     case ARRIVAL_TIME:
       return (int)flight.ArrivalTime;
+    case ARRIVAL_DELAY:
+      return (int)flight.ArrivalDelay;
     case CANCELLED_OR_DIVERTED:
       return (int)flight.CancelledOrDiverted;
     case KILOMETRES_DISTANCE:

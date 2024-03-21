@@ -20,6 +20,12 @@ interface IChart<T, U> {
   public void removeData();
 }
 
+interface IChart2Axis<T, U> {
+  public void addData(T[] data, Function<T, U> getKeyX, Function<T, U> getKeyY);
+  public <I extends Iterable<T>> void addData(I data, Function<T, U> getKeyX, Function<T, U> getKeyY);
+  public void removeData();
+}
+
 // Descending code authorship changes:
 // A. Robertson, 12pm 04/03/24
 // F. Wright, Moved code into Interfaces tab from seperate tabs, 6pm 04/03/24
