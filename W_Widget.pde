@@ -15,6 +15,7 @@ abstract class Widget {
   protected PVector m_pos, m_scale;
   protected PVector m_basePos, m_baseScale;
   protected Widget m_parentWidget = null;
+  protected ArrayList<Widget> m_children;
 
   protected int m_backgroundColour = DEFAULT_BACKGROUND_COLOUR;
   protected int m_foregroundColour = DEFAULT_FOREGROUND_COLOUR;
@@ -31,12 +32,15 @@ abstract class Widget {
   protected boolean m_mouseHovered = false;
   protected boolean m_focused = false;
   protected boolean m_rendered = true;
+  protected boolean m_active = true;
 
   public Widget(PVector pos, PVector scale) {
     m_pos = pos;
     m_scale = scale;
     m_basePos = m_pos.copy();
     m_baseScale = m_scale.copy();
+    
+    m_children = new ArrayList<Widget>();
 
     getOnMouseEnterEvent().addHandler(e -> m_mouseHovered = true);
     getOnMouseExitEvent().addHandler(e -> m_mouseHovered = false);
@@ -47,9 +51,23 @@ abstract class Widget {
     m_scale = new PVector(scaleX, scaleY);
     m_basePos = m_pos.copy();
     m_baseScale = m_scale.copy();
+    
+    m_children = new ArrayList<Widget>();
 
     getOnMouseEnterEvent().addHandler(e -> m_mouseHovered = true);
     getOnMouseExitEvent().addHandler(e -> m_mouseHovered = false);
+  }
+  
+  public boolean getActive() {
+    return m_active;
+  }
+  
+  public void setActive(boolean active) {
+    m_active = active;
+  }
+  
+  public ArrayList<Widget> getChildren() {
+    return m_children;
   }
 
   public void setDrawOutline(boolean drawOutline) {
@@ -95,12 +113,12 @@ abstract class Widget {
   public void setGrowScale(float value) {
     m_growScale = value;
   }
-  
+
   public void setRendering(boolean enabled) {
     m_rendered = enabled;
   }
-  
-  public boolean getRenderingEnabled(){
+
+  public boolean getRenderingEnabled() {
     return m_rendered;
   }
 
@@ -161,7 +179,7 @@ abstract class Widget {
       noStroke();
   }
 
-  public void draw() { 
+  public void draw() {
     drawOutline();
 
     m_pos = m_basePos.copy();

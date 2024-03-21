@@ -14,9 +14,9 @@ class UserQueryUI extends Widget {
   public int m_listCounter;
   private FlightQueryType m_dayQuery;
   private FlightType[] m_flights;
-  
 
-  
+
+
   private FlightMultiDataType m_flightsLists;
 
 
@@ -33,15 +33,15 @@ class UserQueryUI extends Widget {
     m_queries = new ArrayList<String>();
 
     m_flightQueries = new ArrayList<FlightQueryType>();
-    
-    addWidget(m_queryList); 
-   
+
+    addWidget(m_queryList);
+
 
     addItemButton = new ButtonUI(20, 600, 80, 20);
     addWidget(addItemButton);
     addItemButton.setText("Add item");
     addItemButton.getOnClickEvent().addHandler(e -> saveQuery(m_day));
-   
+
 
     clearListButton = new ButtonUI(120, 600, 80, 20);
     addWidget(clearListButton);
@@ -57,8 +57,10 @@ class UserQueryUI extends Widget {
     addWidget(m_day);
     m_day.setPlaceholderText("Day");
 
+
     
-    m_dayQuery = new FlightQueryType(QueryType.DAY, QueryOperatorType.EQUAL, QueryLocationType.US);
+    m_dayQuery = new FlightQueryType(QueryType.DAY, QueryOperatorType.EQUAL, QueryLocationType.US, queryManager);
+
     m_flightQueries.add(m_dayQuery);
     //   m_flights = convertBinaryFileToFlightTypeAsync(String filename, int threadCount, QueryLocation queryLocation, int lineByteSize)
 
@@ -85,7 +87,6 @@ class UserQueryUI extends Widget {
     FlightType[] result = null;
 
     m_onLoadDataEvent.accept(result);
-    
   }
 
   private void saveQuery( TextboxUI inputTextbox) {
@@ -95,83 +96,54 @@ class UserQueryUI extends Widget {
     // Adds to query output field textbox thing
     m_queryList.add(inputTextbox.getText() );
     m_listCounter++;
-    
+
     //Load New Query
-    //loadData(); 
+    //loadData();
 
     // Set all user inputs back to default
     m_day.setText("");
   }
-  
-  private void changeOperator(){
-  
-    
-  
+
+  private void changeOperator() {
   }
 
   private void clearQueries() {
     // Clear all currently saved user queries
     m_queries.clear();
     m_queryList.clear();
-    
+//https://github.com/CloudyUnity/High5ive/pull/290/conflict?name=W_UserQuery.pde&ancestor_oid=60a2e07e6de1a0f5baadd27634406172c785a754&base_oid=780bfbdbbd762c7709adad064c68aa9959c678b9&head_oid=5c486813ebac8a92f9ea13bd3455f579dd77545e 
   }
 
   private void changeDataToUS() {
-    
-    m_location = QueryLocationType.US;
 
+    m_location = QueryLocationType.US;
   }
 
   private void changeDataToWorld() {
-    
+
     m_location = QueryLocationType.US;
-    
   }
 
-  
-  private int convertToFormat(int queryIndex, String query){
-    // If this is eventually redundant, feel free to remove it
-    
-    if(queryIndex == 0 || queryIndex == 2 || queryIndex == 7 ||  queryIndex == 10  || queryIndex == 2){
-  
-      try{
-      return Integer.parseInt(query);
-      }
-      catch(Exception e){
-      return 0;
-    }
-    
-    }
-    else if (queryIndex == 1 || queryIndex == 3 || queryIndex == 4.3
-    
-    )
-      return m_queryManager.getIndex(query); 
-    else if (queryIndex == 6 ){}
-    else{
-      return 0;
-    }
-        
-       return 0;
-  
-  }
+
+ 
 
   private void addWidget(Widget widget) {
     m_screen.addWidget(widget);
     widget.setParent(this);
   }
 }
- 
+
 
 
 // F.Wright  created Framework for UserQuery class 8pm 3/14/24
 // M.Poole   fixed issue with key input not detecting and implemented Listbox Functionality
 
 /*  TODO!!!!!!!!!!!!!
-
-    1: Make loadData function as intended
-    2: Test If you can add and seperate inputs from multiple textboxes at once
-    4: Figure out how the f%&£ to switch data sets without breaking program
-    5: Other misc implementation (clearQueries, Seperate inputs etc)
-
-
-*/ 
+ 
+ 1: Make loadData function as intended
+ 2: Test If you can add and seperate inputs from multiple textboxes at once
+ 4: Figure out how the f%&£ to switch data sets without breaking program
+ 5: Other misc implementation (clearQueries, Seperate inputs etc)
+ 
+ 
+ */
