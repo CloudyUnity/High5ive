@@ -232,21 +232,23 @@ class QueryManagerClass {
   }
 
   public int queryFrequency(FlightType[] flightsList, FlightQueryType flightQuery, int queryValue, int threadCount) {
-    AtomicInteger frequency = new AtomicInteger(0);
-    queryFlights(flightsList, flightQuery, queryValue, threadCount, returnedList -> {
-      frequency.set(returnedList.length);
-    }
-    );
-    return frequency.get();
+    // AtomicInteger frequency = new AtomicInteger(0);
+    // queryFlights(flightsList, flightQuery, queryValue, threadCount, returnedList -> {
+    //   frequency.set(returnedList.length);
+    // }
+    // );
+    // return frequency.get();
+    return queryFlights(flightsList, flightQuery, queryValue).length;
   }
 
   public int queryRangeFrequency(FlightType[] flightsList, FlightRangeQueryType flightRangeQuery, int start, int end, int threadCount) {
-    AtomicInteger frequency = new AtomicInteger(0);
-    queryFlightsWithinRange(flightsList, flightRangeQuery, start, end, threadCount, returnedList -> {
-      frequency.set(returnedList.length);
-    }
-    );
-    return frequency.get();
+    // AtomicInteger frequency = new AtomicInteger(0);
+    // queryFlightsWithinRange(flightsList, flightRangeQuery, start, end, threadCount, returnedList -> {
+    //   frequency.set(returnedList.length);
+    // }
+    // );
+    // return frequency.get();
+    return queryFlightsWithinRange(flightsList, flightRangeQuery, start,end).length;
   }
 
   public FlightType[] getHead(FlightType[] flightList, int numberOfItems) {
