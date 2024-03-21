@@ -61,11 +61,11 @@ class UserQueryUI extends Widget {
 
     m_day =  new TextboxUI(20 + posX, 500 + posY, 160, 30);
     addWidget(m_day);
-    m_day.setPlaceholderText("Day");
+    m_day.setPlaceholderText("Kilometers (Greater than)");
 
 
     
-    m_dayQuery = new FlightQueryType(QueryType.DAY, QueryOperatorType.EQUAL, QueryLocationType.US, queryManager);
+    m_dayQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.GREATER_THAN, QueryLocationType.US, queryManager);
 
     m_flightQueries.add(m_dayQuery);
     //   m_flights = convertBinaryFileToFlightTypeAsync(String filename, int threadCount, QueryLocation queryLocation, int lineByteSize)
@@ -90,14 +90,11 @@ class UserQueryUI extends Widget {
 
     // Apply all saved queries to m_flightLists and apply result to the Consumer (m_onLoadDataEvent.accept(result))
 
-    m_queryManager.queryFlights(m_flightsLists.US, m_dayQuery, m_dayQuery.QueryValue, 4, m_onLoadDataEvent);
+    m_queryManager.queryFlights(m_flightsLists.US, m_dayQuery, m_dayQuery.QueryValue, 4, newFlightsList -> {m_onLoadDataEvent.accept(newFlightsList);
+    });
+    
+    
 
-<<<<<<< HEAD
-    
-    
-=======
-    m_onLoadDataEvent.accept(result);
->>>>>>> 1eb42331cceef3c7833a79cf4291a0210b9626c2
   }
 
   private void saveQuery( TextboxUI inputTextbox) {
@@ -122,8 +119,7 @@ class UserQueryUI extends Widget {
     // Clear all currently saved user queries
     m_dayQuery = new FlightQueryType(QueryType.DAY, QueryOperatorType.EQUAL, QueryLocationType.US, m_queryManager); 
     m_queryList.clear();
-https://github.com/CloudyUnity/High5ive/pull/290/conflict?name=W_UserQuery.pde&ancestor_oid=60a2e07e6de1a0f5baadd27634406172c785a754&base_oid=780bfbdbbd762c7709adad064c68aa9959c678b9&head_oid=5c486813ebac8a92f9ea13bd3455f579dd77545e  }
-
+  }
   private void changeDataToUS() {
 
     m_location = QueryLocationType.US;
