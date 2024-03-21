@@ -217,15 +217,12 @@ class TwoDMapScreen extends Screen {
 
     m_flightMap = new FlightMap2DUI(100, 0, 100, 100);
     addWidget(m_flightMap);
-
-
+ 
     ButtonUI uiBackground = createButton(0, -1, 200, (displayHeight));
     uiBackground.setHighlightOutlineOnEnter(false);
     uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
 
-    
     ButtonUI uiBackgroundTwo = createButton(0, (displayHeight-101), (displayWidth), (99));
-
     uiBackgroundTwo.setHighlightOutlineOnEnter(false);
     uiBackgroundTwo.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
 
@@ -237,12 +234,34 @@ class TwoDMapScreen extends Screen {
     returnBttn.getLabel().setCentreAligned(true);
     currentUIPosY += 60;
     
-    ButtonUI testBttn = createButton(20, currentUIPosY, 160, 50);
-    testBttn.getOnClickEvent();
-    testBttn.setBackgroundColour(color(COLOR_BACKGROUND));
-    testBttn.setText("test");
-    testBttn.setTextSize(textSize);
-    testBttn.getLabel().setCentreAligned(true);
+    CheckboxUI connectionsEnabledCB = createCheckbox(20, currentUIPosY, 50, 50, "Connections");
+    connectionsEnabledCB.getOnClickEvent();
+    connectionsEnabledCB.setGrowScale(1.05);
+    connectionsEnabledCB.setChecked(true);
+    connectionsEnabledCB.getLabel().setTextXOffset(0);
+    connectionsEnabledCB.setTextSize(textSize);
+    connectionsEnabledCB.getLabel().setCentreAligned(true);
+    connectionsEnabledCB.getLabel().setScale(130, 50);
+    currentUIPosY += 60;
+
+    CheckboxUI markersEnabledCB = createCheckbox(20, currentUIPosY, 50, 50, "Markers");
+    markersEnabledCB.getOnClickEvent();
+    markersEnabledCB.setGrowScale(1.05);
+    markersEnabledCB.setChecked(true);
+    markersEnabledCB.getLabel().setTextXOffset(0);
+    markersEnabledCB.setTextSize(textSize);
+    markersEnabledCB.getLabel().setCentreAligned(true);
+    markersEnabledCB.getLabel().setScale(130, 50);
+    currentUIPosY += 60;
+
+    CheckboxUI airportTextCB = createCheckbox(20, currentUIPosY, 50, 50, "Airports");
+    airportTextCB.getOnClickEvent();
+    airportTextCB.setGrowScale(1.05);
+    airportTextCB.setChecked(true);
+    airportTextCB.getLabel().setTextXOffset(0);
+    airportTextCB.setTextSize(textSize);
+    airportTextCB.getLabel().setCentreAligned(true);
+    airportTextCB.getLabel().setScale(130, 50);
     currentUIPosY += 60;
 
   }
