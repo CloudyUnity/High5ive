@@ -2,7 +2,7 @@ class ButtonUI extends Widget implements IClickable {
   private EventType<EventInfoType> m_onClickEvent;
   private LabelUI m_label;
   private boolean m_highlightOutlineOnEnter;
-  private int m_highlightedColour = #FFFFFF;
+  private int m_highlightedColour = DEFAULT_HIGHLIGHT_COLOR;
   private boolean m_highlighted = false;
 
   public ButtonUI(int posX, int posY, int scaleX, int scaleY) {
@@ -11,7 +11,7 @@ class ButtonUI extends Widget implements IClickable {
     m_label = new LabelUI(0, 0, 1, 1, null);
     m_label.setCentreAligned(true);
     m_label.setParent(this);
-    
+
     m_highlightOutlineOnEnter = true;
     getOnMouseEnterEvent().addHandler(e -> m_highlighted = true);
     getOnMouseExitEvent().addHandler(e -> m_highlighted = false);
@@ -20,6 +20,7 @@ class ButtonUI extends Widget implements IClickable {
   @ Override
     protected void drawOutline() {
     if (m_drawOutlineEnabled) {
+      strokeWeight(DEFAULT_WIDGET_STROKE);
       if (m_highlightOutlineOnEnter && m_highlighted)
         stroke(color(m_highlightedColour));
       else
@@ -33,7 +34,7 @@ class ButtonUI extends Widget implements IClickable {
     super.draw();
 
     fill(m_backgroundColour);
-    rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y);
+    rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y, DEFAULT_WIDGET_ROUNDNESS_1);
 
     m_label.draw();
   }
