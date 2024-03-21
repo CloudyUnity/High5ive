@@ -119,7 +119,9 @@ class UserQueryUI extends Widget {
     // Clear all currently saved user queries
     m_dayQuery = new FlightQueryType(QueryType.DAY, QueryOperatorType.EQUAL, QueryLocationType.US, m_queryManager); 
     m_queryList.clear();
+
   }
+
   private void changeDataToUS() {
 
     m_location = QueryLocationType.US;
