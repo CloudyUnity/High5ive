@@ -74,9 +74,13 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
   }
   
   public void filterEntries(Function<T, boolean> f) {
-    for (ListboxEntry<T> entry : m_entries) {
+    for (ListboxEntry<T> entry : m_entries)
       entry.setShown(f.apply(entry.getData()));
-    }
+  }
+  
+  public void removeFilter() {
+    for (ListboxEntry<T> entry : m_entries)
+      entry.setShown(true);
   }
 
   public void add(T entry) {
