@@ -55,7 +55,7 @@ class Screen1 extends Screen {
     switchToCharts.setText("Charts (WIP)");
     switchToCharts.setTextSize(25);
 
-    switchToCharts.setGrowScale(1.05);
+    switchToCharts.setGrowScale(growScale);
 
   }
 
@@ -222,12 +222,14 @@ class TwoDMapScreen extends Screen {
     uiBackground.setHighlightOutlineOnEnter(false);
     uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
 
+
     ButtonUI uiBackgroundTwo = createButton(0, (displayHeight-100), (displayWidth), (100));
     uiBackgroundTwo.setHighlightOutlineOnEnter(false);
     uiBackgroundTwo.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
 
     ButtonUI returnBttn = createButton(20, currentUIPosY, 160, 50);
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
+
     returnBttn.setBackgroundColour(color(COLOR_BACKGROUND));
     returnBttn.setText("Return");
     returnBttn.setTextSize(textSize);

@@ -39,10 +39,14 @@
 class ScreenCharts extends Screen {
   BarChartUI m_histogram;
   PieChartUI m_pieChart;
+  ScatterChartUI m_scatterPlot;
 
   QueryManagerClass m_queryRef;
-  QueryType m_histQuery = QueryType.DAY;
   FlightType[] m_cachedFlights = null;
+    
+  QueryType m_histQuery = QueryType.DAY;  
+  QueryType m_scatterQueryX = QueryType.KILOMETRES_DISTANCE;
+  QueryType m_scatterQueryY = QueryType.ARRIVAL_DELAY;
 
   Widget m_selectedGraph;
 
@@ -59,11 +63,17 @@ class ScreenCharts extends Screen {
     );
 
     m_histogram = new BarChartUI<FlightType, Integer>(500, 50, 1000, 1000);
+    addWidget(m_histogram);
     m_histogram.setTitle("X-Day, Y-Frequency");
     m_selectedGraph = m_histogram;
 
     m_pieChart = new PieChartUI<FlightType, Integer>(width/2, height/2, 250);
+    addWidget(m_pieChart);
     m_pieChart.setRendering(false);
+    
+    m_scatterPlot = new ScatterChartUI<FlightType>(500, 50, 1000, 1000);
+    addWidget(m_scatterPlot);
+    m_scatterPlot.setRendering(false);                   
 
     DropdownUI fieldSelector = new DropdownUI<QueryType>(20, 200, 300, 200, 50, v -> v.toString());
     addWidget(fieldSelector);
@@ -111,11 +121,6 @@ class ScreenCharts extends Screen {
   }
 
   public void loadData(FlightType[] flights) {
-    if (m_cachedFlights == null) {
-      addWidget(m_histogram);
-      addWidget(m_pieChart);
-    }
-
     m_cachedFlights = flights;
     reloadData();
   }
@@ -133,9 +138,18 @@ class ScreenCharts extends Screen {
     m_pieChart.removeData();
     m_pieChart.addData(m_cachedFlights, f -> {
       return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_histQuery);
+    });
+    
+    m_scatterPlot.removeData();
+    m_scatterPlot.addData(m_cachedFlights, 
+    fX -> {
+      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)fX, m_scatterQueryX);
+    },
+    fY -> {
+      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)fY, m_scatterQueryY);
     }
     );
-  }
+  } 
 
   public void selectHistogram() {
     m_selectedGraph.setRendering(false);
@@ -150,5 +164,8 @@ class ScreenCharts extends Screen {
   }
 
   public void selectScatterPlot() {
+    m_selectedGraph.setRendering(false);
+    m_selectedGraph = m_scatterPlot;
+    m_selectedGraph.setRendering(true);
   }
 }
