@@ -44,6 +44,15 @@ Feel free to disagree with any of these. We can put it up to a vote.
 - Keep stuff indented properly! Use Ctrl-T to do it automatically.  
 - "var" is BANNED except for during foreach loops.  
 
+## Using the UI
+
+- Create Widgets then add them to your screen using the `addWidget` method.
+- Create methods then link them to your widgets with the `widget.getEvent().addHandler(e -> eventHandler(e));` pattern.
+- If you're creating a new widget with child widgets, they **must** be added to the `m_children` ArrayList.
+    - Events will be called on child widgets.
+    - Parent widgets are responsible for calling the `draw` method on child widgets. This is so that the parent can control the order
+    they get drawn in and if they get drawn at all. This may change in the future.
+
 ## How to commit your changes to github using Git Bash  
 
 Note that you might be able to do this using a git extension for processing, cmd or otherwise but I'll explain how I do it.  
