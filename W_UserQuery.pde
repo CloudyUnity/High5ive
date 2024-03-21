@@ -111,7 +111,8 @@ class UserQueryUI extends Widget {
     // Clear all currently saved user queries
     m_queries.clear();
     m_queryList.clear();
-https://github.com/CloudyUnity/High5ive/pull/290/conflict?name=W_UserQuery.pde&ancestor_oid=60a2e07e6de1a0f5baadd27634406172c785a754&base_oid=780bfbdbbd762c7709adad064c68aa9959c678b9&head_oid=5c486813ebac8a92f9ea13bd3455f579dd77545e  }
+//https://github.com/CloudyUnity/High5ive/pull/290/conflict?name=W_UserQuery.pde&ancestor_oid=60a2e07e6de1a0f5baadd27634406172c785a754&base_oid=780bfbdbbd762c7709adad064c68aa9959c678b9&head_oid=5c486813ebac8a92f9ea13bd3455f579dd77545e 
+  }
 
   private void changeDataToUS() {
 

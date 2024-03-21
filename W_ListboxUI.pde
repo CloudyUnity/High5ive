@@ -73,7 +73,7 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
     m_onlyUseNeededHeight = onlyUseNeededHeight;
   }
   
-  public void filterEntries(Function<T, boolean> f) {
+  public void filterEntries(Function<T, Boolean> f) {
     for (ListboxEntry<T> entry : m_entries)
       entry.setShown(f.apply(entry.getData()));
   }
