@@ -38,6 +38,10 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
     m_listbox.getOnClickEvent().addHandler(e -> onListboxClick(e));
     m_listbox.getOnSelectedEntryChangedEvent().addHandler(e -> onListboxSelectionChanged(e));
     m_onFocusLostEvent.addHandler(e -> onFocusLost(e));
+    
+    m_children.add(m_listbox);
+    m_children.add(m_textbox);
+    m_children.add(m_dropdownButton);
   }
 
   @ Override
@@ -89,6 +93,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
   }
 
   private void onClick(EventInfoType e) {
+    /*
     if (m_textbox.isPositionInside(e.X, e.Y))
       m_textbox.getOnClickEvent().raise(new EventInfoType(e.X, e.Y, m_textbox));
 
@@ -96,7 +101,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
       m_dropdownButton.getOnClickEvent().raise(new EventInfoType(e.X, e.Y, m_dropdownButton));
 
     if (m_listbox.isPositionInside(e.X, e.Y))
-      m_listbox.getOnClickEvent().raise(new EventInfoType(e.X, e.Y, m_listbox));
+      m_listbox.getOnClickEvent().raise(new EventInfoType(e.X, e.Y, m_listbox));*/
   }
 
   private void onDropdownButtonClicked(EventInfoType e) {
