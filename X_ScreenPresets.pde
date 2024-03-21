@@ -282,6 +282,8 @@ class AlexTestingScreen extends Screen {
     testDropdown.add("One");
     testDropdown.add("Two");
     testDropdown.add("Three");
+    
+    testDropdown.setSearchable(true);
 
     addWidget(box);
     addWidget(list);

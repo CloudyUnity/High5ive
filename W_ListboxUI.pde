@@ -73,6 +73,17 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
     m_onlyUseNeededHeight = onlyUseNeededHeight;
   }
   
+  // Returns true if one could be selected, false otherwise
+  public boolean selectFirstShown() {
+    for (int i = 0; i < m_entries.size(); i++) {
+      if (m_entries.get(i).getShown()) {
+        selectEntry(i);
+        return true;
+      }
+    }
+    return false;
+  }
+  
   public void filterEntries(Function<T, Boolean> f) {
     for (ListboxEntry<T> entry : m_entries)
       entry.setShown(f.apply(entry.getData()));
@@ -165,11 +176,15 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
 
   private void onClick(EventInfoType e) {
     int i = (e.Y - (int)m_pos.y) / m_entryHeight + m_topItem;
-    if (i < m_entries.size()) {
+    selectEntry(i);
+  }
+  
+  private void selectEntry(int index) {
+    if (index < m_entries.size()) {
       clearSelected();
-      ListboxEntry<T> entry = m_entries.get(i);
+      ListboxEntry<T> entry = m_entries.get(index);
       if (!entry.getSelected()) {
-        m_onSelectedEntryChangedEvent.raise(new ListboxSelectedEntryChangedEventInfoType<T>(e.X, e.Y, entry.getData(), this));
+        m_onSelectedEntryChangedEvent.raise(new ListboxSelectedEntryChangedEventInfoType<T>(0, 0, entry.getData(), this));
         entry.setSelected(true);
       }
     }

@@ -78,7 +78,6 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
   }
 
   private void onKeyPressed(KeyPressedEventInfoType e) {
-    println("Key pressed textbox event");
     if (m_userModifiable) {
       if (e.pressedKey == BACKSPACE) {
         if (m_cursorPosition > 0) {
@@ -95,6 +94,7 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
         m_cursorPosition++;
       } else if (e.pressedKey == RETURN || e.pressedKey == ENTER) {
         m_onStringEnteredEvent.raise(new StringEnteredEventInfoType((int)m_pos.x, (int)m_pos.y, m_text.toString(), this));
+        setFocused(false);
       } else if (isPrintable(e.pressedKey)) {
         m_text.append(e.pressedKey);
         m_cursorPosition++;
