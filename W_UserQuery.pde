@@ -90,8 +90,7 @@ class UserQueryUI extends Widget {
 
     // Apply all saved queries to m_flightLists and apply result to the Consumer (m_onLoadDataEvent.accept(result))
 
-    m_queryManager.queryFlights(m_flightsLists.US, m_dayQuery, m_dayQuery.QueryValue, 4, newFlightsList -> {m_onLoadDataEvent.accept(newFlightsList);
-    });
+    m_onLoadDataEvent.accept(m_queryManager.queryFlights(m_flightsLists.US, m_dayQuery, m_dayQuery.QueryValue));
     
     
 
