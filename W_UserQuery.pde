@@ -15,7 +15,7 @@ class UserQueryUI extends Widget {
   public int m_listCounter;
   private FlightQueryType m_dayQuery;
   private FlightType[] m_flights;
-
+  private FlightMap3D m_flightMap3D;
 
 
   private FlightMultiDataType m_flightsLists;
@@ -36,7 +36,7 @@ class UserQueryUI extends Widget {
     m_flightQueries = new ArrayList<FlightQueryType>();
 
     addWidget(m_queryList);
-
+    
 
     addItemButton = new ButtonUI(20, 600, 80, 20);
     addWidget(addItemButton);
@@ -85,12 +85,21 @@ class UserQueryUI extends Widget {
   public void setOnLoadHandler(Consumer<FlightType[]> dataEvent) {
     m_onLoadDataEvent = dataEvent;
   }
+  
 
   private void loadData() {
 
     // Apply all saved queries to m_flightLists and apply result to the Consumer (m_onLoadDataEvent.accept(result))
 
-    m_queryManager.queryFlights(m_flightsLists.US, m_dayQuery, m_dayQuery.QueryValue);
+     FlightType[] result = null;
+     result = m_queryManager.queryFlights(m_flightsLists.US, m_dayQuery, m_dayQuery.QueryValue);
+     m_onLoadDataEvent.accept(result);
+     println(m_flightsLists.US.length);
+     println(result.length);
+    
+    
+
+
   }
 
   private void saveQuery( TextboxUI inputTextbox) {

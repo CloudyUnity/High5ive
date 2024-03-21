@@ -22,8 +22,11 @@ class ScreenFlightMap extends Screen {
     // ATTENTION MATTHEW, SEE HERE!
     m_userQueryUI = new UserQueryUI(0, 60, 1, 1, m_queryManager, this);
     addWidget(m_userQueryUI);
+  
     m_userQueryUI.setOnLoadHandler(flights -> {
-      m_flightMap3D.loadFlights(flights, m_queryManager);
+
+      m_flightMap3D.loadFlights(flights, query); 
+
     }
     );
 
@@ -135,6 +138,7 @@ class ScreenFlightMap extends Screen {
     label.setTextSize(30);
     label.setParent(m_flightMapUIParent);
   }
+  
 
   public void insertFlightData(FlightMultiDataType flights) {
     m_userQueryUI.insertBaseData(flights);
