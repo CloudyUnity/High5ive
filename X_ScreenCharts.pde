@@ -121,11 +121,6 @@ class ScreenCharts extends Screen {
   }
 
   public void loadData(FlightType[] flights) {
-    if (m_cachedFlights == null) {
-      addWidget(m_histogram);
-      addWidget(m_pieChart);
-    }
-
     m_cachedFlights = flights;
     reloadData();
   }
