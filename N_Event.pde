@@ -9,10 +9,10 @@ class EventInfoType {
   }
 }
 
-class Event<T extends EventInfoType> {
+class EventType<T extends EventInfoType> {
   ArrayList<Consumer<T>> m_eventHandlers;
 
-  public Event() {
+  public EventType() {
     m_eventHandlers = new ArrayList<Consumer<T>>();
   }
 
@@ -36,13 +36,13 @@ class StringEnteredEventInfoType extends EventInfoType {
 }
 
 class KeyPressedEventInfoType extends EventInfoType {
-   public char pressedKey;
-   public int pressedKeyCode;
-   public KeyPressedEventInfoType(int x, int y, char k, int kc, Widget widget) {
-     super(x, y, widget);
-     pressedKey = k;
-     pressedKeyCode = kc;
-   }
+  public char pressedKey;
+  public int pressedKeyCode;
+  public KeyPressedEventInfoType(int x, int y, char k, int kc, Widget widget) {
+    super(x, y, widget);
+    pressedKey = k;
+    pressedKeyCode = kc;
+  }
 }
 
 class MouseDraggedEventInfoType extends EventInfoType {
@@ -71,18 +71,14 @@ class SwitchScreenEventInfoType extends EventInfoType {
     NewScreenId = newScreenId;
   }
 }
+
 class MouseWheelEventInfoType extends EventInfoType {
-  
   public int wheelCount;
-  
-  public MouseWheelEventInfoType(int x, int y, int wheelCount, Widget widget){
-  
-    super(x,y,widget);
+
+  public MouseWheelEventInfoType(int x, int y, int wheelCount, Widget widget) {
+    super(x, y, widget);
     this.wheelCount = wheelCount;
-    
   }
-
-
 }
 
 class ListboxSelectedEntryChangedEventInfoType<T> extends EventInfoType {

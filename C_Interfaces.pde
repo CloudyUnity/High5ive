@@ -1,24 +1,22 @@
-import java.util.function.Function;
-
 interface IClickable {
-  public Event<EventInfoType> getOnClickEvent();
+  public EventType<EventInfoType> getOnClickEvent();
 }
 
 interface IDraggable {
-  public Event<MouseDraggedEventInfoType> getOnDraggedEvent();
+  public EventType<MouseDraggedEventInfoType> getOnDraggedEvent();
 }
 
 interface IKeyInput {
-  public Event<KeyPressedEventInfoType> getOnKeyPressedEvent();
+  public EventType<KeyPressedEventInfoType> getOnKeyPressedEvent();
 }
 
 interface IWheelInput {
-  public Event<MouseWheelEventInfoType> getOnMouseWheelEvent();
+  public EventType<MouseWheelEventInfoType> getOnMouseWheelEvent();
 }
 
-interface IChart<T> {
-  public void addData(T[] data, Function<T, String> getKey);
-  public <I extends Iterable<T>> void addData(I data, Function<T, String> getKey);
+interface IChart<T, U> {
+  public void addData(T[] data, Function<T, U> getKey);
+  public <I extends Iterable<T>> void addData(I data, Function<T, U> getKey);
   public void removeData();
 }
 

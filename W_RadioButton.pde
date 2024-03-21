@@ -1,8 +1,3 @@
-import java.util.function.Function;
-import java.util.TreeMap;
-import java.util.Map;
-import java.util.function.Consumer;
-
 class RadioButtonGroupTypeUI extends WidgetGroupType {
   public RadioButtonGroupTypeUI() {
     super();
@@ -25,8 +20,8 @@ class RadioButtonGroupTypeUI extends WidgetGroupType {
 }
 
 class RadioButtonUI extends Widget implements IClickable {
-  private Event<EventInfoType> m_onClickEvent;
-  private Event<EventInfoType> m_onCheckedEvent;
+  private EventType<EventInfoType> m_onClickEvent;
+  private EventType<EventInfoType> m_onCheckedEvent;
   private LabelUI m_label;
   private boolean m_checked;
   private color m_checkedColour = DEFAULT_RADIOBUTTON_CHECKED_COLOUR;
@@ -36,8 +31,8 @@ class RadioButtonUI extends Widget implements IClickable {
     m_label = new LabelUI(posX + scaleY, posY, scaleX - scaleY, scaleY, label);
     m_label.setForegroundColour(DEFAULT_TEXT_COLOUR_OUTSIDE);
 
-    m_onCheckedEvent = new Event<EventInfoType>();
-    m_onClickEvent = new Event<EventInfoType>();
+    m_onCheckedEvent = new EventType<EventInfoType>();
+    m_onClickEvent = new EventType<EventInfoType>();
 
     m_onClickEvent.addHandler(e -> {
       RadioButtonUI box = (RadioButtonUI)e.Widget;
@@ -60,11 +55,11 @@ class RadioButtonUI extends Widget implements IClickable {
     m_label.draw();
   }
 
-  public Event<EventInfoType> getOnClickEvent() {
+  public EventType<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
 
-  public Event<EventInfoType> getOnCheckedEvent() {
+  public EventType<EventInfoType> getOnCheckedEvent() {
     return m_onCheckedEvent;
   }
 

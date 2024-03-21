@@ -44,6 +44,15 @@ Feel free to disagree with any of these. We can put it up to a vote.
 - Keep stuff indented properly! Use Ctrl-T to do it automatically.  
 - "var" is BANNED except for during foreach loops.  
 
+## Using the UI
+
+- Create Widgets then add them to your screen using the `addWidget` method.
+- Create methods then link them to your widgets with the `widget.getEvent().addHandler(e -> eventHandler(e));` pattern.
+- If you're creating a new widget with child widgets, they **must** be added to the `m_children` ArrayList.
+    - Events will be called on child widgets.
+    - Parent widgets are responsible for calling the `draw` method on child widgets. This is so that the parent can control the order
+    they get drawn in and if they get drawn at all. This may change in the future.
+
 ## How to commit your changes to github using Git Bash  
 
 Note that you might be able to do this using a git extension for processing, cmd or otherwise but I'll explain how I do it.  
@@ -126,13 +135,16 @@ UA = 0000 0101 0010 0010 [0x0522]
 WN = 0000 0101 1001 0011 [0x0593]
 
 ORIGIN and DEST:
-ABE = 0000 0000 0000 0000 [0x0000]
-ABI = 0000 0000 0000 0001 [0x0001]
+AAF = 0001 0011 1010 1011 [0x13AB]
+AAP = 0001 0011 1010 1100 [0x13AC]
+ABE = 0001 0011 1010 1101 [0x13AD]
     ...
-JMS = 0000 0000 1011 1010 [0x00BA]
+LEB = 0001 0110 1010 1111 [0x16AF]
+LEE = 0001 0110 1011 0000 [0x16B0]
     ...
-YKM = 0000 0001 0111 0100 [0x0174]
-YUM = 0000 0001 0111 0101 [0x0175]
+YUM = 0001 1001 1011 0010 [0x19B2]
+ZPH = 0001 1001 1011 0011 [0x19B3]
+ZZV = 0001 1001 1011 0100 [0x19B4]
 
 CANCELLED/DIVERTED:
 NONE        = 0000 0000 [0x00]

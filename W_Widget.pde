@@ -1,5 +1,3 @@
-import java.util.function.Consumer;
-
 class WidgetGroupType {
   protected ArrayList<Widget> Members;
 
@@ -15,27 +13,34 @@ class WidgetGroupType {
 abstract class Widget {
 
   protected PVector m_pos, m_scale;
-  protected final PVector m_basePos, m_baseScale;
+  protected PVector m_basePos, m_baseScale;
+  protected Widget m_parentWidget = null;
+  protected ArrayList<Widget> m_children;
 
   protected int m_backgroundColour = DEFAULT_BACKGROUND_COLOUR;
   protected int m_foregroundColour = DEFAULT_FOREGROUND_COLOUR;
   protected int m_outlineColour = DEFAULT_OUTLINE_COLOUR;
 
   protected boolean m_drawOutlineEnabled = true;
-  protected Event<EventInfoType> m_onMouseEnterEvent = new Event<EventInfoType>();
-  protected Event<EventInfoType> m_onMouseExitEvent = new Event<EventInfoType>();
-  protected Event<EventInfoType> m_onFocusGainedEvent = new Event<EventInfoType>();
-  protected Event<EventInfoType> m_onFocusLostEvent = new Event<EventInfoType>();
+  protected EventType<EventInfoType> m_onMouseEnterEvent = new EventType<EventInfoType>();
+  protected EventType<EventInfoType> m_onMouseExitEvent = new EventType<EventInfoType>();
+  protected EventType<EventInfoType> m_onFocusGainedEvent = new EventType<EventInfoType>();
+  protected EventType<EventInfoType> m_onFocusLostEvent = new EventType<EventInfoType>();
 
-  private boolean m_growMode = false;
+  private float m_growScale = 1.0f;
+  private float m_growMult = 1.0f;
   protected boolean m_mouseHovered = false;
   protected boolean m_focused = false;
+  protected boolean m_rendered = true;
+  protected boolean m_active = true;
 
   public Widget(PVector pos, PVector scale) {
     m_pos = pos;
     m_scale = scale;
     m_basePos = m_pos.copy();
     m_baseScale = m_scale.copy();
+    
+    m_children = new ArrayList<Widget>();
 
     getOnMouseEnterEvent().addHandler(e -> m_mouseHovered = true);
     getOnMouseExitEvent().addHandler(e -> m_mouseHovered = false);
@@ -46,9 +51,23 @@ abstract class Widget {
     m_scale = new PVector(scaleX, scaleY);
     m_basePos = m_pos.copy();
     m_baseScale = m_scale.copy();
+    
+    m_children = new ArrayList<Widget>();
 
     getOnMouseEnterEvent().addHandler(e -> m_mouseHovered = true);
     getOnMouseExitEvent().addHandler(e -> m_mouseHovered = false);
+  }
+  
+  public boolean getActive() {
+    return m_active;
+  }
+  
+  public void setActive(boolean active) {
+    m_active = active;
+  }
+  
+  public ArrayList<Widget> getChildren() {
+    return m_children;
   }
 
   public void setDrawOutline(boolean drawOutline) {
@@ -87,8 +106,20 @@ abstract class Widget {
     return m_scale;
   }
 
-  public void setGrowMode(boolean enabled) {
-    m_growMode = enabled;
+  public void setParent(Widget parent) {
+    m_parentWidget = parent;
+  }
+
+  public void setGrowScale(float value) {
+    m_growScale = value;
+  }
+
+  public void setRendering(boolean enabled) {
+    m_rendered = enabled;
+  }
+
+  public boolean getRenderingEnabled() {
+    return m_rendered;
   }
 
   /**
@@ -101,14 +132,16 @@ abstract class Widget {
     if (x < 0 || y < 0)
       throw new IllegalArgumentException("Position cannot be negative.");
 
-    m_pos = new PVector(x, y);
+    m_basePos = new PVector(x, y);
+    m_pos = m_basePos.copy();
   }
 
   public void setPos(PVector newPos) {
     if (newPos.x < 0 || newPos.y < 0)
       throw new IllegalArgumentException("Position cannot be negative.");
 
-    m_pos = newPos;
+    m_basePos = newPos;
+    m_pos = m_basePos.copy();
   }
 
   /**
@@ -121,14 +154,16 @@ abstract class Widget {
     if (w < 0 || h < 0)
       throw new IllegalArgumentException("Scale cannot be negative.");
 
-    m_scale = new PVector(w, h);
+    m_baseScale = new PVector(w, h);
+    m_scale = m_baseScale.copy();
   }
 
   public void setScale(PVector newScale) {
     if (newScale.x < 0 || newScale.y < 0)
       throw new IllegalArgumentException("Scale cannot be negative.");
 
-    m_scale = newScale;
+    m_baseScale = newScale;
+    m_scale = m_baseScale.copy();
   }
 
   public boolean isPositionInside(int mx, int my) {
@@ -136,7 +171,7 @@ abstract class Widget {
       mx >= m_pos.x && mx <= (m_pos.x + m_scale.x) &&
       my >= m_pos.y && my <= (m_pos.y + m_scale.y);
   }
-  
+
   protected void drawOutline() {
     if (m_drawOutlineEnabled)
       stroke(color(m_outlineColour));
@@ -147,55 +182,66 @@ abstract class Widget {
   public void draw() {
     drawOutline();
 
-    if (m_growMode) {
-      float mult = 1.1f;
-      float lerpSpeed = m_mouseHovered ? 0.2 : 0.1;
+    m_pos = m_basePos.copy();
+    m_scale = m_baseScale.copy();
 
-      PVector baseScaleCopy = m_baseScale.copy();
-      if (m_mouseHovered)
-        baseScaleCopy.mult(mult);
+    float lerpSpeed = m_mouseHovered ? 0.2 : 0.1;
+    float targetMult = m_mouseHovered ? m_growScale : 1.0f;
+    m_growMult = lerp(m_growMult, targetMult, lerpSpeed);
+    m_scale.mult(m_growMult);
 
-      m_scale = PVector.lerp(m_scale, baseScaleCopy, lerpSpeed);
+    PVector extension = m_scale.copy().sub(m_baseScale);
+    m_pos = m_basePos.copy().sub(extension.mult(0.5));
 
-      PVector extension = m_scale.copy().sub(m_baseScale);
-      m_pos = m_basePos.copy().sub(extension.mult(0.5));
+    Widget curParent = m_parentWidget;
+    while (curParent != null) {
+      m_pos.add(curParent.m_basePos);
+      m_scale.x *= curParent.m_baseScale.x;
+      m_scale.y *= curParent.m_baseScale.y;
+      curParent = curParent.m_parentWidget;
     }
   }
-  
+
   public boolean isFocused() {
-    return m_focused; 
-  }
-  
-  public void setFocused(boolean focused) {
-     m_focused = focused;
-     if (m_focused)
-       m_onFocusGainedEvent.raise(new EventInfoType((int)m_pos.x, (int)m_pos.y, this));
-     else
-       m_onFocusLostEvent.raise(new EventInfoType((int)m_pos.x, (int)m_pos.y, this));
-  }
-  
-  public void setFocused(boolean focused, int x, int y) {
-     m_focused = focused;
-     if (m_focused)
-       m_onFocusGainedEvent.raise(new EventInfoType(x, y, this));
-     else
-       m_onFocusLostEvent.raise(new EventInfoType(x, y, this));
+    return m_focused;
   }
 
-  public Event<EventInfoType> getOnMouseEnterEvent() {
+  public void setFocused(boolean focused) {
+    m_focused = focused;
+    if (m_focused)
+      m_onFocusGainedEvent.raise(new EventInfoType((int)m_pos.x, (int)m_pos.y, this));
+    else
+      m_onFocusLostEvent.raise(new EventInfoType((int)m_pos.x, (int)m_pos.y, this));
+  }
+
+  public void setFocused(boolean focused, int x, int y) {
+    m_focused = focused;
+    if (m_focused)
+      m_onFocusGainedEvent.raise(new EventInfoType(x, y, this));
+    else
+      m_onFocusLostEvent.raise(new EventInfoType(x, y, this));
+  }
+
+  public EventType<EventInfoType> getOnMouseEnterEvent() {
     return m_onMouseEnterEvent;
   }
 
-  public Event<EventInfoType> getOnMouseExitEvent() {
+  public EventType<EventInfoType> getOnMouseExitEvent() {
     return m_onMouseExitEvent;
   }
-  
-  public Event<EventInfoType> getOnFocusGainedEvent() {
+
+  public EventType<EventInfoType> getOnFocusGainedEvent() {
     return m_onFocusGainedEvent;
   }
-  
-  public Event<EventInfoType> getOnFocusLostEvent() {
+
+  public EventType<EventInfoType> getOnFocusLostEvent() {
     return m_onFocusLostEvent;
+  }
+}
+
+class EmptyWidgetUI extends Widget {
+  EmptyWidgetUI(int posX, int posY) {
+    super(posX, posY, 1, 1);
   }
 }
 
@@ -203,3 +249,4 @@ abstract class Widget {
 // A. Robertson, Created widget base class and widget group, 12pm 04/03/24
 // F. Wright, Modified and simplified code to fit coding standard. Combined all Widget related classes/structs into the Widget tab, 6pm 04/03/24
 // F. Wright, Implemented new "grow mode" for any widgets which makes them feel jucier when hovered, 1pm 07/03/24
+// F. Wright, Implemented a widget parenting system, 1pm 15/03/24

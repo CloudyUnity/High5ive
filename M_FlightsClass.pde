@@ -1,31 +1,13 @@
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.concurrent.*;
-import java.util.HashMap;
-import java.nio.channels.FileChannel;
-import java.nio.*;
-import java.io.*;
-
-class FlightLists {
-  public FlightType[] US;
-  public FlightType[] WORLD;
-  FlightLists(FlightType[] us, FlightType[] world) {
-    this.US = us;
-    this.WORLD = world;
-  }
-}
-
 class FlightsManagerClass {
   private boolean m_working;
 
-  public void init(String usFileName, String worldFileName, int usLineByteSize, int worldLineByteSize, int threadCount, Consumer<FlightLists> onTaskComplete) { //  Consumer<FlightType[]> onWorldTaskComplete
-    boolean result = convertBinaryFileToFlightType(usFileName, worldFileName, usLineByteSize, worldLineByteSize, threadCount, onTaskComplete);
+  public void loadUSAndWorldFromFiles(String usFileName, String worldFileName, int threadCount, Consumer<FlightMultiDataType> onTaskComplete) { //  Consumer<FlightType[]> onWorldTaskComplete
+    boolean result = convertBinaryFileToFlightType(usFileName, worldFileName, US_LINE_BYTE_SIZE, WORLD_LINE_BYTE_SIZE, threadCount, onTaskComplete);
     if (!result)
-      return;
+      println("ERROR: Flight binary failed to load successfully");
   }
-  private boolean convertBinaryFileToFlightType(String usFileName, String worldFileName, int usLineByteSize, int worldLineByteSize, int threadCount, Consumer<FlightLists> onTaskComplete) {
+
+  private boolean convertBinaryFileToFlightType(String usFileName, String worldFileName, int usLineByteSize, int worldLineByteSize, int threadCount, Consumer<FlightMultiDataType> onTaskComplete) {
     if (m_working) {
       println("Warning: m_working is true, convertBinaryFileToFlightType did not process correctly");
       return false;
@@ -33,9 +15,14 @@ class FlightsManagerClass {
 
     new Thread(() -> {
       s_DebugProfiler.startProfileTimer();
-      FlightLists flightsLists = new FlightLists(convertBinaryFileToFlightTypeAsync(usFileName, threadCount, QueryLocation.US, usLineByteSize),
-      convertBinaryFileToFlightTypeAsync(worldFileName, threadCount, QueryLocation.WORLD, worldLineByteSize));
+
+      FlightType[] us = convertBinaryFileToFlightTypeAsync(usFileName, threadCount, QueryLocationType.US, usLineByteSize);
+      FlightType[] world = convertBinaryFileToFlightTypeAsync(worldFileName, threadCount, QueryLocationType.WORLD, worldLineByteSize);
+
+      FlightMultiDataType flightsLists = new FlightMultiDataType(us, world);
+
       s_DebugProfiler.printTimeTakenMillis("Raw files pre-processing");
+
       onTaskComplete.accept(flightsLists);
       m_working = false;
     }
@@ -45,7 +32,8 @@ class FlightsManagerClass {
     m_working = true;
     return true;
   }
-  private FlightType[] convertBinaryFileToFlightTypeAsync(String filename, int threadCount, QueryLocation queryLocation, int lineByteSize) {
+
+  private FlightType[] convertBinaryFileToFlightTypeAsync(String filename, int threadCount, QueryLocationType queryLocation, int lineByteSize) {
     MappedByteBuffer buffer;
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
     CountDownLatch latch = new CountDownLatch(threadCount);
@@ -54,6 +42,7 @@ class FlightsManagerClass {
       FileChannel channel = fis.getChannel();
       buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
       long flightCount = channel.size() / lineByteSize;
+
       fis.close();
       channel.close();
 
@@ -67,21 +56,24 @@ class FlightsManagerClass {
         long processingSize = endPosition - startPosition;
 
         executor.submit(() -> {
-          if (queryLocation == QueryLocation.US) {
+          if (queryLocation == QueryLocationType.US) {
             processUSConvertBinaryFileToFlightTypeChunk(flightsList, buffer, processingSize, startPosition, lineByteSize);
           } else {
             processWorldConvertBinaryFileToFlightTypeChunk(flightsList, buffer, processingSize, startPosition, lineByteSize);
           }
+
           latch.countDown();
         }
         );
       }
+
       try {
         latch.await();
       }
       catch (InterruptedException e) {
         e.printStackTrace();
       }
+
       executor.shutdown();
       return flightsList;
     }
@@ -91,8 +83,6 @@ class FlightsManagerClass {
     }
   }
   private void processUSConvertBinaryFileToFlightTypeChunk(FlightType[] flightsList, MappedByteBuffer buffer, long processingSize, int startPosition, int lineByteSize) {
-    s_DebugProfiler.startProfileTimer();
-
     long maxI = startPosition + processingSize;
     for (int i = startPosition; i < maxI; i++) {
       int offset = lineByteSize* i;
@@ -110,14 +100,12 @@ class FlightsManagerClass {
         buffer.getShort(offset+19),
         buffer.get(offset+21),
         buffer.getShort(offset+22)
-      );
+        );
     }
-    s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
   }
+
   // (carrier_code, origin, dest)short, short, short
   private void processWorldConvertBinaryFileToFlightTypeChunk(FlightType[] flightsList, MappedByteBuffer buffer, long processingSize, int startPosition, int lineByteSize) {
-    s_DebugProfiler.startProfileTimer();
-
     long maxI = startPosition + processingSize;
     for (int i = startPosition; i < maxI; i++) {
       int offset = lineByteSize * i;
@@ -125,9 +113,8 @@ class FlightsManagerClass {
         buffer.getShort(offset),
         buffer.getShort(offset+2),
         buffer.getShort(offset+4)
-      );
+        );
     }
-    s_DebugProfiler.printTimeTakenMillis("Chunk " + startPosition);
   }
 }
 
@@ -169,3 +156,4 @@ class FlightsManagerClass {
 // T. Creagh, convertBinaryFileToFlightTypeAsync compatible with consumer, 12:45pm 13/03
 // T. Creagh, added world for init and aysnc functions, 3pm 13/03
 // T. Creagh, implemetned world fix, 9pm 13/03
+// F. Wright, Code cleanup 9am 19/03/24
