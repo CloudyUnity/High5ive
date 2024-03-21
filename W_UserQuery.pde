@@ -96,10 +96,6 @@ class UserQueryUI extends Widget {
      m_onLoadDataEvent.accept(result);
      println(m_flightsLists.US.length);
      println(result.length);
-    
-    
-
-
   }
 
   private void saveQuery( TextboxUI inputTextbox) {
