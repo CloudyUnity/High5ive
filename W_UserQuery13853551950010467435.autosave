@@ -113,6 +113,8 @@ class UserQueryUI extends Widget {
   }
 
   private void changeOperator() {
+    
+    
   }
 
   private void clearQueries() {
@@ -121,6 +123,7 @@ class UserQueryUI extends Widget {
     m_queryList.clear();
 
   }
+
 
   private void changeDataToUS() {
 
