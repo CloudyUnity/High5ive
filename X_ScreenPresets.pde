@@ -49,12 +49,14 @@ class Screen1 extends Screen {
     switchTo3D.setText("3D");
     switchTo3D.setTextSize(25);
     switchTo3D.setGrowScale(growScale);
-    
+
     ButtonUI switchToCharts = createButton(500, 20, 100, 100);
     switchToCharts.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_CHARTS_ID));
     switchToCharts.setText("Charts (WIP)");
     switchToCharts.setTextSize(25);
-    switchToCharts.setGrowMode(1.05);
+
+    switchToCharts.setGrowScale(1.05);
+
   }
 
   private void switchToTextBoxDemoOnClick(EventInfoType e) {
@@ -148,7 +150,7 @@ class FlightCodesBarchartDemo extends Screen {
     returnBtn.setText("<-");
     returnBtn.setTextSize(25);
     returnBtn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
-    addWidget(returnBtn);   
+    addWidget(returnBtn);
 
     data = new ArrayList<FlightType>();
     FlightType ft1 = new FlightType();
@@ -251,6 +253,8 @@ class AlexTestingScreen extends Screen {
     box = new TextboxUI(50, 70, 200, 50);
     list = new ListboxUI<String>(50, 170, 200, 400, 40, v -> v);
     imageBox = new ImageUI(400, 50, 60, 60);
+    
+    box.setPlaceholderText("Placeholder...");
 
     addItemButton = createButton(300, 50, 80, 20);
     addItemButton.setText("Add item");
@@ -280,6 +284,8 @@ class AlexTestingScreen extends Screen {
     testDropdown.add("One");
     testDropdown.add("Two");
     testDropdown.add("Three");
+    
+    testDropdown.setSearchable(true);
 
     addWidget(box);
     addWidget(list);

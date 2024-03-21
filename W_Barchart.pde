@@ -20,7 +20,7 @@ class BarChartUI<T, TData> extends Widget implements IChart<T, TData> {
     m_foregroundColour = color(#F000CD);
   }
 
-  public void addData(T[] data, Function<T, TData> getKey) {          
+  public void addData(T[] data, Function<T, TData> getKey) {
     for (var value : data) {
       TData k = getKey.apply(value);
       Integer entryValue = m_map.get(k);
@@ -65,7 +65,7 @@ class BarChartUI<T, TData> extends Widget implements IChart<T, TData> {
       m_scaleInterval *= 10;
     m_maxScaleValue = m_scaleInterval * ((m_maxValue + m_scaleInterval - 1) / m_scaleInterval); // Round up to the nearest m_scaleInterval.
   }
-  
+
   public void removeData() {
     m_map = new TreeMap<TData, Integer>();
     m_maxValue = -1;
@@ -79,13 +79,13 @@ class BarChartUI<T, TData> extends Widget implements IChart<T, TData> {
   @ Override
     public void draw() {
     super.draw();
-    
+
     fill(color(m_backgroundColour));
     rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y);
-    
+
     if (m_maxValue == -1 || m_barWidth == -1)
       return;
-       
+
     if (m_map.size() == 0)
       return;
 
@@ -104,7 +104,7 @@ class BarChartUI<T, TData> extends Widget implements IChart<T, TData> {
     }
 
     int i = 0;
-    for (Map.Entry<TData, Integer> entry : m_map.entrySet()) {              
+    for (Map.Entry<TData, Integer> entry : m_map.entrySet()) {
       int barHeight = (int)(((double)entry.getValue() / (double)m_maxScaleValue) * (double)(m_scale.y - m_bottomPadding - m_topPadding));
       int barTop = (int)(m_pos.y + m_scale.y - m_bottomPadding - barHeight);
 
