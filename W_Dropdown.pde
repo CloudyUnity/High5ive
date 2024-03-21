@@ -19,7 +19,6 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
     m_onMouseWheelMoved = new EventType<MouseWheelEventInfoType>();
     m_onSelectionChanged = new EventType<ListboxSelectedEntryChangedEventInfoType>();
 
-    m_onClickEvent.addHandler(e -> onClick(e));
     m_onMouseWheelMoved.addHandler(e -> onMouseWheelMoved(e));
 
     int tbHeight = Math.min((int)(m_scale.y * 0.1), 40);
@@ -38,6 +37,9 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
     m_listbox.getOnClickEvent().addHandler(e -> onListboxClick(e));
     m_listbox.getOnSelectedEntryChangedEvent().addHandler(e -> onListboxSelectionChanged(e));
     m_onFocusLostEvent.addHandler(e -> onFocusLost(e));
+    m_textbox.getOnKeyPressedEvent().addHandler(e -> textboxChanged(e));
+    m_textbox.getOnStringEnteredEvent().addHandler(e -> textboxTextEntered(e));
+    m_textbox.getOnClickEvent().addHandler(e -> openList());
     
     m_children.add(m_listbox);
     m_children.add(m_textbox);
@@ -91,17 +93,11 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
   public EventType<ListboxSelectedEntryChangedEventInfoType> getOnSelectionChanged() {
     return m_onSelectionChanged;
   }
-
-  private void onClick(EventInfoType e) {
-    /*
-    if (m_textbox.isPositionInside(e.X, e.Y))
-      m_textbox.getOnClickEvent().raise(new EventInfoType(e.X, e.Y, m_textbox));
-
-    if (m_dropdownButton.isPositionInside(e.X, e.Y))
-      m_dropdownButton.getOnClickEvent().raise(new EventInfoType(e.X, e.Y, m_dropdownButton));
-
-    if (m_listbox.isPositionInside(e.X, e.Y))
-      m_listbox.getOnClickEvent().raise(new EventInfoType(e.X, e.Y, m_listbox));*/
+  
+  public void setSearchable(boolean searchable) {
+    if (!searchable)  
+      m_listbox.removeFilter();
+    m_textbox.setUserModifiable(searchable);
   }
 
   private void onDropdownButtonClicked(EventInfoType e) {
@@ -127,6 +123,19 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
       e.Widget = m_listbox;
       m_listbox.getOnMouseWheelEvent().raise(e);
     }
+  }
+  
+  private void textboxChanged(KeyPressedEventInfoType e) {
+    TextboxUI tb = ((TextboxUI)e.Widget);
+    if (tb.getText() == "") {
+      m_listbox.removeFilter();
+    } else {
+      m_listbox.filterEntries(o -> m_getDisplayString.apply(o).startsWith(tb.getText()));
+    }
+  }
+  
+  private void textboxTextEntered(StringEnteredEventInfoType e) {
+    m_listbox.selectFirstShown();
   }
 
   private void onFocusLost(EventInfoType e) {
