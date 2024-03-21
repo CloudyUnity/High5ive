@@ -10,6 +10,7 @@ class UserQueryUI extends Widget {
   private ButtonUI  clearListButton;
   private ButtonUI  removeSelectedButton;
   private ButtonUI  addItemButton;
+  private ButtonUI  loadDataButton;
   private QueryLocationType m_location;
   public int m_listCounter;
   private FlightQueryType m_dayQuery;
@@ -52,6 +53,11 @@ class UserQueryUI extends Widget {
     addWidget(removeSelectedButton);
     removeSelectedButton.setText("Remove selected");
     removeSelectedButton.getOnClickEvent().addHandler(e -> m_queryList.removeSelected());
+    
+    loadDataButton = new ButtonUI(220, 500, 180, 120);
+    addWidget(loadDataButton);
+    loadDataButton.setText("Load Data");
+    loadDataButton.getOnClickEvent().addHandler(e -> loadData());
 
     m_day =  new TextboxUI(20 + posX, 500 + posY, 160, 30);
     addWidget(m_day);
@@ -84,14 +90,13 @@ class UserQueryUI extends Widget {
 
     // Apply all saved queries to m_flightLists and apply result to the Consumer (m_onLoadDataEvent.accept(result))
 
-    FlightType[] result = null;
+    m_queryManager.queryFlights(m_flightsLists.US, m_dayQuery, m_dayQuery.QueryValue, 4, m_onLoadDataEvent);
 
-    m_onLoadDataEvent.accept(result);
   }
 
   private void saveQuery( TextboxUI inputTextbox) {
     // Saves currently written user input into a query
-    m_queries.add(inputTextbox.getText());
+    m_dayQuery.setQueryValue(inputTextbox.getText());
 
     // Adds to query output field textbox thing
     m_queryList.add(inputTextbox.getText() );
@@ -109,7 +114,7 @@ class UserQueryUI extends Widget {
 
   private void clearQueries() {
     // Clear all currently saved user queries
-    m_queries.clear();
+    m_dayQuery = new FlightQueryType(QueryType.DAY, QueryOperatorType.EQUAL, QueryLocationType.US, m_queryManager); 
     m_queryList.clear();
 //https://github.com/CloudyUnity/High5ive/pull/290/conflict?name=W_UserQuery.pde&ancestor_oid=60a2e07e6de1a0f5baadd27634406172c785a754&base_oid=780bfbdbbd762c7709adad064c68aa9959c678b9&head_oid=5c486813ebac8a92f9ea13bd3455f579dd77545e 
   }
