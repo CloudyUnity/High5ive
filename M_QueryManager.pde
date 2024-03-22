@@ -3,8 +3,10 @@ class QueryManagerClass {
   private Table m_airportTable;
   private TableRow m_lookupResult;
   private boolean m_working;
+  private int m_debug;
 
   public void init() {
+    m_debug = 0;
     m_airlineTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "airlines.csv", "header");
     m_airportTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "airports.csv", "header");
 
@@ -61,12 +63,17 @@ class QueryManagerClass {
   }
 
   private FlightType[] queryFlights(FlightType[] flightsList, FlightQueryType flightQuery, int queryValue) {
+    if (!isLegalQuery(flightQuery)) {
+      println("Error: FlightQuery.Type is illegal with FlightQuery.Operator");
+      return flightsList;
+    }
+    println("flightsList: " + flightsList.length);
+    println("queryValue: " + queryValue);
     switch(flightQuery.Operator) {
     case EQUAL:
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) == queryValue)
         .toArray(FlightType[]::new);
-
     case NOT_EQUAL:
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) != queryValue)
@@ -99,6 +106,10 @@ class QueryManagerClass {
   }
 
   private FlightType[] queryFlightsWithinRange(FlightType[] flightsList, FlightRangeQueryType flightRangeQuery, int start, int end) {
+    if (!isLegalQuery(flightRangeQuery)) {
+      println("Error: FlightRangeQuery.Type is illegal to query range");
+      return flightsList;
+    }
     return Arrays.stream(flightsList)
       .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightRangeQuery.Type) >= start &&
       getFlightTypeFieldFromQueryType(flight, flightRangeQuery.Type) < end)
