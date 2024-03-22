@@ -38,14 +38,10 @@ class ApplicationClass {
     screen1.init();
 
     m_flightsManager.loadUSAndWorldFromFiles("hex_flight_data.bin", "hex_world_data.bin", 4, list -> {
-      println("list.WORLD:" + list.WORLD.length);
-      screenFlightMap3D.insertDebug(list.WORLD);
+      println("list.WORLD:" + list.US.length);
+      FlightType[] temp = m_queryManager.queryFlights(list.US, new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, QueryLocationType.US, m_queryManager), 100);
+      screenFlightMap3D.insertDebug(temp);
       screenCharts.loadData(list.US);
-
-
-      //m_queryManager.queryFlights(list.US,new FlightQueryType(QueryType.AIRPORT_DEST_INDEX, QueryOperatorType.EQUAL, QueryLocationType.WORLD, m_queryManager),m_queryManager.getIndex("SEA"),4,list2 -> {
-
-      //});
     }
     );
   }
