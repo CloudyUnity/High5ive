@@ -25,7 +25,7 @@ class ScreenFlightMap extends Screen {
   
     m_userQueryUI.setOnLoadHandler(flights -> {
 
-      m_flightMap3D.loadFlights(flights, query); 
+      m_flightMap3D.loadFlights(flights, m_queryManager); 
 
     }
     );
