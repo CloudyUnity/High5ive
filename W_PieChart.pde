@@ -1,7 +1,10 @@
 class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
 
   private TreeMap<TData, Integer> m_map = new TreeMap<TData, Integer>();
+  private ArrayList<Float> m_arcSizes = new ArrayList<Float>();
   private boolean m_dataLoaded = false;
+  
+  private QueryType m_translationField = null;
 
   public PieChartUI(int posX, int posY, int diameter) {
     super(posX, posY, diameter, diameter);
@@ -16,6 +19,8 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
         m_map.put(k, 1);
       else
         m_map.replace(k, entryValue + 1);
+
+      m_arcSizes.add(1.0f);
     }
 
     m_dataLoaded = true;
@@ -30,6 +35,8 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
         m_map.put(k, 1);
       else
         m_map.replace(k, entryValue + 1);
+
+      m_arcSizes.add(1.0f);
     }
 
     m_dataLoaded = true;
@@ -37,6 +44,7 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
 
   public void removeData() {
     m_map = new TreeMap<TData, Integer>();
+    m_arcSizes.clear();
     m_dataLoaded = false;
   }
 
@@ -53,10 +61,29 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
 
     float lastAngle = 0;
     int i = 0;
-    for (var val : m_map.values()) {
-      float arcSize = 2 * PI * (val / (float)total);
+    for (Map.Entry<TData, Integer> entry : m_map.entrySet()) {
+      float arcSize = 2 * PI * (entry.getValue() / (float)total);
       fill(randomColor(i));
-      arc(m_pos.x, m_pos.y, m_scale.x, m_scale.x, lastAngle, lastAngle + arcSize, PIE);
+
+      float diameterOfArc = m_scale.x * m_arcSizes.get(i);
+
+      boolean isHovered = false;
+      if (pointInArc(m_pos, mouseX, mouseY, diameterOfArc, lastAngle, lastAngle + arcSize))
+        isHovered = true;
+
+      float growTarget = isHovered ? 1.1f : 1.0f;
+      m_arcSizes.set(i, lerp(m_arcSizes.get(i), growTarget, 0.2f));
+
+      arc(m_pos.x, m_pos.y, diameterOfArc, diameterOfArc, lastAngle, lastAngle + arcSize, PIE);
+
+      if (isHovered) {
+        float middleAngle = lastAngle + (arcSize * 0.5f);
+        float textPosX = m_pos.x + (cos(middleAngle) * diameterOfArc * 1.2f);
+        float textPosY = m_pos.y + (sin(middleAngle) * diameterOfArc * 1.2f);
+        fill(255);
+        text(translateXValues(entry.getKey().toString()), textPosX, textPosY);
+      }
+
       lastAngle += arcSize;
       i++;
     }
@@ -68,5 +95,24 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
     color result = color(random(360), random(100), random(100));
     colorMode(RGB, 255, 255, 255);
     return result;
+  }
+  
+  public void setTranslationField(QueryType query){
+    m_translationField = query;
+  }
+
+  public String translateXValues(String val) {
+    if (m_translationField == null)
+    return val;
+
+    // TODO: Carrier Code index
+    switch (m_translationField) {
+    case CANCELLED_OR_DIVERTED:
+      println(val);
+      return val.equals("0") ? "None" :
+        val.equals("1") ? "Cancelled" : "Diverted";
+    default:
+      return val;
+    }
   }
 }

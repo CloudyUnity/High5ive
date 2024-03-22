@@ -53,7 +53,7 @@ class Screen1 extends Screen {
 }
 
 class Screen2 extends Screen {
-  private BarChartUI m_barChart;
+  private HistogramChartUI m_barChart;
   private ArrayList<String> m_data;
 
   public Screen2(String screenId) {
@@ -90,7 +90,7 @@ class Screen2 extends Screen {
 
     createLabel(10, 10, 100, 100, "Hello");
 
-    m_barChart = new BarChartUI(200, 10, 200, 200);
+    m_barChart = new HistogramChartUI(200, 10, 200, 200);
     m_barChart.setTitle("Numbers");
     m_data = new ArrayList<String>();
     m_data.add("1");
@@ -132,7 +132,7 @@ class Screen2 extends Screen {
 }
 
 class FlightCodesBarchartDemo extends Screen {
-  private BarChartUI<FlightType, String> chart;
+  private HistogramChartUI<FlightType, String> chart;
   private ArrayList<FlightType> data;
 
   public FlightCodesBarchartDemo(String screenId) {
@@ -162,7 +162,7 @@ class FlightCodesBarchartDemo extends Screen {
     data.add(ft2);
     data.add(ft3);
 
-    chart = new BarChartUI<FlightType, String>(100, 100, (int)m_scale.x - 200, (int)m_scale.y - 200);
+    chart = new HistogramChartUI<FlightType, String>(100, 100, (int)m_scale.x - 200, (int)m_scale.y - 200);
     addWidget(chart);
 
     RadioButtonUI destination = new RadioButtonUI( 100, (int)m_scale.y - 80, 200, 20, "Destination");
