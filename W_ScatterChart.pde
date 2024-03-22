@@ -25,9 +25,12 @@ class ScatterChartUI<T> extends Widget implements IChart2Axis<T, Integer> {
     maxValX += 2;
     maxValY += 2;
 
-    s_DebugProfiler.startProfileTimer();
-
-    m_pointsShape.beginShape(POINTS);
+    s_DebugProfiler.startProfileTimer();    
+    
+    m_pointsShape.beginShape(POINTS);   
+    
+    float strokeWeight = lerp(8.0f, 2.0f, data.length / 650_000.0f);
+    m_pointsShape.strokeWeight(strokeWeight);
 
     for (var value : data) {
       Integer x = getKeyX.apply(value) + 1;

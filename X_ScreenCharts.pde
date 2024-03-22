@@ -135,6 +135,7 @@ class ScreenCharts extends Screen {
   }
 
   public void loadData(FlightType[] flights) {
+    // m_cachedFlights = Arrays.copyOf(flights, 300_000);
     m_cachedFlights = flights;
   }
 
