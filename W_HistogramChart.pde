@@ -1,4 +1,4 @@
-class BarChartUI<T, TData> extends Widget implements IChart<T, TData> {
+class HistogramChartUI<T, TData> extends Widget implements IChart<T, TData> {
   private TreeMap<TData, Integer> m_map;
   private Integer m_maxValue = -1; // Can be null
   private Integer m_barWidth = -1; // Can be null
@@ -7,11 +7,13 @@ class BarChartUI<T, TData> extends Widget implements IChart<T, TData> {
   private int m_sidePadding = 0;
   private Integer m_maxScaleValue = 1;
   private Integer m_scaleInterval = 1;
-  private String m_title = "ERROR";
+  private String m_title = "Histogram", m_labelX = "X-axis", m_labelY = "Frequency";
   private int m_numberTextBoxWidth = 0;
   private int m_numberTextBoxHeight = 0;
 
-  public BarChartUI(int posX, int posY, int scaleX, int scaleY) {
+  private QueryType m_translationField = null;
+
+  public HistogramChartUI(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
     m_map = new TreeMap<TData, Integer>();
     m_numberTextBoxHeight = m_bottomPadding = (int)((double)m_scale.y * 0.1);
@@ -76,6 +78,14 @@ class BarChartUI<T, TData> extends Widget implements IChart<T, TData> {
     m_title = title;
   }
 
+  public void setXAxisLabel(String name) {
+    m_labelX = name;
+  }
+
+  public void setTranslationField(QueryType queryType) {
+    m_translationField = queryType;
+  }
+
   @ Override
     public void draw() {
     super.draw();
@@ -90,10 +100,21 @@ class BarChartUI<T, TData> extends Widget implements IChart<T, TData> {
       return;
 
     textAlign(CENTER, CENTER);
-    fill(0);
+    fill(255);
 
     if (m_title != null)
       text(m_title, m_pos.x + m_sidePadding, m_pos.y, m_scale.x - m_sidePadding, m_topPadding);
+
+    text(m_labelX, m_pos.x, m_pos.y + m_scale.y + 10, m_scale.x, 100);
+
+    pushMatrix();
+
+    translate(m_pos.x - 20, m_pos.y + m_scale.y * 0.5f);
+    rotate(radians(-90));
+    translate(-m_scale.y * 0.5f, -100 * 0.5f);
+    text(m_labelY, 0, 0, m_scale.y, 100);
+
+    popMatrix();
 
     text("0", m_pos.x, m_pos.y + m_scale.y - m_bottomPadding - m_numberTextBoxHeight * 0.5, m_numberTextBoxWidth, m_numberTextBoxHeight);
     for (int i = 1; i <= (m_maxScaleValue / m_scaleInterval); i++) {
@@ -113,11 +134,28 @@ class BarChartUI<T, TData> extends Widget implements IChart<T, TData> {
       fill(color(m_foregroundColour));
       rect(m_pos.x + m_sidePadding + i * m_barWidth, m_pos.y + m_scale.y - barHeight - m_bottomPadding, m_barWidth, barHeight);
 
+      String key = entry.getKey().toString();
+      fill(255);
+      text(translateXValues(key), m_pos.x + m_sidePadding + i * m_barWidth, m_pos.y + m_scale.y - m_bottomPadding, m_barWidth, m_bottomPadding);
       fill(0);
-      text(entry.getKey().toString(), m_pos.x + m_sidePadding + i * m_barWidth, m_pos.y + m_scale.y - m_bottomPadding, m_barWidth, m_bottomPadding);
       text(entry.getValue().toString(), m_pos.x + m_sidePadding + i * m_barWidth, valTextYTop, m_barWidth, m_numberTextBoxHeight);
 
       i++;
+    }
+  }
+
+  public String translateXValues(String val) {
+    if (m_translationField == null)
+      return val;
+
+    // TODO: Carrier Code index
+    switch (m_translationField) {
+    case CANCELLED_OR_DIVERTED:
+      println(val);
+      return val.equals("0") ? "None" :
+      val.equals("1") ? "Cancelled" : "Diverted";
+    default:
+      return val;
     }
   }
 }

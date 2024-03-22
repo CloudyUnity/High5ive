@@ -35,10 +35,9 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
     fill(m_foregroundColour);
     textSize(fontSize);
     if (!isFocused() && m_text.toString() != "") {
-      m_foregroundColour = 0;
       text(m_text.toString(), m_pos.x, m_pos.y, m_scale.x, m_scale.y);
     } else if (!isFocused() && m_text.toString() == "") {
-      m_foregroundColour = 120;
+      fill(120);
       text(m_emptyText, m_pos.x, m_pos.y, m_scale.x, m_scale.y);
     } else {
       m_timer -= 1;
