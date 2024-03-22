@@ -108,7 +108,6 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
     // TODO: Carrier Code index
     switch (m_translationField) {
     case CANCELLED_OR_DIVERTED:
-      println(val);
       return val.equals("0") ? "None" :
         val.equals("1") ? "Cancelled" : "Diverted";
     default:

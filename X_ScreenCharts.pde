@@ -1,38 +1,3 @@
-/*
-
- The Plan:
- 
- Need to be able to:
- 
- Field against Field scatter plots (All fields)
- Ability to reverse order of axis
- Fields (Any-axis):
- SDD
- SAA
- Miles
- Day
- 
- Frequency Histogram
- Order dataset by frequency of a field
- Ability to reverse order of dataset
- Fields:
- Day
- Airline
- Carrier
- Origin
- Dest
- Flags
- 
- Frequency pie chart for fields:
- Day
- Origin
- Dest
- Airlines
- CarrierCode
- Flags
- 
- */
-
 class ScreenCharts extends Screen {
   HistogramChartUI m_histogram;
   PieChartUI m_pieChart;
@@ -43,9 +8,9 @@ class ScreenCharts extends Screen {
   QueryManagerClass m_queryRef;
   FlightType[] m_cachedFlights = null;
 
-  QueryType m_histQuery = QueryType.DAY;
-  QueryType m_scatterQueryX = QueryType.KILOMETRES_DISTANCE;
-  QueryType m_scatterQueryY = QueryType.ARRIVAL_DELAY;
+  QueryType m_histQuery = null;
+  QueryType m_scatterQueryX = null;
+  QueryType m_scatterQueryY = null;
 
   Widget m_selectedGraph;
 
@@ -65,7 +30,7 @@ class ScreenCharts extends Screen {
     }
     );
 
-    m_histogram = new HistogramChartUI<FlightType, Integer>(500, 100, 800, 800);
+    m_histogram = new HistogramChartUI<FlightType, Integer>(500, 100, 850, 850);
     addWidget(m_histogram);
     m_histogram.setTitle("X-Day, Y-Frequency");
     m_selectedGraph = m_histogram;
@@ -74,7 +39,7 @@ class ScreenCharts extends Screen {
     addWidget(m_pieChart);
     m_pieChart.setRendering(false);
 
-    m_scatterPlot = new ScatterChartUI<FlightType>(500, 50, 1000, 1000);
+    m_scatterPlot = new ScatterChartUI<FlightType>(500, 100, 850, 850);
     addWidget(m_scatterPlot);
     m_scatterPlot.setRendering(false);
 
@@ -107,8 +72,8 @@ class ScreenCharts extends Screen {
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
       m_scatterQueryX = (QueryType)elistbox.data;
 
-      if (m_scatterQueryX == null)
-      return;
+      if (m_scatterQueryX == null || m_scatterQueryY == null)
+        return;
 
       reloadScatter();
     }
@@ -122,8 +87,8 @@ class ScreenCharts extends Screen {
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
       m_scatterQueryY = (QueryType)elistbox.data;
 
-      if (m_scatterQueryY == null)
-      return;
+      if (m_scatterQueryX == null || m_scatterQueryY == null)
+        return;
 
       reloadScatter();
     }
@@ -202,13 +167,14 @@ class ScreenCharts extends Screen {
     m_scatterPlot.removeData();
     m_scatterPlot.addData(m_cachedFlights,
       fX -> {
-      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)fX, m_scatterQueryX);
+      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)fX, m_scatterQueryX, true);
     }
     ,
       fY -> {
-      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)fY, m_scatterQueryY);
+      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)fY, m_scatterQueryY, true);
     }
     );
+    m_scatterPlot.setAxisLabels(m_scatterQueryX.toString(), m_scatterQueryY.toString());
   }
 
   public void selectHistogram() {
