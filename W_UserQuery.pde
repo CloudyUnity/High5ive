@@ -90,12 +90,15 @@ class UserQueryUI extends Widget {
   private void loadData() {
 
     // Apply all saved queries to m_flightLists and apply result to the Consumer (m_onLoadDataEvent.accept(result))
-
-     FlightType[] result = null;
-     result = m_queryManager.queryFlights(m_flightsLists.US, m_dayQuery, m_dayQuery.QueryValue);
-     m_onLoadDataEvent.accept(result);
-     println(m_flightsLists.US.length);
-     println(result.length);
+    
+    FlightType[] result = null;
+    println("data query: " + m_dayQuery.QueryValue);
+    result = m_queryManager.queryFlights(m_flightsLists.US, m_dayQuery, m_dayQuery.QueryValue);
+    // results are null
+    println("result length" + result.length);
+    m_onLoadDataEvent.accept(result);
+    println(m_flightsLists.US.length);
+    println(result.length);
   }
 
   private void saveQuery( TextboxUI inputTextbox) {
