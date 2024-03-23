@@ -65,7 +65,9 @@ class UserQueryUI extends Widget {
 
 
     
-    m_dayQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.GREATER_THAN, QueryLocationType.US, queryManager);
+
+    m_dayQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.WORLD, queryManager);
+
 
     m_flightQueries.add(m_dayQuery);
     //   m_flights = convertBinaryFileToFlightTypeAsync(String filename, int threadCount, QueryLocation queryLocation, int lineByteSize)
@@ -90,15 +92,13 @@ class UserQueryUI extends Widget {
   private void loadData() {
 
     // Apply all saved queries to m_flightLists and apply result to the Consumer (m_onLoadDataEvent.accept(result))
-    
+
     FlightType[] result = null;
-    println("data query: " + m_dayQuery.QueryValue);
-    result = m_queryManager.queryFlights(m_flightsLists.US, m_dayQuery, m_dayQuery.QueryValue);
-    // results are null
-    println("result length" + result.length);
+    result  = m_queryManager.queryFlights(m_flightsLists.WORLD, m_dayQuery, m_dayQuery.QueryValue);
+    //result = m_queryManager.getHead(m_flightsLists.WORLD , 10);
+    println(m_dayQuery.QueryValue);
     m_onLoadDataEvent.accept(result);
-    println(m_flightsLists.US.length);
-    println(result.length);
+
   }
 
   private void saveQuery( TextboxUI inputTextbox) {
@@ -109,9 +109,6 @@ class UserQueryUI extends Widget {
     m_queryList.add(inputTextbox.getText() );
     m_listCounter++;
 
-    //Load New Query
-    //loadData();
-
     // Set all user inputs back to default
     m_day.setText("");
   }
@@ -121,7 +118,7 @@ class UserQueryUI extends Widget {
 
   private void clearQueries() {
     // Clear all currently saved user queries
-    m_dayQuery = new FlightQueryType(QueryType.DAY, QueryOperatorType.EQUAL, QueryLocationType.US, m_queryManager); 
+    m_dayQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, QueryLocationType.US, m_queryManager); 
     m_queryList.clear();
 
   }

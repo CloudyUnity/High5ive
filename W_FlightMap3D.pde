@@ -95,6 +95,9 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   public void loadFlights(FlightType[] flights, QueryManagerClass queries) {
     m_flightDataLoaded = false;
     int count = flights.length;
+    m_airportHashmap.clear();
+    
+ 
 
     if (DEBUG_FAST_LOADING_3D)
       m_arcSegments = 5;

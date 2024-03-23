@@ -80,6 +80,7 @@ class QueryManagerClass {
         .toArray(FlightType[]::new);
 
     case LESS_THAN:
+    println("LESS THAN");
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) < queryValue)
         .toArray(FlightType[]::new);
@@ -270,7 +271,9 @@ class QueryManagerClass {
   }
 
   public int queryRangeFrequency(FlightType[] flightsList, FlightRangeQueryType flightRangeQuery, int start, int end, int threadCount) {
-    return queryFlightsWithinRange(flightsList, flightRangeQuery, start, end).length;
+
+    return queryFlightsWithinRange(flightsList, flightRangeQuery, start,end).length;
+
   }
 
   public FlightType[] getHead(FlightType[] flightList, int numberOfItems) {
