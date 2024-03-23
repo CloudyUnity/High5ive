@@ -125,22 +125,30 @@ class QueryManagerClass {
     switch(queryType) {
     case DAY:
       return (int)flight.Day;
+
     case CARRIER_CODE_INDEX:
       return (int)flight.CarrierCodeIndex;
+
     case FLIGHT_NUMBER:
       return (int)flight.FlightNumber;
+
     case AIRPORT_ORIGIN_INDEX:
       return (int)flight.AirportOriginIndex;
+
     case AIRPORT_DEST_INDEX:
       return (int)flight.AirportDestIndex;
+
     case DEPARTURE_DELAY:
       return (int)flight.DepartureDelay;
+
     case ARRIVAL_DELAY:
       return (int)flight.ArrivalDelay;
+
     case CANCELLED_OR_DIVERTED:
       return (int)flight.CancelledOrDiverted;
+
     case KILOMETRES_DISTANCE:
-      return (int)flight.MilesDistance;
+      return (int)flight.KilometresDistance;
 
     case SCHEDULED_DEPARTURE_TIME:
       if (convertTimes)
@@ -224,36 +232,55 @@ class QueryManagerClass {
     case DAY:
       flightComparator = Comparator.comparingInt(flight -> flight.Day);
       break;
+
     case CARRIER_CODE_INDEX:
       flightComparator = Comparator.comparingInt(flight -> flight.CarrierCodeIndex);
       break;
+
     case FLIGHT_NUMBER:
       flightComparator = Comparator.comparingInt(flight -> flight.FlightNumber);
       break;
+
     case AIRPORT_ORIGIN_INDEX:
       flightComparator = Comparator.comparingInt(flight -> flight.AirportOriginIndex);
       break;
+
     case AIRPORT_DEST_INDEX:
       flightComparator = Comparator.comparingInt(flight -> flight.AirportDestIndex);
       break;
+
+    case DEPARTURE_DELAY:
+      flightComparator = Comparator.comparingInt(flight -> flight.DepartureDelay);
+      break;
+
+    case ARRIVAL_DELAY:
+      flightComparator = Comparator.comparingInt(flight -> flight.ArrivalDelay);
+      break;
+
     case SCHEDULED_DEPARTURE_TIME:
       flightComparator = Comparator.comparingInt(flight -> flight.ScheduledDepartureTime);
       break;
+
     case DEPARTURE_TIME:
       flightComparator = Comparator.comparingInt(flight -> flight.DepartureTime);
       break;
+
     case SCHEDULED_ARRIVAL_TIME:
       flightComparator = Comparator.comparingInt(flight -> flight.ScheduledArrivalTime);
       break;
+
     case ARRIVAL_TIME:
       flightComparator = Comparator.comparingInt(flight -> flight.ArrivalTime);
       break;
+
     case CANCELLED_OR_DIVERTED:
       flightComparator = Comparator.comparingInt(flight -> flight.CancelledOrDiverted);
       break;
+
     case KILOMETRES_DISTANCE:
-      flightComparator = Comparator.comparingInt(flight -> flight.MilesDistance);
+      flightComparator = Comparator.comparingInt(flight -> flight.KilometresDistance);
       break;
+
     default:
       println("Error: FlightSortQuery.Type invalid");
       return flightsList;
@@ -289,6 +316,7 @@ class QueryManagerClass {
   }
 }
 
+// MILE TO KILO, ADD DELAY TO QUERY
 // Descending code authorship changes:
 // CKM: wrote class to return details about airports 17:00 11/03
 // T. Creagh, moved query methods in, 11pm 06/03/24
@@ -303,3 +331,6 @@ class QueryManagerClass {
 // T. Creagh, Added Working queryRangeFrequency with world, 12pm, 12/03/24
 // CKM, added world lookup functions 13:00 14/03
 // CKM, added airline lookup functions 13:00 14/03
+// T. Creagh, Fixing Querys 22:00 23/03
+// T. Creagh, Making print 22:30 23/03
+// T. Creagh, fixed querySort on delay tiems 00:00 24/03
