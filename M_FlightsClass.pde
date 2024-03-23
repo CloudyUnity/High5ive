@@ -104,7 +104,6 @@ class FlightsManagerClass {
     }
   }
 
-  // (carrier_code, origin, dest)short, short, short
   private void processWorldConvertBinaryFileToFlightTypeChunk(FlightType[] flightsList, MappedByteBuffer buffer, long processingSize, int startPosition, int lineByteSize) {
     long maxI = startPosition + processingSize;
     for (int i = startPosition; i < maxI; i++) {
@@ -114,6 +113,52 @@ class FlightsManagerClass {
         buffer.getShort(offset+2),
         buffer.getShort(offset+4)
         );
+    }
+  }
+  
+  public void printFlights(FlightType[] flights, QueryType queryType) {
+    for (FlightType flight : flights) {
+      printFlight(flight, queryType);
+    }
+  }
+
+  public void printFlight(FlightType flight, QueryType queryType) {
+    switch(queryType) {
+    case DAY:
+      println("Day: " + flight.Day);
+      break;
+    case CARRIER_CODE_INDEX:
+      println("CarrierCodeIndex: " + flight.CarrierCodeIndex);
+      break;
+    case FLIGHT_NUMBER:
+      println("FlightNumber: " + flight.FlightNumber);
+      break;
+    case AIRPORT_ORIGIN_INDEX:
+      println("AirportOriginIndex: " + flight.AirportOriginIndex);
+      break;
+    case AIRPORT_DEST_INDEX:
+      println("AirportDestIndex: " + flight.AirportDestIndex);
+      break;
+    case SCHEDULED_DEPARTURE_TIME:
+      println("ScheduledDepartureTime: " + flight.ScheduledDepartureTime);
+      break;
+    case DEPARTURE_TIME:
+      println("DepartureTime: " + flight.DepartureTime);
+      break;
+    case SCHEDULED_ARRIVAL_TIME:
+      println("ScheduledArrivalTime: " + flight.ScheduledArrivalTime);
+      break;
+    case ARRIVAL_TIME:
+      println("ArrivalTime: " + flight.ArrivalTime);
+      break;
+    case CANCELLED_OR_DIVERTED:
+      println("CancelledOrDiverted: " + flight.CancelledOrDiverted);
+      break;
+    case KILOMETRES_DISTANCE:
+      println("KilometresDistance: " + flight.KilometresDistance);
+      break;
+    default:
+      println("Error: FlightSortQuery.Type invalid");
     }
   }
 }
