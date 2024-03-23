@@ -80,6 +80,7 @@ class QueryManagerClass {
         .toArray(FlightType[]::new);
 
     case LESS_THAN:
+    println("LESS THAN");
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) < queryValue)
         .toArray(FlightType[]::new);
@@ -117,6 +118,10 @@ class QueryManagerClass {
   }
 
   private int getFlightTypeFieldFromQueryType(FlightType flight, QueryType queryType) {
+    return getFlightTypeFieldFromQueryType(flight, queryType, false);
+  }
+
+  private int getFlightTypeFieldFromQueryType(FlightType flight, QueryType queryType, boolean convertTimes) {
     switch(queryType) {
     case DAY:
       return (int)flight.Day;
@@ -128,26 +133,45 @@ class QueryManagerClass {
       return (int)flight.AirportOriginIndex;
     case AIRPORT_DEST_INDEX:
       return (int)flight.AirportDestIndex;
-    case SCHEDULED_DEPARTURE_TIME:
-      return (int)flight.ScheduledDepartureTime;
-    case DEPARTURE_TIME:
-      return (int)flight.DepartureTime;
     case DEPARTURE_DELAY:
       return (int)flight.DepartureDelay;
-    case SCHEDULED_ARRIVAL_TIME:
-      return (int)flight.ScheduledArrivalTime;
-    case ARRIVAL_TIME:
-      return (int)flight.ArrivalTime;
     case ARRIVAL_DELAY:
       return (int)flight.ArrivalDelay;
     case CANCELLED_OR_DIVERTED:
       return (int)flight.CancelledOrDiverted;
     case KILOMETRES_DISTANCE:
       return (int)flight.MilesDistance;
+
+    case SCHEDULED_DEPARTURE_TIME:
+      if (convertTimes)
+        return convertClockToMinutes(flight.ScheduledDepartureTime);
+      return (int)flight.ScheduledDepartureTime;
+      
+    case DEPARTURE_TIME:
+      if (convertTimes)
+        return convertClockToMinutes(flight.DepartureTime);
+      return (int)flight.DepartureTime;
+      
+    case SCHEDULED_ARRIVAL_TIME:
+      if (convertTimes)
+        return convertClockToMinutes(flight.ScheduledArrivalTime);
+      return (int)flight.ScheduledArrivalTime;
+      
+    case ARRIVAL_TIME:
+      if (convertTimes)
+        return convertClockToMinutes(flight.ArrivalTime);
+      return (int)flight.ArrivalTime;
+
     default:
       println("Error: Query.Type invalid");
       return -1;
     }
+  }
+
+  private int convertClockToMinutes(int time) {
+    int hours = (int)(time / 100.0f);
+    int mins = (int)(time % 100.0f);
+    return mins + (hours * 60);
   }
 
   private boolean isLegalQuery(FlightQueryType flightQuery) {
@@ -247,7 +271,9 @@ class QueryManagerClass {
   }
 
   public int queryRangeFrequency(FlightType[] flightsList, FlightRangeQueryType flightRangeQuery, int start, int end, int threadCount) {
+
     return queryFlightsWithinRange(flightsList, flightRangeQuery, start,end).length;
+
   }
 
   public FlightType[] getHead(FlightType[] flightList, int numberOfItems) {
