@@ -65,7 +65,7 @@ class UserQueryUI extends Widget {
 
 
     
-    m_dayQuery = new FlightQueryType(QueryType.DAY, QueryOperatorType.EQUAL, QueryLocationType.US, queryManager);
+    m_dayQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.WORLD, queryManager);
 
     m_flightQueries.add(m_dayQuery);
     //   m_flights = convertBinaryFileToFlightTypeAsync(String filename, int threadCount, QueryLocation queryLocation, int lineByteSize)
@@ -89,9 +89,11 @@ class UserQueryUI extends Widget {
   private void loadData() {
 
     // Apply all saved queries to m_flightLists and apply result to the Consumer (m_onLoadDataEvent.accept(result))
-
-    m_queryManager.queryFlights(m_flightsLists.US, m_dayQuery, m_dayQuery.QueryValue, 4, m_onLoadDataEvent);
-
+    FlightType[] result = null;
+    result  = m_queryManager.queryFlights(m_flightsLists.WORLD, m_dayQuery, m_dayQuery.QueryValue);
+    //result = m_queryManager.getHead(m_flightsLists.WORLD , 10);
+    println(m_dayQuery.QueryValue);
+    m_onLoadDataEvent.accept(result);
   }
 
   private void saveQuery( TextboxUI inputTextbox) {
@@ -102,9 +104,6 @@ class UserQueryUI extends Widget {
     m_queryList.add(inputTextbox.getText() );
     m_listCounter++;
 
-    //Load New Query
-    //loadData();
-
     // Set all user inputs back to default
     m_day.setText("");
   }
@@ -114,9 +113,8 @@ class UserQueryUI extends Widget {
 
   private void clearQueries() {
     // Clear all currently saved user queries
-    m_dayQuery = new FlightQueryType(QueryType.DAY, QueryOperatorType.EQUAL, QueryLocationType.US, m_queryManager); 
+    m_dayQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, QueryLocationType.US, m_queryManager); 
     m_queryList.clear();
-//https://github.com/CloudyUnity/High5ive/pull/290/conflict?name=W_UserQuery.pde&ancestor_oid=60a2e07e6de1a0f5baadd27634406172c785a754&base_oid=780bfbdbbd762c7709adad064c68aa9959c678b9&head_oid=5c486813ebac8a92f9ea13bd3455f579dd77545e 
   }
 
   private void changeDataToUS() {
