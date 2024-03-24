@@ -63,14 +63,12 @@ class QueryManagerClass {
   }
 
   private FlightType[] queryFlights(FlightType[] flightsList, FlightQueryType flightQuery, int queryValue) {
-    println("THIS ENTERED THE QUERYFLIGHTS METHOD");
     if (!isLegalQuery(flightQuery)) {
       println("Error: FlightQuery.Type is illegal with FlightQuery.Operator");
       return flightsList;
     }
     switch(flightQuery.Operator) {
     case EQUAL:
-      println("EQUAL");
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) == queryValue)
         .toArray(FlightType[]::new);
@@ -80,7 +78,6 @@ class QueryManagerClass {
         .toArray(FlightType[]::new);
 
     case LESS_THAN:
-    println("LESS THAN");
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) < queryValue)
         .toArray(FlightType[]::new);
@@ -298,9 +295,7 @@ class QueryManagerClass {
   }
 
   public int queryRangeFrequency(FlightType[] flightsList, FlightRangeQueryType flightRangeQuery, int start, int end, int threadCount) {
-
     return queryFlightsWithinRange(flightsList, flightRangeQuery, start,end).length;
-
   }
 
   public FlightType[] getHead(FlightType[] flightList, int numberOfItems) {
@@ -334,3 +329,4 @@ class QueryManagerClass {
 // T. Creagh, Fixing Querys 22:00 23/03
 // T. Creagh, Making print 22:30 23/03
 // T. Creagh, fixed querySort on delay tiems 00:00 24/03
+// T. Creagh, clean up 00:30 24/03
