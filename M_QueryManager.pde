@@ -295,9 +295,7 @@ class QueryManagerClass {
   }
 
   public int queryRangeFrequency(FlightType[] flightsList, FlightRangeQueryType flightRangeQuery, int start, int end, int threadCount) {
-
     return queryFlightsWithinRange(flightsList, flightRangeQuery, start,end).length;
-
   }
 
   public FlightType[] getHead(FlightType[] flightList, int numberOfItems) {
@@ -331,3 +329,4 @@ class QueryManagerClass {
 // T. Creagh, Fixing Querys 22:00 23/03
 // T. Creagh, Making print 22:30 23/03
 // T. Creagh, fixed querySort on delay tiems 00:00 24/03
+// T. Creagh, clean up 00:30 24/03
