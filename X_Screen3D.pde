@@ -145,7 +145,6 @@ class ScreenFlightMap extends Screen {
   }
 
   public void insertDebug(FlightType[] flights) {
-    // println(m_queryManager);
     m_flightMap3D.loadFlights(flights, m_queryManager);
   }
 }
