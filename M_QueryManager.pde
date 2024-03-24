@@ -63,14 +63,12 @@ class QueryManagerClass {
   }
 
   private FlightType[] queryFlights(FlightType[] flightsList, FlightQueryType flightQuery, int queryValue) {
-    println("THIS ENTERED THE QUERYFLIGHTS METHOD");
     if (!isLegalQuery(flightQuery)) {
       println("Error: FlightQuery.Type is illegal with FlightQuery.Operator");
       return flightsList;
     }
     switch(flightQuery.Operator) {
     case EQUAL:
-      println("EQUAL");
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) == queryValue)
         .toArray(FlightType[]::new);
@@ -80,7 +78,6 @@ class QueryManagerClass {
         .toArray(FlightType[]::new);
 
     case LESS_THAN:
-    println("LESS THAN");
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) < queryValue)
         .toArray(FlightType[]::new);
