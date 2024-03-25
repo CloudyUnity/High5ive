@@ -59,7 +59,7 @@ class UserQueryUI extends Widget {
     loadDataButton.setText("Load Data");
     loadDataButton.getOnClickEvent().addHandler(e -> loadData());
 
-    m_day =  new TextboxUI(20 + posX, 500 + posY, 160, 30);
+    m_day =  new TextboxUI(20, 500, 160, 30);
     addWidget(m_day);
     m_day.setPlaceholderText("Kilometers (Greater than)");
 
@@ -94,7 +94,16 @@ class UserQueryUI extends Widget {
     // Apply all saved queries to m_flightLists and apply result to the Consumer (m_onLoadDataEvent.accept(result))
 
     FlightType[] result = null;
-    result  = m_queryManager.queryFlights(m_flightsLists.US, m_dayQuery, m_dayQuery.QueryValue);
+
+    if (m_dayQuery == null){
+      result = m_flightsLists.US;
+    }
+    else{
+      result  = m_queryManager.queryFlights(m_flightsLists.US, m_dayQuery, m_dayQuery.QueryValue);
+    }
+    
+    //result = m_queryManager.getHead(m_flightsLists.WORLD , 10);
+
     println(m_dayQuery.QueryValue);
     m_onLoadDataEvent.accept(result);
 
