@@ -114,6 +114,9 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
         val.equals("1") ? "Cancelled" : "Diverted";
     case CARRIER_CODE_INDEX:
       return m_queryManager.getAirlineName(Integer.parseInt(val));
+    case AIRPORT_ORIGIN_INDEX:
+    case AIRPORT_DEST_INDEX:
+      return m_queryManager.getCode(Integer.parseInt(val));
     default:
       return val;
     }
