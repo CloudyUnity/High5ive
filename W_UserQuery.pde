@@ -94,8 +94,7 @@ class UserQueryUI extends Widget {
     // Apply all saved queries to m_flightLists and apply result to the Consumer (m_onLoadDataEvent.accept(result))
 
     FlightType[] result = null;
-    result  = m_queryManager.queryFlights(m_flightsLists.WORLD, m_dayQuery, m_dayQuery.QueryValue);
-    //result = m_queryManager.getHead(m_flightsLists.WORLD , 10);
+    result  = m_queryManager.queryFlights(m_flightsLists.US, m_dayQuery, m_dayQuery.QueryValue);
     println(m_dayQuery.QueryValue);
     m_onLoadDataEvent.accept(result);
 
