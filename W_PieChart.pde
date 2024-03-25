@@ -1,5 +1,4 @@
 class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
-
   private TreeMap<TData, Integer> m_map = new TreeMap<TData, Integer>();
   private ArrayList<Float> m_arcSizes = new ArrayList<Float>();
   private boolean m_dataLoaded = false;

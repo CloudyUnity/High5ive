@@ -73,7 +73,20 @@ private boolean pointInArc(PVector center, int posX, int posY, float radius, flo
     return angle >= thetaA || angle <= thetaZ;
 }
 
+// Utils
+
+public int tryParseInteger(String str){
+  try {
+    return Integer.parseInt(str);
+  }
+  catch (Exception e){
+    println("Invalid string entered");
+    return -1;
+  }
+}
+
 // Descending code authorship changes:
 // F. Wright, Created C_Math tab, clamp(), slerp(), approx() and rotateY() for global use, 3pm 08/03/24
 // F. Wright, Created sign(), rotateX(), 2pm 09/03/24
 // F. Wright, Moved coordsToPointOnSphere here from W_FlightMap3D, 12pm 15/03/24
+// F. Wright, Added tryParseInteger(String), 7pm 25/03/24

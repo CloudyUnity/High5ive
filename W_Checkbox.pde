@@ -44,12 +44,6 @@ class CheckboxUI extends Widget implements IClickable {
     m_checked = checked;
   }
 
-  /**
-   * Sets the button text size.
-   *
-   * @param  textSize The size of the text.
-   * @throws IllegalArgumentException when the size argument is negative.
-   **/
   public void setTextSize(int textSize) {
     m_label.setTextSize(textSize);
   }

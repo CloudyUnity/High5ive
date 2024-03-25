@@ -17,9 +17,7 @@ void setup() {
 
   s_DebugProfiler.startProfileTimer();
 
-  surface.setTitle("High5ive Flight Sim - 2024 v3.5.2b LTS");
-  surface.setResizable(!FULLSCREEN_ENABLED);
-  surface.setLocation(0, 0);
+  surface.setTitle("High5ive Flight Sim");
 
   frameRate(FRAME_RATE);
 

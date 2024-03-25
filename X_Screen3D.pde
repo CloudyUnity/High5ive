@@ -3,19 +3,9 @@ class ScreenFlightMap extends Screen {
   QueryManagerClass m_queryManager;
   EmptyWidgetUI m_flightMapUIParent;
   UserQueryUI m_userQueryUI;
-  ButtonUI returnBttn;
-  CheckboxUI dayNightCB;
-  CheckboxUI connectionsEnabledCB;
-  CheckboxUI markersEnabledCB;
-  CheckboxUI airportTextCB;
-  CheckboxUI lockTimeCB;
-  ButtonUI resetArcGrow;
-  SliderUI dayCycleSlider;
   FlightMultiDataType m_flights;
-  
-  
-  
-  private boolean isQueryDisplayed = false;
+
+  private boolean m_isQueryDisplayed = false;
 
   public ScreenFlightMap(String screenId, QueryManagerClass query) {
     super(screenId, color(0, 0, 0, 255));
@@ -35,28 +25,23 @@ class ScreenFlightMap extends Screen {
     // ATTENTION MATTHEW, SEE HERE!
     m_userQueryUI = new UserQueryUI(10000, 0, 1, 1, m_queryManager, this);
     addWidget(m_userQueryUI);
-  
+
     m_userQueryUI.setOnLoadHandler(flights -> {
-
-      m_flightMap3D.loadFlights(flights, m_queryManager); 
-
+      m_flightMap3D.loadFlights(flights, m_queryManager);
     }
     );
-    m_userQueryUI.insertBaseData(m_flights); 
+    m_userQueryUI.insertBaseData(m_flights);
 
     m_flightMapUIParent = new EmptyWidgetUI(0, 0);
     int currentUIPosY = 60;
     int textSize = 20;
 
-
-
-    returnBttn = createButton(20, currentUIPosY, 160, 50);
+    ButtonUI returnBttn = createButton(20, currentUIPosY, 160, 50);
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
     returnBttn.setGrowScale(1.05);
     returnBttn.setText("Return");
     returnBttn.setTextSize(textSize);
     returnBttn.getLabel().setCentreAligned(true);
-    
 
     currentUIPosY += 60;
 
@@ -66,11 +51,10 @@ class ScreenFlightMap extends Screen {
     switchUIBttn.setText("Switch to Query");
     switchUIBttn.setTextSize(textSize);
     switchUIBttn.getLabel().setCentreAligned(true);
-    
+
     currentUIPosY += 60;
 
-
-    dayNightCB = createCheckbox(20, currentUIPosY, 50, 50, "Perma-Day");
+    CheckboxUI dayNightCB = createCheckbox(20, currentUIPosY, 50, 50, "Perma-Day");
     dayNightCB.setGrowScale(1.05);
     dayNightCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setPermaDay(dayNightCB.getChecked()));
     dayNightCB.getLabel().setTextXOffset(0);
@@ -82,7 +66,7 @@ class ScreenFlightMap extends Screen {
 
     currentUIPosY += 60;
 
-    connectionsEnabledCB = createCheckbox(20, currentUIPosY, 50, 50, "Connections");
+    CheckboxUI connectionsEnabledCB = createCheckbox(20, currentUIPosY, 50, 50, "Connections");
     connectionsEnabledCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setConnectionsEnabled(connectionsEnabledCB.getChecked()));
     connectionsEnabledCB.setGrowScale(1.05);
     connectionsEnabledCB.setChecked(true);
@@ -95,7 +79,7 @@ class ScreenFlightMap extends Screen {
 
     currentUIPosY += 60;
 
-    markersEnabledCB = createCheckbox(20, currentUIPosY, 50, 50, "Markers");
+    CheckboxUI markersEnabledCB = createCheckbox(20, currentUIPosY, 50, 50, "Markers");
     markersEnabledCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setMarkersEnabled(markersEnabledCB.getChecked()));
     markersEnabledCB.setGrowScale(1.05);
     markersEnabledCB.setChecked(true);
@@ -108,7 +92,7 @@ class ScreenFlightMap extends Screen {
 
     currentUIPosY += 60;
 
-    airportTextCB = createCheckbox(20, currentUIPosY, 50, 50, "Text");
+    CheckboxUI airportTextCB = createCheckbox(20, currentUIPosY, 50, 50, "Text");
     airportTextCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setTextEnabled(airportTextCB.getChecked()));
     airportTextCB.setGrowScale(1.05);
     airportTextCB.setChecked(true);
@@ -121,7 +105,7 @@ class ScreenFlightMap extends Screen {
 
     currentUIPosY += 60;
 
-    lockTimeCB = createCheckbox(20, currentUIPosY, 50, 50, "Lock Time");
+    CheckboxUI lockTimeCB = createCheckbox(20, currentUIPosY, 50, 50, "Lock Time");
     lockTimeCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setLockTime(lockTimeCB.getChecked()));
     lockTimeCB.setGrowScale(1.05);
     lockTimeCB.setChecked(false);
@@ -134,7 +118,7 @@ class ScreenFlightMap extends Screen {
 
     currentUIPosY += 60;
 
-    resetArcGrow = createButton(20, currentUIPosY, 160, 50);
+    ButtonUI resetArcGrow = createButton(20, currentUIPosY, 160, 50);
     resetArcGrow.getOnClickEvent().addHandler(e -> m_flightMap3D.setArcGrowMillis(10_000, 0));
     resetArcGrow.setGrowScale(1.05);
     resetArcGrow.setText("Reset Arcs");
@@ -144,7 +128,7 @@ class ScreenFlightMap extends Screen {
 
     currentUIPosY += 60;
 
-    dayCycleSlider = createSlider(20, currentUIPosY, 160, 50, 0.00005f, 0.005f, 0.00001f);
+    SliderUI dayCycleSlider = createSlider(20, currentUIPosY, 160, 50, 0.00005f, 0.005f, 0.00001f);
     dayCycleSlider.getOnDraggedEvent().addHandler(e -> m_flightMap3D.setDayCycleSpeed((float)dayCycleSlider.getValue()));
     dayCycleSlider.setParent(m_flightMapUIParent);
 
@@ -158,35 +142,24 @@ class ScreenFlightMap extends Screen {
     LabelUI label = createLabel(20, 10, 150, 40, "3D Flight Map");
     label.setForegroundColour(color(255, 255, 255, 255));
     label.setTextSize(30);
-    
   }
-  
 
   public void insertFlightData(FlightMultiDataType flights) {
-    
     m_flights  = flights;
-    
   }
-
 
   private void switchUI() {
-
-    if (!isQueryDisplayed) {
-
+    if (!m_isQueryDisplayed) {
       m_flightMapUIParent.setPos(10000, 0);
-      m_userQueryUI.setPos(0,0);
-      isQueryDisplayed = true;
+      m_userQueryUI.setPos(0, 0);
+      m_isQueryDisplayed = true;
+      return;
     }
-    else{
-      m_flightMapUIParent.setPos(0, 0);
-      m_userQueryUI.setPos(10000,0);
-      isQueryDisplayed = false;
 
-    }
+    m_flightMapUIParent.setPos(0, 0);
+    m_userQueryUI.setPos(10000, 0);
+    m_isQueryDisplayed = false;
   }
-
-
-
 }
 
 // Descending code authorship changes:

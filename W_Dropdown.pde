@@ -109,7 +109,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
   }
 
   private void onListboxSelectionChanged(ListboxSelectedEntryChangedEventInfoType<T> e) {
-    m_textbox.setText(m_getDisplayString.apply(e.data));
+    m_textbox.setText(m_getDisplayString.apply(e.Data));
     closeList();
     m_onSelectionChanged.raise(e);
   }
