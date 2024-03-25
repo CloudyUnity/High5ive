@@ -3,8 +3,9 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
   private TreeMap<TData, Integer> m_map = new TreeMap<TData, Integer>();
   private ArrayList<Float> m_arcSizes = new ArrayList<Float>();
   private boolean m_dataLoaded = false;
-  
+
   private QueryType m_translationField = null;
+  private QueryManagerClass m_queryManager = null;
 
   public PieChartUI(int posX, int posY, int diameter) {
     super(posX, posY, diameter, diameter);
@@ -78,9 +79,10 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
 
       if (isHovered) {
         float middleAngle = lastAngle + (arcSize * 0.5f);
-        float textPosX = m_pos.x + (cos(middleAngle) * diameterOfArc * 1.2f);
-        float textPosY = m_pos.y + (sin(middleAngle) * diameterOfArc * 1.2f);
+        float textPosX = m_pos.x + (cos(middleAngle) * diameterOfArc * 1.3f);
+        float textPosY = m_pos.y + (sin(middleAngle) * diameterOfArc * 1.3f);
         fill(255);
+        textAlign(CENTER);
         text(translateXValues(entry.getKey().toString()), textPosX, textPosY);
       }
 
@@ -96,20 +98,22 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
     colorMode(RGB, 255, 255, 255);
     return result;
   }
-  
-  public void setTranslationField(QueryType query){
+
+  public void setTranslationField(QueryType query, QueryManagerClass queryManager) {
     m_translationField = query;
+    m_queryManager = queryManager;
   }
 
   public String translateXValues(String val) {
     if (m_translationField == null)
-    return val;
+      return val;
 
-    // TODO: Carrier Code index
     switch (m_translationField) {
     case CANCELLED_OR_DIVERTED:
       return val.equals("0") ? "None" :
         val.equals("1") ? "Cancelled" : "Diverted";
+    case CARRIER_CODE_INDEX:
+      return m_queryManager.getAirlineName(Integer.parseInt(val));
     default:
       return val;
     }

@@ -41,7 +41,7 @@ class ApplicationClass {
       println("list.US.length:" + list.US.length);
       // FlightType[] temp = m_queryManager.queryFlights(list.US, new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US, m_queryManager), m_queryManager.getIndex("JFK"));
       // println(temp.length);
-      screenFlightMap3D.insertDebug(list.US);
+      // screenFlightMap3D.insertDebug(list.US);
       screenCharts.loadData(list.US);
     }
     );

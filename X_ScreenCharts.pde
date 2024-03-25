@@ -50,8 +50,10 @@ class ScreenCharts extends Screen {
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
       m_histQuery = (QueryType)elistbox.data;
 
-      if (m_histQuery == null)
-      return;
+      if (m_histQuery == null || m_cachedFlights == null){
+        println("Flight data not ready for charts yet, or invalid query");
+        return;
+      }
 
       reloadFreq();
     }
@@ -68,7 +70,6 @@ class ScreenCharts extends Screen {
     addWidget(m_scatterDDX);
     m_scatterDDX.setRendering(false);
     m_scatterDDX.getOnSelectionChanged().addHandler(e -> {
-
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
       m_scatterQueryX = (QueryType)elistbox.data;
 
@@ -83,7 +84,6 @@ class ScreenCharts extends Screen {
     addWidget(m_scatterDDY);
     m_scatterDDY.setRendering(false);
     m_scatterDDY.getOnSelectionChanged().addHandler(e -> {
-
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
       m_scatterQueryY = (QueryType)elistbox.data;
 
@@ -135,8 +135,9 @@ class ScreenCharts extends Screen {
   }
 
   public void loadData(FlightType[] flights) {
-    // m_cachedFlights = Arrays.copyOf(flights, 300_000);
+    // m_cachedFlights = Arrays.copyOf(flights, 300_000); // (DEBUG PURPOSES) 
     m_cachedFlights = flights;
+    println("Data loaded");
   }
 
   public void reloadData() {
@@ -154,14 +155,14 @@ class ScreenCharts extends Screen {
     }
     );
     m_histogram.setXAxisLabel(m_histQuery.toString());
-    m_histogram.setTranslationField(m_histQuery);
+    m_histogram.setTranslationField(m_histQuery, m_queryRef);
 
     m_pieChart.removeData();
     m_pieChart.addData(m_cachedFlights, f -> {
       return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_histQuery);
     }
     );
-    m_pieChart.setTranslationField(m_histQuery);
+    m_pieChart.setTranslationField(m_histQuery, m_queryRef);
   }
 
   public void reloadScatter() {
