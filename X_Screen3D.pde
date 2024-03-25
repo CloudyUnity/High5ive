@@ -189,6 +189,13 @@ class ScreenFlightMap extends Screen {
     m_flightMap3D.loadFlights(flights, m_queryManager);
 
   }
+  
+  @Override
+  public void draw(){
+    super.draw();
+    
+    m_flightMapUIParent.setPos(mouseX, 0);
+  }
 }
 
 // Descending code authorship changes:
