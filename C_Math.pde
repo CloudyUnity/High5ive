@@ -55,6 +55,24 @@ private PVector coordsToPointOnSphere(double latitude, double longitude, float r
   return new PVector(x, y, z);
 }
 
+private boolean pointInArc(PVector center, int posX, int posY, float radius, float thetaA, float thetaZ) {
+  if (dist(posX, posY, center.x, center.y) > radius)
+    return false;
+
+  float angle = atan2(posY - center.y, posX - center.x);
+  if (angle < 0)
+    angle += 2 * PI;
+  if (thetaA < 0)
+    thetaA += 2 * PI;
+  if (thetaZ < 0)
+    thetaZ += 2 * PI;
+
+  if (thetaA < thetaZ)
+    return angle >= thetaA && angle <= thetaZ;
+  else
+    return angle >= thetaA || angle <= thetaZ;
+}
+
 // Descending code authorship changes:
 // F. Wright, Created C_Math tab, clamp(), slerp(), approx() and rotateY() for global use, 3pm 08/03/24
 // F. Wright, Created sign(), rotateX(), 2pm 09/03/24
