@@ -172,6 +172,7 @@ class ScreenFlightMap extends Screen {
   private void switchUI() {
 
     if (!isQueryDisplayed) {
+
       m_flightMapUIParent.setPos(10000, 0);
       m_userQueryUI.setPos(0,0);
       isQueryDisplayed = true;
@@ -180,8 +181,11 @@ class ScreenFlightMap extends Screen {
       m_flightMapUIParent.setPos(0, 0);
       m_userQueryUI.setPos(10000,0);
       isQueryDisplayed = false;
+
     }
   }
+
+
 
 }
 
