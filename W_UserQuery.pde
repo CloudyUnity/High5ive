@@ -66,7 +66,7 @@ class UserQueryUI extends Widget {
 
     
 
-    m_dayQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.WORLD, queryManager);
+    m_dayQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US, queryManager);
 
 
     m_flightQueries.add(m_dayQuery);
@@ -112,12 +112,15 @@ class UserQueryUI extends Widget {
     m_day.setText("");
   }
 
-  private void changeOperator() {
+  private void changeOperator(FlightQueryType input, QueryOperatorType inputOperator) {
+    
+    input.setOperator(inputOperator);
+    
   }
 
   private void clearQueries() {
     // Clear all currently saved user queries
-    m_dayQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, QueryLocationType.US, m_queryManager); 
+    m_dayQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US, m_queryManager); 
     m_queryList.clear();
 
   }
@@ -145,13 +148,4 @@ class UserQueryUI extends Widget {
 
 // F.Wright  created Framework for UserQuery class 8pm 3/14/24
 // M.Poole   fixed issue with key input not detecting and implemented Listbox Functionality
-
-/*  TODO!!!!!!!!!!!!!
- 
- 1: Make loadData function as intended
- 2: Test If you can add and seperate inputs from multiple textboxes at once
- 4: Figure out how the f%&£ to switch data sets without breaking program
- 5: Other misc implementation (clearQueries, Seperate inputs etc)
- 
- 
- */
+// M.Poole   implemented single item search querying 
