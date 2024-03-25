@@ -2,11 +2,8 @@ class QueryManagerClass {
   private Table m_airlineTable;
   private Table m_airportTable;
   private TableRow m_lookupResult;
-  private boolean m_working;
-  private int m_debug;
 
   public void init() {
-    m_debug = 0;
     m_airlineTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "airlines.csv", "header");
     m_airportTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "airports.csv", "header");
 

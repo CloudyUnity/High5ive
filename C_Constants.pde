@@ -10,7 +10,7 @@ final String DATA_DIRECTOR_PATH = "/data/Preprocessed Data/";
 // Debug Options
 final boolean DEBUG_MODE = true; // Turns on various stats or console logging
 final int DEBUG_FPS_COUNTER_STORAGE = 30;
-final boolean DEBUG_FPS_ENABLED = true;
+final boolean DEBUG_FPS_ENABLED = false;
 final boolean DEBUG_PRINT_3D_LOADING = false;
 
 // Color Palette
@@ -27,7 +27,6 @@ final int COLOR_FOREGROUND = #7e7f9a;
 final int COLOR_TEXT = #f9f8f8;
 final int COLOR_HIGHTLIGHT_1 = #f3de8a;
 final int COLOR_HIGHTLIGHT_2 = #eb9486;
-
 
 // Scene
 final int DEFAULT_FOREGROUND_COLOUR = CP_WHITE;
