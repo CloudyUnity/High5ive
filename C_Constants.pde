@@ -1,6 +1,5 @@
 // Engine
 final int FRAME_RATE = 75;
-final boolean FULLSCREEN_ENABLED = true;
 
 // Data/Files
 final int US_LINE_BYTE_SIZE = 24;
@@ -39,10 +38,10 @@ final int DEFAULT_SLIDER_FILLED_COLOUR = CP_BLUE;
 final int DEFAULT_TEXT_COLOUR_INSIDE = COLOR_TEXT;
 final int DEFAULT_TEXT_COLOUR_OUTSIDE = COLOR_TEXT;
 final int DEFAULT_SCREEN_COLOUR = COLOR_BACKGROUND;
-final float WIDGET_GROW_MODE_MULT = 1.1f;
 final int DEFAULT_WIDGET_ROUNDNESS_1 = 15;
 final int DEFAULT_WIDGET_ROUNDNESS_2 = 40;
 final float DEFAULT_WIDGET_STROKE = 3;
+final float WIDGET_GROW_MODE_MULT = 1.1f;
 
 // IDs
 final String SCREEN_1_ID = "Screen 1";
@@ -61,7 +60,6 @@ final PVector RIGHT_VECTOR = new PVector(1, 0, 0);
 final PVector FORWARD_VECTOR = new PVector(0, 0, 1);
 
 // 3D Flight Map
-final boolean DEBUG_FAST_LOADING_3D = false;
 final int EARTH_Z_3D = -20;
 final float VERTICAL_SCROLL_LIMIT_3D = 0.9f;
 final float VERTICAL_DRAG_SPEED_3D = 0.000003f;

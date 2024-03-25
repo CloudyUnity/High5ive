@@ -1,7 +1,7 @@
 class FlightsManagerClass {
   private boolean m_working;
 
-  public void loadUSAndWorldFromFiles(String usFileName, String worldFileName, int threadCount, Consumer<FlightMultiDataType> onTaskComplete) { //  Consumer<FlightType[]> onWorldTaskComplete
+  public void loadUSAndWorldFromFiles(String usFileName, String worldFileName, int threadCount, Consumer<FlightMultiDataType> onTaskComplete) {
     boolean result = convertBinaryFileToFlightType(usFileName, worldFileName, US_LINE_BYTE_SIZE, WORLD_LINE_BYTE_SIZE, threadCount, onTaskComplete);
     if (!result)
       println("ERROR: Flight binary failed to load successfully");
@@ -21,13 +21,12 @@ class FlightsManagerClass {
 
       FlightMultiDataType flightsLists = new FlightMultiDataType(us, world);
 
-      s_DebugProfiler.printTimeTakenMillis("Raw files pre-processing");
+      s_DebugProfiler.printTimeTakenMillis("Loading flight data from files");
 
       onTaskComplete.accept(flightsLists);
       m_working = false;
     }
     ).start();
-
 
     m_working = true;
     return true;
@@ -115,7 +114,7 @@ class FlightsManagerClass {
         );
     }
   }
-  
+
   public void printFlights(FlightType[] flights, QueryType queryType) {
     for (FlightType flight : flights) {
       printFlight(flight, queryType);

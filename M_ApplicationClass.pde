@@ -9,11 +9,25 @@ class ApplicationClass {
 
   private EventType<SwitchScreenEventInfoType> m_onSwitchEvent = new EventType<SwitchScreenEventInfoType>();
 
-  void init() {
+  ScreenCharts m_screenCharts = null;
+  ScreenFlightMap m_screen3DFM = null;
+
+  public void init() {
     m_queryManager.init();
 
     m_onSwitchEvent.addHandler(e -> switchScreen(e));
 
+    initScreens();
+
+    m_flightsManager.loadUSAndWorldFromFiles("hex_flight_data.bin", "hex_world_data.bin", 4, list -> {
+      println("list.WORLD:" + list.US.length);
+      m_screen3DFM.insertFlightData(list);
+      m_screenCharts.loadData(list.US);
+    }
+    );
+  }
+
+  private void initScreens() {
     Screen1 screen1 = new Screen1(SCREEN_1_ID);
     m_screens.add(screen1);
 
@@ -26,26 +40,19 @@ class ApplicationClass {
     TwoDMapScreen screenFlightMap2D = new TwoDMapScreen(SCREEN_TWOD_MAP_ID, m_queryManager);
     m_screens.add(screenFlightMap2D);
 
-    ScreenFlightMap screenFlightMap3D = new ScreenFlightMap(SCREEN_FLIGHT_MAP_ID, m_queryManager);
-    m_screens.add(screenFlightMap3D);
+    m_screen3DFM = new ScreenFlightMap(SCREEN_FLIGHT_MAP_ID, m_queryManager);
+    m_screens.add(m_screen3DFM);
 
-    ScreenCharts screenCharts = new ScreenCharts(SCREEN_CHARTS_ID, m_queryManager);
-    m_screens.add(screenCharts);
+    m_screenCharts = new ScreenCharts(SCREEN_CHARTS_ID, m_queryManager);
+    m_screens.add(m_screenCharts);
 
     m_screens.add(new AlexTestingScreen(ALEX_TESTING_ID));
 
     m_currentScreen = screen1;
     screen1.init();
-
-    m_flightsManager.loadUSAndWorldFromFiles("hex_flight_data.bin", "hex_world_data.bin", 4, list -> {
-      println("list.WORLD:" + list.US.length);
-      screenFlightMap3D.insertFlightData(list);
-      screenCharts.loadData(list.US);
-    }
-    );
   }
 
-  void frame() {
+  public void frame() {
     s_deltaTime = millis() - m_timeLastFrame;
     m_timeLastFrame = millis();
 

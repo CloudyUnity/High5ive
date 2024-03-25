@@ -34,30 +34,26 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
     if (!(m_onlyUseNeededHeight && neededHeight() == 0)) {
       fill(m_backgroundColour);
       rect(m_pos.x, m_pos.y, m_scale.x, shownHeight());
+      
       int drawIndex = 0;
-
       textAlign(LEFT, CENTER);
+      
       for (int i = 0; i < m_entries.size() && ((drawIndex + 1) * m_entryHeight) <= m_scale.y; i++) {
         int entry = i + m_scrollbar.getCurrentTop();
         if (m_entries.get(entry).getShown()) {
 
           fill(m_entries.get(entry).getSelected() ? m_entries.get(entry).getSelectedColour() : m_entries.get(entry).getBackgroundColour());
           rect(m_pos.x, m_pos.y + drawIndex * m_entryHeight, m_entryWidth, m_entryHeight);
+          
           fill(m_entries.get(entry).getTextColour());
           text(m_getDisplayString.apply(m_entries.get(entry).getData()), m_pos.x, m_pos.y + drawIndex * m_entryHeight, m_entryWidth, m_entryHeight);
+          
           drawIndex++;
         }
       }
+      
       if (m_scrollbar.getActive())
         m_scrollbar.draw();
-      /*
-      if (m_scrollBar) {
-       fill(m_scrollBarColour);
-       double startPercent = (double)m_topItem / (double)m_entries.size();
-       int startY = (int)(startPercent * (double)m_scale.y);
-       int barHeight = (int)(((double)maxNumberOfFittingEntries()/(double)m_entries.size()) * m_scale.y) - 2; // -2 to give a little space at the top.
-       rect(m_pos.x + m_entryWidth + 1, m_pos.y + startY + 1, 8, barHeight, 4);
-       }*/
     }
   }
 
@@ -235,7 +231,7 @@ class ListboxEntry<T> {
     m_data = data;
   }
 
-  public T getData() { //<>//
+  public T getData() { 
     return m_data;
   }
 

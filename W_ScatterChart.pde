@@ -1,5 +1,4 @@
 class ScatterChartUI<T> extends Widget implements IChart2Axis<T, Integer> {
-
   PShape m_pointsShape = null;
   String m_labelX = "X-axis", m_labelY = "Y-axis";
   int m_maxValX, m_maxValY;

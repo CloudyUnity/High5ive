@@ -48,7 +48,7 @@ class ScreenCharts extends Screen {
     m_freqDD.getOnSelectionChanged().addHandler(e -> {
 
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
-      m_histQuery = (QueryType)elistbox.data;
+      m_histQuery = (QueryType)elistbox.Data;
 
       if (m_histQuery == null || m_cachedFlights == null){
         println("Flight data not ready for charts yet, or invalid query");
@@ -71,7 +71,7 @@ class ScreenCharts extends Screen {
     m_scatterDDX.setRendering(false);
     m_scatterDDX.getOnSelectionChanged().addHandler(e -> {
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
-      m_scatterQueryX = (QueryType)elistbox.data;
+      m_scatterQueryX = (QueryType)elistbox.Data;
 
       if (m_scatterQueryX == null || m_scatterQueryY == null)
         return;
@@ -85,7 +85,7 @@ class ScreenCharts extends Screen {
     m_scatterDDY.setRendering(false);
     m_scatterDDY.getOnSelectionChanged().addHandler(e -> {
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
-      m_scatterQueryY = (QueryType)elistbox.data;
+      m_scatterQueryY = (QueryType)elistbox.Data;
 
       if (m_scatterQueryX == null || m_scatterQueryY == null)
         return;

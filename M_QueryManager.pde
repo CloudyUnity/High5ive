@@ -12,8 +12,6 @@ class QueryManagerClass {
     }
   }
 
-  //a series of function for lookup tables - the lookup tables are loaded directly into processing as spreadsheets
-  //the findRow functions allow the spreadsheet to be searched, and a pointer to that row is passed as a variable
   public float getLatitude(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getFloat("Latitude");
@@ -64,11 +62,13 @@ class QueryManagerClass {
       println("Error: FlightQuery.Type is illegal with FlightQuery.Operator");
       return flightsList;
     }
+    
     switch(flightQuery.Operator) {
     case EQUAL:
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) == queryValue)
         .toArray(FlightType[]::new);
+        
     case NOT_EQUAL:
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) != queryValue)
@@ -105,6 +105,7 @@ class QueryManagerClass {
       println("Error: FlightRangeQuery.Type is illegal to query range");
       return flightsList;
     }
+    
     return Arrays.stream(flightsList)
       .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightRangeQuery.Type) >= start &&
       getFlightTypeFieldFromQueryType(flight, flightRangeQuery.Type) < end)
@@ -148,17 +149,17 @@ class QueryManagerClass {
       if (convertTimes)
         return convertClockToMinutes(flight.ScheduledDepartureTime);
       return (int)flight.ScheduledDepartureTime;
-      
+
     case DEPARTURE_TIME:
       if (convertTimes)
         return convertClockToMinutes(flight.DepartureTime);
       return (int)flight.DepartureTime;
-      
+
     case SCHEDULED_ARRIVAL_TIME:
       if (convertTimes)
         return convertClockToMinutes(flight.ScheduledArrivalTime);
       return (int)flight.ScheduledArrivalTime;
-      
+
     case ARRIVAL_TIME:
       if (convertTimes)
         return convertClockToMinutes(flight.ArrivalTime);
@@ -292,7 +293,7 @@ class QueryManagerClass {
   }
 
   public int queryRangeFrequency(FlightType[] flightsList, FlightRangeQueryType flightRangeQuery, int start, int end, int threadCount) {
-    return queryFlightsWithinRange(flightsList, flightRangeQuery, start,end).length;
+    return queryFlightsWithinRange(flightsList, flightRangeQuery, start, end).length;
   }
 
   public FlightType[] getHead(FlightType[] flightList, int numberOfItems) {
@@ -305,6 +306,31 @@ class QueryManagerClass {
 
   public FlightType[] getWithinRange(FlightType[] flightList, int start, int end) {
     return Arrays.copyOfRange(flightList, start, end);
+  }
+
+  private int formatQueryValue(QueryType queryType, String inputString) {
+    switch (queryType) {
+    case DAY:
+    case FLIGHT_NUMBER:
+    case KILOMETRES_DISTANCE:
+    case DEPARTURE_DELAY:
+    case ARRIVAL_DELAY:
+      return tryParseInteger(inputString);
+
+    case SCHEDULED_DEPARTURE_TIME:
+    case DEPARTURE_TIME:
+    case SCHEDULED_ARRIVAL_TIME:
+    case ARRIVAL_TIME:
+      return tryParseInteger(inputString.replace(":", ""));
+
+    case CARRIER_CODE_INDEX:
+    case AIRPORT_ORIGIN_INDEX:
+    case AIRPORT_DEST_INDEX:
+      return getIndex(inputString);
+
+    default:
+      return -1;
+    }
   }
 }
 

@@ -56,52 +56,44 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
 
   private void initAssetsAsync() {
     m_modelEarth = s_3D.createShape(SPHERE, m_earthRadius);
+    m_modelSun = s_3D.createShape(SPHERE, 40);
+    m_modelSkySphere = s_3D.createShape(SPHERE, 3840);
+
+    m_modelSun.disableStyle();
+    m_modelSkySphere.disableStyle();
     m_modelEarth.disableStyle();
+
     m_texEarthDay = loadImage("data/Images/EarthDay2k.jpg");
     m_texEarthNight = loadImage("data/Images/EarthNight2k.jpg");
     m_texEarthNormalMap = loadImage("data/Images/EarthNormalAlt.jpg");
-
-    m_shaderEarth = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
-    m_shaderEarth.set("texDay", m_texEarthDay);
-    m_shaderEarth.set("texNight", m_texEarthNight);
-    m_shaderEarth.set("normalMap", m_texEarthNormalMap);
-
-    if (DEBUG_FAST_LOADING_3D) {
-      m_assetsLoaded = true;
-      return;
-    }
-
-    m_modelSun = s_3D.createShape(SPHERE, 40);
-    m_modelSkySphere = s_3D.createShape(SPHERE, 3840);
-    m_modelSun.disableStyle();
-    m_modelSkySphere.disableStyle();
-
     m_texSun = loadImage("data/Images/Sun2k.jpg");
     m_texDitherNoise = loadImage("data/Images/noise.png");
     m_texEarthSpecularMap = loadImage("data/Images/EarthSpecular2k.tif");
+
+    m_shaderEarth = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
     m_shaderSun = loadShader("data/Shaders/SunFrag.glsl", "data/Shaders/BaseVert.glsl");
     m_shaderPP = loadShader("data/Shaders/PostProcessing.glsl");
     m_shaderSkySphere = loadShader("data/Shaders/SkyboxFrag.glsl", "data/Shaders/SkyboxVert.glsl");
 
+    m_shaderEarth.set("texDay", m_texEarthDay);
+    m_shaderEarth.set("texNight", m_texEarthNight);
+    m_shaderEarth.set("normalMap", m_texEarthNormalMap);
     m_shaderEarth.set("specularMap", m_texEarthSpecularMap);
     m_shaderSun.set("tex", m_texSun);
     m_shaderPP.set("noise", m_texDitherNoise);
     m_shaderSkySphere.set("tex", m_texSkySphereStars);
+    
     setPermaDay(false);
-
     m_assetsLoaded = true;
   }
 
   public void loadFlights(FlightType[] flights, QueryManagerClass queries) {
-    m_flightDataLoaded = false;
-    int count = flights.length;
+    m_flightDataLoaded = false;    
     m_airportHashmap.clear();
     
- 
+    int count = flights.length;
 
-    if (DEBUG_FAST_LOADING_3D)
-      m_arcSegments = 5;
-    else if (count <= 6_000)
+    if (count <= 6_000)
       m_arcSegments = 15;
     else if (count <= 12_000)
       m_arcSegments = 10;
@@ -109,13 +101,6 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
       m_arcSegments = 4;
 
     for (int i = 0; i < count; i++) {
-
-      /*   if (DEBUG_MODE && DEBUG_PRINT_3D_LOADING) {
-       println(flights[i].AirportOriginIndex + " " + flights[i].AirportDestIndex);
-       println(flights[i].CarrierCodeIndex + " " + flights[i].FlightNumber);
-       println("Flight " + i + " / " + flights.length);
-       }
-       */
       String originCode = queries.getCode(flights[i].AirportOriginIndex);
       String destCode = queries.getCode(flights[i].AirportDestIndex);
       AirportPoint3DType origin, dest;
@@ -124,17 +109,21 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
         float latitude = queries.getLatitude(originCode);
         float longitude = -queries.getLongitude(originCode);
         origin = manualAddPoint(latitude, longitude, originCode);
-      } else
+      } 
+      else
         origin = m_airportHashmap.get(originCode);
 
       if (!m_airportHashmap.containsKey(destCode)) {
         float latitude = queries.getLatitude(destCode);
         float longitude = -queries.getLongitude(destCode);
         dest = manualAddPoint(latitude, longitude, destCode);
-      } else
+      } 
+      else
         dest = m_airportHashmap.get(destCode);
 
-      if (origin.Connections.contains(destCode) || dest.Connections.contains(originCode))
+      boolean originConnected = origin.Connections.contains(destCode);
+      boolean destConnected = dest.Connections.contains(originCode); 
+      if (originConnected || destConnected)
         continue;
 
       origin.Connections.add(destCode);
@@ -152,12 +141,13 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     return point;
   }
 
-  ArrayList<PVector> cacheArcPoints(PVector p1, PVector p2) {
-    float distance = p1.dist(p2);
-    float distMult = lerp(0.1f, 1.0f, distance / 700);
+  ArrayList<PVector> cacheArcPoints(PVector p1, PVector p2) {    
     ArrayList<PVector> cacheResult = new ArrayList<PVector>();
     cacheResult.ensureCapacity(m_arcSegments  + 1);
     cacheResult.add(p1);
+    
+    float distance = p1.dist(p2);
+    float distMult = lerp(0.1f, 1.0f, distance / 700.0f);
 
     for (int i = 1; i < m_arcSegments; i++) {
       float t = i / (float)m_arcSegments;
@@ -200,29 +190,20 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
 
     PVector lightDir = new PVector(cos(m_totalTimeElapsed), 0, sin(m_totalTimeElapsed));
     m_shaderEarth.set("lightDir", lightDir);
-    // m_earthShader.set("mousePos", (float)mouseX / (float)width, (float)mouseY / (float)height);
     m_rotationYModified = m_earthRotation.y + m_totalTimeElapsed;
     m_earthPos.z = EARTH_Z_3D + m_zoomLevel;
-
-    if (!DEBUG_FAST_LOADING_3D)
-      m_shaderSun.set("texTranslation", 0, m_totalTimeElapsed * 0.5f);
+    m_shaderSun.set("texTranslation", 0, m_totalTimeElapsed * 0.5f);
 
     drawEarth();
-
-    if (!DEBUG_FAST_LOADING_3D) {
-      drawSun(lightDir);
-    }
-
+    drawSun(lightDir);
     drawMarkersAndConnections();
     if (m_textEnabled)
       drawMarkerText();
 
-    if (DEBUG_MODE && DITHER_MODE_3D && !DEBUG_FAST_LOADING_3D)
+    if (DEBUG_MODE && DITHER_MODE_3D)
       s_3D.filter(m_shaderPP);
 
-    if (!DEBUG_FAST_LOADING_3D) {
-      drawSkybox();
-    }
+    drawSkybox();
 
     s_3D.endDraw();
 
@@ -368,7 +349,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   }
 
   private void onWheelHandler(MouseWheelEventInfoType e) {
-    m_zoomLevel -= e.wheelCount * MOUSE_SCROLL_STRENGTH_3D;
+    m_zoomLevel -= e.WheelCount * MOUSE_SCROLL_STRENGTH_3D;
     m_zoomLevel = clamp(m_zoomLevel, -500, 350);
   }
 
