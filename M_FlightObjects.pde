@@ -11,14 +11,14 @@ class FlightType { // 23 bytes total
   public short ArrivalTime;             // supports all querys
   public short ArrivalDelay;            // supports all querys
   public byte CancelledOrDiverted;      // only supports EQUAL or NOT_EQUAL
-  public short MilesDistance;           // supports all querys
+  public short KilometresDistance;           // supports all querys
 
   FlightType(
     byte day, short carrierCodeIndex, short flightNumber,
     short airportOriginIndex, short airportDestIndex, short scheduledDepartureTime,
     short departureTime, short departureDelay, short scheduledArrivalTime,
     short arrivalTime, short arrivalDelay, byte cancelledOrDiverted,
-    short milesDistance) {
+    short kilometresDistance) {
 
     this.Day = day;
     this.CarrierCodeIndex = carrierCodeIndex;
@@ -32,7 +32,7 @@ class FlightType { // 23 bytes total
     this.ArrivalTime = arrivalTime;
     this.ArrivalDelay = arrivalDelay;
     this.CancelledOrDiverted = cancelledOrDiverted;
-    this.MilesDistance = milesDistance;
+    this.KilometresDistance = kilometresDistance;
   }
 
   FlightType(short carrierCodeIndex, short airportOriginIndex, short airportDestIndex) {

@@ -11,6 +11,8 @@ class ScreenFlightMap extends Screen {
   CheckboxUI lockTimeCB;
   ButtonUI resetArcGrow;
   SliderUI dayCycleSlider;
+  FlightMultiDataType m_flights;
+  
   
   
   private boolean isQueryDisplayed = false;
@@ -40,6 +42,7 @@ class ScreenFlightMap extends Screen {
 
     }
     );
+    m_userQueryUI.insertBaseData(m_flights); 
 
     m_flightMapUIParent = new EmptyWidgetUI(0, 0);
     int currentUIPosY = 60;
@@ -160,7 +163,9 @@ class ScreenFlightMap extends Screen {
   
 
   public void insertFlightData(FlightMultiDataType flights) {
-    m_userQueryUI.insertBaseData(flights);
+    
+    m_flights  = flights;
+    
   }
 
 
@@ -177,7 +182,7 @@ class ScreenFlightMap extends Screen {
       isQueryDisplayed = false;
     }
   }
-  
+
 }
 
 // Descending code authorship changes:
