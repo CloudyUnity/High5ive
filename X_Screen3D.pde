@@ -168,21 +168,7 @@ class ScreenFlightMap extends Screen {
   private void switchUI() {
 
     if (!isQueryDisplayed) {
-      /*ButtonUI returnBttn;
-  CheckboxUI dayNightCB;
-  CheckboxUI connectionsEnabledCB;
-  CheckboxUI markersEnabledCB;
-  CheckboxUI airportTextCB;
-  CheckboxUI lockTimeCB;
-  ButtonUI resetArcGrow;
-  SliderUI dayCycleSlider;*/
-       returnBttn.setPos(200, 200);
-       dayNightCB.setPos(200,200);
-       connectionsEnabledCB.setPos(200,200);
-       markersEnabledCB.setPos(200,200);
-       airportTextCB.setPos(200,200);
-       resetArcGrow.setPos(200,200);
-       dayCycleSlider.setPos(200,200);
+       // m_flightMapUIParent.setPos(-500, 0);
     }
   }
   public void insertDebug(FlightType[] flights) {
