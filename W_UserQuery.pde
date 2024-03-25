@@ -95,7 +95,6 @@ class UserQueryUI extends Widget {
 
     FlightType[] result = null;
     result  = m_queryManager.queryFlights(m_flightsLists.US, m_dayQuery, m_dayQuery.QueryValue);
-    //result = m_queryManager.getHead(m_flightsLists.WORLD , 10);
     println(m_dayQuery.QueryValue);
     m_onLoadDataEvent.accept(result);
 
