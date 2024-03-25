@@ -31,7 +31,7 @@ class ScreenFlightMap extends Screen {
     super.init();
 
     // ATTENTION MATTHEW, SEE HERE!
-    m_userQueryUI = new UserQueryUI(0, 60, 1, 1, m_queryManager, this);
+    m_userQueryUI = new UserQueryUI(10000, 0, 1, 1, m_queryManager, this);
     addWidget(m_userQueryUI);
   
     m_userQueryUI.setOnLoadHandler(flights -> {
@@ -47,13 +47,13 @@ class ScreenFlightMap extends Screen {
 
 
 
-    ButtonUI returnBttn = createButton(20, currentUIPosY, 160, 50);
+    returnBttn = createButton(20, currentUIPosY, 160, 50);
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
     returnBttn.setGrowScale(1.05);
     returnBttn.setText("Return");
     returnBttn.setTextSize(textSize);
     returnBttn.getLabel().setCentreAligned(true);
-    returnBttn.setParent(m_flightMapUIParent);
+    
 
     currentUIPosY += 60;
 
@@ -63,8 +63,7 @@ class ScreenFlightMap extends Screen {
     switchUIBttn.setText("Switch to Query");
     switchUIBttn.setTextSize(textSize);
     switchUIBttn.getLabel().setCentreAligned(true);
-    switchUIBttn.setParent(m_flightMapUIParent);
-
+    
     currentUIPosY += 60;
 
 
@@ -156,7 +155,7 @@ class ScreenFlightMap extends Screen {
     LabelUI label = createLabel(20, 10, 150, 40, "3D Flight Map");
     label.setForegroundColour(color(255, 255, 255, 255));
     label.setTextSize(30);
-    label.setParent(m_flightMapUIParent);
+    
   }
   
 
@@ -168,28 +167,17 @@ class ScreenFlightMap extends Screen {
   private void switchUI() {
 
     if (!isQueryDisplayed) {
-      /*ButtonUI returnBttn;
-  CheckboxUI dayNightCB;
-  CheckboxUI connectionsEnabledCB;
-  CheckboxUI markersEnabledCB;
-  CheckboxUI airportTextCB;
-  CheckboxUI lockTimeCB;
-  ButtonUI resetArcGrow;
-  SliderUI dayCycleSlider;*/
-       returnBttn.setPos(200, 200);
-       dayNightCB.setPos(200,200);
-       connectionsEnabledCB.setPos(200,200);
-       markersEnabledCB.setPos(200,200);
-       airportTextCB.setPos(200,200);
-       resetArcGrow.setPos(200,200);
-       dayCycleSlider.setPos(200,200);
+      m_flightMapUIParent.setPos(10000, 0);
+      m_userQueryUI.setPos(0,0);
+      isQueryDisplayed = true;
+    }
+    else{
+      m_flightMapUIParent.setPos(0, 0);
+      m_userQueryUI.setPos(10000,0);
+      isQueryDisplayed = false;
     }
   }
-  public void insertDebug(FlightType[] flights) {
-    println(m_queryManager);
-    m_flightMap3D.loadFlights(flights, m_queryManager);
-
-  }
+  
 }
 
 // Descending code authorship changes:

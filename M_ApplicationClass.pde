@@ -40,7 +40,7 @@ class ApplicationClass {
     m_flightsManager.loadUSAndWorldFromFiles("hex_flight_data.bin", "hex_world_data.bin", 4, list -> {
       println("list.WORLD:" + list.US.length);
       FlightType[] temp = m_queryManager.queryFlights(list.US, new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, QueryLocationType.US, m_queryManager), 100);
-      screenFlightMap3D.insertDebug(temp);
+      screenFlightMap3D.insertFlightData(list);
       screenCharts.loadData(list.US);
     }
     );
