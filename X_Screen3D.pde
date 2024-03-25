@@ -152,7 +152,7 @@ class ScreenFlightMap extends Screen {
   public void draw(){
     super.draw();
     
-    m_flightMapUIParent.setPos(mouseX, 0);
+    // m_flightMapUIParent.setPos(mouseX, 0);
   }
 }
 
