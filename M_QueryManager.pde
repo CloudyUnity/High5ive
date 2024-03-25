@@ -3,8 +3,10 @@ class QueryManagerClass {
   private Table m_airportTable;
   private TableRow m_lookupResult;
   private boolean m_working;
+  private int m_debug;
 
   public void init() {
+    m_debug = 0;
     m_airlineTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "airlines.csv", "header");
     m_airportTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "airports.csv", "header");
 
@@ -61,12 +63,15 @@ class QueryManagerClass {
   }
 
   private FlightType[] queryFlights(FlightType[] flightsList, FlightQueryType flightQuery, int queryValue) {
+    if (!isLegalQuery(flightQuery)) {
+      println("Error: FlightQuery.Type is illegal with FlightQuery.Operator");
+      return flightsList;
+    }
     switch(flightQuery.Operator) {
     case EQUAL:
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) == queryValue)
         .toArray(FlightType[]::new);
-
     case NOT_EQUAL:
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) != queryValue)
@@ -99,6 +104,10 @@ class QueryManagerClass {
   }
 
   private FlightType[] queryFlightsWithinRange(FlightType[] flightsList, FlightRangeQueryType flightRangeQuery, int start, int end) {
+    if (!isLegalQuery(flightRangeQuery)) {
+      println("Error: FlightRangeQuery.Type is illegal to query range");
+      return flightsList;
+    }
     return Arrays.stream(flightsList)
       .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightRangeQuery.Type) >= start &&
       getFlightTypeFieldFromQueryType(flight, flightRangeQuery.Type) < end)
@@ -106,37 +115,68 @@ class QueryManagerClass {
   }
 
   private int getFlightTypeFieldFromQueryType(FlightType flight, QueryType queryType) {
+    return getFlightTypeFieldFromQueryType(flight, queryType, false);
+  }
+
+  private int getFlightTypeFieldFromQueryType(FlightType flight, QueryType queryType, boolean convertTimes) {
     switch(queryType) {
     case DAY:
       return (int)flight.Day;
+
     case CARRIER_CODE_INDEX:
       return (int)flight.CarrierCodeIndex;
+
     case FLIGHT_NUMBER:
       return (int)flight.FlightNumber;
+
     case AIRPORT_ORIGIN_INDEX:
       return (int)flight.AirportOriginIndex;
+
     case AIRPORT_DEST_INDEX:
       return (int)flight.AirportDestIndex;
-    case SCHEDULED_DEPARTURE_TIME:
-      return (int)flight.ScheduledDepartureTime;
-    case DEPARTURE_TIME:
-      return (int)flight.DepartureTime;
+
     case DEPARTURE_DELAY:
       return (int)flight.DepartureDelay;
-    case SCHEDULED_ARRIVAL_TIME:
-      return (int)flight.ScheduledArrivalTime;
-    case ARRIVAL_TIME:
-      return (int)flight.ArrivalTime;
+
     case ARRIVAL_DELAY:
       return (int)flight.ArrivalDelay;
+
     case CANCELLED_OR_DIVERTED:
       return (int)flight.CancelledOrDiverted;
+
     case KILOMETRES_DISTANCE:
-      return (int)flight.MilesDistance;
+      return (int)flight.KilometresDistance;
+
+    case SCHEDULED_DEPARTURE_TIME:
+      if (convertTimes)
+        return convertClockToMinutes(flight.ScheduledDepartureTime);
+      return (int)flight.ScheduledDepartureTime;
+      
+    case DEPARTURE_TIME:
+      if (convertTimes)
+        return convertClockToMinutes(flight.DepartureTime);
+      return (int)flight.DepartureTime;
+      
+    case SCHEDULED_ARRIVAL_TIME:
+      if (convertTimes)
+        return convertClockToMinutes(flight.ScheduledArrivalTime);
+      return (int)flight.ScheduledArrivalTime;
+      
+    case ARRIVAL_TIME:
+      if (convertTimes)
+        return convertClockToMinutes(flight.ArrivalTime);
+      return (int)flight.ArrivalTime;
+
     default:
       println("Error: Query.Type invalid");
       return -1;
     }
+  }
+
+  private int convertClockToMinutes(int time) {
+    int hours = (int)(time / 100.0f);
+    int mins = (int)(time % 100.0f);
+    return mins + (hours * 60);
   }
 
   private boolean isLegalQuery(FlightQueryType flightQuery) {
@@ -189,36 +229,55 @@ class QueryManagerClass {
     case DAY:
       flightComparator = Comparator.comparingInt(flight -> flight.Day);
       break;
+
     case CARRIER_CODE_INDEX:
       flightComparator = Comparator.comparingInt(flight -> flight.CarrierCodeIndex);
       break;
+
     case FLIGHT_NUMBER:
       flightComparator = Comparator.comparingInt(flight -> flight.FlightNumber);
       break;
+
     case AIRPORT_ORIGIN_INDEX:
       flightComparator = Comparator.comparingInt(flight -> flight.AirportOriginIndex);
       break;
+
     case AIRPORT_DEST_INDEX:
       flightComparator = Comparator.comparingInt(flight -> flight.AirportDestIndex);
       break;
+
+    case DEPARTURE_DELAY:
+      flightComparator = Comparator.comparingInt(flight -> flight.DepartureDelay);
+      break;
+
+    case ARRIVAL_DELAY:
+      flightComparator = Comparator.comparingInt(flight -> flight.ArrivalDelay);
+      break;
+
     case SCHEDULED_DEPARTURE_TIME:
       flightComparator = Comparator.comparingInt(flight -> flight.ScheduledDepartureTime);
       break;
+
     case DEPARTURE_TIME:
       flightComparator = Comparator.comparingInt(flight -> flight.DepartureTime);
       break;
+
     case SCHEDULED_ARRIVAL_TIME:
       flightComparator = Comparator.comparingInt(flight -> flight.ScheduledArrivalTime);
       break;
+
     case ARRIVAL_TIME:
       flightComparator = Comparator.comparingInt(flight -> flight.ArrivalTime);
       break;
+
     case CANCELLED_OR_DIVERTED:
       flightComparator = Comparator.comparingInt(flight -> flight.CancelledOrDiverted);
       break;
+
     case KILOMETRES_DISTANCE:
-      flightComparator = Comparator.comparingInt(flight -> flight.MilesDistance);
+      flightComparator = Comparator.comparingInt(flight -> flight.KilometresDistance);
       break;
+
     default:
       println("Error: FlightSortQuery.Type invalid");
       return flightsList;
@@ -252,6 +311,7 @@ class QueryManagerClass {
   }
 }
 
+// MILE TO KILO, ADD DELAY TO QUERY
 // Descending code authorship changes:
 // CKM: wrote class to return details about airports 17:00 11/03
 // T. Creagh, moved query methods in, 11pm 06/03/24
@@ -266,3 +326,7 @@ class QueryManagerClass {
 // T. Creagh, Added Working queryRangeFrequency with world, 12pm, 12/03/24
 // CKM, added world lookup functions 13:00 14/03
 // CKM, added airline lookup functions 13:00 14/03
+// T. Creagh, Fixing Querys 22:00 23/03
+// T. Creagh, Making print 22:30 23/03
+// T. Creagh, fixed querySort on delay tiems 00:00 24/03
+// T. Creagh, clean up 00:30 24/03

@@ -15,7 +15,7 @@ class UserQueryUI extends Widget {
   public int m_listCounter;
   private FlightQueryType m_dayQuery;
   private FlightType[] m_flights;
-
+  private FlightMap3D m_flightMap3D;
 
 
   private FlightMultiDataType m_flightsLists;
@@ -36,7 +36,7 @@ class UserQueryUI extends Widget {
     m_flightQueries = new ArrayList<FlightQueryType>();
 
     addWidget(m_queryList);
-
+    
 
     addItemButton = new ButtonUI(20, 600, 80, 20);
     addWidget(addItemButton);
@@ -65,7 +65,9 @@ class UserQueryUI extends Widget {
 
 
     
-    m_dayQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.GREATER_THAN, QueryLocationType.US, queryManager);
+
+    m_dayQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.WORLD, queryManager);
+
 
     m_flightQueries.add(m_dayQuery);
     //   m_flights = convertBinaryFileToFlightTypeAsync(String filename, int threadCount, QueryLocation queryLocation, int lineByteSize)
@@ -85,15 +87,17 @@ class UserQueryUI extends Widget {
   public void setOnLoadHandler(Consumer<FlightType[]> dataEvent) {
     m_onLoadDataEvent = dataEvent;
   }
+  
 
   private void loadData() {
 
     // Apply all saved queries to m_flightLists and apply result to the Consumer (m_onLoadDataEvent.accept(result))
 
-    m_queryManager.queryFlights(m_flightsLists.US, m_dayQuery, m_dayQuery.QueryValue, 4, newFlightsList -> {m_onLoadDataEvent.accept(newFlightsList);
-    });
-    
-    
+    FlightType[] result = null;
+    result  = m_queryManager.queryFlights(m_flightsLists.WORLD, m_dayQuery, m_dayQuery.QueryValue);
+    //result = m_queryManager.getHead(m_flightsLists.WORLD , 10);
+    println(m_dayQuery.QueryValue);
+    m_onLoadDataEvent.accept(result);
 
   }
 
@@ -105,9 +109,6 @@ class UserQueryUI extends Widget {
     m_queryList.add(inputTextbox.getText() );
     m_listCounter++;
 
-    //Load New Query
-    //loadData();
-
     // Set all user inputs back to default
     m_day.setText("");
   }
@@ -117,7 +118,7 @@ class UserQueryUI extends Widget {
 
   private void clearQueries() {
     // Clear all currently saved user queries
-    m_dayQuery = new FlightQueryType(QueryType.DAY, QueryOperatorType.EQUAL, QueryLocationType.US, m_queryManager); 
+    m_dayQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, QueryLocationType.US, m_queryManager); 
     m_queryList.clear();
 
   }

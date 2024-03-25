@@ -35,9 +35,13 @@ class ApplicationClass {
     m_screens.add(new AlexTestingScreen(ALEX_TESTING_ID));
 
     m_currentScreen = screen1;
+    screen1.init();
 
     m_flightsManager.loadUSAndWorldFromFiles("hex_flight_data.bin", "hex_world_data.bin", 4, list -> {
-      screenFlightMap3D.insertFlightData(list);
+      println("list.US.length:" + list.US.length);
+      // FlightType[] temp = m_queryManager.queryFlights(list.US, new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US, m_queryManager), m_queryManager.getIndex("JFK"));
+      // println(temp.length);
+      screenFlightMap3D.insertDebug(list.US);
       screenCharts.loadData(list.US);
     }
     );
@@ -94,7 +98,8 @@ class ApplicationClass {
         continue;
 
       m_currentScreen = screen;
-      resizeWindow((int)screen.getScale().x, (int)screen.getScale().y);
+      if (!m_currentScreen.m_initialised)
+        m_currentScreen.init();
       return;
     }
   }
