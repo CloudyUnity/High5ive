@@ -3,7 +3,7 @@ class UserQueryUI extends Widget {
   private Consumer<FlightType[]> m_onLoadDataEvent;
 
   QueryManagerClass m_queryManager;
-  private ArrayList<String> m_queries; // All query types are ordered like so (Day, Airline, FlightNum, Origin, Dest, SchDep, Dep, Depdelay, SchArr, Arr, ArrDelay, Cancelled, Dievrted, Miles  )
+  private ArrayList<FlightQueryType> m_activeQueries; // All query types are ordered like so (Day, Airline, FlightNum, Origin, Dest, SchDep, Dep, Depdelay, SchArr, Arr, ArrDelay, Cancelled, Dievrted, Miles  )
   private ArrayList<FlightQueryType> m_flightQueries;
   private ListboxUI m_queryList;
   private TextboxUI m_day;
@@ -33,6 +33,7 @@ class UserQueryUI extends Widget {
 
     addWidget(m_queryList);
 
+
     addItemButton = new ButtonUI(20, 600, 80, 20);
     addWidget(addItemButton);
     addItemButton.setText("Add item");
@@ -57,6 +58,7 @@ class UserQueryUI extends Widget {
     addWidget(m_day);
     m_day.setPlaceholderText("Kilometers (Greater than)");
 
+
     m_dayQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US);
 
     m_flightQueries.add(m_dayQuery);
@@ -74,6 +76,7 @@ class UserQueryUI extends Widget {
   }
 
 
+
   private void loadData() {
     FlightType[] result = null;
 
@@ -89,27 +92,37 @@ class UserQueryUI extends Widget {
     m_onLoadDataEvent.accept(result);
   }
 
-  private void saveQuery(TextboxUI inputTextbox) {
-    // Saves currently written user input into a query
-    int dayVal = m_queryManager.formatQueryValue(m_dayQuery.Type, inputTextbox.getText());
-    if (dayVal != -1)
-      m_dayQuery.setQueryValue(dayVal);
 
-    // Adds to query output field textbox thing
-    m_queryList.add(inputTextbox.getText());
-    m_listCounter++;
+  private void saveQuery( Widget inputField, FlightQueryType inputQuery) {
+    // Saves currently written user input into a quer
+    if (inputField instanceof TextboxUI) {
+      int dayVal = m_queryManager.formatQueryValue(m_dayQuery.Type, ((TextboxUI)inputField).getText());
+      if (dayVal != -1)
+       m_dayQuery.setQueryValue(dayVal);
+      for(int i = 0; i < m_activeQueries.size() - 1; i++){
+      
+        if(m_activeQueries.get(i).QueryType == inputQuery.QueryType && m_activeQueries.get(i).QueryOperatorType == inputQuery.QueryOperatorType ){}
+      
+      }
+      // Adds to query output field textbox thing
+      m_queryList.add(((TextboxUI)inputField).getText() );
+      m_listCounter++;
+    }
 
     // Set all user inputs back to default
-    m_day.setText("");
+    inputQuery.setText("");
   }
 
   private void changeOperator(FlightQueryType input, QueryOperatorType inputOperator) {
+
     input.setOperator(inputOperator);
   }
 
   private void clearQueries() {
     // Clear all currently saved user queries
+
     m_dayQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US);
+
     m_queryList.clear();
   }
 
@@ -120,6 +133,7 @@ class UserQueryUI extends Widget {
   private void changeDataToWorld() {
     m_location = QueryLocationType.US;
   }
+
 
   private void addWidget(Widget widget) {
     m_screen.addWidget(widget);
