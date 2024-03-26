@@ -152,7 +152,7 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   private void doMouseWheel(Widget widget, MouseWheelEventInfoType e) {
     if (widget.getActive()) {
       if (widget instanceof IWheelInput && (widget.isFocused() || widget.isPositionInside(mouseX, mouseY)))
-        ((IWheelInput)widget).getOnMouseWheelEvent().raise(new MouseWheelEventInfoType(mouseX, mouseY, e.wheelCount, widget));
+        ((IWheelInput)widget).getOnMouseWheelEvent().raise(new MouseWheelEventInfoType(mouseX, mouseY, e.WheelCount, widget));
     }
     for (Widget w : widget.getChildren())
       doMouseWheel(w, e);
@@ -170,7 +170,7 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   private void doKeyPressed(Widget widget, KeyPressedEventInfoType e) {
     if (widget.getActive()) {
       if (widget instanceof IKeyInput && widget.isFocused())
-        ((IKeyInput)widget).getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(e.X, e.Y, e.pressedKey, e.pressedKeyCode, widget));
+        ((IKeyInput)widget).getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(e.X, e.Y, e.PressedKey, e.PressedKeyCode, widget));
     }
     for (Widget w : widget.getChildren())
       doKeyPressed(w, e);

@@ -1,5 +1,4 @@
 class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
-
   private TreeMap<TData, Integer> m_map = new TreeMap<TData, Integer>();
   private ArrayList<Float> m_arcSizes = new ArrayList<Float>();
   private boolean m_dataLoaded = false;
@@ -69,7 +68,7 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
       float diameterOfArc = m_scale.x * m_arcSizes.get(i);
 
       boolean isHovered = false;
-      if (pointInArc(m_pos, mouseX, mouseY, diameterOfArc, lastAngle, lastAngle + arcSize))
+      if (pointWithinSector(m_pos, mouseX, mouseY, diameterOfArc, lastAngle, lastAngle + arcSize))
         isHovered = true;
 
       float growTarget = isHovered ? 1.1f : 1.0f;
@@ -114,8 +113,15 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
         val.equals("1") ? "Cancelled" : "Diverted";
     case CARRIER_CODE_INDEX:
       return m_queryManager.getAirlineName(Integer.parseInt(val));
+    case AIRPORT_ORIGIN_INDEX:
+    case AIRPORT_DEST_INDEX:
+      return m_queryManager.getCode(Integer.parseInt(val));
     default:
       return val;
     }
   }
 }
+
+// Descending code authorship changes:
+// F. Wright, Created pie chart class, 5pm 19/03/24
+// F. Wright, Implemented juiciness to pie chart, 1pm, 20/03/24
