@@ -1,12 +1,31 @@
+/**
+ * F. Wright
+ *
+ * Screen representing the home screen of the application.
+ */
 class ScreenHome extends Screen {
+
+  /**
+   * F. Wright
+   *
+   * Constructs a new instance of ScreenHome with the given screen ID.
+   *
+   * @param screenId The unique identifier for the screen.
+   */
   public ScreenHome(String screenId) {
     super(screenId, DEFAULT_SCREEN_COLOUR);
   }
 
+
+  /**
+   * F. Wright
+   *
+   * Initializes the screen by adding UI elements and setting their properties.
+   */
   @Override
     public void init() {
     super.init();
-    
+
     float growScale = 1.05f;
 
     ButtonUI switchTo2D = createButton(20, 20, 100, 100);

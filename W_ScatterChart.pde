@@ -1,12 +1,36 @@
+/**
+ * F. Wright
+ *
+ * Scatter plot for representing data
+ */
 class ScatterChartUI<T> extends Widget implements IChart2Axis<T, Integer> {
   PShape m_pointsShape = null;
   String m_labelX = "X-axis", m_labelY = "Y-axis";
   int m_maxValX, m_maxValY;
 
+  /**
+   * F. Wright
+   *
+   * Constructs a new ScatterChartUI instance with the specified position and scale.
+   *
+   * @param posX The x-coordinate of the top-left corner of the scatter chart.
+   * @param posY The y-coordinate of the top-left corner of the scatter chart.
+   * @param scaleX The horizontal scale of the scatter chart.
+   * @param scaleY The vertical scale of the scatter chart.
+   */
   public ScatterChartUI(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
   }
 
+  /**
+   * F. Wright
+   *
+   * Adds data to the scatter chart using an array of elements and the specified functions to extract X and Y values.
+   *
+   * @param data An array of data elements.
+   * @param getKeyX A function to extract X-axis values from the data elements.
+   * @param getKeyY A function to extract Y-axis values from the data elements.
+   */
   public void addData(T[] data, Function<T, Integer> getKeyX, Function<T, Integer> getKeyY) {
     removeData();
 
@@ -25,10 +49,10 @@ class ScatterChartUI<T> extends Widget implements IChart2Axis<T, Integer> {
     m_maxValX += 2;
     m_maxValY += 2;
 
-    s_DebugProfiler.startProfileTimer();    
-    
-    m_pointsShape.beginShape(POINTS);   
-    
+    s_DebugProfiler.startProfileTimer();
+
+    m_pointsShape.beginShape(POINTS);
+
     float strokeWeight = lerp(8.0f, 2.0f, data.length / 650_000.0f);
     m_pointsShape.strokeWeight(strokeWeight);
 
@@ -45,6 +69,15 @@ class ScatterChartUI<T> extends Widget implements IChart2Axis<T, Integer> {
     s_DebugProfiler.printTimeTakenMillis("Initialising scatter plot points into PShape");
   }
 
+  /**
+   * F. Wright
+   *
+   * Adds data to the scatter chart using an iterable collection of elements and the specified functions to extract X and Y values.
+   *
+   * @param data An iterable collection of data elements.
+   * @param getKeyX A function to extract X-axis values from the data elements.
+   * @param getKeyY A function to extract Y-axis values from the data elements.
+   */
   public <I extends Iterable<T>> void addData(I data, Function<T, Integer> getKeyX, Function<T, Integer> getKeyY) {
     removeData();
 
@@ -80,15 +113,33 @@ class ScatterChartUI<T> extends Widget implements IChart2Axis<T, Integer> {
     s_DebugProfiler.printTimeTakenMillis("Initialising scatter plot points into PShape");
   }
 
+  /**
+   * F. Wright
+   *
+   * Removes all data points from the scatter chart.
+   */
   public void removeData() {
     m_pointsShape = createShape();
   }
-  
+
+  /**
+   * F. Wright
+   *
+   * Sets the labels for the X and Y axes.
+   *
+   * @param x The label for the X-axis.
+   * @param y The label for the Y-axis.
+   */
   public void setAxisLabels(String x, String y) {
     m_labelX = x;
     m_labelY = y;
   }
 
+  /**
+   * F. Wright
+   *
+   * Draws the scatter plot
+   */
   @ Override
     public void draw() {
     super.draw();
@@ -105,10 +156,10 @@ class ScatterChartUI<T> extends Widget implements IChart2Axis<T, Integer> {
     translate(-m_scale.y * 0.5f, -100 * 0.5f);
     text(m_labelY, 0, 0, m_scale.y, 100);
     popMatrix();
-    
+
     fill(255);
     text(m_maxValX + "", m_pos.x + m_scale.x, m_pos.y + m_scale.y, 100, 50);
-    
+
     fill(255);
     text(m_maxValY + "", m_pos.x - 60, m_pos.y, 100, 50);
 
