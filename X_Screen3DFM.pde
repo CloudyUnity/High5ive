@@ -1,3 +1,10 @@
+/**
+ * F. Wright
+ *
+ * Screen for the 3D flight map
+ *
+ * @extends Screen
+ */
 class Screen3DFM extends Screen {
   FlightMap3D m_flightMap3D;
   QueryManagerClass m_queryManager;
@@ -7,6 +14,14 @@ class Screen3DFM extends Screen {
 
   private boolean m_isQueryDisplayed = false;
 
+  /**
+   * F. Wright
+   *
+   * Constructs a new Screen3DFM object.
+   *
+   * @param screenId The ID of the screen.
+   * @param query The QueryManagerClass instance.
+   */
   public Screen3DFM(String screenId, QueryManagerClass query) {
     super(screenId, color(0, 0, 0, 255));
 
@@ -18,6 +33,12 @@ class Screen3DFM extends Screen {
     addWidget(m_flightMap3D);
   }
 
+  /**
+   * F. Wright
+   *
+   * Initializes the screen.
+   * Overrides the init method of the parent class (Screen).
+   */
   @Override
     public void init() {
     super.init();
@@ -144,10 +165,23 @@ class Screen3DFM extends Screen {
     label.setTextSize(30);
   }
 
+  /**
+   * F. Wright
+   *
+   * Inserts flight data into the screen.
+   *
+   * @param flights The flight data to be inserted.
+   */
   public void insertFlightData(FlightMultiDataType flights) {
     m_flights  = flights;
   }
 
+  /**
+   * F. Wright
+   *
+   * Switches between the flight map and the user query UI.
+   * If the query UI is not displayed, it will be shown, and vice versa.
+   */
   private void switchUI() {
     if (!m_isQueryDisplayed) {
       m_flightMapUIParent.setPos(10000, 0);
