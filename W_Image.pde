@@ -1,5 +1,4 @@
 class ImageUI extends Widget {
-
   private PImage m_displayedImage = null;
   private int m_posX;
   private int m_posY;
@@ -14,7 +13,7 @@ class ImageUI extends Widget {
     m_posY = posY;
   }
 
-  ImageUI(PImage inputImage, int scaleY, int scaleX, int posX, int posY ) {
+  ImageUI(PImage inputImage, int scaleY, int scaleX, int posX, int posY) {
     this(scaleY, scaleX, posX, posY);
     m_displayedImage = inputImage;
   }

@@ -1,8 +1,13 @@
+/**
+ * F. Wright
+ *
+ * Represents a screen for displaying charts.
+ */
 class ScreenCharts extends Screen {
   HistogramChartUI m_histogram;
   PieChartUI m_pieChart;
   ScatterChartUI m_scatterPlot;
-  
+
   DropdownUI m_freqDD, m_scatterDDX, m_scatterDDY;
 
   QueryManagerClass m_queryRef;
@@ -14,12 +19,25 @@ class ScreenCharts extends Screen {
 
   Widget m_selectedGraph;
 
+  /**
+   * F. Wright
+   *
+   * Constructs a ScreenCharts object with the given screen ID and query manager.
+   *
+   * @param screenId The ID of the screen.
+   * @param query    The query manager.
+   */
   public ScreenCharts(String screenId, QueryManagerClass query) {
     super(screenId, DEFAULT_SCREEN_COLOUR);
 
     m_queryRef = query;
   }
 
+  /**
+   * F. Wright
+   *
+   * Initializes the screen by adding UI elements and setting event handlers.
+   */
   @Override
     public void init() {
     super.init();
@@ -48,17 +66,18 @@ class ScreenCharts extends Screen {
     m_freqDD.getOnSelectionChanged().addHandler(e -> {
 
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
-      m_histQuery = (QueryType)elistbox.data;
+      m_histQuery = (QueryType)elistbox.Data;
 
-      if (m_histQuery == null)
-      return;
+      if (m_histQuery == null || m_cachedFlights == null) {
+        println("Flight data not ready for charts yet, or invalid query");
+        return;
+      }
 
       reloadFreq();
     }
     );
 
     m_freqDD.add(QueryType.DAY);
-    // m_freqDD.add(QueryType.FLIGHT_NUMBER);
     m_freqDD.add(QueryType.CARRIER_CODE_INDEX);
     m_freqDD.add(QueryType.AIRPORT_ORIGIN_INDEX);
     m_freqDD.add(QueryType.AIRPORT_DEST_INDEX);
@@ -68,12 +87,11 @@ class ScreenCharts extends Screen {
     addWidget(m_scatterDDX);
     m_scatterDDX.setRendering(false);
     m_scatterDDX.getOnSelectionChanged().addHandler(e -> {
-
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
-      m_scatterQueryX = (QueryType)elistbox.data;
+      m_scatterQueryX = (QueryType)elistbox.Data;
 
       if (m_scatterQueryX == null || m_scatterQueryY == null)
-        return;
+      return;
 
       reloadScatter();
     }
@@ -83,12 +101,13 @@ class ScreenCharts extends Screen {
     addWidget(m_scatterDDY);
     m_scatterDDY.setRendering(false);
     m_scatterDDY.getOnSelectionChanged().addHandler(e -> {
-
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
-      m_scatterQueryY = (QueryType)elistbox.data;
+      m_scatterQueryY = (QueryType)elistbox.Data;
 
-      if (m_scatterQueryX == null || m_scatterQueryY == null)
+      if (m_scatterQueryX == null || m_scatterQueryY == null || m_cachedFlights == null) {
+        println("Flight data not ready for charts yet, or invalid query");
         return;
+      }
 
       reloadScatter();
     }
@@ -134,11 +153,23 @@ class ScreenCharts extends Screen {
     returnBttn.setGrowScale(1.05);
   }
 
+  /**
+   * F. Wright
+   *
+   * Loads flight data into the screen for analysis.
+   *
+   * @param flights The array of flight data to load.
+   */
   public void loadData(FlightType[] flights) {
-    // m_cachedFlights = Arrays.copyOf(flights, 300_000);
+    // m_cachedFlights = Arrays.copyOf(flights, 300_000); // (DEBUG PURPOSES)
     m_cachedFlights = flights;
   }
 
+  /**
+   * F. Wright
+   *
+   * Reloads the frequency data and scatter plot data using the cached flights.
+   */
   public void reloadData() {
     if (m_cachedFlights == null)
       return;
@@ -147,24 +178,40 @@ class ScreenCharts extends Screen {
     reloadScatter();
   }
 
+  /**
+   * F. Wright
+   *
+   * Reloads the frequency data (histogram and pie chart) using the cached flights.
+   */
   public void reloadFreq() {
+    if (m_cachedFlights == null)
+      return;
+
     m_histogram.removeData();
     m_histogram.addData(m_cachedFlights, f -> {
       return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_histQuery);
     }
     );
     m_histogram.setXAxisLabel(m_histQuery.toString());
-    m_histogram.setTranslationField(m_histQuery);
+    m_histogram.setTranslationField(m_histQuery, m_queryRef);
 
     m_pieChart.removeData();
     m_pieChart.addData(m_cachedFlights, f -> {
       return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_histQuery);
     }
     );
-    m_pieChart.setTranslationField(m_histQuery);
+    m_pieChart.setTranslationField(m_histQuery, m_queryRef);
   }
 
+  /**
+   * F. Wright
+   *
+   * Reloads the scatter plot data using the cached flights.
+   */
   public void reloadScatter() {
+    if (m_cachedFlights == null)
+      return;
+
     m_scatterPlot.removeData();
     m_scatterPlot.addData(m_cachedFlights,
       fX -> {
@@ -178,33 +225,51 @@ class ScreenCharts extends Screen {
     m_scatterPlot.setAxisLabels(m_scatterQueryX.toString(), m_scatterQueryY.toString());
   }
 
+  /**
+   * F. Wright
+   *
+   * Selects the histogram as the currently displayed graph.
+   */
   public void selectHistogram() {
     m_selectedGraph.setRendering(false);
     m_selectedGraph = m_histogram;
     m_selectedGraph.setRendering(true);
-    
+
     m_freqDD.setRendering(true);
     m_scatterDDX.setRendering(false);
     m_scatterDDY.setRendering(false);
   }
 
+  /**
+   * F. Wright
+   *
+   * Selects the pie chart as the currently displayed graph.
+   */
   public void selectPieChart() {
     m_selectedGraph.setRendering(false);
     m_selectedGraph = m_pieChart;
     m_selectedGraph.setRendering(true);
-    
+
     m_freqDD.setRendering(true);
     m_scatterDDX.setRendering(false);
     m_scatterDDY.setRendering(false);
   }
 
+  /**
+   * F. Wright
+   *
+   * Selects the scatter plot as the currently displayed graph.
+   */
   public void selectScatterPlot() {
     m_selectedGraph.setRendering(false);
     m_selectedGraph = m_scatterPlot;
     m_selectedGraph.setRendering(true);
-    
+
     m_freqDD.setRendering(false);
     m_scatterDDX.setRendering(true);
     m_scatterDDY.setRendering(true);
-  } 
+  }
 }
+
+// Descending code authorship changes:
+// F. Wright, Created screen charts and initialisation of Histogram, Pie and Scatter Charts, 5pm 19/03/24

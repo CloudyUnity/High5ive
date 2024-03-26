@@ -1,10 +1,28 @@
-class ScreenFlightMap extends Screen {
+/**
+ * F. Wright
+ *
+ * Screen for the 3D flight map
+ *
+ * @extends Screen
+ */
+class Screen3DFM extends Screen {
   FlightMap3D m_flightMap3D;
   QueryManagerClass m_queryManager;
   EmptyWidgetUI m_flightMapUIParent;
   UserQueryUI m_userQueryUI;
+  FlightMultiDataType m_flights;
 
-  public ScreenFlightMap(String screenId, QueryManagerClass query) {
+  private boolean m_isQueryDisplayed = false;
+
+  /**
+   * F. Wright
+   *
+   * Constructs a new Screen3DFM object.
+   *
+   * @param screenId The ID of the screen.
+   * @param query The QueryManagerClass instance.
+   */
+  public Screen3DFM(String screenId, QueryManagerClass query) {
     super(screenId, color(0, 0, 0, 255));
 
     m_queryManager = query;
@@ -15,28 +33,29 @@ class ScreenFlightMap extends Screen {
     addWidget(m_flightMap3D);
   }
 
+  /**
+   * F. Wright
+   *
+   * Initializes the screen.
+   * Overrides the init method of the parent class (Screen).
+   */
   @Override
     public void init() {
     super.init();
 
     // ATTENTION MATTHEW, SEE HERE!
-    m_userQueryUI = new UserQueryUI(0, 60, 1, 1, m_queryManager, this);
+    m_userQueryUI = new UserQueryUI(10000, 0, 1, 1, m_queryManager, this);
     addWidget(m_userQueryUI);
-  
+
     m_userQueryUI.setOnLoadHandler(flights -> {
-
-      m_flightMap3D.loadFlights(flights, m_queryManager); 
-
+      m_flightMap3D.loadFlights(flights, m_queryManager);
     }
     );
+    m_userQueryUI.insertBaseData(m_flights);
 
     m_flightMapUIParent = new EmptyWidgetUI(0, 0);
     int currentUIPosY = 60;
     int textSize = 20;
-
-    ButtonUI uiBackground = createButton(0, 0, 200, 00);
-    uiBackground.setHighlightOutlineOnEnter(false);
-    uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
 
     ButtonUI returnBttn = createButton(20, currentUIPosY, 160, 50);
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
@@ -44,7 +63,15 @@ class ScreenFlightMap extends Screen {
     returnBttn.setText("Return");
     returnBttn.setTextSize(textSize);
     returnBttn.getLabel().setCentreAligned(true);
-    returnBttn.setParent(m_flightMapUIParent);
+
+    currentUIPosY += 60;
+
+    ButtonUI switchUIBttn = createButton(20, currentUIPosY, 160, 50);
+    switchUIBttn.getOnClickEvent().addHandler(e -> switchUI());
+    switchUIBttn.setGrowScale(1.05);
+    switchUIBttn.setText("Switch to Query");
+    switchUIBttn.setTextSize(textSize);
+    switchUIBttn.getLabel().setCentreAligned(true);
 
     currentUIPosY += 60;
 
@@ -136,17 +163,36 @@ class ScreenFlightMap extends Screen {
     LabelUI label = createLabel(20, 10, 150, 40, "3D Flight Map");
     label.setForegroundColour(color(255, 255, 255, 255));
     label.setTextSize(30);
-    label.setParent(m_flightMapUIParent);
   }
-  
 
+  /**
+   * F. Wright
+   *
+   * Inserts flight data into the screen.
+   *
+   * @param flights The flight data to be inserted.
+   */
   public void insertFlightData(FlightMultiDataType flights) {
-    m_userQueryUI.insertBaseData(flights);
+    m_flights  = flights;
   }
 
-  public void insertDebug(FlightType[] flights) {
-    println(m_queryManager);
-    m_flightMap3D.loadFlights(flights, m_queryManager);
+  /**
+   * F. Wright
+   *
+   * Switches between the flight map and the user query UI.
+   * If the query UI is not displayed, it will be shown, and vice versa.
+   */
+  private void switchUI() {
+    if (!m_isQueryDisplayed) {
+      m_flightMapUIParent.setPos(10000, 0);
+      m_userQueryUI.setPos(0, 0);
+      m_isQueryDisplayed = true;
+      return;
+    }
+
+    m_flightMapUIParent.setPos(0, 0);
+    m_userQueryUI.setPos(10000, 0);
+    m_isQueryDisplayed = false;
   }
 }
 

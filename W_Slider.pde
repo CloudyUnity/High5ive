@@ -1,5 +1,3 @@
-// CKM : Proposed for Deprecation
-
 class SliderUI extends Widget implements IDraggable, IClickable {
   private LabelUI m_label;
   private int m_labelSpace;

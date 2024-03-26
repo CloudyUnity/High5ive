@@ -1,12 +1,14 @@
 class FlightsManagerClass {
   private boolean m_working;
 
-  public void loadUSAndWorldFromFiles(String usFileName, String worldFileName, int threadCount, Consumer<FlightMultiDataType> onTaskComplete) { //  Consumer<FlightType[]> onWorldTaskComplete
+  // Loads the flight data from the given file paths
+  public void loadUSAndWorldFromFiles(String usFileName, String worldFileName, int threadCount, Consumer<FlightMultiDataType> onTaskComplete) {
     boolean result = convertBinaryFileToFlightType(usFileName, worldFileName, US_LINE_BYTE_SIZE, WORLD_LINE_BYTE_SIZE, threadCount, onTaskComplete);
     if (!result)
       println("ERROR: Flight binary failed to load successfully");
   }
 
+  // ...
   private boolean convertBinaryFileToFlightType(String usFileName, String worldFileName, int usLineByteSize, int worldLineByteSize, int threadCount, Consumer<FlightMultiDataType> onTaskComplete) {
     if (m_working) {
       println("Warning: m_working is true, convertBinaryFileToFlightType did not process correctly");
@@ -21,18 +23,18 @@ class FlightsManagerClass {
 
       FlightMultiDataType flightsLists = new FlightMultiDataType(us, world);
 
-      s_DebugProfiler.printTimeTakenMillis("Raw files pre-processing");
+      s_DebugProfiler.printTimeTakenMillis("Loading flight data from files");
 
       onTaskComplete.accept(flightsLists);
       m_working = false;
     }
     ).start();
 
-
     m_working = true;
     return true;
   }
 
+  // ...
   private FlightType[] convertBinaryFileToFlightTypeAsync(String filename, int threadCount, QueryLocationType queryLocation, int lineByteSize) {
     MappedByteBuffer buffer;
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
@@ -82,6 +84,8 @@ class FlightsManagerClass {
       return null;
     }
   }
+  
+  // ...
   private void processUSConvertBinaryFileToFlightTypeChunk(FlightType[] flightsList, MappedByteBuffer buffer, long processingSize, int startPosition, int lineByteSize) {
     long maxI = startPosition + processingSize;
     for (int i = startPosition; i < maxI; i++) {
@@ -104,7 +108,7 @@ class FlightsManagerClass {
     }
   }
 
-  // (carrier_code, origin, dest)short, short, short
+  // ...
   private void processWorldConvertBinaryFileToFlightTypeChunk(FlightType[] flightsList, MappedByteBuffer buffer, long processingSize, int startPosition, int lineByteSize) {
     long maxI = startPosition + processingSize;
     for (int i = startPosition; i < maxI; i++) {
@@ -116,8 +120,55 @@ class FlightsManagerClass {
         );
     }
   }
-}
 
+  // ...
+  public void printFlights(FlightType[] flights, QueryType queryType) {
+    for (FlightType flight : flights) {
+      printFlight(flight, queryType);
+    }
+  }
+
+  // ...
+  public void printFlight(FlightType flight, QueryType queryType) {
+    switch(queryType) {
+    case DAY:
+      println("Day: " + flight.Day);
+      break;
+    case CARRIER_CODE_INDEX:
+      println("CarrierCodeIndex: " + flight.CarrierCodeIndex);
+      break;
+    case FLIGHT_NUMBER:
+      println("FlightNumber: " + flight.FlightNumber);
+      break;
+    case AIRPORT_ORIGIN_INDEX:
+      println("AirportOriginIndex: " + flight.AirportOriginIndex);
+      break;
+    case AIRPORT_DEST_INDEX:
+      println("AirportDestIndex: " + flight.AirportDestIndex);
+      break;
+    case SCHEDULED_DEPARTURE_TIME:
+      println("ScheduledDepartureTime: " + flight.ScheduledDepartureTime);
+      break;
+    case DEPARTURE_TIME:
+      println("DepartureTime: " + flight.DepartureTime);
+      break;
+    case SCHEDULED_ARRIVAL_TIME:
+      println("ScheduledArrivalTime: " + flight.ScheduledArrivalTime);
+      break;
+    case ARRIVAL_TIME:
+      println("ArrivalTime: " + flight.ArrivalTime);
+      break;
+    case CANCELLED_OR_DIVERTED:
+      println("CancelledOrDiverted: " + flight.CancelledOrDiverted);
+      break;
+    case KILOMETRES_DISTANCE:
+      println("KilometresDistance: " + flight.KilometresDistance);
+      break;
+    default:
+      println("Error: FlightSortQuery.Type invalid");
+    }
+  }
+}
 
 // Descending code authorship changes:
 // F. Wright, Made DateType, FlightType, FlightsManagerClass and made function headers. Left comments to explain how everything could be implemented, 11pm 04/03/24
