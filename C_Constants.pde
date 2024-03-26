@@ -3,7 +3,7 @@ final int FRAME_RATE = 75;
 final boolean FULLSCREEN_ENABLED = true;
 
 // Data/Files
-final int US_LINE_BYTE_SIZE = 24;
+final int US_LINE_BYTE_SIZE = 32;
 final int WORLD_LINE_BYTE_SIZE = 6;
 final String DATA_DIRECTOR_PATH = "/data/Preprocessed Data/";
 
