@@ -3,6 +3,7 @@ class QueryManagerClass {
   private Table m_airportTable;
   private TableRow m_lookupResult;
 
+  // Initialises the query manager lookup tables
   public void init() {
     m_airlineTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "airlines.csv", "header");
     m_airportTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "airports.csv", "header");
@@ -12,51 +13,61 @@ class QueryManagerClass {
     }
   }
 
+  // Gets latitude from an airport IATA code
   public float getLatitude(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getFloat("Latitude");
   }
 
+  // Get longitude from an airport IATA code
   public float getLongitude(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getFloat("Longitude");
   }
 
+  // Get airport name from an airport IATA code
   public String getAirportName(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getString("Name");
   }
 
+  // Get airport city name from an airport IATA code
   public String getCity(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getString("City");
   }
 
+  // Get airport country name from an airport IATA code
   public String getCountry(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getString("Country");
   }
 
+  // Get airport IATA code from an airport index
   public String getCode(int index) {
     m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
     return m_lookupResult.getString("IATA");
   }
 
+  // Get aiport index from an airport IATA code
   public int getIndex(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getInt("Key");
   }
 
+  // Get airline code from an airline index
   public String getAirlineCode(int airlineIndex) {
     m_lookupResult = m_airlineTable.findRow(String.valueOf(airlineIndex), "Key");
     return m_lookupResult.getString("IATA");
   }
 
+  // Get airline carrier code name from an airline index 
   public String getAirlineName(int airlineIndex) {
     m_lookupResult = m_airlineTable.findRow(String.valueOf(airlineIndex), "Key");
     return m_lookupResult.getString("Airline");
   }
 
+  // ...
   private FlightType[] queryFlights(FlightType[] flightsList, FlightQueryType flightQuery, int queryValue) {
     if (!isLegalQuery(flightQuery)) {
       println("Error: FlightQuery.Type is illegal with FlightQuery.Operator");
@@ -100,6 +111,7 @@ class QueryManagerClass {
     }
   }
 
+  // ...
   private FlightType[] queryFlightsWithinRange(FlightType[] flightsList, FlightRangeQueryType flightRangeQuery, int start, int end) {
     if (!isLegalQuery(flightRangeQuery)) {
       println("Error: FlightRangeQuery.Type is illegal to query range");
@@ -112,10 +124,12 @@ class QueryManagerClass {
       .toArray(FlightType[]::new);
   }
 
+  // ...
   private int getFlightTypeFieldFromQueryType(FlightType flight, QueryType queryType) {
     return getFlightTypeFieldFromQueryType(flight, queryType, false);
   }
 
+  // ...
   private int getFlightTypeFieldFromQueryType(FlightType flight, QueryType queryType, boolean convertTimes) {
     switch(queryType) {
     case DAY:
@@ -171,12 +185,14 @@ class QueryManagerClass {
     }
   }
 
+  // ...
   private int convertClockToMinutes(int time) {
     int hours = (int)(time / 100.0f);
     int mins = (int)(time % 100.0f);
     return mins + (hours * 60);
   }
 
+  // ...
   private boolean isLegalQuery(FlightQueryType flightQuery) {
     if (flightQuery.Location == QueryLocationType.US) {
       switch(flightQuery.Type) {
@@ -205,6 +221,7 @@ class QueryManagerClass {
     }
   }
 
+  // ...
   private boolean isLegalQuery(FlightRangeQueryType flightRangeQuery) {
     if (flightRangeQuery.Location != QueryLocationType.WORLD)
       return false;
@@ -221,6 +238,7 @@ class QueryManagerClass {
     }
   }
 
+  // ...
   public FlightType[] sort(FlightType[] flightsList, FlightSortQueryType flightSortQuery) {
     Comparator<FlightType> flightComparator;
     switch(flightSortQuery.Type) {
@@ -288,26 +306,32 @@ class QueryManagerClass {
     return flightsList;
   }
 
+  // ...
   public int queryFrequency(FlightType[] flightsList, FlightQueryType flightQuery, int queryValue, int threadCount) {
     return queryFlights(flightsList, flightQuery, queryValue).length;
   }
 
+  // ...
   public int queryRangeFrequency(FlightType[] flightsList, FlightRangeQueryType flightRangeQuery, int start, int end, int threadCount) {
     return queryFlightsWithinRange(flightsList, flightRangeQuery, start, end).length;
   }
 
+  // ...
   public FlightType[] getHead(FlightType[] flightList, int numberOfItems) {
     return Arrays.copyOfRange(flightList, 0, numberOfItems);
   }
 
+  // ...
   public FlightType[] getFoot(FlightType[] flightList, int numberOfItems) {
     return Arrays.copyOfRange(flightList, numberOfItems, flightList.length);
   }
 
+  // ...
   public FlightType[] getWithinRange(FlightType[] flightList, int start, int end) {
     return Arrays.copyOfRange(flightList, start, end);
   }
 
+  // Parses a given query value from user input into a valid integer
   private int formatQueryValue(QueryType queryType, String inputString) {
     switch (queryType) {
     case DAY:

@@ -1,3 +1,4 @@
+// Data type for flight information
 class FlightType { // 23 bytes total
   public byte Day;                      // supports all querys
   public short CarrierCodeIndex;        // only supports EQUAL or NOT_EQUAL
@@ -45,6 +46,7 @@ class FlightType { // 23 bytes total
   }
 }
 
+// Data type for holding all loaded flight data
 class FlightMultiDataType {
   public FlightType[] US;
   public FlightType[] WORLD;
@@ -55,6 +57,7 @@ class FlightMultiDataType {
   }
 }
 
+// Data type for making a query on a FlightType[]
 class FlightQueryType {   
   public int QueryValue;
   public QueryType Type;
@@ -78,6 +81,7 @@ class FlightQueryType {
   }
 }
 
+// Data type for making a range query on a FlightType[]
 class FlightRangeQueryType {
   public QueryType Type;
   public QueryLocationType Location;
@@ -88,16 +92,18 @@ class FlightRangeQueryType {
   }
 }
 
+// Data type for sorting a FlightType[]
 class FlightSortQueryType {
   public QueryType Type;
   public QuerySortDirectionType SortDirection;
 
   FlightSortQueryType(QueryType type, QuerySortDirectionType sortDirection) {
-    this.Type = type;
-    this.SortDirection = sortDirection;
+    Type = type;
+    SortDirection = sortDirection;
   }
 }
 
+// Enum for the fields in FlightType
 public enum QueryType {
   DAY,
     CARRIER_CODE_INDEX,
@@ -114,6 +120,7 @@ public enum QueryType {
     KILOMETRES_DISTANCE,
 }
 
+// Enum for the query operators
 public enum QueryOperatorType {
   EQUAL,
     NOT_EQUAL,
@@ -123,16 +130,19 @@ public enum QueryOperatorType {
     GREATER_THAN_EQUAL,
 }
 
+// Enum for the sort directions
 public enum QuerySortDirectionType {
   ASCENDING,
     DESCENDING,
 }
 
+// Enum for the query locations
 public enum QueryLocationType {
   US,
     WORLD,
 }
 
+// Data type for a latitude-longitude coordinate for a point on earth
 class CoordType {
   public float Latitude;
   public float Longitude;
@@ -143,6 +153,7 @@ class CoordType {
   }
 }
 
+// Data type for an airport marker on the 3D flight map and its connections
 class AirportPoint3DType {
   public PVector Pos;
   public String Name;
