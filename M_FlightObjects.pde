@@ -1,8 +1,10 @@
 // Data type for flight information
 class FlightType { // 23 bytes total
   public byte Day;                      // supports all querys
+  public byte Month;                    // supports all queries
   public short CarrierCodeIndex;        // only supports EQUAL or NOT_EQUAL
   public short FlightNumber;            // only supports EQUAL or NOT_EQUAL
+  public short TailNumber;              // only supports EQUAL or NOT_EQUAL
   public short AirportOriginIndex;      // only supports EQUAL or NOT_EQUAL
   public short AirportDestIndex;        // only supports EQUAL or NOT_EQUAL
   public short ScheduledDepartureTime;  // supports all querys
@@ -11,29 +13,37 @@ class FlightType { // 23 bytes total
   public short ScheduledArrivalTime;    // supports all querys
   public short ArrivalTime;             // supports all querys
   public short ArrivalDelay;            // supports all querys
-  public byte CancelledOrDiverted;      // only supports EQUAL or NOT_EQUAL
-  public short KilometresDistance;      // supports all querys
+  public byte Cancelled;                // only supports EQUAL or NOT_EQUAL
+  public byte Diverted;                  // only supports EQUAL or NOT_EQUAL
+  public short ScheduledDuration;        // supports all queries
+  public short ActualDuration;          // supports all queries
+  public short KmDistance;              // supports all querys
 
   FlightType(
-    byte day, short carrierCodeIndex, short flightNumber,
+    byte day, byte month, short carrierCodeIndex, short flightNumber, short tailNumber,
     short airportOriginIndex, short airportDestIndex, short scheduledDepartureTime,
     short departureTime, short departureDelay, short scheduledArrivalTime,
-    short arrivalTime, short arrivalDelay, byte cancelledOrDiverted,
-    short kilometresDistance) {
+    short arrivalTime, short arrivalDelay, byte cancelled, byte diverted,
+    short scheduledDuration, short duration, short kmDistance) {
 
-    Day = day;
-    CarrierCodeIndex = carrierCodeIndex;
-    FlightNumber = flightNumber;
-    AirportOriginIndex = airportOriginIndex;
-    AirportDestIndex = airportDestIndex;
-    ScheduledDepartureTime = scheduledDepartureTime;
-    DepartureTime = departureTime;
-    DepartureDelay = departureDelay;
-    ScheduledArrivalTime = scheduledArrivalTime;
-    ArrivalTime = arrivalTime;
-    ArrivalDelay = arrivalDelay;
-    CancelledOrDiverted = cancelledOrDiverted;
-    KilometresDistance = kilometresDistance;
+    this.Day = day;
+    this.Month = month;
+    this.CarrierCodeIndex = carrierCodeIndex;
+    this.FlightNumber = flightNumber;
+    this.TailNumber = tailNumber;
+    this.AirportOriginIndex = airportOriginIndex;
+    this.AirportDestIndex = airportDestIndex;
+    this.ScheduledDepartureTime = scheduledDepartureTime;
+    this.DepartureTime = departureTime;
+    this.DepartureDelay = departureDelay;
+    this.ScheduledArrivalTime = scheduledArrivalTime;
+    this.ArrivalTime = arrivalTime;
+    this.ArrivalDelay = arrivalDelay;
+    this.Cancelled = cancelled;
+    this.Diverted = diverted;
+    this.ScheduledDuration = scheduledDuration;
+    this.ActualDuration = duration;
+    this.KmDistance = kmDistance;
   }
 
   FlightType(short carrierCodeIndex, short airportOriginIndex, short airportDestIndex) {

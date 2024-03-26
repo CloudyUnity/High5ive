@@ -13,7 +13,14 @@ class QueryManagerClass {
     }
   }
 
-  // Gets latitude from an airport IATA code
+  //a series of function for lookup tables - the lookup tables are loaded directly into processing as spreadsheets
+  //the findRow functions allow the spreadsheet to be searched, and a pointer to that row is passed as a variable
+  //written by Kyara (Cosmo) McWilliam
+  //depending on the precise lookup combination, takes either the IATA code for the airport or airline, or the decimal index stored in the database
+  //depending on the precise lookup combination, returns the Latitude, Longitude, Name, Location, Country, Country Code, IATA Code or Decimal Index
+  //will throw NullPointerException if data not found - unhandled as the database should be complete, so this should stop the code and be resolved
+
+  // Get latitude from an airport IATA code
   public float getLatitude(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getFloat("Latitude");
@@ -42,6 +49,12 @@ class QueryManagerClass {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getString("Country");
   }
+  
+  // Get airport country ISO 3166 code from an airport IATA code
+  public String getISO3166(String code) {
+    m_lookupResult = m_airportTable.findRow(code, "IATA");
+    return m_lookupResult.getString("ISO-3166");
+  }
 
   // Get airport IATA code from an airport index
   public String getCode(int index) {
@@ -53,6 +66,42 @@ class QueryManagerClass {
   public int getIndex(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getInt("Key");
+  }
+  
+  // Get latitude from airport index
+  public float getLatitudeFromIndex(int index) {
+    m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
+    return m_lookupResult.getFloat("Latitude");
+  }
+
+  // Get longitude from airport index
+  public float getLongitudeFromIndex(int index) {
+    m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
+    return m_lookupResult.getFloat("Longitude");
+  }
+
+  // Get airport name from airport index
+  public String getAirportNameFromIndex(int index) {
+    m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
+    return m_lookupResult.getString("Name");
+  }
+
+  // Get airport city from airport index
+  public String getCityFromIndex(int index) {
+    m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
+    return m_lookupResult.getString("City");
+  }
+
+  // Get airport country name from airport index
+  public String getCountryFromIndex(int index) {
+    m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
+    return m_lookupResult.getString("Country");
+  }
+  
+  // Get airport country ISO 3166 code from airport index
+  public String getISO3166FromIndex(int index) {
+    m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
+    return m_lookupResult.getString("ISO-3166");
   }
 
   // Get airline code from an airline index
@@ -373,8 +422,8 @@ class QueryManagerClass {
 // T. Creagh, Added Working queryFrequency with world, 11:45pm, 12/03/24
 // T. Creagh, Added Working queryRangeFrequency with world, 12pm, 12/03/24
 // CKM, added world lookup functions 13:00 14/03
-// CKM, added airline lookup functions 13:00 14/03
-// T. Creagh, Fixing Querys 22:00 23/03
+// CKM, added airline lookup functions 13:00 14/03// T. Creagh, Fixing Querys 22:00 23/03
 // T. Creagh, Making print 22:30 23/03
 // T. Creagh, fixed querySort on delay tiems 00:00 24/03
 // T. Creagh, clean up 00:30 24/03
+// CKM, added new index based lookups, 20:00 26/03
