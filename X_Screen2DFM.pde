@@ -1,6 +1,8 @@
 class TwoDMapScreen extends Screen {
   FlightMap2DUI m_flightMap;
   QueryManagerClass m_twodQueryManager;
+  UserQueryUI m_userQueryUI;
+  FlightMultiDataType m_flights;        // I'll need these later, ONCE I FIGURE OUT WHAT TO DO
 
   public TwoDMapScreen (String screenId, QueryManagerClass query) {
     super(screenId, DEFAULT_SCREEN_COLOUR);
@@ -12,6 +14,7 @@ class TwoDMapScreen extends Screen {
     super.init();
     int currentUIPosY = 20;
     int textSize = 20;
+    
 
     m_flightMap = new FlightMap2DUI(100, 0, 100, 100);
     addWidget(m_flightMap);
