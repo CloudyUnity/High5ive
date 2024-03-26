@@ -47,6 +47,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   //================================================
 
   /**
+   * F. Wright
+   *
    * Constructor for FlightMap3D class.
    * Initializes the widget with given position and scale, loads initial assets asynchronously.
    *
@@ -72,6 +74,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   }
 
   /**
+   * F. Wright
+   *
    * Initializes assets asynchronously. This includes creating 3D shapes, loading textures, and loading shaders.
    * The assets loaded include the Earth model, the Sun model, the sky sphere model, various textures for Earth, Sun, and sky, and several shaders.
    */
@@ -109,6 +113,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   }
 
   /**
+   * F. Wright
+   *
    * Loads flight data into the 3D flight map. Stores data for all airport markers and connections.
    *
    * @param flights The array of FlightType containing flight data.
@@ -160,6 +166,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   }
 
   /**
+   * F. Wright
+   *
    * Adds an airport point manually with the given latitude, longitude, and airport code.
    *
    * @param latitude The latitude of the airport.
@@ -175,6 +183,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   }
 
   /**
+   * F. Wright
+   *
    * Caches points along the great circle arc between two given points.
    *
    * @param p1 The starting point of the arc.
@@ -205,6 +215,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   //================================================
 
   /**
+   * F. Wright
+   *
    * Overrides the draw method to render the 3D flight map.
    */
   @ Override
@@ -254,6 +266,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   }
 
   /**
+   * F. Wright
+   *
    * Draws the Earth on the 3D canvas.
    */
   void drawEarth() {
@@ -276,6 +290,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   }
 
   /**
+   * F. Wright
+   *
    * Draws the Sun on the 3D canvas.
    *
    * @param lightDir The direction vector of the sunlight.
@@ -298,6 +314,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   }
 
   /**
+   * F. Wright
+   *
    * Draws the skybox on the 3D canvas.
    */
   void drawSkybox() {
@@ -313,6 +331,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   }
 
   /**
+   * F. Wright
+   *
    * Draws airport markers and connections on the 3D canvas.
    */
   void drawMarkersAndConnections() {
@@ -344,6 +364,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   }
 
   /**
+   * F. Wright
+   *
    * Draws text labels for airport markers on the 3D canvas.
    */
   void drawMarkerText() {
@@ -368,6 +390,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   }
 
   /**
+   * F. Wright
+   *
    * Draws great circle arcs between airports on the 3D canvas.
    *
    * @param point The airport point for which to draw the arcs.
@@ -400,6 +424,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   //================================================
 
   /**
+   * F. Wright
+   *
    * Gets the event type for mouse dragged events.
    *
    * @return The event type for mouse dragged events.
@@ -409,6 +435,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   }
 
   /**
+   * F. Wright
+   *
    * Handles mouse dragged events.
    *
    * @param e The mouse dragged event information.
@@ -420,6 +448,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   }
 
   /**
+   * F. Wright
+   *
    * Gets the event type for mouse wheel events.
    *
    * @return The event type for mouse wheel events.
@@ -429,6 +459,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   }
 
   /**
+   * F. Wright
+   *
    * Handles mouse wheel events.
    *
    * @param e The mouse wheel event information.
@@ -443,6 +475,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   //================================================
 
   /**
+   * F. Wright
+   *
    * Sets the duration and delay for the growth of arcs.
    *
    * @param timeTakenMillis The time taken for the arcs to grow, in milliseconds.
@@ -454,6 +488,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   }
 
   /**
+   * F. Wright
+   *
    * Sets whether the day is permanent.
    *
    * @param enabled True to enable permanent day, false otherwise.
@@ -463,6 +499,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   }
 
   /**
+   * F. Wright
+   *
    * Sets whether connections are enabled.
    *
    * @param enabled True to enable connections, false otherwise.
@@ -472,6 +510,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   }
 
   /**
+   * F. Wright
+   *
    * Sets whether text is enabled.
    *
    * @param enabled True to enable text, false otherwise.
@@ -481,6 +521,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   }
 
   /**
+   * F. Wright
+   *
    * Sets whether markers are enabled.
    *
    * @param enabled True to enable markers, false otherwise.
@@ -490,6 +532,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   }
 
   /**
+   * F. Wright
+   *
    * Sets whether time is locked.
    *
    * @param enabled True to lock time, false otherwise.
@@ -499,6 +543,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   }
 
   /**
+   * F. Wright
+   *
    * Sets the speed of the day cycle.
    *
    * @param speed The speed of the day cycle.
