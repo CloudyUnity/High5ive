@@ -122,6 +122,23 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
    */
   public void loadFlights(FlightType[] flights, QueryManagerClass queries) {
     m_flightDataLoaded = false;
+
+    new Thread(() -> {
+      loadFlightsAsync(flights, queries);
+      m_flightDataLoaded = true;
+    }
+    ).start();
+  }
+
+  /**
+   * F. Wright
+   *
+   * Asynchrously loads flight data into the 3D flight map. Stores data for all airport markers and connections.
+   *
+   * @param flights The array of FlightType containing flight data.
+   * @param queries The QueryManagerClass object for querying airport data.
+   */
+  public void loadFlightsAsync(FlightType[] flights, QueryManagerClass queries) {
     m_airportHashmap.clear();
 
     int count = flights.length;
@@ -161,8 +178,6 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
       dest.Connections.add(originCode);
       origin.ConnectionArcPoints.add(cacheArcPoints(origin.Pos, dest.Pos));
     }
-
-    m_flightDataLoaded = true;
   }
 
   /**
@@ -230,12 +245,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_arcFraction = clamp(m_arcFraction, 0.0f, 1.0f);
 
     if (!m_assetsLoaded || !m_drawnLoadingScreen || !m_flightDataLoaded) {
-      image(m_texSkySphereStars, 0, 0, width, height);
-
-      textAlign(CENTER);
-      fill(255, 255, 255, 255);
-      textSize(50);
-      text("Loading...", width/2, height/2);
+      drawLoadingScreen();
       m_drawnLoadingScreen = true;
       return;
     }
@@ -263,6 +273,20 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     s_3D.endDraw();
 
     image(s_3D, 0, 0);
+  }
+
+  /**
+   * F. Wright
+   *
+   * Draws the loading screen and loading test
+   */
+  private void drawLoadingScreen() {
+    image(m_texSkySphereStars, 0, 0, width, height);
+
+    textAlign(CENTER);
+    fill(255, 255, 255, 255);
+    textSize(50);
+    text("Loading...", width/2, height/2);
   }
 
   /**
