@@ -203,10 +203,10 @@ class QueryManagerClass {
       return (int)flight.ArrivalDelay;
 
     case CANCELLED_OR_DIVERTED:
-      return (int)flight.CancelledOrDiverted;
+      return (int)flight.Cancelled;
 
     case KILOMETRES_DISTANCE:
-      return (int)flight.KilometresDistance;
+      return (int)flight.KmDistance;
 
     case SCHEDULED_DEPARTURE_TIME:
       if (convertTimes)
@@ -336,11 +336,11 @@ class QueryManagerClass {
       break;
 
     case CANCELLED_OR_DIVERTED:
-      flightComparator = Comparator.comparingInt(flight -> flight.CancelledOrDiverted);
+      flightComparator = Comparator.comparingInt(flight -> flight.Cancelled);
       break;
 
     case KILOMETRES_DISTANCE:
-      flightComparator = Comparator.comparingInt(flight -> flight.KilometresDistance);
+      flightComparator = Comparator.comparingInt(flight -> flight.KmDistance);
       break;
 
     default:
