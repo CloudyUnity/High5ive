@@ -1,3 +1,8 @@
+/**
+ * F. Wright
+ *
+ * Class representing the main application.
+ */
 class ApplicationClass {
   private int m_timeLastFrame = 0;
 
@@ -12,7 +17,11 @@ class ApplicationClass {
   ScreenCharts m_screenCharts = null;
   Screen3DFM m_screen3DFM = null;
 
-  // This initialise screens and loading the data
+  /**
+   * F. Wright
+   *
+   * Initializes the application by setting up screens and loading data.
+   */
   public void init() {
     m_queryManager.init();
 
@@ -28,7 +37,11 @@ class ApplicationClass {
     );
   }
 
-  // This initialises screens
+  /**
+   * F. Wright
+   *
+   * Initializes the screens of the application.
+   */
   private void initScreens() {
     ScreenHome screenHome = new ScreenHome(SCREEN_1_ID);
     m_screens.add(screenHome);
@@ -46,7 +59,11 @@ class ApplicationClass {
     screenHome.init();
   }
 
-  // This is called every frame
+  /**
+   * F. Wright
+   *
+   * Called every frame to update and render the current screen.
+   */
   public void frame() {
     s_deltaTime = millis() - m_timeLastFrame;
     m_timeLastFrame = millis();
@@ -61,42 +78,79 @@ class ApplicationClass {
     }
   }
 
-  // Called when the mouse position is different from the last frame
+  /**
+   * F. Wright
+   *
+   * Called when the mouse position is different from the last frame.
+   */
   public void onMouseMoved() {
     if (m_currentScreen != null)
       m_currentScreen.onMouseMoved();
   }
 
-  // Called when the mouse position is different from the last frame while the mouse button is pressed
+  /**
+   * F. Wright
+   *
+   * Called when the mouse position is different from the last frame while the mouse button is pressed.
+   */
   public void onMouseDragged() {
     if (m_currentScreen != null)
       m_currentScreen.onMouseDragged();
   }
 
-  // Called when the mouse button is clicked
+  /**
+   * F. Wright
+   *
+   * Called when the mouse button is clicked.
+   */
   public void onMouseClick() {
     if (m_currentScreen != null)
       m_currentScreen.onMouseClick();
   }
 
-  // Called when the mouse wheel is scrolled
+  /**
+   * F. Wright
+   *
+   * Called when the mouse wheel is scrolled.
+   *
+   * @param wheelCount The amount the mouse wheel is scrolled.
+   */
   public void onMouseWheel(int wheelCount) {
     if (m_currentScreen != null)
       m_currentScreen.getOnMouseWheelEvent().raise(new MouseWheelEventInfoType(mouseX, mouseY, wheelCount, m_currentScreen));
   }
 
-  // Called when a key is pressed
+  /**
+   * F. Wright
+   *
+   * Called when a key is pressed.
+   *
+   * @param k The character representation of the key that was pressed.
+   * @param kc The integer representation of the key that was pressed.
+   */
   public void onKeyPressed(char k, int kc) {
     if (m_currentScreen != null)
       m_currentScreen.getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(mouseX, mouseY, k, kc, m_currentScreen));
   }
 
-  // Returns the event for switching screens
+  /**
+   * F. Wright
+   *
+   * Returns the event for switching screens.
+   *
+   * @return The event for switching screens.
+   */
   public EventType<SwitchScreenEventInfoType> getOnSwitchEvent() {
     return m_onSwitchEvent;
   }
 
-  // Switches the screen using a screen ID constant
+  /**
+   * F. Wright
+   *
+   * Switches the screen using a screen ID constant.
+   *
+   * @param e The event containing information about the switch screen event.
+   */
   private void switchScreen(SwitchScreenEventInfoType e) {
     e.Widget.getOnMouseExitEvent().raise((EventInfoType)e);
 

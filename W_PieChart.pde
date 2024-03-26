@@ -1,3 +1,13 @@
+/**
+ * F. Wright
+ *
+ * Represents a Pie Chart user interface widget.
+ *
+ * @param <T>     The type of data for the chart.
+ * @param <TData> The type of the data key.
+ * @extends Widget
+ * @implements IChart<T, TData>
+ */
 class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
   private TreeMap<TData, Integer> m_map = new TreeMap<TData, Integer>();
   private ArrayList<Float> m_arcSizes = new ArrayList<Float>();
@@ -6,10 +16,27 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
   private QueryType m_translationField = null;
   private QueryManagerClass m_queryManager = null;
 
+  /**
+   * F. Wright
+   *
+   * Initializes a new instance of the PieChartUI class.
+   *
+   * @param posX     The x-coordinate of the top-left corner of the widget.
+   * @param posY     The y-coordinate of the top-left corner of the widget.
+   * @param diameter The diameter of the pie chart.
+   */
   public PieChartUI(int posX, int posY, int diameter) {
     super(posX, posY, diameter, diameter);
   }
 
+  /**
+   * F. Wright
+   *
+   * Adds data to the pie chart.
+   *
+   * @param data  The array of data to be added.
+   * @param getKey The function to extract the key from each data element.
+   */
   public void addData(T[] data, Function<T, TData> getKey) {
     for (var value : data) {
       TData k = getKey.apply(value);
@@ -26,6 +53,15 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
     m_dataLoaded = true;
   }
 
+  /**
+   * F. Wright
+   *
+   * Adds data to the pie chart from an iterable collection.
+   *
+   * @param <I>   The type of the iterable collection.
+   * @param data  The iterable collection of data to be added.
+   * @param getKey The function to extract the key from each data element.
+   */
   public <I extends Iterable<T>> void addData(I data, Function<T, TData> getKey) {
     for (var value : data) {
       TData k = getKey.apply(value);
@@ -42,12 +78,22 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
     m_dataLoaded = true;
   }
 
+  /**
+   * F. Wright
+   *
+   * Removes all data from the pie chart.
+   */
   public void removeData() {
     m_map = new TreeMap<TData, Integer>();
     m_arcSizes.clear();
     m_dataLoaded = false;
   }
 
+  /**
+   * F. Wright
+   *
+   * Draws the pie chart on the screen.
+   */
   @ Override
     public void draw() {
     super.draw();
@@ -90,6 +136,14 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
     }
   }
 
+  /**
+   * F. Wright
+   *
+   * Generates a random color based on a given seed.
+   *
+   * @param seed The seed value for generating the color.
+   * @return The generated color.
+   */
   private color randomColor(int seed) {
     randomSeed(seed * 4639);
     colorMode(HSB, 360, 100, 100);
@@ -98,11 +152,27 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
     return result;
   }
 
+  /**
+   * F. Wright
+   *
+   * Sets the translation field and query manager for translating X values of the pie chart.
+   *
+   * @param query The query type for translation.
+   * @param queryManager The query manager for fetching translation data.
+   */
   public void setTranslationField(QueryType query, QueryManagerClass queryManager) {
     m_translationField = query;
     m_queryManager = queryManager;
   }
 
+  /**
+   * F. Wright
+   *
+   * Translates X-axis values of the pie chart based on the set translation field and query manager.
+   *
+   * @param val The value to translate.
+   * @return The translated value.
+   */
   public String translateXValues(String val) {
     if (m_translationField == null)
       return val;
