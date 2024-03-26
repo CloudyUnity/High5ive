@@ -1,3 +1,4 @@
+// Data type for event info 
 class EventInfoType {
   public Widget Widget;
   public int X, Y;
@@ -9,6 +10,7 @@ class EventInfoType {
   }
 }
 
+// ...
 class EventType<T extends EventInfoType> {
   ArrayList<Consumer<T>> EventHandlers = new ArrayList<Consumer<T>>();
 
@@ -23,6 +25,7 @@ class EventType<T extends EventInfoType> {
   }
 }
 
+// ...
 class StringEnteredEventInfoType extends EventInfoType {
   public String Data;
   
@@ -32,6 +35,7 @@ class StringEnteredEventInfoType extends EventInfoType {
   }
 }
 
+// ...
 class KeyPressedEventInfoType extends EventInfoType {
   public char PressedKey;
   public int PressedKeyCode;
@@ -43,6 +47,7 @@ class KeyPressedEventInfoType extends EventInfoType {
   }
 }
 
+// ...
 class MouseDraggedEventInfoType extends EventInfoType {
   public PVector PreviousPos;
 
@@ -52,6 +57,7 @@ class MouseDraggedEventInfoType extends EventInfoType {
   }
 }
 
+// ...
 class MouseMovedEventInfoType extends EventInfoType {
   public PVector PreviousPos;
 
@@ -61,6 +67,7 @@ class MouseMovedEventInfoType extends EventInfoType {
   }
 }
 
+// ...
 class SwitchScreenEventInfoType extends EventInfoType {
   public String NewScreenId;
 
@@ -70,6 +77,7 @@ class SwitchScreenEventInfoType extends EventInfoType {
   }
 }
 
+// ...
 class MouseWheelEventInfoType extends EventInfoType {
   public int WheelCount;
 
@@ -79,6 +87,7 @@ class MouseWheelEventInfoType extends EventInfoType {
   }
 }
 
+// ...
 class ListboxSelectedEntryChangedEventInfoType<T> extends EventInfoType {
   public T Data;
   public ListboxSelectedEntryChangedEventInfoType(int x, int y, T data, Widget widget) {

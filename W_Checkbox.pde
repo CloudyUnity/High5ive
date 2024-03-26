@@ -18,6 +18,7 @@ class CheckboxUI extends Widget implements IClickable {
     );
   }
 
+  // Draws the checkbox
   @ Override
     public void draw() {
     super.draw();
@@ -28,30 +29,37 @@ class CheckboxUI extends Widget implements IClickable {
     m_label.draw();
   }
 
+  // Returns the click event
   public EventType<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
 
+  // Sets the colour when checkbox is checked
   public void setCheckedColour(color checkedColour) {
     m_checkedColour = checkedColour;
   }
 
+  // Returns if the checkbox is checked
   public boolean getChecked() {
     return m_checked;
   }
 
+  // Sets whether the checkbox is checked
   public void setChecked(boolean checked) {
     m_checked = checked;
   }
 
+  // Sets the checkbox text size
   public void setTextSize(int textSize) {
     m_label.setTextSize(textSize);
   }
 
+  // Sets the value of the checkbox text
   public void setText(String text) {
     m_label.setText(text);
   }
 
+  // Returns the checkbox label
   public LabelUI getLabel() {
     return m_label;
   }

@@ -1,12 +1,14 @@
 class FlightsManagerClass {
   private boolean m_working;
 
+  // Loads the flight data from the given file paths
   public void loadUSAndWorldFromFiles(String usFileName, String worldFileName, int threadCount, Consumer<FlightMultiDataType> onTaskComplete) {
     boolean result = convertBinaryFileToFlightType(usFileName, worldFileName, US_LINE_BYTE_SIZE, WORLD_LINE_BYTE_SIZE, threadCount, onTaskComplete);
     if (!result)
       println("ERROR: Flight binary failed to load successfully");
   }
 
+  // ...
   private boolean convertBinaryFileToFlightType(String usFileName, String worldFileName, int usLineByteSize, int worldLineByteSize, int threadCount, Consumer<FlightMultiDataType> onTaskComplete) {
     if (m_working) {
       println("Warning: m_working is true, convertBinaryFileToFlightType did not process correctly");
@@ -32,6 +34,7 @@ class FlightsManagerClass {
     return true;
   }
 
+  // ...
   private FlightType[] convertBinaryFileToFlightTypeAsync(String filename, int threadCount, QueryLocationType queryLocation, int lineByteSize) {
     MappedByteBuffer buffer;
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
@@ -81,6 +84,8 @@ class FlightsManagerClass {
       return null;
     }
   }
+  
+  // ...
   private void processUSConvertBinaryFileToFlightTypeChunk(FlightType[] flightsList, MappedByteBuffer buffer, long processingSize, int startPosition, int lineByteSize) {
     long maxI = startPosition + processingSize;
     for (int i = startPosition; i < maxI; i++) {
@@ -103,6 +108,7 @@ class FlightsManagerClass {
     }
   }
 
+  // ...
   private void processWorldConvertBinaryFileToFlightTypeChunk(FlightType[] flightsList, MappedByteBuffer buffer, long processingSize, int startPosition, int lineByteSize) {
     long maxI = startPosition + processingSize;
     for (int i = startPosition; i < maxI; i++) {
@@ -115,12 +121,14 @@ class FlightsManagerClass {
     }
   }
 
+  // ...
   public void printFlights(FlightType[] flights, QueryType queryType) {
     for (FlightType flight : flights) {
       printFlight(flight, queryType);
     }
   }
 
+  // ...
   public void printFlight(FlightType flight, QueryType queryType) {
     switch(queryType) {
     case DAY:
@@ -161,7 +169,6 @@ class FlightsManagerClass {
     }
   }
 }
-
 
 // Descending code authorship changes:
 // F. Wright, Made DateType, FlightType, FlightsManagerClass and made function headers. Left comments to explain how everything could be implemented, 11pm 04/03/24
