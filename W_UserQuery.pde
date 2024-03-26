@@ -140,7 +140,7 @@ class UserQueryUI extends Widget {
     m_listCounter++;
 
     // Set all user inputs back to default
-    inputQuery.setText("");
+    ((TextboxUI)inputField).setText("");
 
   }
 
