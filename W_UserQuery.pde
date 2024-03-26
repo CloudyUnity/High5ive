@@ -3,7 +3,7 @@ class UserQueryUI extends Widget {
   private Consumer<FlightType[]> m_onLoadDataEvent;
 
   QueryManagerClass m_queryManager;
-  private ArrayList<String> m_queries; // All query types are ordered like so (Day, Airline, FlightNum, Origin, Dest, SchDep, Dep, Depdelay, SchArr, Arr, ArrDelay, Cancelled, Dievrted, Miles  )
+  private ArrayList<FlightQueryType> m_activeQueries; // All query types are ordered like so (Day, Airline, FlightNum, Origin, Dest, SchDep, Dep, Depdelay, SchArr, Arr, ArrDelay, Cancelled, Dievrted, Miles  )
   private ArrayList<FlightQueryType> m_flightQueries;
   private ListboxUI m_queryList;
   private TextboxUI m_day;
@@ -36,7 +36,7 @@ class UserQueryUI extends Widget {
     m_flightQueries = new ArrayList<FlightQueryType>();
 
     addWidget(m_queryList);
-    
+
 
     addItemButton = new ButtonUI(20, 600, 80, 20);
     addWidget(addItemButton);
@@ -53,7 +53,7 @@ class UserQueryUI extends Widget {
     addWidget(removeSelectedButton);
     removeSelectedButton.setText("Remove selected");
     removeSelectedButton.getOnClickEvent().addHandler(e -> m_queryList.removeSelected());
-    
+
     loadDataButton = new ButtonUI(220, 500, 180, 120);
     addWidget(loadDataButton);
     loadDataButton.setText("Load Data");
@@ -64,7 +64,7 @@ class UserQueryUI extends Widget {
     m_day.setPlaceholderText("Kilometers (Greater than)");
 
 
-    
+
 
     m_dayQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US, queryManager);
 
@@ -87,7 +87,7 @@ class UserQueryUI extends Widget {
   public void setOnLoadHandler(Consumer<FlightType[]> dataEvent) {
     m_onLoadDataEvent = dataEvent;
   }
-  
+
 
   private void loadData() {
 
@@ -95,43 +95,45 @@ class UserQueryUI extends Widget {
 
     FlightType[] result = null;
 
-    if (m_dayQuery == null){
+    if (m_dayQuery == null) {
       result = m_flightsLists.US;
-    }
-    else{
+    } else {
       result  = m_queryManager.queryFlights(m_flightsLists.US, m_dayQuery, m_dayQuery.QueryValue);
     }
-    
+
     //result = m_queryManager.getHead(m_flightsLists.WORLD , 10);
 
     println(m_dayQuery.QueryValue);
     m_onLoadDataEvent.accept(result);
-
   }
 
-  private void saveQuery( TextboxUI inputTextbox) {
-    // Saves currently written user input into a query
-    m_dayQuery.setQueryValue(inputTextbox.getText());
-
-    // Adds to query output field textbox thing
-    m_queryList.add(inputTextbox.getText() );
-    m_listCounter++;
-
+  private void saveQuery( Widget inputField, FlightQueryType inputQuery) {
+    // Saves currently written user input into a quer
+    if (inputField instanceof TextboxUI) {
+      inputQuery.setQueryValue(((TextboxUI)inputField).getText());
+      m_activeQueries.add(inputQuery);
+      for(int i = 0; i < m_activeQueries.size() - 1; i++){
+      
+        if(m_activeQueries.get(i).QueryType == inputQuery.QueryType && m_activeQueries.get(i).QueryOperatorType == inputQuery.QueryOperatorType ){}
+      
+      }
+      // Adds to query output field textbox thing
+      m_queryList.add(((TextboxUI)inputField).getText() );
+      m_listCounter++;
+    }
     // Set all user inputs back to default
-    m_day.setText("");
+    inputQuery.setText("");
   }
 
   private void changeOperator(FlightQueryType input, QueryOperatorType inputOperator) {
-    
+
     input.setOperator(inputOperator);
-    
   }
 
   private void clearQueries() {
     // Clear all currently saved user queries
-    m_dayQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US, m_queryManager); 
+    m_dayQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US, m_queryManager);
     m_queryList.clear();
-
   }
 
   private void changeDataToUS() {
@@ -145,7 +147,7 @@ class UserQueryUI extends Widget {
   }
 
 
- 
+
 
   private void addWidget(Widget widget) {
     m_screen.addWidget(widget);
@@ -157,4 +159,4 @@ class UserQueryUI extends Widget {
 
 // F.Wright  created Framework for UserQuery class 8pm 3/14/24
 // M.Poole   fixed issue with key input not detecting and implemented Listbox Functionality
-// M.Poole   implemented single item search querying 
+// M.Poole   implemented single item search querying
