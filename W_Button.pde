@@ -17,6 +17,7 @@ class ButtonUI extends Widget implements IClickable {
     getOnMouseExitEvent().addHandler(e -> m_highlighted = false);
   }
 
+  // Draws the buttons outline
   @ Override
     protected void drawOutline() {
     if (m_drawOutlineEnabled) {
@@ -29,6 +30,7 @@ class ButtonUI extends Widget implements IClickable {
       noStroke();
   }
 
+  // Draws the button and its text
   @ Override
     public void draw() {
     super.draw();
@@ -39,32 +41,39 @@ class ButtonUI extends Widget implements IClickable {
     m_label.draw();
   }
 
+  // Returns click event
   public EventType<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
 
+  // Sets the button text
   public void setText(String text) {
     m_label.setText(text);
   }
 
+  // Highlights buttons outline when mouse is hovering over it
   public void setHighlightOutlineOnEnter(boolean highlightOutlineOnEnter) {
     if (!highlightOutlineOnEnter)
       setOutlineColour(color(m_outlineColour));
     m_highlightOutlineOnEnter = highlightOutlineOnEnter;
   }
 
+  // Sets the text size
   public void setTextSize(int textSize) {
     m_label.setTextSize(textSize);
   }
 
+  // Sets text X offset
   public void setTextXOffset(int textXOffset) {
     m_label.setTextXOffset(textXOffset);
   }
 
+  // Sets text Y offset
   public void setTextYOffset(int textYOffset) {
     m_label.setTextYOffset(textYOffset);
   }
 
+  // Returns the buttons label
   public LabelUI getLabel() {
     return m_label;
   }

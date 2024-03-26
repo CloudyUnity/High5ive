@@ -1,6 +1,6 @@
 class LabelUI extends Widget {
   private boolean m_centreAligned;
-  private String m_text; // Can be null
+  private String m_text = "";
   private int m_textSize, m_textXOffset, m_textYOffset;
 
   public LabelUI(int posX, int posY, int scaleX, int scaleY, String text) {
@@ -17,9 +17,6 @@ class LabelUI extends Widget {
     public void draw() {
     super.draw();
 
-    if (m_text == null)
-      return;
-
     textSize(m_textSize);
 
     fill(color(m_foregroundColour));
@@ -35,12 +32,6 @@ class LabelUI extends Widget {
     m_text = text;
   }
 
-  /**
-   * Sets the button text size.
-   *
-   * @param  textSize The size of the text.
-   * @throws IllegalArgumentException when the size argument is negative.
-   **/
   public void setTextSize(int textSize) {
     if (textSize < 0)
       throw new IllegalArgumentException("Text size cannot be less than 0.");
@@ -48,12 +39,6 @@ class LabelUI extends Widget {
     m_textSize = textSize;
   }
 
-  /**
-   * Sets the button text offset from the left edge if not centred.
-   *
-   * @param  textXOffset The offset from the left edge of the button.
-   * @throws IllegalArgumentException when the textXOffset argument is negative.
-   **/
   public void setTextXOffset(int textXOffset) { // NOTE: Should this throw an exception here? It seems fine to me to have a negative offset
     if (textXOffset < 0)
       throw new IllegalArgumentException("Text X offset cannot be less than 0.");
@@ -61,12 +46,6 @@ class LabelUI extends Widget {
     m_textXOffset = textXOffset;
   }
 
-  /**
-   * Sets the button text offset from the top edge if not centred.
-   *
-   * @param  textXOffset The offset from the left edge of the button.
-   * @throws IllegalArgumentException when the textXOffset argument is negative.
-   **/
   public void setTextYOffset(int textYOffset) {
     if (textYOffset < 0)
       throw new IllegalArgumentException("Text Y offset cannot be less than 0.");
