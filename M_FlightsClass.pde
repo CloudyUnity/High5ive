@@ -92,18 +92,23 @@ class FlightsManagerClass {
       int offset = lineByteSize* i;
       flightsList[i] = new FlightType(
         buffer.get(offset),
-        buffer.getShort(offset+1),
-        buffer.getShort(offset+3),
-        buffer.getShort(offset+5),
-        buffer.getShort(offset+7),
-        buffer.getShort(offset+9),
-        buffer.getShort(offset+11),
-        buffer.getShort(offset+13),
-        buffer.getShort(offset+15),
-        buffer.getShort(offset+17),
-        buffer.getShort(offset+19),
-        buffer.get(offset+21),
-        buffer.getShort(offset+22)
+        buffer.get(offset+1),
+        buffer.getShort(offset+2),
+        buffer.getShort(offset+4),
+        buffer.getShort(offset+6),
+        buffer.getShort(offset+8),
+        buffer.getShort(offset+10),
+        buffer.getShort(offset+12),
+        buffer.getShort(offset+14),
+        buffer.getShort(offset+16),
+        buffer.getShort(offset+18),
+        buffer.getShort(offset+20),
+        buffer.getShort(offset+22),
+        buffer.get(offset+23),
+        buffer.get(offset+24),
+        buffer.getShort(offset+26),
+        buffer.getShort(offset+28),
+        buffer.getShort(offset+30)
         );
     }
   }
@@ -159,10 +164,10 @@ class FlightsManagerClass {
       println("ArrivalTime: " + flight.ArrivalTime);
       break;
     case CANCELLED_OR_DIVERTED:
-      println("CancelledOrDiverted: " + flight.CancelledOrDiverted);
+      println("CancelledOrDiverted: " + flight.Cancelled);
       break;
     case KILOMETRES_DISTANCE:
-      println("KilometresDistance: " + flight.KilometresDistance);
+      println("KilometresDistance: " + flight.KmDistance);
       break;
     default:
       println("Error: FlightSortQuery.Type invalid");
