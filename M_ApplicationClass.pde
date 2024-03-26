@@ -10,7 +10,7 @@ class ApplicationClass {
   private EventType<SwitchScreenEventInfoType> m_onSwitchEvent = new EventType<SwitchScreenEventInfoType>();
 
   ScreenCharts m_screenCharts = null;
-  ScreenFlightMap m_screen3DFM = null;
+  Screen3DFM m_screen3DFM = null;
 
   public void init() {
     m_queryManager.init();
@@ -28,28 +28,20 @@ class ApplicationClass {
   }
 
   private void initScreens() {
-    Screen1 screen1 = new Screen1(SCREEN_1_ID);
-    m_screens.add(screen1);
-
-    Screen2 screen2 = new Screen2(SCREEN_2_ID);
-    m_screens.add(screen2);
-
-    Screen screenDemo = new FlightCodesBarchartDemo(SWITCH_TO_DEMO_ID);
-    m_screens.add(screenDemo);
+    ScreenHome screenHome = new ScreenHome(SCREEN_1_ID);
+    m_screens.add(screenHome);
 
     TwoDMapScreen screenFlightMap2D = new TwoDMapScreen(SCREEN_TWOD_MAP_ID, m_queryManager);
     m_screens.add(screenFlightMap2D);
 
-    m_screen3DFM = new ScreenFlightMap(SCREEN_FLIGHT_MAP_ID, m_queryManager);
+    m_screen3DFM = new Screen3DFM(SCREEN_FLIGHT_MAP_ID, m_queryManager);
     m_screens.add(m_screen3DFM);
 
     m_screenCharts = new ScreenCharts(SCREEN_CHARTS_ID, m_queryManager);
     m_screens.add(m_screenCharts);
 
-    m_screens.add(new AlexTestingScreen(ALEX_TESTING_ID));
-
-    m_currentScreen = screen1;
-    screen1.init();
+    m_currentScreen = screenHome;
+    screenHome.init();
   }
 
   public void frame() {

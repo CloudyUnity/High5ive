@@ -60,7 +60,6 @@ class ScreenCharts extends Screen {
     );
 
     m_freqDD.add(QueryType.DAY);
-    // m_freqDD.add(QueryType.FLIGHT_NUMBER);
     m_freqDD.add(QueryType.CARRIER_CODE_INDEX);
     m_freqDD.add(QueryType.AIRPORT_ORIGIN_INDEX);
     m_freqDD.add(QueryType.AIRPORT_DEST_INDEX);
@@ -87,8 +86,10 @@ class ScreenCharts extends Screen {
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
       m_scatterQueryY = (QueryType)elistbox.Data;
 
-      if (m_scatterQueryX == null || m_scatterQueryY == null)
+      if (m_scatterQueryX == null || m_scatterQueryY == null || m_cachedFlights == null){
+        println("Flight data not ready for charts yet, or invalid query");
         return;
+      }
 
       reloadScatter();
     }
@@ -148,6 +149,9 @@ class ScreenCharts extends Screen {
   }
 
   public void reloadFreq() {
+    if (m_cachedFlights == null)
+      return;
+      
     m_histogram.removeData();
     m_histogram.addData(m_cachedFlights, f -> {
       return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_histQuery);
@@ -165,6 +169,9 @@ class ScreenCharts extends Screen {
   }
 
   public void reloadScatter() {
+    if (m_cachedFlights == null)
+      return;
+      
     m_scatterPlot.removeData();
     m_scatterPlot.addData(m_cachedFlights,
       fX -> {
@@ -208,3 +215,6 @@ class ScreenCharts extends Screen {
     m_scatterDDY.setRendering(true);
   } 
 }
+
+// Descending code authorship changes:
+// F. Wright, Created screen charts and initialisation of Histogram, Pie and Scatter Charts, 5pm 19/03/24

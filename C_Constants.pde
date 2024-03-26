@@ -45,11 +45,8 @@ final float WIDGET_GROW_MODE_MULT = 1.1f;
 
 // IDs
 final String SCREEN_1_ID = "Screen 1";
-final String SCREEN_2_ID = "Screen 2";
-final String SWITCH_TO_DEMO_ID = "Barchart demo screen";
 final String SCREEN_TWOD_MAP_ID = "Screen Flight Map 2D";
 final String SCREEN_FLIGHT_MAP_ID = "Screen Flight Map";
-final String ALEX_TESTING_ID = "Alex testing";
 final String SCREEN_CHARTS_ID = "Screen Charts";
 
 // Math
