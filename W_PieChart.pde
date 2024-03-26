@@ -68,7 +68,7 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
       float diameterOfArc = m_scale.x * m_arcSizes.get(i);
 
       boolean isHovered = false;
-      if (pointInArc(m_pos, mouseX, mouseY, diameterOfArc, lastAngle, lastAngle + arcSize))
+      if (pointWithinSector(m_pos, mouseX, mouseY, diameterOfArc, lastAngle, lastAngle + arcSize))
         isHovered = true;
 
       float growTarget = isHovered ? 1.1f : 1.0f;
@@ -121,3 +121,7 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
     }
   }
 }
+
+// Descending code authorship changes:
+// F. Wright, Created pie chart class, 5pm 19/03/24
+// F. Wright, Implemented juiciness to pie chart, 1pm, 20/03/24

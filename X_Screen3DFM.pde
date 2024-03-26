@@ -1,4 +1,4 @@
-class ScreenFlightMap extends Screen {
+class Screen3DFM extends Screen {
   FlightMap3D m_flightMap3D;
   QueryManagerClass m_queryManager;
   EmptyWidgetUI m_flightMapUIParent;
@@ -7,7 +7,7 @@ class ScreenFlightMap extends Screen {
 
   private boolean m_isQueryDisplayed = false;
 
-  public ScreenFlightMap(String screenId, QueryManagerClass query) {
+  public Screen3DFM(String screenId, QueryManagerClass query) {
     super(screenId, color(0, 0, 0, 255));
 
     m_queryManager = query;

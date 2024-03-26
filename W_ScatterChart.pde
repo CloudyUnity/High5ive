@@ -118,3 +118,7 @@ class ScatterChartUI<T> extends Widget implements IChart2Axis<T, Integer> {
     shape(m_pointsShape, m_pos.x, m_pos.y);
   }
 }
+
+// Descending code authorship changes:
+// F. Wright, Created scatter plots, 7pm 20/03/24
+// F. Wright, Added extra labelling to scatter plots, 8pm 25/03/24
