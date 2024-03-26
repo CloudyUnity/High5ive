@@ -68,6 +68,7 @@ class UserQueryUI extends Widget {
     m_Origin =  new TextboxUI(20, 500, 160, 30);
     addWidget(m_Origin);
     m_Origin.setPlaceholderText("Origin");
+    
 
     m_OriginQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US);
     m_flightQueries.add(m_OriginQuery);
@@ -106,6 +107,7 @@ class UserQueryUI extends Widget {
   }
 
 
+
   private void loadData() {
     FlightType[] result = m_flightsLists.US;
 
@@ -123,16 +125,23 @@ class UserQueryUI extends Widget {
   private void saveQuery( Widget inputField, FlightQueryType inputQuery) {
     // Saves currently written user input into a quer
     if (inputField instanceof TextboxUI) {
+
       if (((TextboxUI)inputField).getTextLength() > 0 ) {
         int dayVal = m_queryManager.formatQueryValue(inputQuery.Type, ((TextboxUI)inputField).getText());
         inputQuery.setQueryValue(dayVal);
         m_activeQueries.add(inputQuery);
+
       }
       
     }
+
     // Adds to query output field textbox thing
     m_queryList.add(((TextboxUI)inputField).getText() );
     m_listCounter++;
+
+    // Set all user inputs back to default
+    inputQuery.setText("");
+
   }
 
   private void saveAllQueries(){
@@ -151,10 +160,12 @@ class UserQueryUI extends Widget {
   private void clearQueries() {
     // Clear all currently saved user queries
 
+
     m_OriginQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US);
     m_DestQuery = new FlightQueryType(QueryType.AIRPORT_DEST_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US);
     m_DistanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, QueryLocationType.US);
     m_activeQueries = new ArrayList<FlightQueryType>();
+
     m_queryList.clear();
   }
 

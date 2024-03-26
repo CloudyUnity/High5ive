@@ -12,6 +12,13 @@ DebugProfilerClass s_DebugProfiler = new DebugProfilerClass();
 PGraphics s_3D;
 int s_deltaTime;
 
+/**
+ * F. Wright
+ *
+ * Initializes the application setup including graphics, title, frame rate, and fonts.
+ *
+ * @param p The processing object representing the sketch.
+ */
 void setup() {
   fullScreen(P2D, SPAN);
 
@@ -33,26 +40,56 @@ void setup() {
   s_DebugProfiler.printTimeTakenMillis("All Setup");
 }
 
+/**
+ * F. Wright
+ *
+ * The main draw loop function that delegates to the application class for drawing.
+ */
 void draw() {
   s_ApplicationClass.frame();
 }
 
+/**
+ * Called when a key is pressed and delegates to the application class.
+ */
 void keyPressed() {
   s_ApplicationClass.onKeyPressed(key, keyCode);
 }
 
+/**
+ * F. Wright
+ *
+ * Called when the mouse button is pressed and delegates to the application class.
+ */
 void mousePressed() {
   s_ApplicationClass.onMouseClick();
 }
 
+/**
+ * F. Wright
+ *
+ * Called when the mouse position changes and delegates to the application class.
+ */
 void mouseMoved() {
   s_ApplicationClass.onMouseMoved();
 }
 
+/**
+ * F. Wright
+ *
+ * Called when the mouse is dragged and delegates to the application class.
+ */
 void mouseDragged() {
   s_ApplicationClass.onMouseDragged();
 }
 
+/**
+ * F. Wright
+ *
+ * Called when the mouse wheel is scrolled and delegates to the application class.
+ *
+ * @param event The MouseEvent object representing the mouse wheel event.
+ */
 void mouseWheel(MouseEvent event) {
   s_ApplicationClass.onMouseWheel(event.getCount());
 }
