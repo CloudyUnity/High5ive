@@ -1,3 +1,11 @@
+/**
+ * F. Wright
+ *
+ * FlightMap3D class represents a 3D flight map screen widget with OpenGL GLSL shaders and P3D features.
+ *
+ * @extends Widget
+ * @implements IDraggable, IWheelInput
+ */
 class FlightMap3D extends Widget implements IDraggable, IWheelInput {
 
   private EventType<MouseDraggedEventInfoType> m_onDraggedEvent = new EventType<MouseDraggedEventInfoType>();
@@ -38,6 +46,15 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   // ASSET LOADING
   //================================================
 
+  /**
+   * Constructor for FlightMap3D class.
+   * Initializes the widget with given position and scale, loads initial assets asynchronously.
+   *
+   * @param posX The x-coordinate of the widget.
+   * @param posY The y-coordinate of the widget.
+   * @param scaleX The horizontal scale of the widget.
+   * @param scaleY The vertical scale of the widget.
+   */
   public FlightMap3D(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
     m_texSkySphereStars = loadImage("data/Images/Stars2k.jpg"); // Loaded early for loading screen image
@@ -54,54 +71,56 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_onWheelEvent.addHandler(e -> onWheelHandler(e));
   }
 
+  /**
+   * Initializes assets asynchronously. This includes creating 3D shapes, loading textures, and loading shaders.
+   * The assets loaded include the Earth model, the Sun model, the sky sphere model, various textures for Earth, Sun, and sky, and several shaders.
+   */
   private void initAssetsAsync() {
     m_modelEarth = s_3D.createShape(SPHERE, m_earthRadius);
+    m_modelSun = s_3D.createShape(SPHERE, 40);
+    m_modelSkySphere = s_3D.createShape(SPHERE, 3840);
+
+    m_modelSun.disableStyle();
+    m_modelSkySphere.disableStyle();
     m_modelEarth.disableStyle();
+
     m_texEarthDay = loadImage("data/Images/EarthDay2k.jpg");
     m_texEarthNight = loadImage("data/Images/EarthNight2k.jpg");
     m_texEarthNormalMap = loadImage("data/Images/EarthNormalAlt.jpg");
-
-    m_shaderEarth = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
-    m_shaderEarth.set("texDay", m_texEarthDay);
-    m_shaderEarth.set("texNight", m_texEarthNight);
-    m_shaderEarth.set("normalMap", m_texEarthNormalMap);
-
-    if (DEBUG_FAST_LOADING_3D) {
-      m_assetsLoaded = true;
-      return;
-    }
-
-    m_modelSun = s_3D.createShape(SPHERE, 40);
-    m_modelSkySphere = s_3D.createShape(SPHERE, 3840);
-    m_modelSun.disableStyle();
-    m_modelSkySphere.disableStyle();
-
     m_texSun = loadImage("data/Images/Sun2k.jpg");
     m_texDitherNoise = loadImage("data/Images/noise.png");
     m_texEarthSpecularMap = loadImage("data/Images/EarthSpecular2k.tif");
+
+    m_shaderEarth = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
     m_shaderSun = loadShader("data/Shaders/SunFrag.glsl", "data/Shaders/BaseVert.glsl");
     m_shaderPP = loadShader("data/Shaders/PostProcessing.glsl");
     m_shaderSkySphere = loadShader("data/Shaders/SkyboxFrag.glsl", "data/Shaders/SkyboxVert.glsl");
 
+    m_shaderEarth.set("texDay", m_texEarthDay);
+    m_shaderEarth.set("texNight", m_texEarthNight);
+    m_shaderEarth.set("normalMap", m_texEarthNormalMap);
     m_shaderEarth.set("specularMap", m_texEarthSpecularMap);
     m_shaderSun.set("tex", m_texSun);
     m_shaderPP.set("noise", m_texDitherNoise);
     m_shaderSkySphere.set("tex", m_texSkySphereStars);
-    setPermaDay(false);
 
+    setPermaDay(false);
     m_assetsLoaded = true;
   }
 
+  /**
+   * Loads flight data into the 3D flight map. Stores data for all airport markers and connections.
+   *
+   * @param flights The array of FlightType containing flight data.
+   * @param queries The QueryManagerClass object for querying airport data.
+   */
   public void loadFlights(FlightType[] flights, QueryManagerClass queries) {
     m_flightDataLoaded = false;
-    int count = flights.length;
     m_airportHashmap.clear();
-    
- 
 
-    if (DEBUG_FAST_LOADING_3D)
-      m_arcSegments = 5;
-    else if (count <= 6_000)
+    int count = flights.length;
+
+    if (count <= 6_000)
       m_arcSegments = 15;
     else if (count <= 12_000)
       m_arcSegments = 10;
@@ -109,13 +128,6 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
       m_arcSegments = 4;
 
     for (int i = 0; i < count; i++) {
-
-      /*   if (DEBUG_MODE && DEBUG_PRINT_3D_LOADING) {
-       println(flights[i].AirportOriginIndex + " " + flights[i].AirportDestIndex);
-       println(flights[i].CarrierCodeIndex + " " + flights[i].FlightNumber);
-       println("Flight " + i + " / " + flights.length);
-       }
-       */
       String originCode = queries.getCode(flights[i].AirportOriginIndex);
       String destCode = queries.getCode(flights[i].AirportDestIndex);
       AirportPoint3DType origin, dest;
@@ -134,7 +146,9 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
       } else
         dest = m_airportHashmap.get(destCode);
 
-      if (origin.Connections.contains(destCode) || dest.Connections.contains(originCode))
+      boolean originConnected = origin.Connections.contains(destCode);
+      boolean destConnected = dest.Connections.contains(originCode);
+      if (originConnected || destConnected)
         continue;
 
       origin.Connections.add(destCode);
@@ -145,6 +159,14 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_flightDataLoaded = true;
   }
 
+  /**
+   * Adds an airport point manually with the given latitude, longitude, and airport code.
+   *
+   * @param latitude The latitude of the airport.
+   * @param longitude The longitude of the airport.
+   * @param code The code of the airport.
+   * @return The AirportPoint3DType object representing the airport point.
+   */
   private AirportPoint3DType manualAddPoint(double latitude, double longitude, String code) {
     PVector pos = coordsToPointOnSphere(latitude, longitude, m_earthRadius);
     AirportPoint3DType point = new AirportPoint3DType(pos, code);
@@ -152,12 +174,20 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     return point;
   }
 
+  /**
+   * Caches points along the great circle arc between two given points.
+   *
+   * @param p1 The starting point of the arc.
+   * @param p2 The ending point of the arc.
+   * @return An ArrayList containing points along the arc.
+   */
   ArrayList<PVector> cacheArcPoints(PVector p1, PVector p2) {
-    float distance = p1.dist(p2);
-    float distMult = lerp(0.1f, 1.0f, distance / 700);
     ArrayList<PVector> cacheResult = new ArrayList<PVector>();
     cacheResult.ensureCapacity(m_arcSegments  + 1);
     cacheResult.add(p1);
+
+    float distance = p1.dist(p2);
+    float distMult = lerp(0.1f, 1.0f, distance / 700.0f);
 
     for (int i = 1; i < m_arcSegments; i++) {
       float t = i / (float)m_arcSegments;
@@ -174,6 +204,9 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   // RENDERING
   //================================================
 
+  /**
+   * Overrides the draw method to render the 3D flight map.
+   */
   @ Override
     public void draw() {
     super.draw();
@@ -200,35 +233,29 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
 
     PVector lightDir = new PVector(cos(m_totalTimeElapsed), 0, sin(m_totalTimeElapsed));
     m_shaderEarth.set("lightDir", lightDir);
-    // m_earthShader.set("mousePos", (float)mouseX / (float)width, (float)mouseY / (float)height);
     m_rotationYModified = m_earthRotation.y + m_totalTimeElapsed;
     m_earthPos.z = EARTH_Z_3D + m_zoomLevel;
-
-    if (!DEBUG_FAST_LOADING_3D)
-      m_shaderSun.set("texTranslation", 0, m_totalTimeElapsed * 0.5f);
+    m_shaderSun.set("texTranslation", 0, m_totalTimeElapsed * 0.5f);
 
     drawEarth();
-
-    if (!DEBUG_FAST_LOADING_3D) {
-      drawSun(lightDir);
-    }
-
+    drawSun(lightDir);
     drawMarkersAndConnections();
     if (m_textEnabled)
       drawMarkerText();
 
-    if (DEBUG_MODE && DITHER_MODE_3D && !DEBUG_FAST_LOADING_3D)
+    if (DEBUG_MODE && DITHER_MODE_3D)
       s_3D.filter(m_shaderPP);
 
-    if (!DEBUG_FAST_LOADING_3D) {
-      drawSkybox();
-    }
+    drawSkybox();
 
     s_3D.endDraw();
 
     image(s_3D, 0, 0);
   }
 
+  /**
+   * Draws the Earth on the 3D canvas.
+   */
   void drawEarth() {
     s_3D.beginDraw();
     s_3D.clear();
@@ -248,6 +275,11 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     s_3D.popMatrix();
   }
 
+  /**
+   * Draws the Sun on the 3D canvas.
+   *
+   * @param lightDir The direction vector of the sunlight.
+   */
   void drawSun(PVector lightDir) {
     PVector sunTranslation = lightDir.copy().mult(-3000);
     s_3D.shader(m_shaderSun);
@@ -265,6 +297,9 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     s_3D.textureWrap(CLAMP);
   }
 
+  /**
+   * Draws the skybox on the 3D canvas.
+   */
   void drawSkybox() {
     s_3D.pushMatrix();
     s_3D.shader(m_shaderSkySphere);
@@ -277,6 +312,9 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     s_3D.popMatrix();
   }
 
+  /**
+   * Draws airport markers and connections on the 3D canvas.
+   */
   void drawMarkersAndConnections() {
     s_3D.strokeWeight(ARC_SIZE_3D);
     s_3D.noFill();
@@ -305,6 +343,9 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     s_3D.popMatrix();
   }
 
+  /**
+   * Draws text labels for airport markers on the 3D canvas.
+   */
   void drawMarkerText() {
     s_3D.fill(255, 255, 255, 255);
     s_3D.textAlign(CENTER);
@@ -326,6 +367,11 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     }
   }
 
+  /**
+   * Draws great circle arcs between airports on the 3D canvas.
+   *
+   * @param point The airport point for which to draw the arcs.
+   */
   void drawGreatCircleArcFast(AirportPoint3DType point) {
     for (var connection : point.ConnectionArcPoints) {
       PVector lastPos = connection.get(0);
@@ -353,22 +399,42 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   // INPUT
   //================================================
 
+  /**
+   * Gets the event type for mouse dragged events.
+   *
+   * @return The event type for mouse dragged events.
+   */
   public EventType<MouseDraggedEventInfoType> getOnDraggedEvent() {
     return m_onDraggedEvent;
   }
 
+  /**
+   * Handles mouse dragged events.
+   *
+   * @param e The mouse dragged event information.
+   */
   private void onDraggedHandler(MouseDraggedEventInfoType e) {
     PVector deltaDrag = new PVector( -(e.Y - e.PreviousPos.y) * 2, e.X - e.PreviousPos.x);
     deltaDrag.mult(s_deltaTime).mult(VERTICAL_DRAG_SPEED_3D);
     m_earthRotationalVelocity.add(deltaDrag);
   }
 
+  /**
+   * Gets the event type for mouse wheel events.
+   *
+   * @return The event type for mouse wheel events.
+   */
   public EventType<MouseWheelEventInfoType> getOnMouseWheelEvent() {
     return m_onWheelEvent;
   }
 
+  /**
+   * Handles mouse wheel events.
+   *
+   * @param e The mouse wheel event information.
+   */
   private void onWheelHandler(MouseWheelEventInfoType e) {
-    m_zoomLevel -= e.wheelCount * MOUSE_SCROLL_STRENGTH_3D;
+    m_zoomLevel -= e.WheelCount * MOUSE_SCROLL_STRENGTH_3D;
     m_zoomLevel = clamp(m_zoomLevel, -500, 350);
   }
 
@@ -376,31 +442,67 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   // SETTINGS
   //================================================
 
+  /**
+   * Sets the duration and delay for the growth of arcs.
+   *
+   * @param timeTakenMillis The time taken for the arcs to grow, in milliseconds.
+   * @param delay The delay before the arcs start growing, in milliseconds.
+   */
   public void setArcGrowMillis(float timeTakenMillis, int delay) {
     m_arcStartGrowMillis = millis() + delay;
     m_arcGrowMillis = timeTakenMillis;
   }
 
+  /**
+   * Sets whether the day is permanent.
+   *
+   * @param enabled True to enable permanent day, false otherwise.
+   */
   public void setPermaDay(boolean enabled) {
     m_shaderEarth.set("permaDay", enabled ? 10.0f : 0.0f);
   }
 
+  /**
+   * Sets whether connections are enabled.
+   *
+   * @param enabled True to enable connections, false otherwise.
+   */
   public void setConnectionsEnabled(boolean enabled) {
     m_connectionsEnabled = enabled;
   }
 
+  /**
+   * Sets whether text is enabled.
+   *
+   * @param enabled True to enable text, false otherwise.
+   */
   public void setTextEnabled(boolean enabled) {
     m_textEnabled = enabled;
   }
 
+  /**
+   * Sets whether markers are enabled.
+   *
+   * @param enabled True to enable markers, false otherwise.
+   */
   public void setMarkersEnabled(boolean enabled) {
     m_markersEnabled = enabled;
   }
 
+  /**
+   * Sets whether time is locked.
+   *
+   * @param enabled True to lock time, false otherwise.
+   */
   public void setLockTime(boolean enabled) {
     m_lockTime = enabled;
   }
 
+  /**
+   * Sets the speed of the day cycle.
+   *
+   * @param speed The speed of the day cycle.
+   */
   public void setDayCycleSpeed(float speed) {
     m_dayCycleSpeed = speed;
   }

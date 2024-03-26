@@ -1,3 +1,4 @@
+// Data type for event info 
 class EventInfoType {
   public Widget Widget;
   public int X, Y;
@@ -9,42 +10,44 @@ class EventInfoType {
   }
 }
 
+// ...
 class EventType<T extends EventInfoType> {
-  ArrayList<Consumer<T>> m_eventHandlers;
-
-  public EventType() {
-    m_eventHandlers = new ArrayList<Consumer<T>>();
-  }
+  ArrayList<Consumer<T>> EventHandlers = new ArrayList<Consumer<T>>();
 
   public void addHandler(Consumer<T> handler) {
     if (handler != null)
-      m_eventHandlers.add(handler);
+      EventHandlers.add(handler);
   }
 
   public void raise(T e) {
-    for (Consumer<T> handler : m_eventHandlers)
+    for (Consumer<T> handler : EventHandlers)
       handler.accept(e);
   }
 }
 
+// ...
 class StringEnteredEventInfoType extends EventInfoType {
-  public String data;
+  public String Data;
+  
   public StringEnteredEventInfoType(int x, int y, String data, Widget widget) {
     super(x, y, widget);
-    this.data = data;
+    Data = data;
   }
 }
 
+// ...
 class KeyPressedEventInfoType extends EventInfoType {
-  public char pressedKey;
-  public int pressedKeyCode;
+  public char PressedKey;
+  public int PressedKeyCode;
+  
   public KeyPressedEventInfoType(int x, int y, char k, int kc, Widget widget) {
     super(x, y, widget);
-    pressedKey = k;
-    pressedKeyCode = kc;
+    PressedKey = k;
+    PressedKeyCode = kc;
   }
 }
 
+// ...
 class MouseDraggedEventInfoType extends EventInfoType {
   public PVector PreviousPos;
 
@@ -54,6 +57,7 @@ class MouseDraggedEventInfoType extends EventInfoType {
   }
 }
 
+// ...
 class MouseMovedEventInfoType extends EventInfoType {
   public PVector PreviousPos;
 
@@ -63,6 +67,7 @@ class MouseMovedEventInfoType extends EventInfoType {
   }
 }
 
+// ...
 class SwitchScreenEventInfoType extends EventInfoType {
   public String NewScreenId;
 
@@ -72,20 +77,22 @@ class SwitchScreenEventInfoType extends EventInfoType {
   }
 }
 
+// ...
 class MouseWheelEventInfoType extends EventInfoType {
-  public int wheelCount;
+  public int WheelCount;
 
   public MouseWheelEventInfoType(int x, int y, int wheelCount, Widget widget) {
     super(x, y, widget);
-    this.wheelCount = wheelCount;
+    WheelCount = wheelCount;
   }
 }
 
+// ...
 class ListboxSelectedEntryChangedEventInfoType<T> extends EventInfoType {
-  public T data;
+  public T Data;
   public ListboxSelectedEntryChangedEventInfoType(int x, int y, T data, Widget widget) {
     super(x, y, widget);
-    this.data = data;
+    Data = data;
   }
 }
 

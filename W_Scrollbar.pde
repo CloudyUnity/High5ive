@@ -69,9 +69,13 @@ class ScrollbarUI extends Widget implements IClickable, IWheelInput, IDraggable 
 
   private void onMouseWheel(MouseWheelEventInfoType e) {
     if (getActive()) {
-      if (e.wheelCount < 0 && m_currentTopElement > 0)
+      boolean wheelCountNegative = e.WheelCount < 0;
+      boolean wheelCountPositive = e.WheelCount > 0;
+      boolean validElement = m_currentTopElement < m_numberOfElements - m_numberOfViewedElements; // This needs a better name but I don't understand it
+      
+      if (wheelCountNegative && m_currentTopElement > 0)
         m_currentTopElement--;
-      else if (e.wheelCount > 0 && m_currentTopElement < m_numberOfElements - m_numberOfViewedElements)
+      else if (wheelCountPositive && validElement)
         m_currentTopElement++;
     }
   }

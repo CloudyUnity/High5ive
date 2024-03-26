@@ -17,12 +17,9 @@ void setup() {
 
   s_DebugProfiler.startProfileTimer();
 
-  surface.setTitle("High5ive Flight Sim - 2024 v3.5.2b LTS");
-  surface.setResizable(!FULLSCREEN_ENABLED);
-  surface.setLocation(0, 0);
+  surface.setTitle("High5ive Flight Sim");
 
   frameRate(FRAME_RATE);
-
   textFont(createFont("Century Gothic Bold", 48, true));
 
   s_3D = createGraphics(width, height, P3D);

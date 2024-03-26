@@ -6,34 +6,36 @@ class UserQueryUI extends Widget {
   private ArrayList<FlightQueryType> m_activeQueries; // All query types are ordered like so (Day, Airline, FlightNum, Origin, Dest, SchDep, Dep, Depdelay, SchArr, Arr, ArrDelay, Cancelled, Dievrted, Miles  )
   private ArrayList<FlightQueryType> m_flightQueries;
   private ListboxUI m_queryList;
-  private TextboxUI m_day;
+  private TextboxUI m_Origin;
+  private TextboxUI m_Dest;
+  private TextboxUI m_Distance;
   private ButtonUI  clearListButton;
   private ButtonUI  removeSelectedButton;
   private ButtonUI  addItemButton;
   private ButtonUI  loadDataButton;
+  private ButtonUI  setOperatorsBttn;
   private QueryLocationType m_location;
   public int m_listCounter;
-  private FlightQueryType m_dayQuery;
+  private FlightQueryType m_OriginQuery;
+  private FlightQueryType m_DestQuery;
+  private FlightQueryType m_DistanceQuery;
+  private FlightQueryType m_CancelledQuery;
   private FlightType[] m_flights;
   private FlightMap3D m_flightMap3D;
-
-
-  private FlightMultiDataType m_flightsLists;
-
-
   private Screen m_screen;
 
+  private FlightMultiDataType m_flightsLists;
 
   UserQueryUI(int posX, int posY, int scaleX, int scaleY, QueryManagerClass queryManager, Screen screen) {
     super(posX, posY, scaleX, scaleY);
 
-    m_screen = screen;
     m_queryManager = queryManager;
+    m_screen = screen;
 
     m_queryList = new ListboxUI<String>(20, 650, 200, 400, 40, v -> v);
-    m_queries = new ArrayList<String>();
 
     m_flightQueries = new ArrayList<FlightQueryType>();
+    m_activeQueries = new ArrayList<FlightQueryType>();
 
     addWidget(m_queryList);
 
@@ -41,15 +43,14 @@ class UserQueryUI extends Widget {
     addItemButton = new ButtonUI(20, 600, 80, 20);
     addWidget(addItemButton);
     addItemButton.setText("Add item");
-    addItemButton.getOnClickEvent().addHandler(e -> saveQuery(m_day));
-
+    addItemButton.getOnClickEvent().addHandler(e -> saveAllQueries());
 
     clearListButton = new ButtonUI(120, 600, 80, 20);
     addWidget(clearListButton);
     clearListButton.setText("Clear");
     clearListButton.getOnClickEvent().addHandler(e -> clearQueries());
 
-    removeSelectedButton = new ButtonUI(220, 600, 80, 20);
+    removeSelectedButton = new ButtonUI(120, 500, 80, 20);
     addWidget(removeSelectedButton);
     removeSelectedButton.setText("Remove selected");
     removeSelectedButton.getOnClickEvent().addHandler(e -> m_queryList.removeSelected());
@@ -59,23 +60,39 @@ class UserQueryUI extends Widget {
     loadDataButton.setText("Load Data");
     loadDataButton.getOnClickEvent().addHandler(e -> loadData());
 
-    m_day =  new TextboxUI(20, 500, 160, 30);
-    addWidget(m_day);
-    m_day.setPlaceholderText("Kilometers (Greater than)");
+    setOperatorsBttn = new ButtonUI(220, 700, 180, 120);
+    addWidget(loadDataButton);
+    loadDataButton.setText("Load Data");
+    loadDataButton.getOnClickEvent().addHandler(e -> setOperators());
+    
+    m_Origin =  new TextboxUI(20, 500, 160, 30);
+    addWidget(m_Origin);
+    m_Origin.setPlaceholderText("Origin");
+
+    m_OriginQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US);
+    m_flightQueries.add(m_OriginQuery);
 
 
+    m_Dest =  new TextboxUI(20, 550, 160, 30);
+    addWidget(m_Dest);
+    m_Dest.setPlaceholderText("Destination");
 
 
-    m_dayQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US, queryManager);
+    m_DestQuery = new FlightQueryType(QueryType.AIRPORT_DEST_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US);
+    m_flightQueries.add(m_DestQuery);
+    
+    m_Distance =  new TextboxUI(20, 450, 160, 30);
+    addWidget(m_Distance);
+    m_Distance.setPlaceholderText("Kilometers ");
 
 
-    m_flightQueries.add(m_dayQuery);
-    //   m_flights = convertBinaryFileToFlightTypeAsync(String filename, int threadCount, QueryLocation queryLocation, int lineByteSize)
+    m_DistanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, QueryLocationType.US);
+    m_flightQueries.add(m_DestQuery);
+    
+   
 
-
-    // Initialise all UI elements
-    // Set handlers to functions below
-    //   For example, the "save" button should call saveQuery() when clicked
+    m_CancelledQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, QueryLocationType.US);
+    m_flightQueries.add(m_DestQuery);
   }
 
   public void insertBaseData(FlightMultiDataType flightData) {
@@ -90,63 +107,64 @@ class UserQueryUI extends Widget {
 
 
   private void loadData() {
+    FlightType[] result = m_flightsLists.US;
 
-    // Apply all saved queries to m_flightLists and apply result to the Consumer (m_onLoadDataEvent.accept(result))
-
-    FlightType[] result = null;
-
-    if (m_dayQuery == null) {
-      result = m_flightsLists.US;
-    } else {
-      result  = m_queryManager.queryFlights(m_flightsLists.US, m_dayQuery, m_dayQuery.QueryValue);
+    for (FlightQueryType query : m_activeQueries){
+    result  = m_queryManager.queryFlights(result, query, query.QueryValue);
     }
 
     //result = m_queryManager.getHead(m_flightsLists.WORLD , 10);
 
-    println(m_dayQuery.QueryValue);
+    println(m_OriginQuery.QueryValue);
     m_onLoadDataEvent.accept(result);
   }
+
 
   private void saveQuery( Widget inputField, FlightQueryType inputQuery) {
     // Saves currently written user input into a quer
     if (inputField instanceof TextboxUI) {
-      inputQuery.setQueryValue(((TextboxUI)inputField).getText());
-      m_activeQueries.add(inputQuery);
-      for(int i = 0; i < m_activeQueries.size() - 1; i++){
-      
-        if(m_activeQueries.get(i).QueryType == inputQuery.QueryType && m_activeQueries.get(i).QueryOperatorType == inputQuery.QueryOperatorType ){}
-      
+      if (((TextboxUI)inputField).getTextLength() > 0 ) {
+        int dayVal = m_queryManager.formatQueryValue(inputQuery.Type, ((TextboxUI)inputField).getText());
+        inputQuery.setQueryValue(dayVal);
+        m_activeQueries.add(inputQuery);
       }
-      // Adds to query output field textbox thing
-      m_queryList.add(((TextboxUI)inputField).getText() );
-      m_listCounter++;
+      
     }
-    // Set all user inputs back to default
-    inputQuery.setText("");
+    // Adds to query output field textbox thing
+    m_queryList.add(((TextboxUI)inputField).getText() );
+    m_listCounter++;
   }
+
+  private void saveAllQueries(){
+    saveQuery(m_Origin, m_OriginQuery);
+    saveQuery(m_Dest, m_DestQuery);
+    saveQuery(m_Distance, m_DistanceQuery);
+  }
+
 
   private void changeOperator(FlightQueryType input, QueryOperatorType inputOperator) {
 
     input.setOperator(inputOperator);
   }
+  private void setOperators(){}
 
   private void clearQueries() {
     // Clear all currently saved user queries
-    m_dayQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US, m_queryManager);
+
+    m_OriginQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US);
+    m_DestQuery = new FlightQueryType(QueryType.AIRPORT_DEST_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US);
+    m_DistanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, QueryLocationType.US);
+    m_activeQueries = new ArrayList<FlightQueryType>();
     m_queryList.clear();
   }
 
   private void changeDataToUS() {
-
     m_location = QueryLocationType.US;
   }
 
   private void changeDataToWorld() {
-
     m_location = QueryLocationType.US;
   }
-
-
 
 
   private void addWidget(Widget widget) {
@@ -154,8 +172,6 @@ class UserQueryUI extends Widget {
     widget.setParent(this);
   }
 }
-
-
 
 // F.Wright  created Framework for UserQuery class 8pm 3/14/24
 // M.Poole   fixed issue with key input not detecting and implemented Listbox Functionality

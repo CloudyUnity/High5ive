@@ -9,44 +9,45 @@ class ApplicationClass {
 
   private EventType<SwitchScreenEventInfoType> m_onSwitchEvent = new EventType<SwitchScreenEventInfoType>();
 
-  void init() {
+  ScreenCharts m_screenCharts = null;
+  Screen3DFM m_screen3DFM = null;
+
+  // This initialise screens and loading the data
+  public void init() {
     m_queryManager.init();
 
     m_onSwitchEvent.addHandler(e -> switchScreen(e));
 
-    Screen1 screen1 = new Screen1(SCREEN_1_ID);
-    m_screens.add(screen1);
-
-    Screen2 screen2 = new Screen2(SCREEN_2_ID);
-    m_screens.add(screen2);
-
-    Screen screenDemo = new FlightCodesBarchartDemo(SWITCH_TO_DEMO_ID);
-    m_screens.add(screenDemo);
-
-    TwoDMapScreen screenFlightMap2D = new TwoDMapScreen(SCREEN_TWOD_MAP_ID, m_queryManager);
-    m_screens.add(screenFlightMap2D);
-
-    ScreenFlightMap screenFlightMap3D = new ScreenFlightMap(SCREEN_FLIGHT_MAP_ID, m_queryManager);
-    m_screens.add(screenFlightMap3D);
-
-    ScreenCharts screenCharts = new ScreenCharts(SCREEN_CHARTS_ID, m_queryManager);
-    m_screens.add(screenCharts);
-
-    m_screens.add(new AlexTestingScreen(ALEX_TESTING_ID));
-
-    m_currentScreen = screen1;
-    screen1.init();
+    initScreens();
 
     m_flightsManager.loadUSAndWorldFromFiles("hex_flight_data.bin", "hex_world_data.bin", 4, list -> {
       println("list.WORLD:" + list.US.length);
-      FlightType[] temp = m_queryManager.queryFlights(list.US, new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, QueryLocationType.US, m_queryManager), 100);
-      screenFlightMap3D.insertFlightData(list);
-      screenCharts.loadData(list.US);
+      m_screen3DFM.insertFlightData(list);
+      m_screenCharts.loadData(list.US);
     }
     );
   }
 
-  void frame() {
+  // This initialises screens
+  private void initScreens() {
+    ScreenHome screenHome = new ScreenHome(SCREEN_1_ID);
+    m_screens.add(screenHome);
+
+    TwoDMapScreen screenFlightMap2D = new TwoDMapScreen(SCREEN_TWOD_MAP_ID, m_queryManager);
+    m_screens.add(screenFlightMap2D);
+
+    m_screen3DFM = new Screen3DFM(SCREEN_FLIGHT_MAP_ID, m_queryManager);
+    m_screens.add(m_screen3DFM);
+
+    m_screenCharts = new ScreenCharts(SCREEN_CHARTS_ID, m_queryManager);
+    m_screens.add(m_screenCharts);
+
+    m_currentScreen = screenHome;
+    screenHome.init();
+  }
+
+  // This is called every frame
+  public void frame() {
     s_deltaTime = millis() - m_timeLastFrame;
     m_timeLastFrame = millis();
 
@@ -60,35 +61,42 @@ class ApplicationClass {
     }
   }
 
-  void onMouseMoved() {
+  // Called when the mouse position is different from the last frame
+  public void onMouseMoved() {
     if (m_currentScreen != null)
       m_currentScreen.onMouseMoved();
   }
 
-  void onMouseDragged() {
+  // Called when the mouse position is different from the last frame while the mouse button is pressed
+  public void onMouseDragged() {
     if (m_currentScreen != null)
       m_currentScreen.onMouseDragged();
   }
 
-  void onMouseClick() {
+  // Called when the mouse button is clicked
+  public void onMouseClick() {
     if (m_currentScreen != null)
       m_currentScreen.onMouseClick();
   }
 
-  void onMouseWheel(int wheelCount) {
+  // Called when the mouse wheel is scrolled
+  public void onMouseWheel(int wheelCount) {
     if (m_currentScreen != null)
       m_currentScreen.getOnMouseWheelEvent().raise(new MouseWheelEventInfoType(mouseX, mouseY, wheelCount, m_currentScreen));
   }
 
+  // Called when a key is pressed
   public void onKeyPressed(char k, int kc) {
     if (m_currentScreen != null)
       m_currentScreen.getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(mouseX, mouseY, k, kc, m_currentScreen));
   }
 
+  // Returns the event for switching screens
   public EventType<SwitchScreenEventInfoType> getOnSwitchEvent() {
     return m_onSwitchEvent;
   }
 
+  // Switches the screen using a screen ID constant
   private void switchScreen(SwitchScreenEventInfoType e) {
     e.Widget.getOnMouseExitEvent().raise((EventInfoType)e);
 

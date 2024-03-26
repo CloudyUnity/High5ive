@@ -46,6 +46,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
     m_children.add(m_dropdownButton);
   }
 
+  // Draws the dropdown
   @ Override
     public void draw() {
     super.draw();
@@ -55,69 +56,83 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
       m_listbox.draw();
   }
 
+  // Add an item to the data
   public void add(T data) {
     m_listbox.add(data);
   }
 
+  // Removes an item from the data
   public void remove(T data) {
     m_listbox.remove(data);
   }
 
+  // Gets the currently selected item in the dropdown
   public T getSelected() {
     return m_listbox.getSelectedEntry();
   }
 
+  // Gets the index of the currently selected item in the dropdown
   public int getSelectedIndex() {
     return m_listbox.getSelectedIndex();
   }
 
+  // Returns if the point is within the bounds of
   @ Override
     public boolean isPositionInside(int mx, int my) {
     if (m_listbox.getActive()) {
       return  mx >= m_pos.x && mx <= (m_pos.x + m_scale.x) &&
         my >= m_pos.y && my <= (m_pos.y + m_textbox.getScale().y + m_listbox.shownHeight());
-    } else {
-      return mx >= m_pos.x && mx <= (m_pos.x + m_scale.x) &&
+    } 
+    
+    return mx >= m_pos.x && mx <= (m_pos.x + m_scale.x) &&
         my >= m_pos.y && my <= (m_pos.y + m_textbox.getScale().y);
-    }
   }
 
+  // Returns the click event
   public EventType<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
 
+  // Returns the mouse wheel event
   public EventType<MouseWheelEventInfoType> getOnMouseWheelEvent() {
     return m_onMouseWheelMoved;
   }
 
+  // Returns the selection changed event
   public EventType<ListboxSelectedEntryChangedEventInfoType> getOnSelectionChanged() {
     return m_onSelectionChanged;
   }
   
+  // Sets whether the dropdown is searchable
   public void setSearchable(boolean searchable) {
     if (!searchable)  
       m_listbox.removeFilter();
     m_textbox.setUserModifiable(searchable);
   }
 
+  // Called when the dropdown button is clicked. Opens the listbox
   private void onDropdownButtonClicked(EventInfoType e) {
     if (m_listbox.getActive()) {
       closeList();
-    } else {
-      openList();
+      return;
     }
+    
+    openList();
   }
 
+  // Called when the listbox selection is changed
   private void onListboxSelectionChanged(ListboxSelectedEntryChangedEventInfoType<T> e) {
-    m_textbox.setText(m_getDisplayString.apply(e.data));
+    m_textbox.setText(m_getDisplayString.apply(e.Data));
     closeList();
     m_onSelectionChanged.raise(e);
   }
 
+  // Called when the listbox is clicked. Closes the listbox
   private void onListboxClick(EventInfoType e) {
     closeList();
   }
 
+  // Called when the mouse wheel is scrolled. Scrolls the listbox
   private void onMouseWheelMoved(MouseWheelEventInfoType e) {
     if (m_listbox.isFocused() || m_listbox.isPositionInside(e.X, e.Y)) {
       e.Widget = m_listbox;
@@ -125,28 +140,35 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
     }
   }
   
+  // Called when the textbox text is changed. Filters the listbox
   private void textboxChanged(KeyPressedEventInfoType e) {
     TextboxUI tb = ((TextboxUI)e.Widget);
+    
     if (tb.getText() == "") {
       m_listbox.removeFilter();
-    } else {
-      m_listbox.filterEntries(o -> m_getDisplayString.apply(o).startsWith(tb.getText()));
-    }
+      return;
+    } 
+    
+    m_listbox.filterEntries(o -> m_getDisplayString.apply(o).startsWith(tb.getText()));
   }
   
+  // Called when the textbox text is entered in with the "Enter" key
   private void textboxTextEntered(StringEnteredEventInfoType e) {
     m_listbox.selectFirstShown();
   }
 
+  // Called when the focus is lost for the dropdown. Closes the listbox
   private void onFocusLost(EventInfoType e) {
     closeList();
   }
 
+  // Opens the listbox
   private void openList() {
     m_listbox.setActive(true);
     m_dropdownButton.setText("-");
   }
 
+  // Closes the listbox
   private void closeList() {
     m_listbox.setActive(false);
     m_dropdownButton.setText("+");
