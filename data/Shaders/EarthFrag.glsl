@@ -21,17 +21,16 @@ varying vec3 normMapNormal;
 
 const vec3 diffuseCol = vec3(1,1,1);
 const float specularShininess = 50;
-const float normalStrength = 0.225f;
+const float normalStrength = 0.05f;
 
-void main() {
-  vec3 viewDir = -(fragPos.xyz / fragPos.w);
+void main() {  
   float diffuse = dot(fragNormal, -lightDir) + 0.2f + permaDay;
   diffuse = clamp(diffuse, 0, 1);
-
+  
   vec3 day = texture2D(texDay, vertTexCoord.st).xyz;
   vec3 night = texture2D(texNight, vertTexCoord.st).xyz;
   vec3 specular = texture2D(specularMap, vertTexCoord.st).xyz;
-  
+
   vec3 norm = texture2D(normalMap, vertTexCoord.st).xyz * vec3(normalStrength, normalStrength, 1.0);
   norm = norm * 2.0 - 1.0;
   mat3 TBN = mat3(fragTangent, fragBinormal, normMapNormal);
@@ -41,6 +40,7 @@ void main() {
 
   float strength = max(specular.r, 0.001);  
   vec3 reflection = reflect(lightDir, fragNormal);
+  vec3 viewDir = -(fragPos.xyz / fragPos.w);
   float spec = pow(max(dot(viewDir, reflection), 0.0), specularShininess);
 
   vec3 col = day * diffuse + night * (1-diffuse);
