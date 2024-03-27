@@ -122,7 +122,6 @@ class UserQueryUI extends Widget {
     m_flightQueries.add(m_DestQuery);
   }
 
-
   /**
    * M.Poole:
    * Inserts base flight data into the user interface for further querying and analysis.
@@ -140,7 +139,6 @@ class UserQueryUI extends Widget {
    *
    * @param dataEvent The event handler for loading flight data.
    */
-
   public void setOnLoadHandler(Consumer<FlightType[]> dataEvent) {
     m_onLoadDataEvent = dataEvent;
   }
@@ -157,7 +155,7 @@ class UserQueryUI extends Widget {
     for (FlightQueryType query : m_activeQueries) {
       result  = m_queryManager.queryFlights(result, query, query.QueryValue);
     }
-
+  
     //result = m_queryManager.getHead(m_flightsLists.WORLD , 10);
 
     println(m_OriginQuery.QueryValue);
