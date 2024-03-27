@@ -131,7 +131,7 @@ class UserQueryUI extends Widget {
  */
   public void insertBaseData(FlightMultiDataType flightData) {
     m_flightsLists = flightData;
-    m_onLoadDataEvent.accept(flightData.WORLD);
+    m_onLoadDataEvent.accept(new FlightType[0]);
   }
   
   /**
