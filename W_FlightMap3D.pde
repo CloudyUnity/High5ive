@@ -32,10 +32,10 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   private boolean m_assetsLoaded = false;
   private boolean m_drawnLoadingScreen = false;
   private boolean m_flightDataLoaded = false;
+  private boolean m_working = false;
 
   private float m_rotationYModified = 0;
   private float m_totalTimeElapsed = 0;
-  private int m_arcSegments;
 
   private HashMap<String, AirportPoint3DType> m_airportHashmap = new HashMap<String, AirportPoint3DType>();
 
@@ -121,16 +121,21 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
    * @param queries The QueryManagerClass object for querying airport data.
    */
   public void loadFlights(FlightType[] flights, QueryManagerClass queries) {
-    m_flightDataLoaded = false;
+    if (m_working)
+      return;
+    m_working = true;
 
     new Thread(() -> {
+      m_flightDataLoaded = false;
+
       s_DebugProfiler.startProfileTimer();
-      
+
       loadFlightsAsync(flights, queries);
-      
+
       s_DebugProfiler.printTimeTakenMillis("Converting flights to arc points");
-      
+
       m_flightDataLoaded = true;
+      m_working = false;
     }
     ).start();
   }
@@ -145,17 +150,52 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
    */
   public void loadFlightsAsync(FlightType[] flights, QueryManagerClass queries) {
     m_airportHashmap.clear();
+    ExecutorService executor = Executors.newFixedThreadPool(4);
+    CountDownLatch latch = new CountDownLatch(4);
 
     int count = flights.length;
+    int chunkSize = count / 4;
 
-    if (count <= 6_000)
-      m_arcSegments = 15;
-    else if (count <= 12_000)
-      m_arcSegments = 10;
-    else
-      m_arcSegments = 4;
+    for (int i = 0; i < 4; i++) {
+      int startPosition = i * chunkSize;
+      int endPosition = (i == 3) ? count : (i + 1) * chunkSize;
 
-    for (int i = 0; i < count; i++) {
+      executor.submit(() -> {
+        int arcSegments = 4;
+        if (count <= 6_000)
+        arcSegments = 15;
+        else if (count <= 12_000)
+        arcSegments = 10;
+
+        loadFlightsAsyncChunk(flights, queries, arcSegments, startPosition, endPosition);
+        latch.countDown();
+      }
+      );
+    }
+
+    try {
+      latch.await();
+    }
+    catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    executor.shutdown();
+  }
+
+  /**
+   * F. Wright
+   *
+   * Converts flight data to cached points in chunks
+   *
+   * @param flights The array of FlightType containing flight data.
+   * @param queries The QueryManagerClass object for querying airport data.
+   * @param arcSegments Amount of lines to be drawn for each arc
+   * @param startIndex Starting index of the array to convert
+   * @param endIndex Ending index of the array to convert
+   */
+  private void loadFlightsAsyncChunk(FlightType[] flights, QueryManagerClass queries, int arcSegments, int startIndex, int endIndex) {
+    for (int i = startIndex; i < endIndex; i++) {
       String originCode = queries.getCode(flights[i].AirportOriginIndex);
       String destCode = queries.getCode(flights[i].AirportDestIndex);
       AirportPoint3DType origin, dest;
@@ -181,7 +221,9 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
 
       origin.Connections.add(destCode);
       dest.Connections.add(originCode);
-      origin.ConnectionArcPoints.add(cacheArcPoints(origin.Pos, dest.Pos));
+
+      ArrayList<PVector> cachedPoints = cacheArcPoints(origin.Pos, dest.Pos, arcSegments);
+      origin.ConnectionArcPoints.add(cachedPoints);
     }
   }
 
@@ -211,20 +253,19 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
    * @param p2 The ending point of the arc.
    * @return An ArrayList containing points along the arc.
    */
-  ArrayList<PVector> cacheArcPoints(PVector p1, PVector p2) {
+  ArrayList<PVector> cacheArcPoints(PVector p1, PVector p2, int arcSegments) {
     ArrayList<PVector> cacheResult = new ArrayList<PVector>();
-    cacheResult.ensureCapacity(m_arcSegments  + 1);
+    cacheResult.ensureCapacity(arcSegments  + 1);
     cacheResult.add(p1);
 
     float distance = p1.dist(p2);
     float distMult = lerp(0.1f, 1.0f, distance / 700.0f);
-    
-    float arcSegments = m_arcSegments;
+
     if (distance > 200)
       arcSegments += 5;
 
     for (int i = 1; i < arcSegments; i++) {
-      float t = i / arcSegments;
+      float t = i / (float)arcSegments;
       float bonusHeight = distMult * ARC_HEIGHT_MULT_3D * t * (1-t) + 1;
       PVector pointOnArc = slerp(p1, p2, t).mult(m_earthRadius * bonusHeight);
       cacheResult.add(pointOnArc);
@@ -287,7 +328,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   /**
    * F. Wright
    *
-   * Draws the loading screen and loading test 
+   * Draws the loading screen and loading test
    */
   private void drawLoadingScreen() {
     image(m_texSkySphereStars, 0, 0, width, height);
@@ -403,7 +444,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
    */
   void drawMarkerText() {
     s_3D.fill(255, 255, 255, 255);
-    s_3D.textAlign(CENTER);   
+    s_3D.textAlign(CENTER);
     s_3D.textSize(TEXT_SIZE_3D);
 
     for (AirportPoint3DType point : m_airportHashmap.values()) {
@@ -416,12 +457,12 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
       s_3D.translate(point.Pos.x, point.Pos.y, point.Pos.z);
       s_3D.rotateY(-m_rotationYModified);
       s_3D.rotateX(-m_earthRotation.x);
-      
-      if (m_zoomLevel > 0){
+
+      if (m_zoomLevel > 0) {
         float scaleMult = 1 - (m_zoomLevel / 350.0f);
         scaleMult = (scaleMult * 0.6f) + 0.4f;
         s_3D.scale(scaleMult);
-      }        
+      }
 
       s_3D.text(point.Name, 0, 0);
       s_3D.popMatrix();
