@@ -213,9 +213,13 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
 
     float distance = p1.dist(p2);
     float distMult = lerp(0.1f, 1.0f, distance / 700.0f);
+    
+    float arcSegments = m_arcSegments;
+    if (distance > 200)
+      arcSegments += 5;
 
-    for (int i = 1; i < m_arcSegments; i++) {
-      float t = i / (float)m_arcSegments;
+    for (int i = 1; i < arcSegments; i++) {
+      float t = i / arcSegments;
       float bonusHeight = distMult * ARC_HEIGHT_MULT_3D * t * (1-t) + 1;
       PVector pointOnArc = slerp(p1, p2, t).mult(m_earthRadius * bonusHeight);
       cacheResult.add(pointOnArc);
