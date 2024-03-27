@@ -1,16 +1,15 @@
 // Engine
 final int FRAME_RATE = 75;
-final boolean FULLSCREEN_ENABLED = true;
 
 // Data/Files
-final int US_LINE_BYTE_SIZE = 24;
+final int US_LINE_BYTE_SIZE = 32;
 final int WORLD_LINE_BYTE_SIZE = 6;
 final String DATA_DIRECTOR_PATH = "/data/Preprocessed Data/";
 
 // Debug Options
 final boolean DEBUG_MODE = true; // Turns on various stats or console logging
 final int DEBUG_FPS_COUNTER_STORAGE = 30;
-final boolean DEBUG_FPS_ENABLED = true;
+final boolean DEBUG_FPS_ENABLED = false;
 final boolean DEBUG_PRINT_3D_LOADING = false;
 
 // Color Palette
@@ -28,7 +27,6 @@ final int COLOR_TEXT = #f9f8f8;
 final int COLOR_HIGHTLIGHT_1 = #f3de8a;
 final int COLOR_HIGHTLIGHT_2 = #eb9486;
 
-
 // Scene
 final int DEFAULT_FOREGROUND_COLOUR = CP_WHITE;
 final int DEFAULT_BACKGROUND_COLOUR = COLOR_BACKGROUND;
@@ -40,18 +38,15 @@ final int DEFAULT_SLIDER_FILLED_COLOUR = CP_BLUE;
 final int DEFAULT_TEXT_COLOUR_INSIDE = COLOR_TEXT;
 final int DEFAULT_TEXT_COLOUR_OUTSIDE = COLOR_TEXT;
 final int DEFAULT_SCREEN_COLOUR = COLOR_BACKGROUND;
-final float WIDGET_GROW_MODE_MULT = 1.1f;
 final int DEFAULT_WIDGET_ROUNDNESS_1 = 15;
 final int DEFAULT_WIDGET_ROUNDNESS_2 = 40;
 final float DEFAULT_WIDGET_STROKE = 3;
+final float WIDGET_GROW_MODE_MULT = 1.1f;
 
 // IDs
 final String SCREEN_1_ID = "Screen 1";
-final String SCREEN_2_ID = "Screen 2";
-final String SWITCH_TO_DEMO_ID = "Barchart demo screen";
 final String SCREEN_TWOD_MAP_ID = "Screen Flight Map 2D";
 final String SCREEN_FLIGHT_MAP_ID = "Screen Flight Map";
-final String ALEX_TESTING_ID = "Alex testing";
 final String SCREEN_CHARTS_ID = "Screen Charts";
 
 // Math
@@ -62,7 +57,6 @@ final PVector RIGHT_VECTOR = new PVector(1, 0, 0);
 final PVector FORWARD_VECTOR = new PVector(0, 0, 1);
 
 // 3D Flight Map
-final boolean DEBUG_FAST_LOADING_3D = false;
 final int EARTH_Z_3D = -20;
 final float VERTICAL_SCROLL_LIMIT_3D = 0.9f;
 final float VERTICAL_DRAG_SPEED_3D = 0.000003f;

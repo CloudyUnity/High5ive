@@ -7,12 +7,25 @@ class FlightMap2DUI extends Widget {
     m_mapImage = loadImage("data/Images/EarthDay2kNoIce.jpg");
   }
 
+  // Draws the map
   @ Override
     public void draw() {
     super.draw();
 
     fill(m_backgroundColour);
     image(m_mapImage, 200, 0, (displayWidth-200), (displayHeight-100));
+  }
+
+
+
+
+
+
+  void drawAirportPoint(int longitude, int lat)
+  {
+    int xpos = ((displayWidth/2) + 100 ) + longitude/180*(displayWidth  -  ((displayWidth/2) +100)) ;
+    int ypos = ((displayHeight- 100) / 2) + lat/90*((displayHeight-100) -((displayHeight-100)/2));
+    circle(xpos, ypos, 3);
   }
 }
 

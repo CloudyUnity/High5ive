@@ -1,13 +1,27 @@
-// This class is used for debug purposes only
-// Start the timer before beginning a task. Then once it's complete print the time using the printTimeTakenMillis() function
-// This uses a stack so you don't need to worry about possible overwriting or nested profilings.
+/**
+ * F. Wright
+ *
+ * Class for profiling code execution time.
+ */
 class DebugProfilerClass {
   private Stack<Long> m_timerStack = new Stack<Long>();
 
+  /**
+   * F. Wright
+   *
+   * Starts a new profile timer.
+   */
   public void startProfileTimer() {
     m_timerStack.push(System.nanoTime());
   }
 
+  /**
+   * F. Wright
+   *
+   * Prints the time taken in milliseconds since the last startProfileTimer() call.
+   *
+   * @param name The name of the profiled task.
+   */
   public void printTimeTakenMillis(String name) {
     for (int i = 1; i < m_timerStack.size(); i++)
       print("-");
@@ -16,6 +30,13 @@ class DebugProfilerClass {
     println("Milliseconds taken for " + name + " is " + millis);
   }
 
+  /**
+   * F. Wright
+   *
+   * Prints the time taken in seconds since the last startProfileTimer() call.
+   *
+   * @param name The name of the profiled task.
+   */
   public void printTimeTakenSeconds(String name) {
     for (int i = 1; i < m_timerStack.size(); i++)
       print("-");

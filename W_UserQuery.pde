@@ -1,38 +1,60 @@
+/**
+ * M.Poole:
+ * Represents a user interface for querying flight data. Manages user inputs and interactions
+ * for querying flight data and displaying results.
+ */
+
 class UserQueryUI extends Widget {
 
   private Consumer<FlightType[]> m_onLoadDataEvent;
 
   QueryManagerClass m_queryManager;
-  private ArrayList<String> m_queries; // All query types are ordered like so (Day, Airline, FlightNum, Origin, Dest, SchDep, Dep, Depdelay, SchArr, Arr, ArrDelay, Cancelled, Dievrted, Miles  )
+  private ArrayList<FlightQueryType> m_activeQueries; // All query types are ordered like so (Day, Airline, FlightNum, Origin, Dest, SchDep, Dep, Depdelay, SchArr, Arr, ArrDelay, Cancelled, Dievrted, Miles  )
   private ArrayList<FlightQueryType> m_flightQueries;
   private ListboxUI m_queryList;
-  private TextboxUI m_day;
+  private TextboxUI m_Origin;
+  private TextboxUI m_Dest;
+  private TextboxUI m_Distance;
   private ButtonUI  clearListButton;
   private ButtonUI  removeSelectedButton;
   private ButtonUI  addItemButton;
+  private ButtonUI  loadDataButton;
+  private ButtonUI  setOperatorsBttn;
+  private CheckboxUI m_Cancelled; 
   private QueryLocationType m_location;
   public int m_listCounter;
-  private FlightQueryType m_dayQuery;
+  private FlightQueryType m_OriginQuery;
+  private FlightQueryType m_DestQuery;
+  private FlightQueryType m_DistanceQuery;
+  private FlightQueryType m_CancelledQuery;
   private FlightType[] m_flights;
-
-
+  private FlightMap3D m_flightMap3D;
+  private Screen m_screen;
 
   private FlightMultiDataType m_flightsLists;
 
-
-  private Screen m_screen;
-
-
+/**
+ * M.Poole:
+ * Constructs a UserQueryUI object with the specified position, dimensions, query manager, and screen.
+ *
+ * @param posX         The x-coordinate of the user interface position.
+ * @param posY         The y-coordinate of the user interface position.
+ * @param scaleX       The width of the user interface.
+ * @param scaleY       The height of the user interface.
+ * @param queryManager The query manager responsible for handling flight data queries.
+ * @param screen       The screen where the user interface will be displayed.
+ */
+ 
   UserQueryUI(int posX, int posY, int scaleX, int scaleY, QueryManagerClass queryManager, Screen screen) {
     super(posX, posY, scaleX, scaleY);
 
-    m_screen = screen;
     m_queryManager = queryManager;
+    m_screen = screen;
 
     m_queryList = new ListboxUI<String>(20, 650, 200, 400, 40, v -> v);
-    m_queries = new ArrayList<String>();
 
     m_flightQueries = new ArrayList<FlightQueryType>();
+    m_activeQueries = new ArrayList<FlightQueryType>();
 
     addWidget(m_queryList);
 
@@ -40,91 +62,204 @@ class UserQueryUI extends Widget {
     addItemButton = new ButtonUI(20, 600, 80, 20);
     addWidget(addItemButton);
     addItemButton.setText("Add item");
-    addItemButton.getOnClickEvent().addHandler(e -> saveQuery(m_day));
-
+    addItemButton.getOnClickEvent().addHandler(e -> saveAllQueries());
 
     clearListButton = new ButtonUI(120, 600, 80, 20);
     addWidget(clearListButton);
     clearListButton.setText("Clear");
     clearListButton.getOnClickEvent().addHandler(e -> clearQueries());
 
-    removeSelectedButton = new ButtonUI(220, 600, 80, 20);
+    removeSelectedButton = new ButtonUI(120, 500, 80, 20);
     addWidget(removeSelectedButton);
     removeSelectedButton.setText("Remove selected");
     removeSelectedButton.getOnClickEvent().addHandler(e -> m_queryList.removeSelected());
 
-    m_day =  new TextboxUI(20 + posX, 500 + posY, 160, 30);
-    addWidget(m_day);
-    m_day.setPlaceholderText("Day");
+    loadDataButton = new ButtonUI(220, 500, 180, 120);
+    addWidget(loadDataButton);
+    loadDataButton.setText("Load Data");
+    loadDataButton.getOnClickEvent().addHandler(e -> loadData());
 
-
+    setOperatorsBttn = new ButtonUI(220, 700, 180, 120);
+    addWidget(loadDataButton);
+    loadDataButton.setText("Load Data");
+    loadDataButton.getOnClickEvent().addHandler(e -> setOperators());
     
-    m_dayQuery = new FlightQueryType(QueryType.DAY, QueryOperatorType.EQUAL, QueryLocationType.US, queryManager);
+    m_Origin =  new TextboxUI(20, 500, 160, 30);
+    addWidget(m_Origin);
+    m_Origin.setPlaceholderText("Origin");
+    
 
-    m_flightQueries.add(m_dayQuery);
-    //   m_flights = convertBinaryFileToFlightTypeAsync(String filename, int threadCount, QueryLocation queryLocation, int lineByteSize)
+    m_OriginQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US);
+    m_flightQueries.add(m_OriginQuery);
 
 
-    // Initialise all UI elements
-    // Set handlers to functions below
-    //   For example, the "save" button should call saveQuery() when clicked
+    m_Dest =  new TextboxUI(20, 550, 160, 30);
+    addWidget(m_Dest);
+    m_Dest.setPlaceholderText("Destination");
+
+
+    m_DestQuery = new FlightQueryType(QueryType.AIRPORT_DEST_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US);
+    m_flightQueries.add(m_DestQuery);
+    
+    m_Distance =  new TextboxUI(20, 450, 160, 30);
+    addWidget(m_Distance);
+    m_Distance.setPlaceholderText("Kilometers ");
+
+
+    m_DistanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, QueryLocationType.US);
+    m_flightQueries.add(m_DestQuery);
+    
+    m_Cancelled = new CheckboxUI(20, 250, 25 ,25, "Cancelled");
+    addWidget(m_Cancelled);
+    m_Cancelled.setGrowScale(1.05);
+    m_Cancelled.getOnClickEvent().addHandler(e -> changeOperator( m_CancelledQuery, QueryOperatorType.EQUAL));
+   // m_Cancelled.getLabel().setTextXOffset(0);
+    
+    //m_Cancelled.getLabel().setCentreAligned(true);
+    //m_Cancelled.getLabel().setScale(130, 50);
+    
+    m_CancelledQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.EQUAL, QueryLocationType.US);
+    m_flightQueries.add(m_DestQuery);
   }
 
+
+/**
+ * M.Poole:
+ * Inserts base flight data into the user interface for further querying and analysis.
+ *
+ * @param flightData The flight data to be inserted into the interface.
+ */
   public void insertBaseData(FlightMultiDataType flightData) {
     m_flightsLists = flightData;
     m_onLoadDataEvent.accept(flightData.US);
     println("The first flights day in US: " + m_flightsLists.US[0].Day);
   }
+  /**
+ * M.Poole:
+ * Sets the handler for the data load event. This event occurs when flight data needs to be loaded.
+ *
+ * @param dataEvent The event handler for loading flight data.
+ */
 
   public void setOnLoadHandler(Consumer<FlightType[]> dataEvent) {
     m_onLoadDataEvent = dataEvent;
   }
 
+
+/**
+ * M.Poole:
+ * Loads flight data based on the active queries. Queries the flight manager for relevant data
+ * based on user input queries and updates the displayed data accordingly.
+ */
   private void loadData() {
+    FlightType[] result = m_flightsLists.US;
 
-    // Apply all saved queries to m_flightLists and apply result to the Consumer (m_onLoadDataEvent.accept(result))
+    for (FlightQueryType query : m_activeQueries){
+    result  = m_queryManager.queryFlights(result, query, query.QueryValue);
+    }
 
-    FlightType[] result = null;
+    //result = m_queryManager.getHead(m_flightsLists.WORLD , 10);
 
+    println(m_OriginQuery.QueryValue);
     m_onLoadDataEvent.accept(result);
   }
 
-  private void saveQuery( TextboxUI inputTextbox) {
-    // Saves currently written user input into a query
-    m_queries.add(inputTextbox.getText());
+/**
+ * M.Poole:
+ * Saves a query based on the provided input field and query type. Captures user input and saves
+ * it as a query for further data retrieval and analysis.
+ *
+ * @param inputField The input field containing the user query.
+ * @param inputQuery The query to be saved.
+ */
+
+  private void saveQuery( Widget inputField, FlightQueryType inputQuery) {
+    // Saves currently written user input into a quer
+    if (inputField instanceof TextboxUI) {
+
+      if (((TextboxUI)inputField).getTextLength() > 0 ) {
+        int dayVal = m_queryManager.formatQueryValue(inputQuery.Type, ((TextboxUI)inputField).getText().toUpperCase());
+        inputQuery.setQueryValue(dayVal);
+        m_activeQueries.add(inputQuery);
+
+      }
+      
+    }
 
     // Adds to query output field textbox thing
-    m_queryList.add(inputTextbox.getText() );
+    m_queryList.add((((TextboxUI)inputField).getText()).toUpperCase() );
     m_listCounter++;
 
-    //Load New Query
-    //loadData();
-
     // Set all user inputs back to default
-    m_day.setText("");
+    ((TextboxUI)inputField).setText("");
+
+  }
+/**
+ * M.Poole:
+ * Saves all active queries entered by the user. Collects and stores all active queries
+ * for subsequent data retrieval and analysis.
+ */
+  private void saveAllQueries(){
+    saveQuery(m_Origin, m_OriginQuery);
+    saveQuery(m_Dest, m_DestQuery);
+    saveQuery(m_Distance, m_DistanceQuery);
   }
 
-  private void changeOperator() {
-  }
+/**
+ * M.Poole:
+ * Changes the operator for a given query. Modifies the operator used in a query based
+ * on user interaction or selection.
+ *
+ * @param input         The query for which the operator needs to be changed.
+ * @param inputOperator The new operator for the query.
+ */
+  private void changeOperator(FlightQueryType input, QueryOperatorType inputOperator) {
 
+    input.setOperator(inputOperator);
+  }
+  
+  
+  private void setOperators(){}
+  
+/**
+ * M.Poole:
+ * Clears all currently saved user queries. Resets the interface by removing all
+ * saved queries and resetting input fields.
+ */
   private void clearQueries() {
     // Clear all currently saved user queries
-    m_queries.clear();
+
+
+    m_OriginQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US);
+    m_DestQuery = new FlightQueryType(QueryType.AIRPORT_DEST_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US);
+    m_DistanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, QueryLocationType.US);
+    m_activeQueries = new ArrayList<FlightQueryType>();
+
     m_queryList.clear();
-https://github.com/CloudyUnity/High5ive/pull/290/conflict?name=W_UserQuery.pde&ancestor_oid=60a2e07e6de1a0f5baadd27634406172c785a754&base_oid=780bfbdbbd762c7709adad064c68aa9959c678b9&head_oid=5c486813ebac8a92f9ea13bd3455f579dd77545e  }
-
+  }
+/**
+ * M.Poole:
+ * Changes the data location to US. Updates the interface to reflect data relevant
+ * to the United States.
+ */
   private void changeDataToUS() {
-
     m_location = QueryLocationType.US;
   }
+  /**
+ * M.Poole:
+ * Changes the data location to World. Updates the interface to reflect global data.
+ */
 
   private void changeDataToWorld() {
-
     m_location = QueryLocationType.US;
   }
-
-
- 
+/**
+ * M.Poole:
+ * Adds a widget to the user interface. Incorporates a new widget into the interface layout
+ * for user interaction and data display.
+ *
+ * @param widget The widget to be added to the interface.
+ */
 
   private void addWidget(Widget widget) {
     m_screen.addWidget(widget);
@@ -132,17 +267,6 @@ https://github.com/CloudyUnity/High5ive/pull/290/conflict?name=W_UserQuery.pde&a
   }
 }
 
-
-
 // F.Wright  created Framework for UserQuery class 8pm 3/14/24
 // M.Poole   fixed issue with key input not detecting and implemented Listbox Functionality
-
-/*  TODO!!!!!!!!!!!!!
- 
- 1: Make loadData function as intended
- 2: Test If you can add and seperate inputs from multiple textboxes at once
- 4: Figure out how the f%&£ to switch data sets without breaking program
- 5: Other misc implementation (clearQueries, Seperate inputs etc)
- 
- 
- */
+// M.Poole   implemented single item search querying
