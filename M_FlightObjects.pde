@@ -1,7 +1,7 @@
 // Data type for flight information
 class FlightType { // 23 bytes total
-  public byte Day;                      // supports all querys
-  public byte Month;                    // supports all queries
+  public byte Month;                      // supports all querys
+  public byte Day;                    // supports all queries
   public short CarrierCodeIndex;        // only supports EQUAL or NOT_EQUAL
   public short FlightNumber;            // only supports EQUAL or NOT_EQUAL
   public short TailNumber;              // only supports EQUAL or NOT_EQUAL
@@ -14,20 +14,20 @@ class FlightType { // 23 bytes total
   public short ArrivalTime;             // supports all querys
   public short ArrivalDelay;            // supports all querys
   public byte Cancelled;                // only supports EQUAL or NOT_EQUAL
-  public byte Diverted;                  // only supports EQUAL or NOT_EQUAL
-  public short ScheduledDuration;        // supports all queries
+  public byte Diverted;                 // only supports EQUAL or NOT_EQUAL
+  public short ScheduledDuration;       // supports all queries
   public short ActualDuration;          // supports all queries
   public short KmDistance;              // supports all querys
 
   FlightType(
-    byte day, byte month, short carrierCodeIndex, short flightNumber, short tailNumber,
+    byte month, byte day, short carrierCodeIndex, short flightNumber, short tailNumber,
     short airportOriginIndex, short airportDestIndex, short scheduledDepartureTime,
     short departureTime, short departureDelay, short scheduledArrivalTime,
     short arrivalTime, short arrivalDelay, byte cancelled, byte diverted,
     short scheduledDuration, short duration, short kmDistance) {
 
-    this.Day = day;
     this.Month = month;
+    this.Day = day;
     this.CarrierCodeIndex = carrierCodeIndex;
     this.FlightNumber = flightNumber;
     this.TailNumber = tailNumber;

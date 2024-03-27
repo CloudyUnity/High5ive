@@ -156,15 +156,15 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
       AirportPoint3DType origin, dest;
 
       if (!m_airportHashmap.containsKey(originCode)) {
-        float latitude = queries.getLatitude(originCode);
-        float longitude = -queries.getLongitude(originCode);
+        float latitude = queries.getLatitudeFromIndex(flights[i].AirportOriginIndex);
+        float longitude = -queries.getLongitudeFromIndex(flights[i].AirportOriginIndex);
         origin = manualAddPoint(latitude, longitude, originCode);
       } else
         origin = m_airportHashmap.get(originCode);
 
       if (!m_airportHashmap.containsKey(destCode)) {
-        float latitude = queries.getLatitude(destCode);
-        float longitude = -queries.getLongitude(destCode);
+        float latitude = queries.getLatitudeFromIndex(flights[i].AirportDestIndex);
+        float longitude = -queries.getLongitudeFromIndex(flights[i].AirportDestIndex);
         dest = manualAddPoint(latitude, longitude, destCode);
       } else
         dest = m_airportHashmap.get(destCode);
@@ -213,9 +213,13 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
 
     float distance = p1.dist(p2);
     float distMult = lerp(0.1f, 1.0f, distance / 700.0f);
+    
+    float arcSegments = m_arcSegments;
+    if (distance > 200)
+      arcSegments += 5;
 
-    for (int i = 1; i < m_arcSegments; i++) {
-      float t = i / (float)m_arcSegments;
+    for (int i = 1; i < arcSegments; i++) {
+      float t = i / arcSegments;
       float bonusHeight = distMult * ARC_HEIGHT_MULT_3D * t * (1-t) + 1;
       PVector pointOnArc = slerp(p1, p2, t).mult(m_earthRadius * bonusHeight);
       cacheResult.add(pointOnArc);
@@ -278,7 +282,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   /**
    * F. Wright
    *
-   * Draws the loading screen and loading test
+   * Draws the loading screen and loading test 
    */
   private void drawLoadingScreen() {
     image(m_texSkySphereStars, 0, 0, width, height);
