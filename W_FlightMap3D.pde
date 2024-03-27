@@ -124,7 +124,12 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_flightDataLoaded = false;
 
     new Thread(() -> {
+      s_DebugProfiler.startProfileTimer();
+      
       loadFlightsAsync(flights, queries);
+      
+      s_DebugProfiler.printTimeTakenMillis("Converting flights to arc points");
+      
       m_flightDataLoaded = true;
     }
     ).start();
@@ -398,7 +403,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
    */
   void drawMarkerText() {
     s_3D.fill(255, 255, 255, 255);
-    s_3D.textAlign(CENTER);
+    s_3D.textAlign(CENTER);   
     s_3D.textSize(TEXT_SIZE_3D);
 
     for (AirportPoint3DType point : m_airportHashmap.values()) {
@@ -411,6 +416,12 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
       s_3D.translate(point.Pos.x, point.Pos.y, point.Pos.z);
       s_3D.rotateY(-m_rotationYModified);
       s_3D.rotateX(-m_earthRotation.x);
+      
+      if (m_zoomLevel > 0){
+        float scaleMult = 1 - (m_zoomLevel / 350.0f);
+        scaleMult = (scaleMult * 0.6f) + 0.4f;
+        s_3D.scale(scaleMult);
+      }        
 
       s_3D.text(point.Name, 0, 0);
       s_3D.popMatrix();
