@@ -131,9 +131,9 @@ class UserQueryUI extends Widget {
  */
   public void insertBaseData(FlightMultiDataType flightData) {
     m_flightsLists = flightData;
-    m_onLoadDataEvent.accept(flightData.US);
-    println("The first flights day in US: " + m_flightsLists.US[0].Day);
+    m_onLoadDataEvent.accept(flightData.WORLD);
   }
+  
   /**
  * M.Poole:
  * Sets the handler for the data load event. This event occurs when flight data needs to be loaded.
