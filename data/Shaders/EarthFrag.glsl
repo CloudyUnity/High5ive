@@ -26,7 +26,7 @@ const float normalStrength = 0.05f;
 void main() {  
   float diffuse = dot(fragNormal, -lightDir) + 0.2f + permaDay;
   diffuse = clamp(diffuse, 0, 1);
-  
+
   vec3 day = texture2D(texDay, vertTexCoord.st).xyz;
   vec3 night = texture2D(texNight, vertTexCoord.st).xyz;
   vec3 specular = texture2D(specularMap, vertTexCoord.st).xyz;
