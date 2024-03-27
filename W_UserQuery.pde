@@ -123,6 +123,7 @@ class UserQueryUI extends Widget {
   }
 
 
+
 /**
  * M.Poole:
  * Inserts base flight data into the user interface for further querying and analysis.
@@ -157,7 +158,7 @@ class UserQueryUI extends Widget {
     for (FlightQueryType query : m_activeQueries){
     result  = m_queryManager.queryFlights(result, query, query.QueryValue);
     }
-
+  
     //result = m_queryManager.getHead(m_flightsLists.WORLD , 10);
 
     println(m_OriginQuery.QueryValue);
