@@ -156,15 +156,15 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
       AirportPoint3DType origin, dest;
 
       if (!m_airportHashmap.containsKey(originCode)) {
-        float latitude = queries.getLatitude(originCode);
-        float longitude = -queries.getLongitude(originCode);
+        float latitude = queries.getLatitudeFromIndex(flights[i].AirportOriginIndex);
+        float longitude = -queries.getLongitudeFromIndex(flights[i].AirportOriginIndex);
         origin = manualAddPoint(latitude, longitude, originCode);
       } else
         origin = m_airportHashmap.get(originCode);
 
       if (!m_airportHashmap.containsKey(destCode)) {
-        float latitude = queries.getLatitude(destCode);
-        float longitude = -queries.getLongitude(destCode);
+        float latitude = queries.getLatitudeFromIndex(flights[i].AirportDestIndex);
+        float longitude = -queries.getLongitudeFromIndex(flights[i].AirportDestIndex);
         dest = manualAddPoint(latitude, longitude, destCode);
       } else
         dest = m_airportHashmap.get(destCode);
@@ -278,7 +278,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   /**
    * F. Wright
    *
-   * Draws the loading screen and loading test
+   * Draws the loading screen and loading test 
    */
   private void drawLoadingScreen() {
     image(m_texSkySphereStars, 0, 0, width, height);
