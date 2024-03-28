@@ -11,6 +11,7 @@ class ScreenCharts extends Screen {
   DropdownUI m_freqDD, m_scatterDDX, m_scatterDDY;
 
   QueryManagerClass m_queryRef;
+  UserQueryUI m_userQuery;
   FlightType[] m_cachedFlights = null;
 
   QueryType m_histQuery = null;
@@ -18,6 +19,8 @@ class ScreenCharts extends Screen {
   QueryType m_scatterQueryY = null;
 
   Widget m_selectedGraph;
+  
+  private boolean m_initialised = false;
 
   /**
    * F. Wright
@@ -31,6 +34,15 @@ class ScreenCharts extends Screen {
     super(screenId, DEFAULT_SCREEN_COLOUR);
 
     m_queryRef = query;
+
+    m_userQuery = new UserQueryUI(0, 0, 1, 1, m_queryRef, this);
+    addWidget(m_userQuery);
+    m_userQuery.setOnLoadHandler(flights -> {
+      loadData(flights);
+      if (m_initialised)
+        reloadData();
+    }
+    );
   }
 
   /**
@@ -41,16 +53,9 @@ class ScreenCharts extends Screen {
   @Override
     public void init() {
     super.init();
-    UserQueryUI uqui = new UserQueryUI(0, 0, 1, 1, m_queryRef, this);
-    addWidget(uqui);
-    uqui.setOnLoadHandler(flights -> {
-      loadData(flights);
-    }
-    );
 
     m_histogram = new HistogramChartUI<FlightType, Integer>(500, 100, 850, 850);
     addWidget(m_histogram);
-    m_histogram.setTitle("X-Day, Y-Frequency");
     m_selectedGraph = m_histogram;
 
     m_pieChart = new PieChartUI<FlightType, Integer>(width/2, height/2, 250);
@@ -151,6 +156,8 @@ class ScreenCharts extends Screen {
     returnBttn.setText("Return");
     returnBttn.setTextSize(25);
     returnBttn.setGrowScale(1.05);
+    
+    m_initialised = true;
   }
 
   /**
@@ -161,8 +168,19 @@ class ScreenCharts extends Screen {
    * @param flights The array of flight data to load.
    */
   public void loadData(FlightType[] flights) {
-    // m_cachedFlights = Arrays.copyOf(flights, 300_000); // (DEBUG PURPOSES)
     m_cachedFlights = flights;
+  }
+
+  /**
+   * F. Wright
+   *
+   * Inserts base data for the user query
+   *
+   * @param flights Flight data for both the US and WORLD datasets
+   */
+  public void insertBaseData(FlightMultiDataType flights) {
+    m_userQuery.insertBaseData(flights);
+    loadData(flights.US);
   }
 
   /**
@@ -186,8 +204,9 @@ class ScreenCharts extends Screen {
    * Reloads the frequency data (histogram and pie chart) using the cached flights.
    */
   public void reloadFreq() {
-    if (m_cachedFlights == null)
+    if (m_cachedFlights == null || m_histQuery == null)
       return;
+      
     s_DebugProfiler.startProfileTimer();
 
     m_histogram.removeData();
@@ -204,7 +223,7 @@ class ScreenCharts extends Screen {
     }
     );
     m_pieChart.setTranslationField(m_histQuery, m_queryRef);
-    
+
     s_DebugProfiler.printTimeTakenMillis("Reloading data for frequency charts");
   }
 
@@ -214,9 +233,9 @@ class ScreenCharts extends Screen {
    * Reloads the scatter plot data using the cached flights.
    */
   public void reloadScatter() {
-    if (m_cachedFlights == null)
+    if (m_cachedFlights == null || m_scatterQueryX == null || m_scatterQueryY == null)
       return;
-      
+
     s_DebugProfiler.startProfileTimer();
 
     m_scatterPlot.removeData();
@@ -230,7 +249,7 @@ class ScreenCharts extends Screen {
     }
     );
     m_scatterPlot.setAxisLabels(m_scatterQueryX.toString(), m_scatterQueryY.toString());
-    
+
     s_DebugProfiler.printTimeTakenMillis("Reloading data for scatter chart");
   }
 

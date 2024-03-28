@@ -37,6 +37,9 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
 
   private float m_rotationYModified = 0;
   private float m_totalTimeElapsed = 0;
+  private float m_loadingScreenDotChangeCooldown = 500.0f;
+  private float m_loadingScreenDotChangeTimer = 0;
+  private String m_loadingScreenString = "Loading.";
 
   private HashMap<String, AirportPoint3DType> m_airportHashmap = new HashMap<String, AirportPoint3DType>();
 
@@ -244,7 +247,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     PVector pos = coordsToPointOnSphere(latitude, longitude, m_earthRadius);
     AirportPoint3DType point = new AirportPoint3DType(pos, code);
     m_airportHashmap.put(code, point);
-    
+
     point.Color = color(COLOR_3D_MARKER);
 
     return point;
@@ -341,10 +344,22 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   private void drawLoadingScreen() {
     image(m_texSkySphereStars, 0, 0, width, height);
 
+    m_loadingScreenDotChangeTimer += s_deltaTime;
+    if (m_loadingScreenDotChangeTimer >= m_loadingScreenDotChangeCooldown) {
+      m_loadingScreenDotChangeTimer = 0;
+      
+      if (m_loadingScreenString.equals("Loading."))
+        m_loadingScreenString = "Loading..";
+      else if (m_loadingScreenString.equals("Loading.."))
+        m_loadingScreenString = "Loading...";
+      else if (m_loadingScreenString.equals("Loading..."))
+        m_loadingScreenString = "Loading.";
+    }
+
     textAlign(CENTER);
     fill(255, 255, 255, 255);
     textSize(50);
-    text("Loading...", width/2, height/2);
+    text(m_loadingScreenString, width/2, height/2);
   }
 
   /**
@@ -425,7 +440,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
    *
    * Draws airport markers and connections on the 3D canvas.
    */
-  void drawMarkersAndConnections() {    
+  void drawMarkersAndConnections() {
     s_3D.noFill();
 
     s_3D.pushMatrix();
