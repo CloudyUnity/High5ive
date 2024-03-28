@@ -12,6 +12,9 @@ class DebugProfilerClass {
    * Starts a new profile timer.
    */
   public void startProfileTimer() {
+    if (!DEBUG_MODE)
+      return;
+
     m_timerStack.push(System.nanoTime());
   }
 
@@ -23,11 +26,14 @@ class DebugProfilerClass {
    * @param name The name of the profiled task.
    */
   public void printTimeTakenMillis(String name) {
+    if (!DEBUG_MODE)
+      return;
+
     for (int i = 1; i < m_timerStack.size(); i++)
       print("-");
 
     double millis = (System.nanoTime() - m_timerStack.pop()) / (double)MILLI_TO_NANO;
-    println("Milliseconds taken for " + name + " is " + millis);
+    println("Milliseconds taken for [" + name + "] is " + millis + "ms");
   }
 
   /**
@@ -38,11 +44,14 @@ class DebugProfilerClass {
    * @param name The name of the profiled task.
    */
   public void printTimeTakenSeconds(String name) {
+    if (!DEBUG_MODE)
+      return;
+
     for (int i = 1; i < m_timerStack.size(); i++)
       print("-");
 
     double secs = (System.nanoTime() - m_timerStack.pop()) / (double)SECOND_TO_NANO;
-    println("Seconds taken for " + name + " is " + secs);
+    println("Seconds taken for [" + name + "] is " + secs + "s");
   }
 }
 

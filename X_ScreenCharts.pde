@@ -174,8 +174,10 @@ class ScreenCharts extends Screen {
     if (m_cachedFlights == null)
       return;
 
+    s_DebugProfiler.startProfileTimer();
     reloadFreq();
     reloadScatter();
+    s_DebugProfiler.printTimeTakenMillis("Reloading data for charts");
   }
 
   /**
@@ -186,6 +188,7 @@ class ScreenCharts extends Screen {
   public void reloadFreq() {
     if (m_cachedFlights == null)
       return;
+    s_DebugProfiler.startProfileTimer();
 
     m_histogram.removeData();
     m_histogram.addData(m_cachedFlights, f -> {
@@ -201,6 +204,8 @@ class ScreenCharts extends Screen {
     }
     );
     m_pieChart.setTranslationField(m_histQuery, m_queryRef);
+    
+    s_DebugProfiler.printTimeTakenMillis("Reloading data for frequency charts");
   }
 
   /**
@@ -211,6 +216,8 @@ class ScreenCharts extends Screen {
   public void reloadScatter() {
     if (m_cachedFlights == null)
       return;
+      
+    s_DebugProfiler.startProfileTimer();
 
     m_scatterPlot.removeData();
     m_scatterPlot.addData(m_cachedFlights,
@@ -223,6 +230,8 @@ class ScreenCharts extends Screen {
     }
     );
     m_scatterPlot.setAxisLabels(m_scatterQueryX.toString(), m_scatterQueryY.toString());
+    
+    s_DebugProfiler.printTimeTakenMillis("Reloading data for scatter chart");
   }
 
   /**

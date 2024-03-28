@@ -126,20 +126,13 @@ abstract class Widget {
    * Sets the x position of the widget.
    *
    * @param  x The new x position.
-   * @throws IllegalArgumentException when the x argument is negative.
    **/
   public void setPos(int x, int y) {
-    if (x < 0 || y < 0)
-      throw new IllegalArgumentException("Position cannot be negative.");
-
     m_basePos = new PVector(x, y);
     m_pos = m_basePos.copy();
   }
 
   public void setPos(PVector newPos) {
-    if (newPos.x < 0 || newPos.y < 0)
-      throw new IllegalArgumentException("Position cannot be negative.");
-
     m_basePos = newPos;
     m_pos = m_basePos.copy();
   }

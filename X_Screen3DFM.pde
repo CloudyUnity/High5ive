@@ -11,8 +11,10 @@ class Screen3DFM extends Screen {
   EmptyWidgetUI m_flightMapUIParent;
   UserQueryUI m_userQueryUI;
   FlightMultiDataType m_flights;
-
+  
+  private PVector m_offScreenUIPos = new PVector(-2000, 0);
   private boolean m_isQueryDisplayed = false;
+  private float m_switchUIStartTimeMillis = 0;
 
   /**
    * F. Wright
@@ -44,7 +46,8 @@ class Screen3DFM extends Screen {
     super.init();
 
     // ATTENTION MATTHEW, SEE HERE!
-    m_userQueryUI = new UserQueryUI(10000, 0, 1, 1, m_queryManager, this);
+    m_userQueryUI = new UserQueryUI(0, 0, 1, 1, m_queryManager, this);
+    m_userQueryUI.setPos(m_offScreenUIPos);
     addWidget(m_userQueryUI);
 
     m_userQueryUI.setOnLoadHandler(flights -> {
@@ -175,24 +178,33 @@ class Screen3DFM extends Screen {
   public void insertFlightData(FlightMultiDataType flights) {
     m_flights  = flights;
   }
+  
+  @Override
+  public void draw(){
+    super.draw();
+    
+    float frac = (millis() - m_switchUIStartTimeMillis) / SWITCH_SCREEN_DUR_3D;
+    frac = clamp(frac, 0, 1);
+    frac *= frac;
+        
+    PVector flightMapTargetPos = m_isQueryDisplayed ? m_offScreenUIPos : new PVector(0, 0);
+    PVector newFlightMapPos = PVector.lerp(m_flightMapUIParent.getPos(), flightMapTargetPos, frac);
+    m_flightMapUIParent.setPos(newFlightMapPos);
+    
+    PVector userQueryTargetPos = m_isQueryDisplayed ? new PVector(0, 0) : m_offScreenUIPos;
+    PVector newUserQueryPos = PVector.lerp(m_userQueryUI.getPos(), userQueryTargetPos, frac);
+    m_userQueryUI.setPos(newUserQueryPos);
+  }
 
   /**
-   * F. Wright
+   * M. Poole, F. Wright
    *
    * Switches between the flight map and the user query UI.
    * If the query UI is not displayed, it will be shown, and vice versa.
    */
   private void switchUI() {
-    if (!m_isQueryDisplayed) {
-      m_flightMapUIParent.setPos(10000, 0);
-      m_userQueryUI.setPos(0, 0);
-      m_isQueryDisplayed = true;
-      return;
-    }
-
-    m_flightMapUIParent.setPos(0, 0);
-    m_userQueryUI.setPos(10000, 0);
-    m_isQueryDisplayed = false;
+    m_isQueryDisplayed = !m_isQueryDisplayed;
+    m_switchUIStartTimeMillis = millis();
   }
 }
 
