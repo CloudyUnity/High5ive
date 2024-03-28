@@ -28,22 +28,26 @@ class ScreenHome extends Screen {
 
     float growScale = 1.05f;
 
-    ButtonUI switchTo2D = createButton(20, 20, 100, 100);
+    ButtonUI switchTo2D = createButton(500, 100, width - 600, 200);
     switchTo2D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_TWOD_MAP_ID));
     switchTo2D.setText("2D (WIP)");
     switchTo2D.setTextSize(25);
     switchTo2D.setGrowScale(growScale);
 
-    ButtonUI switchTo3D = createButton(170, 20, 100, 100);
+    ButtonUI switchTo3D = createButton(500, 400, width - 600, 200);
     switchTo3D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_FLIGHT_MAP_ID));
     switchTo3D.setText("3D");
     switchTo3D.setTextSize(25);
     switchTo3D.setGrowScale(growScale);
 
-    ButtonUI switchToCharts = createButton(500, 20, 100, 100);
+    ButtonUI switchToCharts = createButton(500, 700, width - 600, 200);
     switchToCharts.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_CHARTS_ID));
-    switchToCharts.setText("Charts (WIP)");
+    switchToCharts.setText("Charts");
     switchToCharts.setTextSize(25);
+    
+    LabelUI name = createLabel(100, 100, 200, 100, "High5ive");
+    name.setCentreAligned(true);
+    name.setTextSize(40);   
 
     switchToCharts.setGrowScale(growScale);
   }
@@ -59,3 +63,5 @@ class ScreenHome extends Screen {
 // CKM, implemented spin control for 3D map, 10:00 13/03
 // M. Orlowski, Added 2D calls, 12:00 13/03
 // M. Poole added TextBoxes and removed background 5pm 13/03
+// F.Wright Split HomeScreen into new File 26/03
+// CKM, fixed reversion issue, 17:00 28/03

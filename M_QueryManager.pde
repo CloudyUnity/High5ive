@@ -117,7 +117,7 @@ class QueryManagerClass {
   }
 
   // ...
-  public FlightType[] queryFlights(FlightType[] flightsList, FlightQueryType flightQuery, int queryValue) {
+  public FlightType[] queryFlights(FlightType[] flightsList, FlightQueryType flightQuery, int queryValue) {    
     if (!isLegalQuery(flightQuery)) {
       println("Error: FlightQuery.Type is illegal with FlightQuery.Operator");
       return flightsList;
@@ -157,7 +157,7 @@ class QueryManagerClass {
     default:
       println("Error: FlightQuery.Operator invalid");
       return flightsList;
-    }
+    }    
   }
 
   // ...

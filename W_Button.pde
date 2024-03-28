@@ -1,3 +1,11 @@
+/**
+ * A. Robertson
+ *
+ * A button widget.
+ *
+ * @extends Widget
+ * @implements IClickable
+ */
 class ButtonUI extends Widget implements IClickable {
   private EventType<EventInfoType> m_onClickEvent;
   private LabelUI m_label;
@@ -5,6 +13,16 @@ class ButtonUI extends Widget implements IClickable {
   private int m_highlightedColour = DEFAULT_HIGHLIGHT_COLOR;
   private boolean m_highlighted = false;
 
+  /**
+   * A. Robertson
+   *
+   * Constructs a new Button widget.
+   *
+   * @param posX The x position of the button.
+   * @param posY The y position of the button.
+   * @param scaleX The width of the button.
+   * @param scaleY The height of the button.
+   */
   public ButtonUI(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
     m_onClickEvent = new EventType<EventInfoType>();
@@ -17,7 +35,11 @@ class ButtonUI extends Widget implements IClickable {
     getOnMouseExitEvent().addHandler(e -> m_highlighted = false);
   }
 
-  // Draws the buttons outline
+  /**
+   * A. Robertson
+   *
+   * Draws the outline of the button.
+   */
   @ Override
     protected void drawOutline() {
     if (m_drawOutlineEnabled) {
@@ -30,7 +52,11 @@ class ButtonUI extends Widget implements IClickable {
       noStroke();
   }
 
-  // Draws the button and its text
+  /**
+   * A. Robertson
+   *
+   * Draws the button.
+   */
   @ Override
     public void draw() {
     super.draw();
@@ -41,39 +67,81 @@ class ButtonUI extends Widget implements IClickable {
     m_label.draw();
   }
 
-  // Returns click event
+  /**
+   * A. Robertson
+   *
+   * Gets the class's onClickEvent so that handlers can be added and it can be raised.
+   *
+   * @returns The onClickEvent of the class.
+   */
   public EventType<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
 
-  // Sets the button text
+  /**
+   * A. Robertson
+   *
+   * Sets the text inside the button.
+   *
+   * @param text The new text to be displayed inside the button.
+   */
   public void setText(String text) {
     m_label.setText(text);
   }
 
-  // Highlights buttons outline when mouse is hovering over it
+  /**
+   * A. Robertson
+   *
+   * Sets whether the button's outline will be highlighted when the mouse is inside it.
+   *
+   * @param highlightOutlineOnEnter Whether the button's outline will be highlighted with the mouse inside.
+   */
   public void setHighlightOutlineOnEnter(boolean highlightOutlineOnEnter) {
     if (!highlightOutlineOnEnter)
       setOutlineColour(color(m_outlineColour));
     m_highlightOutlineOnEnter = highlightOutlineOnEnter;
   }
 
-  // Sets the text size
+  /**
+   * A. Robertson
+   *
+   * Sets the text size of the button.
+   *
+   * @param textSize The new text size of the button.
+   */
   public void setTextSize(int textSize) {
     m_label.setTextSize(textSize);
   }
 
-  // Sets text X offset
+  /**
+   * A. Robertson
+   *
+   * Sets the number of pixels from the left side of the button that text will be drawn from.
+   *
+   * @param textXOffset The number of pixels from the left side blank before the text.
+   */
   public void setTextXOffset(int textXOffset) {
     m_label.setTextXOffset(textXOffset);
   }
 
-  // Sets text Y offset
+  /**
+   * A. Robertson
+   *
+   * Sets the number of pixels from the top side of the button that text will be drawn from.
+   *
+   * @param textYOffset The number of pixels from the top side blank before the text.
+   */
   public void setTextYOffset(int textYOffset) {
     m_label.setTextYOffset(textYOffset);
   }
 
-  // Returns the buttons label
+  /**
+   * A. Robertson
+   *
+   * Gets the label holding the text in the button.
+   *
+   * @returns The label widget the button uses for text.
+   */
   public LabelUI getLabel() {
     return m_label;
   }

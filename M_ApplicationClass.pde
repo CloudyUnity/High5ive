@@ -23,16 +23,19 @@ class ApplicationClass {
    * Initializes the application by setting up screens and loading data.
    */
   public void init() {
+    s_DebugProfiler.startProfileTimer();
     m_queryManager.init();
+    s_DebugProfiler.printTimeTakenMillis("Query manager initialisation");
 
     m_onSwitchEvent.addHandler(e -> switchScreen(e));
 
-    initScreens();
+    s_DebugProfiler.startProfileTimer();
+    createScreens();
+    s_DebugProfiler.printTimeTakenMillis("Creating screens");
 
     m_flightsManager.loadUSAndWorldFromFiles("hex_flight_data.bin", "hex_world_data.bin", 4, list -> {
-      println("list.WORLD:" + list.US.length);
       m_screen3DFM.insertFlightData(list);
-      m_screenCharts.loadData(list.US);
+      m_screenCharts.insertBaseData(list);
     }
     );
   }
@@ -42,7 +45,7 @@ class ApplicationClass {
    *
    * Initializes the screens of the application.
    */
-  private void initScreens() {
+  private void createScreens() {
     ScreenHome screenHome = new ScreenHome(SCREEN_1_ID);
     m_screens.add(screenHome);
 
@@ -159,8 +162,12 @@ class ApplicationClass {
         continue;
 
       m_currentScreen = screen;
-      if (!m_currentScreen.m_initialised)
+      if (!m_currentScreen.m_initialised) {
+        s_DebugProfiler.startProfileTimer();
         m_currentScreen.init();
+        s_DebugProfiler.printTimeTakenMillis("Initialisation of: " + screen.getScreenId());
+      }
+      
       return;
     }
   }

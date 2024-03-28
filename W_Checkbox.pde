@@ -1,3 +1,11 @@
+/**
+ * A. Robertson
+ *
+ * A checkbox widget which can display a label and either be checked or unchecked.
+ *
+ * @extends Widget
+ * @implements IClickable
+ */
 class CheckboxUI extends Widget implements IClickable {
   private LabelUI m_label;
   private int m_textPadding;
@@ -5,6 +13,17 @@ class CheckboxUI extends Widget implements IClickable {
   private boolean m_checked;
   private color m_checkedColour = DEFAULT_CHECKBOX_CHECKED_COLOUR;
 
+  /**
+   * A. Robertson
+   *
+   * Creates a new checkbox widget.
+   *
+   * @param posX The x position of the checkbox.
+   * @param posY The y position of the checkbox.
+   * @param scaleX The width of the checkbox.
+   * @param scaleY The height of the checkbox.
+   * @param label The label to be displayed beside the checkbox.
+   */
   public CheckboxUI(int posX, int posY, int scaleX, int scaleY, String label) {
     super(posX, posY, scaleX, scaleY);
     m_label = new LabelUI(posX + scaleY + m_textPadding, posY, scaleX - scaleY - m_textPadding, scaleY, label);
@@ -18,9 +37,13 @@ class CheckboxUI extends Widget implements IClickable {
     );
   }
 
-  // Draws the checkbox
+  /**
+   * A. Robertson
+   *
+   * Draws the checkbox widget.
+   */
   @ Override
-    public void draw() {
+  public void draw() {
     super.draw();
 
     fill(color(m_checked ? m_checkedColour : m_backgroundColour));
@@ -29,37 +52,79 @@ class CheckboxUI extends Widget implements IClickable {
     m_label.draw();
   }
 
-  // Returns the click event
+  /**
+   * A. Robertson
+   *
+   * Gets the class's onClickEvent so that handlers can be added and it can be raised.
+   *
+   * @returns The onClickEvent of the class.
+   */
   public EventType<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
 
-  // Sets the colour when checkbox is checked
+  /**
+   * A. Robertson
+   *
+   * Sets the checked colour, the colour to fill the box with when it's checked.
+   *
+   * @param checkedColour The new checked colour.
+   */
   public void setCheckedColour(color checkedColour) {
     m_checkedColour = checkedColour;
   }
 
-  // Returns if the checkbox is checked
+  /**
+   * A. Robertson
+   *
+   * Gets if the box is checked.
+   *
+   * @returns If the box is checked.
+   */
   public boolean getChecked() {
     return m_checked;
   }
 
-  // Sets whether the checkbox is checked
+  /**
+   * A. Robertson
+   *
+   * Sets if the box is checked or not.
+   *
+   * @param checked If the box is to be checked or unchecked.
+   */
   public void setChecked(boolean checked) {
     m_checked = checked;
   }
 
-  // Sets the checkbox text size
+  /**
+   * A. Robertson
+   *
+   * Sets the text size of the label beside the box.
+   *
+   * @param textSize The new textsize of the label.
+   */
   public void setTextSize(int textSize) {
     m_label.setTextSize(textSize);
   }
 
-  // Sets the value of the checkbox text
+  /**
+   * A. Robertson
+   *
+   * Sets the text to be displayed beside the box.
+   *
+   * @param text The new text to be displayed beside the box.
+   */
   public void setText(String text) {
     m_label.setText(text);
   }
 
-  // Returns the checkbox label
+  /**
+   * A. Robertson
+   *
+   * Gets the label widget used to show text beside the box.
+   *
+   * @returns The label widget used to show text beside the box.
+   */
   public LabelUI getLabel() {
     return m_label;
   }
