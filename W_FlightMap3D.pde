@@ -32,10 +32,14 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   private boolean m_assetsLoaded = false;
   private boolean m_drawnLoadingScreen = false;
   private boolean m_flightDataLoaded = false;
+  private boolean m_working = false;
+  private boolean m_profiledFirstRender = false;
 
   private float m_rotationYModified = 0;
   private float m_totalTimeElapsed = 0;
-  private int m_arcSegments;
+  private float m_loadingScreenDotChangeCooldown = 500.0f;
+  private float m_loadingScreenDotChangeTimer = 0;
+  private String m_loadingScreenString = "Loading.";
 
   private HashMap<String, AirportPoint3DType> m_airportHashmap = new HashMap<String, AirportPoint3DType>();
 
@@ -63,7 +67,9 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_earthRadius = height * 0.38f;
 
     new Thread(() -> {
+      s_DebugProfiler.startProfileTimer();
       initAssetsAsync();
+      s_DebugProfiler.printTimeTakenMillis("3D asset initialisation");
     }
     ).start();
 
@@ -88,12 +94,12 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_modelSkySphere.disableStyle();
     m_modelEarth.disableStyle();
 
-    m_texEarthDay = loadImage("data/Images/EarthDay2k.jpg");
-    m_texEarthNight = loadImage("data/Images/EarthNight2k.jpg");
-    m_texEarthNormalMap = loadImage("data/Images/EarthNormalAlt.jpg");
+    m_texEarthDay = loadImage("data/Images/EarthDay1024.jpg");
+    m_texEarthNight = loadImage("data/Images/EarthNight1024.jpg");
+    m_texEarthNormalMap = loadImage("data/Images/EarthNormal1024.jpg");
+    m_texEarthSpecularMap = loadImage("data/Images/EarthSpecular2k.jpg");
     m_texSun = loadImage("data/Images/Sun2k.jpg");
     m_texDitherNoise = loadImage("data/Images/noise.png");
-    m_texEarthSpecularMap = loadImage("data/Images/EarthSpecular2k.tif");
 
     m_shaderEarth = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
     m_shaderSun = loadShader("data/Shaders/SunFrag.glsl", "data/Shaders/BaseVert.glsl");
@@ -121,11 +127,21 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
    * @param queries The QueryManagerClass object for querying airport data.
    */
   public void loadFlights(FlightType[] flights, QueryManagerClass queries) {
-    m_flightDataLoaded = false;
+    if (m_working)
+      return;
+    m_working = true;
 
     new Thread(() -> {
+      m_flightDataLoaded = false;
+
+      s_DebugProfiler.startProfileTimer();
+
       loadFlightsAsync(flights, queries);
+
+      s_DebugProfiler.printTimeTakenMillis("Converting flights to arc points");
+
       m_flightDataLoaded = true;
+      m_working = false;
     }
     ).start();
   }
@@ -140,31 +156,66 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
    */
   public void loadFlightsAsync(FlightType[] flights, QueryManagerClass queries) {
     m_airportHashmap.clear();
+    ExecutorService executor = Executors.newFixedThreadPool(4);
+    CountDownLatch latch = new CountDownLatch(4);
 
     int count = flights.length;
+    int chunkSize = count / 4;
 
-    if (count <= 6_000)
-      m_arcSegments = 15;
-    else if (count <= 12_000)
-      m_arcSegments = 10;
-    else
-      m_arcSegments = 4;
+    for (int i = 0; i < 4; i++) {
+      int startPosition = i * chunkSize;
+      int endPosition = (i == 3) ? count : (i + 1) * chunkSize;
 
-    for (int i = 0; i < count; i++) {
+      executor.submit(() -> {
+        int arcSegments = 4;
+        if (count <= 6_000)
+        arcSegments = 15;
+        else if (count <= 12_000)
+        arcSegments = 10;
+
+        loadFlightsAsyncChunk(flights, queries, arcSegments, startPosition, endPosition);
+        latch.countDown();
+      }
+      );
+    }
+
+    try {
+      latch.await();
+    }
+    catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    executor.shutdown();
+  }
+
+  /**
+   * F. Wright
+   *
+   * Converts flight data to cached points in chunks
+   *
+   * @param flights The array of FlightType containing flight data.
+   * @param queries The QueryManagerClass object for querying airport data.
+   * @param arcSegments Amount of lines to be drawn for each arc
+   * @param startIndex Starting index of the array to convert
+   * @param endIndex Ending index of the array to convert
+   */
+  private void loadFlightsAsyncChunk(FlightType[] flights, QueryManagerClass queries, int arcSegments, int startIndex, int endIndex) {
+    for (int i = startIndex; i < endIndex; i++) {
       String originCode = queries.getCode(flights[i].AirportOriginIndex);
       String destCode = queries.getCode(flights[i].AirportDestIndex);
       AirportPoint3DType origin, dest;
 
       if (!m_airportHashmap.containsKey(originCode)) {
-        float latitude = queries.getLatitude(originCode);
-        float longitude = -queries.getLongitude(originCode);
+        float latitude = queries.getLatitudeFromIndex(flights[i].AirportOriginIndex);
+        float longitude = -queries.getLongitudeFromIndex(flights[i].AirportOriginIndex);
         origin = manualAddPoint(latitude, longitude, originCode);
       } else
         origin = m_airportHashmap.get(originCode);
 
       if (!m_airportHashmap.containsKey(destCode)) {
-        float latitude = queries.getLatitude(destCode);
-        float longitude = -queries.getLongitude(destCode);
+        float latitude = queries.getLatitudeFromIndex(flights[i].AirportDestIndex);
+        float longitude = -queries.getLongitudeFromIndex(flights[i].AirportDestIndex);
         dest = manualAddPoint(latitude, longitude, destCode);
       } else
         dest = m_airportHashmap.get(destCode);
@@ -176,7 +227,9 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
 
       origin.Connections.add(destCode);
       dest.Connections.add(originCode);
-      origin.ConnectionArcPoints.add(cacheArcPoints(origin.Pos, dest.Pos));
+
+      ArrayList<PVector> cachedPoints = cacheArcPoints(origin.Pos, dest.Pos, arcSegments);
+      origin.ConnectionArcPoints.add(cachedPoints);
     }
   }
 
@@ -194,6 +247,9 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     PVector pos = coordsToPointOnSphere(latitude, longitude, m_earthRadius);
     AirportPoint3DType point = new AirportPoint3DType(pos, code);
     m_airportHashmap.put(code, point);
+
+    point.Color = color(COLOR_3D_MARKER);
+
     return point;
   }
 
@@ -206,16 +262,19 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
    * @param p2 The ending point of the arc.
    * @return An ArrayList containing points along the arc.
    */
-  ArrayList<PVector> cacheArcPoints(PVector p1, PVector p2) {
+  ArrayList<PVector> cacheArcPoints(PVector p1, PVector p2, int arcSegments) {
     ArrayList<PVector> cacheResult = new ArrayList<PVector>();
-    cacheResult.ensureCapacity(m_arcSegments  + 1);
+    cacheResult.ensureCapacity(arcSegments  + 1);
     cacheResult.add(p1);
 
     float distance = p1.dist(p2);
     float distMult = lerp(0.1f, 1.0f, distance / 700.0f);
 
-    for (int i = 1; i < m_arcSegments; i++) {
-      float t = i / (float)m_arcSegments;
+    if (distance > 200)
+      arcSegments += 5;
+
+    for (int i = 1; i < arcSegments; i++) {
+      float t = i / (float)arcSegments;
       float bonusHeight = distMult * ARC_HEIGHT_MULT_3D * t * (1-t) + 1;
       PVector pointOnArc = slerp(p1, p2, t).mult(m_earthRadius * bonusHeight);
       cacheResult.add(pointOnArc);
@@ -259,6 +318,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_earthPos.z = EARTH_Z_3D + m_zoomLevel;
     m_shaderSun.set("texTranslation", 0, m_totalTimeElapsed * 0.5f);
 
+    s_3D.beginDraw();
+
     drawEarth();
     drawSun(lightDir);
     drawMarkersAndConnections();
@@ -283,10 +344,22 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   private void drawLoadingScreen() {
     image(m_texSkySphereStars, 0, 0, width, height);
 
+    m_loadingScreenDotChangeTimer += s_deltaTime;
+    if (m_loadingScreenDotChangeTimer >= m_loadingScreenDotChangeCooldown) {
+      m_loadingScreenDotChangeTimer = 0;
+      
+      if (m_loadingScreenString.equals("Loading."))
+        m_loadingScreenString = "Loading..";
+      else if (m_loadingScreenString.equals("Loading.."))
+        m_loadingScreenString = "Loading...";
+      else if (m_loadingScreenString.equals("Loading..."))
+        m_loadingScreenString = "Loading.";
+    }
+
     textAlign(CENTER);
     fill(255, 255, 255, 255);
     textSize(50);
-    text("Loading...", width/2, height/2);
+    text(m_loadingScreenString, width/2, height/2);
   }
 
   /**
@@ -295,20 +368,28 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
    * Draws the Earth on the 3D canvas.
    */
   void drawEarth() {
-    s_3D.beginDraw();
     s_3D.clear();
     s_3D.noStroke();
     s_3D.fill(255);
 
     s_3D.pushMatrix();
-    s_3D.shader(m_shaderEarth);
+    if (!DEBUG_QUICK_LOAD_3D)
+      s_3D.shader(m_shaderEarth);
     s_3D.textureWrap(CLAMP);
 
     s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
     s_3D.rotateX(m_earthRotation.x);
     s_3D.rotateY(m_rotationYModified);
 
+    if (!m_profiledFirstRender)
+      s_DebugProfiler.startProfileTimer();
+
     s_3D.shape(m_modelEarth);
+
+    if (!m_profiledFirstRender)
+      s_DebugProfiler.printTimeTakenMillis("First earth render");
+
+    m_profiledFirstRender = true;
     s_3D.resetShader();
     s_3D.popMatrix();
   }
@@ -360,7 +441,6 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
    * Draws airport markers and connections on the 3D canvas.
    */
   void drawMarkersAndConnections() {
-    s_3D.strokeWeight(ARC_SIZE_3D);
     s_3D.noFill();
 
     s_3D.pushMatrix();
@@ -373,11 +453,13 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
 
       if (m_markersEnabled) {
         s_3D.stroke(point.Color);
+        s_3D.strokeWeight(MARKER_LINE_WIDTH_3D);
         s_3D.line(point.Pos.x, point.Pos.y, point.Pos.z, endline.x, endline.y, endline.z);
       }
 
       if (m_connectionsEnabled) {
-        s_3D.stroke(255, 255, 255, 255);
+        s_3D.strokeWeight(ARC_LINE_WIDTH_3D);
+        s_3D.stroke(COLOR_3D_ARC);
         drawGreatCircleArcFast(point);
       }
     }
@@ -407,6 +489,12 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
       s_3D.translate(point.Pos.x, point.Pos.y, point.Pos.z);
       s_3D.rotateY(-m_rotationYModified);
       s_3D.rotateX(-m_earthRotation.x);
+
+      if (m_zoomLevel > 0) {
+        float scaleMult = 1 - (m_zoomLevel / 350.0f);
+        scaleMult = (scaleMult * 0.6f) + 0.4f;
+        s_3D.scale(scaleMult);
+      }
 
       s_3D.text(point.Name, 0, 0);
       s_3D.popMatrix();
