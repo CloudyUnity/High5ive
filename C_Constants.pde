@@ -72,6 +72,7 @@ final int TEXT_SIZE_3D = 12;
 final PVector TEXT_DISPLACEMENT_3D = new PVector(0, 10, 10);
 final boolean DITHER_MODE_3D = false;
 final float MOUSE_SCROLL_STRENGTH_3D = 15;
+final int LOADING_THREAD_COUNT_3D = 1;
 
 // Descending code authorship changes:
 // F. Wright, Set up constants for the Engine and Debug, 8pm 23/02/24
