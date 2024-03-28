@@ -5211,8 +5211,8 @@ Raleigh County Memorial Airport,Beckley,US,United States,BKX,37.7873,-81.1242,52
 Boulder City Municipal Airport,Boluder City,US,United States,BLD,35.9472,-114.8603,5201,1451
 Mercer County Airport,Bluefield,US,United States,BLF,37.2958,-81.2077,5202,1452
 Blythe Airport,Blythe,US,United States,BLH,33.6192,-114.717,5203,1453
-Monmouth Exec Airport,Belmar/Farmingdale,US,United States,BLM,40.1868,-74.1246,5204,1454
-Bellingham International Airport,Bellingham,US,United States,BLI,48.7928,-122.538,5205,1455
+Bellingham International Airport,Bellingham,US,United States,BLI,48.7928,-122.538,5204,1454
+Monmouth Exec Airport,Belmar/Farmingdale,US,United States,BLM,40.1868,-74.1246,5205,1455
 Scott AFB/Midamerica Airport,Belleville,US,United States,BLV,38.5452,-89.8352,5206,1456
 Brigham City Regional Airport,Brigham City,US,United States,BMC,41.5524,-112.062,5207,1457
 Monroe County Airport,Bloomington,US,United States,BMG,39.146,-86.6167,5208,1458
@@ -5379,9 +5379,9 @@ Douglas Municipal Airport,Douglas,US,United States,DGL,31.3426,-109.506,5368,14F
 Deer Harbour Sea Plane Base,Deer Harbour,US,United States,DHB,48.6167,-123.0028,5369,14F9
 Dothan Regional Airport,Dothan,US,United States,DHN,31.3213,-85.4496,5370,14FA
 Dalhart Municipal Airport,Dalhart,US,United States,DHT,36.0226,-102.547,5371,14FB
-Diomede Heliport,Diomede,US,United States,DIO,65.7586,-168.9531,5372,14FC
-Delta Junction,Delta Junction,US,United States,DJN,64.0501,-145.7225,5373,14FD
-Dickinson Theodore Roosevelt Regional Airport,Dickinson,US,United States,DIK,46.7974,-102.802,5374,14FE
+Dickinson Theodore Roosevelt Regional Airport,Dickinson,US,United States,DIK,46.7974,-102.802,5372,14FC
+Diomede Heliport,Diomede,US,United States,DIO,65.7586,-168.9531,5373,14FD
+Delta Junction,Delta Junction,US,United States,DJN,64.0501,-145.7225,5374,14FE
 Chautauqua County-Dunkirk Airport,Dunkirk,US,United States,DKK,42.4933,-79.272,5375,14FF
 DLF Airport,Del Rio,US,United States,DLF,29.3595,-100.778,5376,1500
 Dillingham Airport,Dillingham,US,United States,DLG,59.0447,-158.505,5377,1501
@@ -5406,14 +5406,14 @@ Destin Executive Airport,Destin,US,United States,DSI,30.4001,-86.4715,5395,1513
 Des Moines International Airport,Des Moines,US,United States,DSM,41.534,-93.6631,5396,1514
 Delta Municipal Airport,Delta,US,United States,DTA,39.3806,-112.508,5397,1515
 Shreveport Downtown Airport,Shreveport,US,United States,DTN,32.5402,-93.745,5398,1516
-Durant Regional/Eaker Field,Durant,US,United States,DUA,33.9397,-96.3951,5399,1517
-Detroit Metropolitan Wayne County Airport,Detroit,US,United States,DTW,42.2124,-83.3534,5400,1518
+Detroit Metropolitan Wayne County Airport,Detroit,US,United States,DTW,42.2124,-83.3534,5399,1517
+Durant Regional/Eaker Field,Durant,US,United States,DUA,33.9397,-96.3951,5400,1518
 Halliburton Field,Duncan,US,United States,DUC,34.4709,-97.9599,5401,1519
 Bisbee Douglas International Airport,Douglas,US,United States,DUG,31.469,-109.604,5402,151A
 DuBois Regional Airport,Du Bois,US,United States,DUJ,41.1783,-78.8987,5403,151B
 Unalaska Airport,Unalaska,US,United States,DUT,53.9001,-166.544,5404,151C
-Davenport Municipal Airport,Davenport,US,United States,DVL,41.6103,-90.5884,5405,151D
-Devils Lake Regional Airport,Devils Lake,US,United States,DVN,48.1142,-98.9088,5406,151E
+Devils Lake Regional Airport,Devils Lake,US,United States,DVL,48.1142,-98.9088,5405,151D
+Davenport Municipal Airport,Davenport,US,United States,DVN,41.6103,-90.5884,5406,151E
 Phoenix Deer Valley Airport,Phoenix ,US,United States,DVT,33.6883,-112.083,5407,151F
 Dexter Municipal Airport,Dexter,US,United States,DWH,36.7754,-89.9412,5408,1520
 David Wayne Hooks Memorial Airport,Houston,US,United States,DXE,30.0618,-95.5528,5409,1521
@@ -5484,8 +5484,8 @@ Newark Liberty International Airport,Newark,US,United States,EWR,40.6925,-74.168
 Excursion Inlet Seaplane Base,Excursion Inlet,US,United States,EXI,58.4206,-135.4492,5474,1562
 Key West International Airport,Key West,US,United States,EYW,24.5561,-81.7596,5475,1563
 Felker Army Air Field,Fort Eustis,US,United States,FAF,37.1325,-76.6088,5476,1564
-Farmington Regional,Farmington,US,United States,FAM,37.761,-90.4286,5477,1565
-Fairbanks International Airport,Fairbanks,US,United States,FAI,64.8151,-147.856,5478,1566
+Fairbanks International Airport,Fairbanks,US,United States,FAI,64.8151,-147.856,5477,1565
+Farmington Regional,Farmington,US,United States,FAM,37.761,-90.4286,5478,1566
 Hector International Airport,Fargo,US,United States,FAR,46.9207,-96.8158,5479,1567
 Fresno Yosemite International Airport,Fresno,US,United States,FAT,36.7762,-119.718,5480,1568
 Fayetteville Regional Grannis Field,Fayetteville,US,United States,FAY,34.9912,-78.8803,5481,1569
@@ -5579,8 +5579,8 @@ Greenville Downtown Airport,Greenville,US,United States,GMU,34.8479,-82.35,5568,
 Monument Valley Airport,Monument Valley,US,United States,GMV,37.0167,-110.201,5569,15C1
 Grants-Milan Municipal Airport,Grants,US,United States,GNT,35.1673,-107.902,5570,15C2
 Goodnews Airport,Goodnews,US,United States,GNU,59.1175,-161.5775,5571,15C3
-Guthrie/Edmond Regional,Guthrie,US,United States,GOK,35.8515,-97.4162,5572,15C4
-Gainesville Regional Airport,Gainesville,US,United States,GNV,29.6901,-82.2718,5573,15C5
+Gainesville Regional Airport,Gainesville,US,United States,GNV,29.6901,-82.2718,5572,15C4
+Guthrie/Edmond Regional,Guthrie,US,United States,GOK,35.8515,-97.4162,5573,15C5
 Groton New London Airport,Groton CT,US,United States,GON,41.3301,-72.0451,5574,15C6
 Gulfport Biloxi International Airport,Gulfport,US,United States,GPT,30.4073,-89.0701,5575,15C7
 Grand Rapids Itasca Co-Gordon Newstrom field,Grand Rapids MN,US,United States,GPZ,47.2111,-93.5098,5576,15C8
@@ -5910,8 +5910,8 @@ Mc Cook Ben Nelson Regional Airport,McCook,US,United States,MCK,40.2063,-100.592
 McKinley National Park Airport,McKinley Park,US,United States,MCL,63.7326,-148.911,5900,170C
 Middle Georgia Regional Airport,Macon,US,United States,MCN,32.6928,-83.6492,5901,170D
 Orlando International Airport,Orlando,US,United States,MCO,28.4294,-81.309,5902,170E
-Midland Airpark,Midland,US,United States,MDD,32.0366,-102.1015,5903,170F
-Mason City Municipal Airport,Mason City,US,United States,MCW,43.1578,-93.3313,5904,1710
+Mason City Municipal Airport,Mason City,US,United States,MCW,43.1578,-93.3313,5903,170F
+Midland Airpark,Midland,US,United States,MDD,32.0366,-102.1015,5904,1710
 Southern Illinois Airport,Carbondale/Murphysboro,US,United States,MDH,37.7781,-89.252,5905,1711
 Harrisburg International Airport,Harrisburg,US,United States,MDT,40.1935,-76.7634,5906,1712
 Chicago Midway International Airport,Chicago,US,United States,MDW,41.786,-87.7524,5907,1713
@@ -6183,8 +6183,8 @@ Paso Robles Municipal Airport,Paso Robles,US,United States,PRB,35.6729,-120.627,
 Ernest A. Love Field,Prescott,US,United States,PRC,34.6545,-112.42,6173,181D
 Cox Field,Paris,US,United States,PRX,33.6366,-95.4508,6174,181E
 Prineville Airport,Prineville,US,United States,PRZ,44.287,-120.904,6175,181F
-Pittsfield Municipal Airport,Pittsfield,US,United States,PSF,42.4276,-73.2908,6176,1820
-Tri Cities Airport,Pasco,US,United States,PSC,46.2647,-119.119,6177,1821
+Tri Cities Airport,Pasco,US,United States,PSC,46.2647,-119.119,6176,1820
+Pittsfield Municipal Airport,Pittsfield,US,United States,PSF,42.4276,-73.2908,6177,1821
 Petersburg James A Johnson Airport,Petersburg,US,United States,PSG,56.8017,-132.945,6178,1822
 Palestine Municipal Airport,Palestine,US,United States,PSM,31.7797,-95.7063,6179,1823
 Portsmouth International at Pease Airport,Portsmouth,US,United States,PSN,43.0779,-70.8233,6180,1824
@@ -6363,8 +6363,8 @@ Sheridan County Airport,Sheridan,US,United States,SHR,44.7692,-106.98,6352,18D0
 Shreveport Regional Airport,Shreveport,US,United States,SHV,32.4466,-93.8256,6353,18D1
 Shageluk Airport,Shageluk,US,United States,SHX,62.6923,-159.569,6354,18D2
 Sikeston Memorial Municipal Airport,Sikeston,US,United States,SIK,36.8989,-89.5618,6355,18D3
-Siskiyou County Airport,Montague,US,United States,SIT,41.7814,-122.4681,6356,18D4
-Sitka Rocky Gutierrez Airport,Sitka,US,United States,SIY,57.0471,-135.362,6357,18D5
+Sitka Rocky Gutierrez Airport,Sitka,US,United States,SIT,57.0471,-135.362,6356,18D4
+Siskiyou County Airport,Montague,US,United States,SIY,41.7814,-122.4681,6357,18D5
 St. Johns Industrial Air Park,St. Johns,US,United States,SJC,34.5186,-109.3787,6358,18D6
 Norman Y. Mineta San Jose International Airport,San Jose,US,United States,SJN,37.3626,-121.929,6359,18D7
 San Angelo Regional Mathis Field,San Angelo,US,United States,SJT,31.3577,-100.496,6360,18D8
