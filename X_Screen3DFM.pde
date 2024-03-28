@@ -185,6 +185,7 @@ class Screen3DFM extends Screen {
     
     float frac = (millis() - m_switchUIStartTimeMillis) / SWITCH_SCREEN_DUR_3D;
     frac = clamp(frac, 0, 1);
+    frac *= frac;
         
     PVector flightMapTargetPos = m_isQueryDisplayed ? m_offScreenUIPos : new PVector(0, 0);
     PVector newFlightMapPos = PVector.lerp(m_flightMapUIParent.getPos(), flightMapTargetPos, frac);

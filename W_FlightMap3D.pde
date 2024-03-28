@@ -93,7 +93,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
 
     m_texEarthDay = loadImage("data/Images/EarthDay1024.jpg");
     m_texEarthNight = loadImage("data/Images/EarthNight1024.jpg");
-    m_texEarthNormalMap = loadImage("data/Images/EarthNormal1024.jpg");    
+    m_texEarthNormalMap = loadImage("data/Images/EarthNormal1024.jpg");
     m_texEarthSpecularMap = loadImage("data/Images/EarthSpecular2k.jpg");
     m_texSun = loadImage("data/Images/Sun2k.jpg");
     m_texDitherNoise = loadImage("data/Images/noise.png");
@@ -244,6 +244,9 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     PVector pos = coordsToPointOnSphere(latitude, longitude, m_earthRadius);
     AirportPoint3DType point = new AirportPoint3DType(pos, code);
     m_airportHashmap.put(code, point);
+    
+    point.Color = color(COLOR_3D_MARKER);
+
     return point;
   }
 
@@ -311,7 +314,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_rotationYModified = m_earthRotation.y + m_totalTimeElapsed;
     m_earthPos.z = EARTH_Z_3D + m_zoomLevel;
     m_shaderSun.set("texTranslation", 0, m_totalTimeElapsed * 0.5f);
-    
+
     s_3D.beginDraw();
 
     drawEarth();
@@ -349,7 +352,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
    *
    * Draws the Earth on the 3D canvas.
    */
-  void drawEarth() {    
+  void drawEarth() {
     s_3D.clear();
     s_3D.noStroke();
     s_3D.fill(255);
@@ -362,15 +365,15 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
     s_3D.rotateX(m_earthRotation.x);
     s_3D.rotateY(m_rotationYModified);
-    
+
     if (!m_profiledFirstRender)
       s_DebugProfiler.startProfileTimer();
-    
+
     s_3D.shape(m_modelEarth);
-    
+
     if (!m_profiledFirstRender)
       s_DebugProfiler.printTimeTakenMillis("First earth render");
-      
+
     m_profiledFirstRender = true;
     s_3D.resetShader();
     s_3D.popMatrix();
@@ -422,8 +425,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
    *
    * Draws airport markers and connections on the 3D canvas.
    */
-  void drawMarkersAndConnections() {
-    s_3D.strokeWeight(ARC_SIZE_3D);
+  void drawMarkersAndConnections() {    
     s_3D.noFill();
 
     s_3D.pushMatrix();
@@ -436,11 +438,13 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
 
       if (m_markersEnabled) {
         s_3D.stroke(point.Color);
+        s_3D.strokeWeight(MARKER_LINE_WIDTH_3D);
         s_3D.line(point.Pos.x, point.Pos.y, point.Pos.z, endline.x, endline.y, endline.z);
       }
 
       if (m_connectionsEnabled) {
-        s_3D.stroke(255, 255, 255, 255);
+        s_3D.strokeWeight(ARC_LINE_WIDTH_3D);
+        s_3D.stroke(COLOR_3D_ARC);
         drawGreatCircleArcFast(point);
       }
     }
