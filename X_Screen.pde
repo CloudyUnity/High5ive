@@ -1,4 +1,6 @@
 /**
+ * A. Robertson
+ *
  * Abstract class representing a screen in the application.
  *
  * @extends Widget
@@ -19,6 +21,8 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   private EventType<MouseWheelEventInfoType> m_mouseWheelEvent;
 
   /**
+   * A. Robertson
+   *
    * Constructs a new screen with the given screen ID and background color.
    *
    * @param screenId       The unique identifier for the screen.
@@ -45,6 +49,8 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+   * A. Robertson
+   *
    * Draws the screen with its background color and renders its child widgets.
    */
   public void draw() {
@@ -62,6 +68,8 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+   * A. Robertson
+   *
    * Initializes the screen.
    */
   public void init() {
@@ -69,6 +77,8 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+   * A. Robertson
+   *
    * Adds a widget to the screen's list of children.
    *
    * @param widget The widget to add.
@@ -79,6 +89,8 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+   * A. Robertson
+   *
    * Retrieves the list of children widgets belonging to this screen.
    *
    * @return The list of children widgets.
@@ -88,6 +100,8 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+   * A. Robertson
+   *
    * Retrieves the event type for mouse moved events.
    *
    * @return The event type for mouse moved events.
@@ -97,6 +111,8 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+   * A. Robertson
+   *
    * Retrieves the event type for mouse dragged events.
    *
    * @return The event type for mouse dragged events.
@@ -106,6 +122,8 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+   * A. Robertson
+   *
    * Retrieves the event type for mouse click events.
    *
    * @return The event type for mouse click events.
@@ -115,6 +133,8 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+   * A. Robertson
+   *
    * Retrieves the event type for key pressed events.
    *
    * @return The event type for key pressed events.
@@ -124,6 +144,8 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+   * A. Robertson
+   *
    * Retrieves the event type for mouse wheel events.
    *
    * @return The event type for mouse wheel events.
@@ -133,6 +155,8 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+   * A. Robertson
+   *
    * Recursively checks for mouse movement within widgets and raises appropriate events.
    *
    * @param widget The widget to check for mouse movement.
@@ -156,6 +180,8 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+   * A. Robertson
+   *
    * Handles the mouse moved event.
    */
   private void onMouseMoved() {
@@ -168,6 +194,8 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+   * A. Robertson
+   *
    * Recursively checks for mouse clicks within widgets and raises appropriate events.
    *
    * @param widget The widget to check for mouse clicks.
@@ -188,6 +216,8 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+   * A. Robertson
+   *
    * Handles the mouse click event.
    */
   private void onMouseClick() {
@@ -200,6 +230,8 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+   * A. Robertson
+   *
    * Recursively checks for mouse dragging within widgets and raises appropriate events.
    *
    * @param widget The widget to check for mouse dragging.
@@ -214,6 +246,8 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+   * A. Robertson
+   *
    * Recursively handles mouse dragged events within widgets.
    */
   private void onMouseDragged() {
@@ -226,6 +260,8 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+   * A. Robertson
+   *
    * Recursively checks for mouse wheel events within widgets and raises appropriate events.
    *
    * @param widget The widget to check for mouse wheel events.
@@ -241,6 +277,8 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+   * A. Robertson
+   *
    * Handles the mouse wheel event.
    *
    * @param e The mouse wheel event information.
@@ -255,6 +293,8 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+   * A. Robertson
+   *
    * Recursively checks for key pressed events within widgets and raises appropriate events.
    *
    * @param widget The widget to check for key pressed events.
@@ -270,6 +310,8 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+   * A. Robertson
+   *
    * Handles the key pressed event.
    *
    * @param e The key pressed event information.
@@ -285,6 +327,8 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+   * A. Robertson
+   *
    * Gets the screen ID.
    *
    * @return The screen ID.
@@ -294,6 +338,7 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+   * A. Robertson
    * Adds a widget group to the screen.
    *
    * @param group The widget group to add.
