@@ -12,6 +12,7 @@ class HistogramChartUI<T, TData> extends Widget implements IChart<T, TData> {
   private int m_numberTextBoxHeight = 0;
 
   private QueryType m_translationField = null;
+  private QueryManagerClass m_queryManager = null;
 
   public HistogramChartUI(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
@@ -82,8 +83,9 @@ class HistogramChartUI<T, TData> extends Widget implements IChart<T, TData> {
     m_labelX = name;
   }
 
-  public void setTranslationField(QueryType queryType) {
+  public void setTranslationField(QueryType queryType, QueryManagerClass queryManager) {
     m_translationField = queryType;
+    m_queryManager = queryManager;
   }
 
   @ Override
@@ -148,12 +150,12 @@ class HistogramChartUI<T, TData> extends Widget implements IChart<T, TData> {
     if (m_translationField == null)
       return val;
 
-    // TODO: Carrier Code index
     switch (m_translationField) {
     case CANCELLED_OR_DIVERTED:
-      println(val);
       return val.equals("0") ? "None" :
       val.equals("1") ? "Cancelled" : "Diverted";
+    case CARRIER_CODE_INDEX:
+      return m_queryManager.getAirlineName(Integer.parseInt(val));
     default:
       return val;
     }

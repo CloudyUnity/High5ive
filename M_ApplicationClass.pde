@@ -1,3 +1,8 @@
+/**
+ * F. Wright
+ *
+ * Class representing the main application.
+ */
 class ApplicationClass {
   private int m_timeLastFrame = 0;
 
@@ -9,45 +14,60 @@ class ApplicationClass {
 
   private EventType<SwitchScreenEventInfoType> m_onSwitchEvent = new EventType<SwitchScreenEventInfoType>();
 
-  void init() {
+  ScreenCharts m_screenCharts = null;
+  Screen3DFM m_screen3DFM = null;
+
+  /**
+   * F. Wright
+   *
+   * Initializes the application by setting up screens and loading data.
+   */
+  public void init() {
+    s_DebugProfiler.startProfileTimer();
     m_queryManager.init();
+    s_DebugProfiler.printTimeTakenMillis("Query manager initialisation");
 
     m_onSwitchEvent.addHandler(e -> switchScreen(e));
 
-    Screen1 screen1 = new Screen1(SCREEN_1_ID);
-    m_screens.add(screen1);
-
-    Screen2 screen2 = new Screen2(SCREEN_2_ID);
-    m_screens.add(screen2);
-
-    Screen screenDemo = new FlightCodesBarchartDemo(SWITCH_TO_DEMO_ID);
-    m_screens.add(screenDemo);
-
-    TwoDMapScreen screenFlightMap2D = new TwoDMapScreen(SCREEN_TWOD_MAP_ID, m_queryManager);
-    m_screens.add(screenFlightMap2D);
-
-    ScreenFlightMap screenFlightMap3D = new ScreenFlightMap(SCREEN_FLIGHT_MAP_ID, m_queryManager);
-    m_screens.add(screenFlightMap3D);
-
-    ScreenCharts screenCharts = new ScreenCharts(SCREEN_CHARTS_ID, m_queryManager);
-    m_screens.add(screenCharts);
-
-    m_screens.add(new AlexTestingScreen(ALEX_TESTING_ID));
-
-    m_currentScreen = screen1;
-    screen1.init();
+    s_DebugProfiler.startProfileTimer();
+    createScreens();
+    s_DebugProfiler.printTimeTakenMillis("Creating screens");
 
     m_flightsManager.loadUSAndWorldFromFiles("hex_flight_data.bin", "hex_world_data.bin", 4, list -> {
-      println("list.US.length:" + list.US.length);
-      // FlightType[] temp = m_queryManager.queryFlights(list.US, new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US, m_queryManager), m_queryManager.getIndex("JFK"));
-      // println(temp.length);
-      screenFlightMap3D.insertDebug(list.US);
-      screenCharts.loadData(list.US);
+      m_screen3DFM.insertFlightData(list);
+      m_screenCharts.insertBaseData(list);
     }
     );
   }
 
-  void frame() {
+  /**
+   * F. Wright
+   *
+   * Initializes the screens of the application.
+   */
+  private void createScreens() {
+    ScreenHome screenHome = new ScreenHome(SCREEN_1_ID);
+    m_screens.add(screenHome);
+
+    TwoDMapScreen screenFlightMap2D = new TwoDMapScreen(SCREEN_TWOD_MAP_ID, m_queryManager);
+    m_screens.add(screenFlightMap2D);
+
+    m_screen3DFM = new Screen3DFM(SCREEN_FLIGHT_MAP_ID, m_queryManager);
+    m_screens.add(m_screen3DFM);
+
+    m_screenCharts = new ScreenCharts(SCREEN_CHARTS_ID, m_queryManager);
+    m_screens.add(m_screenCharts);
+
+    m_currentScreen = screenHome;
+    screenHome.init();
+  }
+
+  /**
+   * F. Wright
+   *
+   * Called every frame to update and render the current screen.
+   */
+  public void frame() {
     s_deltaTime = millis() - m_timeLastFrame;
     m_timeLastFrame = millis();
 
@@ -61,35 +81,79 @@ class ApplicationClass {
     }
   }
 
-  void onMouseMoved() {
+  /**
+   * F. Wright
+   *
+   * Called when the mouse position is different from the last frame.
+   */
+  public void onMouseMoved() {
     if (m_currentScreen != null)
       m_currentScreen.onMouseMoved();
   }
 
-  void onMouseDragged() {
+  /**
+   * F. Wright
+   *
+   * Called when the mouse position is different from the last frame while the mouse button is pressed.
+   */
+  public void onMouseDragged() {
     if (m_currentScreen != null)
       m_currentScreen.onMouseDragged();
   }
 
-  void onMouseClick() {
+  /**
+   * F. Wright
+   *
+   * Called when the mouse button is clicked.
+   */
+  public void onMouseClick() {
     if (m_currentScreen != null)
       m_currentScreen.onMouseClick();
   }
 
-  void onMouseWheel(int wheelCount) {
+  /**
+   * F. Wright
+   *
+   * Called when the mouse wheel is scrolled.
+   *
+   * @param wheelCount The amount the mouse wheel is scrolled.
+   */
+  public void onMouseWheel(int wheelCount) {
     if (m_currentScreen != null)
       m_currentScreen.getOnMouseWheelEvent().raise(new MouseWheelEventInfoType(mouseX, mouseY, wheelCount, m_currentScreen));
   }
 
+  /**
+   * F. Wright
+   *
+   * Called when a key is pressed.
+   *
+   * @param k The character representation of the key that was pressed.
+   * @param kc The integer representation of the key that was pressed.
+   */
   public void onKeyPressed(char k, int kc) {
     if (m_currentScreen != null)
       m_currentScreen.getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(mouseX, mouseY, k, kc, m_currentScreen));
   }
 
+  /**
+   * F. Wright
+   *
+   * Returns the event for switching screens.
+   *
+   * @return The event for switching screens.
+   */
   public EventType<SwitchScreenEventInfoType> getOnSwitchEvent() {
     return m_onSwitchEvent;
   }
 
+  /**
+   * F. Wright
+   *
+   * Switches the screen using a screen ID constant.
+   *
+   * @param e The event containing information about the switch screen event.
+   */
   private void switchScreen(SwitchScreenEventInfoType e) {
     e.Widget.getOnMouseExitEvent().raise((EventInfoType)e);
 
@@ -98,8 +162,12 @@ class ApplicationClass {
         continue;
 
       m_currentScreen = screen;
-      if (!m_currentScreen.m_initialised)
+      if (!m_currentScreen.m_initialised) {
+        s_DebugProfiler.startProfileTimer();
         m_currentScreen.init();
+        s_DebugProfiler.printTimeTakenMillis("Initialisation of: " + screen.getScreenId());
+      }
+      
       return;
     }
   }

@@ -1,12 +1,14 @@
 class FlightsManagerClass {
   private boolean m_working;
 
-  public void loadUSAndWorldFromFiles(String usFileName, String worldFileName, int threadCount, Consumer<FlightMultiDataType> onTaskComplete) { //  Consumer<FlightType[]> onWorldTaskComplete
+  // Loads the flight data from the given file paths
+  public void loadUSAndWorldFromFiles(String usFileName, String worldFileName, int threadCount, Consumer<FlightMultiDataType> onTaskComplete) {
     boolean result = convertBinaryFileToFlightType(usFileName, worldFileName, US_LINE_BYTE_SIZE, WORLD_LINE_BYTE_SIZE, threadCount, onTaskComplete);
     if (!result)
       println("ERROR: Flight binary failed to load successfully");
   }
 
+  // ...
   private boolean convertBinaryFileToFlightType(String usFileName, String worldFileName, int usLineByteSize, int worldLineByteSize, int threadCount, Consumer<FlightMultiDataType> onTaskComplete) {
     if (m_working) {
       println("Warning: m_working is true, convertBinaryFileToFlightType did not process correctly");
@@ -21,18 +23,18 @@ class FlightsManagerClass {
 
       FlightMultiDataType flightsLists = new FlightMultiDataType(us, world);
 
-      s_DebugProfiler.printTimeTakenMillis("Raw files pre-processing");
+      s_DebugProfiler.printTimeTakenMillis("Loading flight data from files");
 
       onTaskComplete.accept(flightsLists);
       m_working = false;
     }
     ).start();
 
-
     m_working = true;
     return true;
   }
 
+  // ...
   private FlightType[] convertBinaryFileToFlightTypeAsync(String filename, int threadCount, QueryLocationType queryLocation, int lineByteSize) {
     MappedByteBuffer buffer;
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
@@ -82,28 +84,36 @@ class FlightsManagerClass {
       return null;
     }
   }
+  
+  // ...
   private void processUSConvertBinaryFileToFlightTypeChunk(FlightType[] flightsList, MappedByteBuffer buffer, long processingSize, int startPosition, int lineByteSize) {
     long maxI = startPosition + processingSize;
     for (int i = startPosition; i < maxI; i++) {
       int offset = lineByteSize* i;
       flightsList[i] = new FlightType(
         buffer.get(offset),
-        buffer.getShort(offset+1),
-        buffer.getShort(offset+3),
-        buffer.getShort(offset+5),
-        buffer.getShort(offset+7),
-        buffer.getShort(offset+9),
-        buffer.getShort(offset+11),
-        buffer.getShort(offset+13),
-        buffer.getShort(offset+15),
-        buffer.getShort(offset+17),
-        buffer.getShort(offset+19),
-        buffer.get(offset+21),
-        buffer.getShort(offset+22)
+        buffer.get(offset+1),
+        buffer.getShort(offset+2),
+        buffer.getShort(offset+4),
+        buffer.getShort(offset+6),
+        buffer.getShort(offset+8),
+        buffer.getShort(offset+10),
+        buffer.getShort(offset+12),
+        buffer.getShort(offset+14),
+        buffer.getShort(offset+16),
+        buffer.getShort(offset+18),
+        buffer.getShort(offset+20),
+        buffer.getShort(offset+22),
+        buffer.get(offset+23),
+        buffer.get(offset+24),
+        buffer.getShort(offset+26),
+        buffer.getShort(offset+28),
+        buffer.getShort(offset+30)
         );
     }
   }
 
+  // ...
   private void processWorldConvertBinaryFileToFlightTypeChunk(FlightType[] flightsList, MappedByteBuffer buffer, long processingSize, int startPosition, int lineByteSize) {
     long maxI = startPosition + processingSize;
     for (int i = startPosition; i < maxI; i++) {
@@ -115,13 +125,15 @@ class FlightsManagerClass {
         );
     }
   }
-  
+
+  // ...
   public void printFlights(FlightType[] flights, QueryType queryType) {
     for (FlightType flight : flights) {
       printFlight(flight, queryType);
     }
   }
 
+  // ...
   public void printFlight(FlightType flight, QueryType queryType) {
     switch(queryType) {
     case DAY:
@@ -152,17 +164,16 @@ class FlightsManagerClass {
       println("ArrivalTime: " + flight.ArrivalTime);
       break;
     case CANCELLED_OR_DIVERTED:
-      println("CancelledOrDiverted: " + flight.CancelledOrDiverted);
+      println("CancelledOrDiverted: " + flight.Cancelled);
       break;
     case KILOMETRES_DISTANCE:
-      println("KilometresDistance: " + flight.KilometresDistance);
+      println("KilometresDistance: " + flight.KmDistance);
       break;
     default:
       println("Error: FlightSortQuery.Type invalid");
     }
   }
 }
-
 
 // Descending code authorship changes:
 // F. Wright, Made DateType, FlightType, FlightsManagerClass and made function headers. Left comments to explain how everything could be implemented, 11pm 04/03/24

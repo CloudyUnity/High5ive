@@ -1,5 +1,12 @@
+/**
+ * A. Robertson
+ *
+ * Abstract class representing a screen in the application.
+ *
+ * @extends Widget
+ * @implements IClickable, IWheelInput
+ */
 abstract class Screen extends Widget implements IClickable, IWheelInput {
-
   private ArrayList<Widget> m_children;
   private ArrayList<WidgetGroupType> m_groups;
 
@@ -13,6 +20,14 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   private EventType<KeyPressedEventInfoType> m_onKeyPressedEvent;
   private EventType<MouseWheelEventInfoType> m_mouseWheelEvent;
 
+  /**
+   * A. Robertson
+   *
+   * Constructs a new screen with the given screen ID and background color.
+   *
+   * @param screenId       The unique identifier for the screen.
+   * @param backgroundColor The background color of the screen.
+   */
   Screen(String screenId, int backgroundColor) {
     super(0, 0, displayWidth, displayHeight);
     m_children = new ArrayList<Widget>();
@@ -33,6 +48,11 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
     m_mouseWheelEvent.addHandler(e -> onMouseWheel(e));
   }
 
+  /**
+   * A. Robertson
+   *
+   * Draws the screen with its background color and renders its child widgets.
+   */
   public void draw() {
     background(m_backgroundColor);
 
@@ -46,40 +66,101 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
           child.draw();
     }
   }
-  
-  public void init(){
+
+  /**
+   * A. Robertson
+   *
+   * Initializes the screen.
+   */
+  public void init() {
     m_initialised = true;
   }
 
+  /**
+   * A. Robertson
+   *
+   * Adds a widget to the screen's list of children.
+   *
+   * @param widget The widget to add.
+   */
   public void addWidget(Widget widget) {
     if (widget != null)
       m_children.add(widget);
   }
 
+  /**
+   * A. Robertson
+   *
+   * Retrieves the list of children widgets belonging to this screen.
+   *
+   * @return The list of children widgets.
+   */
   public ArrayList<Widget> getChildren() {
     return m_children;
   }
 
+  /**
+   * A. Robertson
+   *
+   * Retrieves the event type for mouse moved events.
+   *
+   * @return The event type for mouse moved events.
+   */
   public EventType<MouseMovedEventInfoType> getOnMouseMovedEvent() {
     return m_onMouseMovedEvent;
   }
 
+  /**
+   * A. Robertson
+   *
+   * Retrieves the event type for mouse dragged events.
+   *
+   * @return The event type for mouse dragged events.
+   */
   public EventType<MouseDraggedEventInfoType> getOnMouseDraggedEvent() {
     return m_onMouseDraggedEvent;
   }
 
+  /**
+   * A. Robertson
+   *
+   * Retrieves the event type for mouse click events.
+   *
+   * @return The event type for mouse click events.
+   */
   public EventType<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
 
+  /**
+   * A. Robertson
+   *
+   * Retrieves the event type for key pressed events.
+   *
+   * @return The event type for key pressed events.
+   */
   public EventType<KeyPressedEventInfoType> getOnKeyPressedEvent() {
     return m_onKeyPressedEvent;
   }
 
+  /**
+   * A. Robertson
+   *
+   * Retrieves the event type for mouse wheel events.
+   *
+   * @return The event type for mouse wheel events.
+   */
   public EventType<MouseWheelEventInfoType> getOnMouseWheelEvent() {
     return m_mouseWheelEvent;
   }
 
+  /**
+   * A. Robertson
+   *
+   * Recursively checks for mouse movement within widgets and raises appropriate events.
+   *
+   * @param widget The widget to check for mouse movement.
+   */
   private void doMouseMoved(Widget widget) {
     if (widget.getActive()) {
       boolean mouseInsideWidget = widget.isPositionInside(mouseX, mouseY);
@@ -98,6 +179,11 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
       doMouseMoved(child);
   }
 
+  /**
+   * A. Robertson
+   *
+   * Handles the mouse moved event.
+   */
   private void onMouseMoved() {
     for (Widget widget : m_children)
       doMouseMoved(widget);
@@ -107,6 +193,13 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
         doMouseMoved(widget);
   }
 
+  /**
+   * A. Robertson
+   *
+   * Recursively checks for mouse clicks within widgets and raises appropriate events.
+   *
+   * @param widget The widget to check for mouse clicks.
+   */
   private void doMouseClick(Widget widget) {
     if (widget.getActive()) {
       if (widget instanceof IClickable) {
@@ -122,6 +215,11 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
       doMouseClick(w);
   }
 
+  /**
+   * A. Robertson
+   *
+   * Handles the mouse click event.
+   */
   private void onMouseClick() {
     for (Widget child : m_children)
       doMouseClick(child);
@@ -131,6 +229,13 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
         doMouseClick(child);
   }
 
+  /**
+   * A. Robertson
+   *
+   * Recursively checks for mouse dragging within widgets and raises appropriate events.
+   *
+   * @param widget The widget to check for mouse dragging.
+   */
   private void doMouseDragged(Widget widget) {
     if (widget.getActive()) {
       if (widget instanceof IDraggable && widget.isPositionInside(pmouseX, pmouseY))
@@ -140,6 +245,11 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
       doMouseDragged(w);
   }
 
+  /**
+   * A. Robertson
+   *
+   * Recursively handles mouse dragged events within widgets.
+   */
   private void onMouseDragged() {
     for (Widget child : m_children)
       doMouseDragged(child);
@@ -149,15 +259,30 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
         doMouseDragged(child);
   }
 
+  /**
+   * A. Robertson
+   *
+   * Recursively checks for mouse wheel events within widgets and raises appropriate events.
+   *
+   * @param widget The widget to check for mouse wheel events.
+   * @param e      The mouse wheel event information.
+   */
   private void doMouseWheel(Widget widget, MouseWheelEventInfoType e) {
     if (widget.getActive()) {
       if (widget instanceof IWheelInput && (widget.isFocused() || widget.isPositionInside(mouseX, mouseY)))
-        ((IWheelInput)widget).getOnMouseWheelEvent().raise(new MouseWheelEventInfoType(mouseX, mouseY, e.wheelCount, widget));
+        ((IWheelInput)widget).getOnMouseWheelEvent().raise(new MouseWheelEventInfoType(mouseX, mouseY, e.WheelCount, widget));
     }
     for (Widget w : widget.getChildren())
       doMouseWheel(w, e);
   }
 
+  /**
+   * A. Robertson
+   *
+   * Handles the mouse wheel event.
+   *
+   * @param e The mouse wheel event information.
+   */
   private void onMouseWheel(MouseWheelEventInfoType e) {
     for (Widget child : m_children)
       doMouseWheel(child, e);
@@ -167,15 +292,30 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
         doMouseWheel(child, e);
   }
 
+  /**
+   * A. Robertson
+   *
+   * Recursively checks for key pressed events within widgets and raises appropriate events.
+   *
+   * @param widget The widget to check for key pressed events.
+   * @param e      The key pressed event information.
+   */
   private void doKeyPressed(Widget widget, KeyPressedEventInfoType e) {
     if (widget.getActive()) {
       if (widget instanceof IKeyInput && widget.isFocused())
-        ((IKeyInput)widget).getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(e.X, e.Y, e.pressedKey, e.pressedKeyCode, widget));
+        ((IKeyInput)widget).getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(e.X, e.Y, e.PressedKey, e.PressedKeyCode, widget));
     }
     for (Widget w : widget.getChildren())
       doKeyPressed(w, e);
   }
 
+  /**
+   * A. Robertson
+   *
+   * Handles the key pressed event.
+   *
+   * @param e The key pressed event information.
+   */
   private void onKeyPressed(KeyPressedEventInfoType e) {
     for (Widget child : m_children)
       doKeyPressed(child, e);
@@ -186,45 +326,126 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
         doKeyPressed(child, e);
   }
 
-
+  /**
+   * A. Robertson
+   *
+   * Gets the screen ID.
+   *
+   * @return The screen ID.
+   */
   public String getScreenId() {
     return m_screenId;
   }
 
+  /**
+   * A. Robertson
+   * Adds a widget group to the screen.
+   *
+   * @param group The widget group to add.
+   */
   public void addWidgetGroup(WidgetGroupType group) {
     m_groups.add(group);
   }
 
+  /**
+   * F. Wright
+   *
+   * Creates a button UI widget at the specified position with the given dimensions.
+   *
+   * @param posX   The x-coordinate of the button's position.
+   * @param posY   The y-coordinate of the button's position.
+   * @param scaleX The width of the button.
+   * @param scaleY The height of the button.
+   * @return The created ButtonUI instance.
+   */
   public ButtonUI createButton(int posX, int posY, int scaleX, int scaleY) {
     ButtonUI bttn = new ButtonUI(posX, posY, scaleX, scaleY);
     addWidget(bttn);
     return bttn;
   }
 
+  /**
+   * F. Wright
+   *
+   * Creates a checkbox UI widget at the specified position with the given dimensions and label.
+   *
+   * @param posX   The x-coordinate of the checkbox's position.
+   * @param posY   The y-coordinate of the checkbox's position.
+   * @param scaleX The width of the checkbox.
+   * @param scaleY The height of the checkbox.
+   * @param label  The label text of the checkbox.
+   * @return The created CheckboxUI instance.
+   */
   public CheckboxUI createCheckbox(int posX, int posY, int scaleX, int scaleY, String label) {
     CheckboxUI chk = new CheckboxUI(posX, posY, scaleX, scaleY, label);
     addWidget(chk);
     return chk;
   }
 
+  /**
+   * F. Wright
+   *
+   * Creates a label UI widget at the specified position with the given dimensions and text.
+   *
+   * @param posX   The x-coordinate of the label's position.
+   * @param posY   The y-coordinate of the label's position.
+   * @param scaleX The width of the label.
+   * @param scaleY The height of the label.
+   * @param text   The text content of the label.
+   * @return The created LabelUI instance.
+   */
   public LabelUI createLabel(int posX, int posY, int scaleX, int scaleY, String text) {
     LabelUI label = new LabelUI(posX, posY, scaleX, scaleY, text);
     addWidget(label);
     return label;
   }
 
+  /**
+   * F. Wright
+   *
+   * Creates a radio button UI widget at the specified position with the given dimensions and label.
+   *
+   * @param posX   The x-coordinate of the radio button's position.
+   * @param posY   The y-coordinate of the radio button's position.
+   * @param scaleX The width of the radio button.
+   * @param scaleY The height of the radio button.
+   * @param label  The label text of the radio button.
+   * @return The created RadioButtonUI instance.
+   */
   public RadioButtonUI createRadioButton(int posX, int posY, int scaleX, int scaleY, String label) {
     RadioButtonUI radio = new RadioButtonUI(posX, posY, scaleX, scaleY, label);
     addWidget(radio);
     return radio;
   }
 
+  /**
+   * F. Wright
+   *
+   * Creates a slider UI widget at the specified position with the given dimensions and parameters.
+   *
+   * @param posX     The x-coordinate of the slider's position.
+   * @param posY     The y-coordinate of the slider's position.
+   * @param scaleX   The width of the slider.
+   * @param scaleY   The height of the slider.
+   * @param min      The minimum value of the slider.
+   * @param max      The maximum value of the slider.
+   * @param interval The interval between slider values.
+   * @return The created SliderUI instance.
+   */
   public SliderUI createSlider(int posX, int posY, int scaleX, int scaleY, double min, double max, double interval) {
     SliderUI slider = new SliderUI(posX, posY, scaleX, scaleY, min, max, interval);
     addWidget(slider);
     return slider;
   }
 
+  /**
+   * F. Wright
+   *
+   * Raises an event to switch to the specified screen.
+   *
+   * @param e        The event information.
+   * @param screenId The ID of the screen to switch to.
+   */
   public void switchScreen(EventInfoType e, String screenId) {
     s_ApplicationClass.getOnSwitchEvent().raise(new SwitchScreenEventInfoType(e.X, e.Y, screenId, e.Widget));
   }
