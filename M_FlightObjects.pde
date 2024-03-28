@@ -14,8 +14,8 @@ class FlightType { // 23 bytes total
   public short ArrivalTime;             // supports all querys
   public short ArrivalDelay;            // supports all querys
   public byte Cancelled;                // only supports EQUAL or NOT_EQUAL
-  public byte Diverted;                  // only supports EQUAL or NOT_EQUAL
-  public short ScheduledDuration;        // supports all queries
+  public byte Diverted;                 // only supports EQUAL or NOT_EQUAL
+  public short ScheduledDuration;       // supports all queries
   public short ActualDuration;          // supports all queries
   public short KmDistance;              // supports all querys
 
