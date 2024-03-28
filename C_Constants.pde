@@ -10,7 +10,7 @@ final String DATA_DIRECTOR_PATH = "/data/Preprocessed Data/";
 final boolean DEBUG_MODE = true; // Turns on various stats or console logging
 final int DEBUG_FPS_COUNTER_STORAGE = 30;
 final boolean DEBUG_FPS_ENABLED = true;
-final boolean DEBUG_PRINT_3D_LOADING = false;
+final boolean DEBUG_QUICK_LOAD_3D = false; // Turns off the earth shader for quick 3D loading
 
 // Color Palette
 final int CP_RED = #FF407D;
@@ -42,6 +42,7 @@ final int DEFAULT_WIDGET_ROUNDNESS_1 = 15;
 final int DEFAULT_WIDGET_ROUNDNESS_2 = 40;
 final float DEFAULT_WIDGET_STROKE = 3;
 final float WIDGET_GROW_MODE_MULT = 1.1f;
+final float SWITCH_SCREEN_DUR_3D = 1000.0f;
 
 // IDs
 final String SCREEN_1_ID = "Screen 1";
