@@ -130,6 +130,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     if (m_working)
       return;
     m_working = true;
+    m_airportHashmap.clear();
 
     new Thread(() -> {
       m_flightDataLoaded = false;
@@ -154,17 +155,16 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
    * @param flights The array of FlightType containing flight data.
    * @param queries The QueryManagerClass object for querying airport data.
    */
-  public void loadFlightsAsync(FlightType[] flights, QueryManagerClass queries) {
-    m_airportHashmap.clear();
-    ExecutorService executor = Executors.newFixedThreadPool(4);
-    CountDownLatch latch = new CountDownLatch(4);
+  public void loadFlightsAsync(FlightType[] flights, QueryManagerClass queries) {    
+    ExecutorService executor = Executors.newFixedThreadPool(LOADING_THREAD_COUNT_3D);
+    CountDownLatch latch = new CountDownLatch(LOADING_THREAD_COUNT_3D);
 
     int count = flights.length;
-    int chunkSize = count / 4;
+    int chunkSize = count / LOADING_THREAD_COUNT_3D;
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < LOADING_THREAD_COUNT_3D; i++) {
       int startPosition = i * chunkSize;
-      int endPosition = (i == 3) ? count : (i + 1) * chunkSize;
+      int endPosition = (i == LOADING_THREAD_COUNT_3D - 1) ? count : (i + 1) * chunkSize;
 
       executor.submit(() -> {
         int arcSegments = 4;
