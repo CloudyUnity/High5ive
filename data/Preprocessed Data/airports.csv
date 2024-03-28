@@ -5079,7 +5079,7 @@ Alexandria International Airport,Alexandria,US,United States,AFO,31.3274,-92.549
 Fort Worth Alliance Airport,Fort Worth,US,United States,AFW,32.9876,-97.3188,5069,13CD
 Allegheny County Airport,Pittsburgh,US,United States,AGC,40.3544,-79.9302,5070,13CE
 Angoon Seaplane Base,Angoon,US,United States,AGN,57.5036,-134.585,5071,13CF
-Augusta Regional At Bush Field,Bush Field,US,United States,AGS,33.3699,-81.9645,5072,13D0
+Augusta Regional At Bush Field,Augusta,US,United States,AGS,33.3699,-81.9645,5072,13D0
 Athens Ben Epps Airport,Athens,US,United States,AHN,33.9486,-83.3263,5073,13D1
 Alliance Municipal Airport,Alliance,US,United States,AIA,42.0532,-102.804,5074,13D2
 Anderson Municipal Darlington Field,ANDERSON,US,United States,AID,40.1086,-85.613,5075,13D3
@@ -5347,8 +5347,8 @@ Cincinnati Northern Kentucky International Airport,Cincinnati,US,United States,C
 Clovis Municipal Airport,Clovis,US,United States,CVN,34.4251,-103.079,5337,14D9
 Corvallis Municipal Airport,Corvallis,US,United States,CVO,44.4972,-123.29,5338,14DA
 Cannon Air Force Base,Clovis,US,United States,CVS,34.3828,-103.322,5339,14DB
-Chennault International Airport,Lake Charles,US,United States,CWA,30.2106,-93.1432,5340,14DC
-Central Wisconsin Airport,Wassau,US,United States,CWF,44.7776,-89.6668,5341,14DD
+Central Wisconsin Airport,Wassau,US,United States,CWA,44.7776,-89.6668,5340,14DC
+Chennault International Airport,Lake Charles,US,United States,CWF,30.2106,-93.1432,5341,14DD
 Clinton Municipal Airport,Clinton,US,United States,CWI,41.8311,-90.3291,5342,14DE
 Coldfoot Airport,Coldfoot,US,United States,CXF,67.2522,-150.2039,5343,14DF
 Calexico International Airport,Calexico,US,United States,CXL,32.6695,-115.513,5344,14E0
@@ -5385,8 +5385,8 @@ Delta Junction,Delta Junction,US,United States,DJN,64.0501,-145.7225,5374,14FE
 Chautauqua County-Dunkirk Airport,Dunkirk,US,United States,DKK,42.4933,-79.272,5375,14FF
 DLF Airport,Del Rio,US,United States,DLF,29.3595,-100.778,5376,1500
 Dillingham Airport,Dillingham,US,United States,DLG,59.0447,-158.505,5377,1501
-Dillon,Dillon,US,United States,DLH,45.2554,-112.5525,5378,1502
-Duluth International Airport,Duluth,US,United States,DLN,46.8421,-92.1936,5379,1503
+Duluth International Airport,Duluth,US,United States,DLH,46.8421,-92.1936,5378,1502
+Dillon,Dillon,US,United States,DLN,45.2554,-112.5525,5379,1503
 Columbia Gorge Regional the Dalles Municipal Airport,The Dalles,US,United States,DLS,45.6185,-121.167,5380,1504
 Davis Monthan Air Force Base,Tucson,US,United States,DMA,32.1665,-110.883,5381,1505
 Sedalia Regional,Sedalia,US,United States,DMN,38.7074,-93.1759,5382,1506
@@ -5623,9 +5623,9 @@ Cheraw Municipal Airport/Lynch Bellinger Field,Cheraw,US,United States,HCW,34.71
 Brewster Field,Holdredge,US,United States,HDE,40.4521,-99.3365,5613,15ED
 Dillingham Airfield,Dillingham,US,United States,HDH,21.5795,-158.197,5614,15EE
 Hardwick Field,Cleveland,US,United States,HDI,35.2201,-84.8324,5615,15EF
-Hermiston Municipal Airport,Hermiston,US,United States,HDN,45.8282,-119.2592,5616,15F0
-Hardy-Anders Field/Natchez-Adams County Airport,Natchez,US,United States,HES,31.6137,-91.2973,5617,15F1
-Yampa Valley Airport,Hayden,US,United States,HEZ,40.4812,-107.218,5618,15F2
+Yampa Valley Airport,Hayden,US,United States,HDN,40.4812,-107.218,5616,15F0
+Hermiston Municipal Airport,Hermiston,US,United States,HES,45.8282,-119.2592,5617,15F1
+Hardy-Anders Field/Natchez-Adams County Airport,Natchez,US,United States,HEZ,31.6137,-91.2973,5618,15F2
 Hartford Brainard Airport,Hartford,US,United States,HFD,41.7367,-72.6494,5619,15F3
 Hagerstown Regional Richard A Henson Field,Hagerstown,US,United States,HGR,39.7079,-77.7295,5620,15F4
 Hilton Head Airport,Hilton Head Island,US,United States,HHH,32.2244,-80.6975,5621,15F5
@@ -5824,8 +5824,8 @@ Arnold Palmer Regional Airport,Latrobe,US,United States,LBE,40.2759,-79.4048,581
 North Platte Regional Airport Lee Bird Field,North Platte,US,United States,LBF,41.1262,-100.684,5814,16B6
 Liberal Mid-America Regional Airport,Liberal,US,United States,LBL,37.0442,-100.96,5815,16B7
 Lumberton Regional Airport,Lumberton,US,United States,LBT,34.6099,-79.0594,5816,16B8
-Laconia Municipal Airport,Laconia,US,United States,LCH,43.573,-71.4178,5817,16B9
-Lake Charles Regional Airport,Lake Charles,US,United States,LCI,30.1261,-93.2233,5818,16BA
+Lake Charles Regional Airport,Lake Charles,US,United States,LCH,30.1261,-93.2233,5817,16B9
+Laconia Municipal Airport,Laconia,US,United States,LCI,43.573,-71.4178,5818,16BA
 Rickenbacker International Airport,Columbus,US,United States,LCK,39.8138,-82.9278,5819,16BB
 Lake City Gateway Airport,Lake City,US,United States,LCQ,30.182,-82.5769,5820,16BC
 Linden Airport,Linden,US,United States,LDJ,40.6174,-74.2446,5821,16BD
@@ -5898,8 +5898,8 @@ Madera Municipal Airport,Madera,US,United States,MAE,36.9886,-120.112,5887,16FF
 Midland International Airport,Midland,US,United States,MAF,31.9425,-102.202,5888,1700
 Mobridge Municipal Airport,Mobridge,US,United States,MBG,45.5465,-100.408,5889,1701
 Manistee Co Blacker Airport,Manistee,US,United States,MBL,44.2724,-86.2469,5890,1702
-Omar N Bradley Airport,Moberly,US,United States,MBS,39.4632,-92.4259,5891,1703
-MBS International Airport,Saginaw,US,United States,MBY,43.5329,-84.0796,5892,1704
+MBS International Airport,Saginaw,US,United States,MBS,43.5329,-84.0796,5891,1703
+Omar N Bradley Airport,Moberly,US,United States,MBY,39.4632,-92.4259,5892,1704
 Mc Comb/Pike County Airport/John E Lewis Field,Mc Comb,US,United States,MCB,31.1785,-90.4719,5893,1705
 Mc Clellan Airfield,Sacramento,US,United States,MCC,38.6676,-121.401,5894,1706
 Merced Regional Macready Field,Merced,US,United States,MCE,37.2847,-120.514,5895,1707
@@ -6083,10 +6083,10 @@ Nogales International Airport,Nogales,US,United States,OLU,31.4177,-110.848,6072
 Olney-Noble,Olney-Noble,US,United States,OLV,38.7218,-88.1764,6073,17B9
 Olive Branch Airport,Olive Branch,US,United States,OLY,34.9787,-89.7869,6074,17BA
 Eppley Airfield,Omaha,US,United States,OMA,41.3032,-95.8941,6075,17BB
-Omak,Omak,US,United States,OME,48.4644,-119.5181,6076,17BC
-Winona Municipal-Max Conrad Field,Winona,US,United States,OMK,44.0796,-91.7116,6077,17BD
-The O'Neill Municipal-John L Baker Field,O'Neill,US,United States,ONA,42.4694,-98.6878,6078,17BE
-Nome Airport,Nome,US,United States,ONL,64.5122,-165.445,6079,17BF
+Nome Airport,Nome,US,United States,OME,64.5122,-165.445,6076,17BC
+Omak,Omak,US,United States,OMK,48.4644,-119.5181,6077,17BD
+Winona Municipal-Max Conrad Field,Winona,US,United States,ONA,44.0796,-91.7116,6078,17BE
+The O'Neill Municipal-John L Baker Field,O'Neill,US,United States,ONL,42.4694,-98.6878,6079,17BF
 Ontario Municipal Airport,Ontario,US,United States,ONO,44.0205,-117.014,6080,17C0
 Newport Municipal Airport,Newport,US,United States,ONP,44.5804,-124.058,6081,17C1
 Ontario International Airport,Ontario,US,United States,ONT,34.056,-117.601,6082,17C2
@@ -6108,9 +6108,9 @@ Southwest Oregon Regional Airport,North Bend,US,United States,OTH,43.4171,-124.2
 Tillamook Airport,Tillamook,US,United States,OTK,45.4182,-123.814,6098,17D2
 Anacortes,Anacortes,US,United States,OTM,48.4985,-122.6625,6099,17D3
 Ottumwa Regional Airport,Ottumwa,US,United States,OTS,41.1066,-92.4479,6100,17D4
-University of Oklahoma / Max Westheimer Airport,Norman,US,United States,OTZ,35.2456,-97.4721,6101,17D5
-Owatonna Degner Regional,Owatonna,US,United States,OUN,44.123,-93.2588,6102,17D6
-Ralph Wien Memorial Airport,Kotzebue,US,United States,OWA,66.8847,-162.599,6103,17D7
+Ralph Wien Memorial Airport,Kotzebue,US,United States,OTZ,66.8847,-162.599,6101,17D5
+University of Oklahoma / Max Westheimer Airport,Norman,US,United States,OUN,35.2456,-97.4721,6102,17D6
+Owatonna Degner Regional,Owatonna,US,United States,OWA,44.123,-93.2588,6103,17D7
 Owensboro Daviess County Airport,Owensboro,US,United States,OWB,37.7401,-87.1668,6104,17D8
 Norwood Memorial Airport,Norwood,US,United States,OWD,42.1905,-71.1729,6105,17D9
 Waterbury Oxford Airport,Oxford,US,United States,OXC,41.4786,-73.1352,6106,17DA
@@ -6134,9 +6134,9 @@ Pelican Seaplane Base,Pelican,US,United States,PEC,57.9552,-136.2363,6123,17EB
 Pecos Municipal Airport,Pecos,US,United States,PEQ,31.3824,-103.511,6124,17EC
 Panama City-Bay Co International Airport,Panama City,US,United States,PFN,30.2121,-85.6828,6125,17ED
 Page Municipal Airport,Page,US,United States,PGA,36.9261,-111.448,6126,17EE
-Port Graham,Port Graham,US,United States,PGM,59.3485,-151.8303,6127,17EF
-Stevens Field,Pagosa Springs,US,United States,PGO,37.2862,-107.056,6128,17F0
-Charlotte County Airport,Punta Gorda,US,United States,PGD,26.9202,-81.9905,6129,17F1
+Charlotte County Airport,Punta Gorda,US,United States,PGD,26.9202,-81.9905,6127,17EF
+Port Graham,Port Graham,US,United States,PGM,59.3485,-151.8303,6128,17F0
+Stevens Field,Pagosa Springs,US,United States,PGO,37.2862,-107.056,6129,17F1
 Pitt Greenville Airport,Greenville,US,United States,PGV,35.6352,-77.3853,6130,17F2
 Harry Clever Field,New Philadelpha,US,United States,PHD,40.4709,-81.4197,6131,17F3
 Newport News Williamsburg International Airport,Newport News,US,United States,PHF,37.1319,-76.493,6132,17F4
@@ -6203,8 +6203,8 @@ Pueblo Memorial Airport,Pueblo,US,United States,PUB,38.2891,-104.497,6192,1830
 Carbon County Regional/Buck Davis Field,Price,US,United States,PUC,39.6139,-110.751,6193,1831
 Pullman Moscow Regional Airport,Pullman,US,United States,PUW,46.7439,-117.11,6194,1832
 Provincetown Municipal Airport,Provincetown,US,United States,PVC,42.0719,-70.2214,6195,1833
-Placerville,Placerville,US,United States,PVD,38.7242,-120.7533,6196,1834
-Theodore Francis Green State Airport,Providence,US,United States,PVF,41.7326,-71.4204,6197,1835
+Theodore Francis Green State Airport,Providence,US,United States,PVD,41.7326,-71.4204,6196,1834
+Placerville,Placerville,US,United States,PVF,38.7242,-120.7533,6197,1835
 Pike County-Hatcher Field,Pikeville,US,United States,PVL,37.5618,-82.5664,6198,1836
 Hale County Airport,Plainview,US,United States,PVU,34.1681,-101.7173,6199,1837
 Provo Municipal Airport,Provo,US,United States,PVW,40.2192,-111.723,6200,1838
@@ -6275,9 +6275,9 @@ Red Devil Airport,Red Devil,US,United States,RDV,61.7873,-157.3484,6264,1878
 Chicago Rockford International Airport,Rockford,US,United States,RFD,42.1954,-89.0972,6265,1879
 Rhinelander Oneida County Airport,Rhinelander,US,United States,RHI,45.6312,-89.4675,6266,187A
 Reid-Hillview Airport of Santa Clara County,San Jose,US,United States,RHV,37.3329,-121.819,6267,187B
-Richmond Municipal Airport,Richmond,US,United States,RIC,39.7561,-84.8427,6268,187C
-Rice Lake Regional/Carl's Field,Rice Lake,US,United States,RID,45.4201,-91.7733,6269,187D
-Richmond International Airport,Richmond,US,United States,RIE,37.5052,-77.3197,6270,187E
+Richmond International Airport,Richmond,US,United States,RIC,37.5052,-77.3197,6268,187C
+Richmond Municipal Airport,Richmond,US,United States,RID,39.7561,-84.8427,6269,187D
+Rice Lake Regional/Carl's Field,Rice Lake,US,United States,RIE,45.4201,-91.7733,6270,187E
 Garfield County Regional Airport,Rifle,US,United States,RIL,39.5263,-107.727,6271,187F
 March ARB Airport,Riverside,US,United States,RIV,33.8807,-117.259,6272,1880
 Riverton Regional Airport,Riverton WY,US,United States,RIW,43.0642,-108.46,6273,1881
@@ -6500,8 +6500,8 @@ Thomasville Regional Airport,Thomasville,US,United States,TVI,30.9016,-83.8813,6
 Twin Hills,Twin Hills,US,United States,TVL,59.0745,-160.275,6490,195A
 Lake Tahoe Airport,South Lake Tahoe,US,United States,TWA,38.8939,-119.995,6491,195B
 Joslin Field Magic Valley Regional Airport,Twin Falls,US,United States,TWF,42.4818,-114.488,6492,195C
-Indianopolis Executive Airport,Zionsville,US,United States,TXK,40.0306,-86.2514,6493,195D
-Texarkana Regional Webb Field,Texarkana,US,United States,TYQ,33.4537,-93.991,6494,195E
+Texarkana Regional Webb Field,Texarkana,US,United States,TXK,33.4537,-93.991,6493,195D
+Indianopolis Executive Airport,Zionsville,US,United States,TYQ,40.0306,-86.2514,6494,195E
 Tyler Pounds Regional Airport,Tyler,US,United States,TYR,32.3541,-95.4024,6495,195F
 McGhee Tyson Airport,Knoxville,US,United States,TYS,35.811,-83.994,6496,1960
 Everett-Stewart Regional,Union City,US,United States,TZR,36.3797,-88.9857,6497,1961
