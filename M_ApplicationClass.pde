@@ -35,7 +35,7 @@ class ApplicationClass {
 
     m_flightsManager.loadUSAndWorldFromFiles("hex_flight_data.bin", "hex_world_data.bin", 4, list -> {
       m_screen3DFM.insertFlightData(list);
-      m_screenCharts.loadData(list.US);
+      m_screenCharts.insertBaseData(list);
     }
     );
   }
