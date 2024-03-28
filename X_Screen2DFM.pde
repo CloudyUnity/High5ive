@@ -1,12 +1,18 @@
 class TwoDMapScreen extends Screen {
-  FlightMap2DUI m_flightMap;
-  QueryManagerClass m_twodQueryManager;
-  UserQueryUI m_userQueryUI;
-  FlightMultiDataType m_flights;        // I'll need these later, ONCE I FIGURE OUT WHAT TO DO
+  private FlightMap2DUI m_flightMap;
+  private QueryManagerClass m_queryManager;
+  private UserQueryUI m_userQueryUI;
+  private FlightMultiDataType m_flights;        
+  private PVector m_offScreenUIPos = new PVector(0, 0);
+  private boolean m_isQueryDisplayed = false;
 
   public TwoDMapScreen (String screenId, QueryManagerClass query) {
     super(screenId, DEFAULT_SCREEN_COLOUR);
-    m_twodQueryManager = query;
+    m_queryManager = query;
+  }
+
+  public void insertFlightData(FlightMultiDataType flights) {
+    m_flights  = flights;
   }
 
   @Override
@@ -14,20 +20,26 @@ class TwoDMapScreen extends Screen {
     super.init();
     int currentUIPosY = 20;
     int textSize = 20;
-    
+
 
     m_flightMap = new FlightMap2DUI(100, 0, 100, 100);
     addWidget(m_flightMap);
 
-    ButtonUI uiBackground = createButton(0, -1, 200, (displayHeight));
-    uiBackground.setHighlightOutlineOnEnter(false);
-    uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
-    uiBackground.setText("");
+    m_userQueryUI = new UserQueryUI(0, 0, 1, 1, m_queryManager, this);
+    m_userQueryUI.setPos(m_offScreenUIPos);
+    addWidget(m_userQueryUI);
 
-    ButtonUI uiBackgroundTwo = createButton(0, (displayHeight-100), (displayWidth), (100));
-    uiBackgroundTwo.setHighlightOutlineOnEnter(false);
-    uiBackgroundTwo.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
-    uiBackgroundTwo.setText("");
+
+
+    /*ButtonUI uiBackground = createButton(0, -1, 200, (displayHeight));
+     uiBackground.setHighlightOutlineOnEnter(false);
+     uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
+     uiBackground.setText("");
+     
+     ButtonUI uiBackgroundTwo = createButton(0, (displayHeight-100), (displayWidth), (100));
+     uiBackgroundTwo.setHighlightOutlineOnEnter(false);
+     uiBackgroundTwo.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
+     uiBackgroundTwo.setText("");*/
 
     ButtonUI returnBttn = createButton(20, currentUIPosY, 160, 50);
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));

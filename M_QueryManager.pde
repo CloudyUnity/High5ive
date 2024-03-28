@@ -49,7 +49,7 @@ class QueryManagerClass {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getString("Country");
   }
-  
+
   // Get airport country ISO 3166 code from an airport IATA code
   public String getISO3166(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
@@ -67,7 +67,7 @@ class QueryManagerClass {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getInt("Key");
   }
-  
+
   // Get latitude from airport index
   public float getLatitudeFromIndex(int index) {
     m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
@@ -97,7 +97,7 @@ class QueryManagerClass {
     m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
     return m_lookupResult.getString("Country");
   }
-  
+
   // Get airport country ISO 3166 code from airport index
   public String getISO3166FromIndex(int index) {
     m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
@@ -110,25 +110,25 @@ class QueryManagerClass {
     return m_lookupResult.getString("IATA");
   }
 
-  // Get airline carrier code name from an airline index 
+  // Get airline carrier code name from an airline index
   public String getAirlineName(int airlineIndex) {
     m_lookupResult = m_airlineTable.findRow(String.valueOf(airlineIndex), "Key");
     return m_lookupResult.getString("Airline");
   }
 
   // ...
-  public FlightType[] queryFlights(FlightType[] flightsList, FlightQueryType flightQuery, int queryValue) {    
+  public FlightType[] queryFlights(FlightType[] flightsList, FlightQueryType flightQuery, int queryValue) {
     if (!isLegalQuery(flightQuery)) {
       println("Error: FlightQuery.Type is illegal with FlightQuery.Operator");
       return flightsList;
     }
-    
+
     switch(flightQuery.Operator) {
     case EQUAL:
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) == queryValue)
         .toArray(FlightType[]::new);
-        
+
     case NOT_EQUAL:
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) != queryValue)
@@ -157,7 +157,7 @@ class QueryManagerClass {
     default:
       println("Error: FlightQuery.Operator invalid");
       return flightsList;
-    }    
+    }
   }
 
   // ...
@@ -166,7 +166,7 @@ class QueryManagerClass {
       println("Error: FlightRangeQuery.Type is illegal to query range");
       return flightsList;
     }
-    
+
     return Arrays.stream(flightsList)
       .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightRangeQuery.Type) >= start &&
       getFlightTypeFieldFromQueryType(flight, flightRangeQuery.Type) < end)

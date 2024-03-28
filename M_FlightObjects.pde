@@ -153,13 +153,13 @@ public enum QueryLocationType {
 }
 
 // Data type for a latitude-longitude coordinate for a point on earth
-class CoordType {
-  public float Latitude;
-  public float Longitude;
+ class CoordType {
+  public float xpos;
+  public float ypos;
 
-  public CoordType(float lat, float longi) {
-    Latitude = lat;
-    Longitude = longi;
+  public CoordType(float longi, float lat) {
+    float xpos = ((displayWidth/2) + 100 ) + longi/180*(displayWidth  -  ((displayWidth/2) +100)) ;
+    float ypos = ((displayHeight- 100) / 2) + lat/90*((displayHeight-100) -((displayHeight-100)/2));
   }
 }
 
