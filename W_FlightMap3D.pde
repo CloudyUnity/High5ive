@@ -355,7 +355,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     s_3D.fill(255);
 
     s_3D.pushMatrix();
-    s_3D.shader(m_shaderEarth);
+    if (!DEBUG_QUICK_LOAD_3D)
+      s_3D.shader(m_shaderEarth);
     s_3D.textureWrap(CLAMP);
 
     s_3D.translate(m_earthPos.x, m_earthPos.y, m_earthPos.z);
