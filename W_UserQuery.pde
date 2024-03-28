@@ -21,7 +21,9 @@ class UserQueryUI extends Widget {
   private ButtonUI  loadDataButton;
   private ButtonUI  setOperatorsBttn;
   private CheckboxUI m_Cancelled;
+
   private QueryLocationType m_location = QueryLocationType.US;
+
   public int m_listCounter;
   private FlightQueryType m_OriginQuery;
   private FlightQueryType m_DestQuery;
@@ -119,9 +121,7 @@ class UserQueryUI extends Widget {
     m_DistanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, m_location);
     m_flightQueries.add(m_DestQuery);
 
-    
 
-    m_CancelledQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.EQUAL, m_location);
     m_flightQueries.add(m_DestQuery);
   }
 
@@ -153,11 +153,13 @@ class UserQueryUI extends Widget {
    * based on user input queries and updates the displayed data accordingly.
    */
   private void loadData() {
+
     FlightType[] result;
     if (m_location == QueryLocationType.US) {
       result = m_flightsLists.US;
     } else {
       result = m_flightsLists.WORLD;
+
     }
     for (FlightQueryType query : m_activeQueries) {
       result  = m_queryManager.queryFlights(result, query, query.QueryValue);
