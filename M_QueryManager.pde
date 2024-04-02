@@ -3,7 +3,11 @@ class QueryManagerClass {
   private Table m_airportTable;
   private TableRow m_lookupResult;
 
-  // Initialises the query manager lookup tables
+  /**
+   * CKM
+   *
+   * Iniialises the query manager lookup tables
+   */
   public void init() {
     m_airlineTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "airlines.csv", "header");
     m_airportTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "airports.csv", "header");
@@ -13,122 +17,236 @@ class QueryManagerClass {
     }
   }
 
-  //a series of function for lookup tables - the lookup tables are loaded directly into processing as spreadsheets
-  //the findRow functions allow the spreadsheet to be searched, and a pointer to that row is passed as a variable
-  //written by Kyara (Cosmo) McWilliam
-  //depending on the precise lookup combination, takes either the IATA code for the airport or airline, or the decimal index stored in the database
-  //depending on the precise lookup combination, returns the Latitude, Longitude, Name, Location, Country, Country Code, IATA Code or Decimal Index
-  //will throw NullPointerException if data not found - unhandled as the database should be complete, so this should stop the code and be resolved
-
-  // Get latitude from an airport IATA code
+  /**
+   * CKM
+   *
+   * Gets the latitude of an airport from its IATA code.
+   *
+   * @param code The IATA code of the airport.
+   * @return The latitude of the airport.
+   */
   public float getLatitude(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getFloat("Latitude");
   }
 
-  // Get longitude from an airport IATA code
+  /**
+   * CKM
+   *
+   * Gets the longitude of an airport from its IATA code.
+   *
+   * @param code The IATA code of the airport.
+   * @return The longitude of the airport.
+   */
   public float getLongitude(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getFloat("Longitude");
   }
 
-  // Get airport name from an airport IATA code
+  /**
+   * CKM
+   *
+   * Gets the name of an airport from its IATA code.
+   *
+   * @param code The IATA code of the airport.
+   * @return The name of the airport.
+   */
   public String getAirportName(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getString("Name");
   }
 
-  // Get airport city name from an airport IATA code
+  /**
+   * CKM
+   *
+   * Gets the city name of an airport from its IATA code.
+   *
+   * @param code The IATA code of the airport.
+   * @return The city name of the airport.
+   */
   public String getCity(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getString("City");
   }
 
-  // Get airport country name from an airport IATA code
+  /**
+   * CKM
+   *
+   * Gets the country name of an airport from its IATA code.
+   *
+   * @param code The IATA code of the airport.
+   * @return The country name of the airport.
+   */
   public String getCountry(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getString("Country");
   }
-  
-  // Get airport country ISO 3166 code from an airport IATA code
+
+  /**
+   * CKM
+   *
+   * Gets the ISO 3166 country code of an airport from its IATA code.
+   *
+   * @param code The IATA code of the airport.
+   * @return The ISO 3166 country code of the airport.
+   */
   public String getISO3166(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getString("ISO-3166");
   }
 
-  // Get airport IATA code from an airport index
+  /**
+   * CKM
+   *
+   * Gets the IATA code of an airport from its index.
+   *
+   * @param index The index of the airport.
+   * @return The IATA code of the airport.
+   */
   public String getCode(int index) {
     m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
     return m_lookupResult.getString("IATA");
   }
 
-  // Get aiport index from an airport IATA code
+  /**
+   * CKM
+   *
+   * Gets the airport index from an airport IATA code.
+   *
+   * @param code The IATA code of the airport.
+   * @return The index of the airport.
+   */
   public int getIndex(String code) {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getInt("Key");
   }
-  
-  // Get latitude from airport index
+
+  /**
+   * CKM
+   *
+   * Gets the latitude of an airport from its index.
+   *
+   * @param index The index of the airport.
+   * @return The latitude of the airport.
+   */
   public float getLatitudeFromIndex(int index) {
     m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
     return m_lookupResult.getFloat("Latitude");
   }
 
-  // Get longitude from airport index
+  /**
+   * CKM
+   *
+   * Gets the longitude of an airport from its index.
+   *
+   * @param index The index of the airport.
+   * @return The longitude of the airport.
+   */
   public float getLongitudeFromIndex(int index) {
     m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
     return m_lookupResult.getFloat("Longitude");
   }
 
-  // Get airport name from airport index
+  /**
+   * CKM
+   *
+   * Gets the name of an airport from its index.
+   *
+   * @param index The index of the airport.
+   * @return The name of the airport.
+   */
   public String getAirportNameFromIndex(int index) {
     m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
     return m_lookupResult.getString("Name");
   }
 
-  // Get airport city from airport index
+  /**
+   * CKM
+   *
+   * Gets the city name of an airport from its index.
+   *
+   * @param index The index of the airport.
+   * @return The city name of the airport.
+   */
   public String getCityFromIndex(int index) {
     m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
     return m_lookupResult.getString("City");
   }
 
-  // Get airport country name from airport index
+  /**
+   * CKM
+   *
+   * Gets the country name of an airport from its index.
+   *
+   * @param index The index of the airport.
+   * @return The country name of the airport.
+   */
   public String getCountryFromIndex(int index) {
     m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
     return m_lookupResult.getString("Country");
   }
-  
-  // Get airport country ISO 3166 code from airport index
+
+  /**
+   * CKM
+   *
+   * Gets the ISO 3166 country code of an airport from its index.
+   *
+   * @param index The index of the airport.
+   * @return The ISO 3166 country code of the airport.
+   */
   public String getISO3166FromIndex(int index) {
     m_lookupResult = m_airportTable.findRow(String.valueOf(index), "Key");
     return m_lookupResult.getString("ISO-3166");
   }
 
-  // Get airline code from an airline index
+  /**
+   * CKM
+   *
+   * Gets the IATA code of an airline from its index.
+   *
+   * @param airlineIndex The index of the airline.
+   * @return The IATA code of the airline.
+   */
   public String getAirlineCode(int airlineIndex) {
     m_lookupResult = m_airlineTable.findRow(String.valueOf(airlineIndex), "Key");
     return m_lookupResult.getString("IATA");
   }
 
-  // Get airline carrier code name from an airline index 
+  /**
+   * CKM
+   *
+   * Gets the name of an airline carrier from its index.
+   *
+   * @param airlineIndex The index of the airline.
+   * @return The name of the airline carrier.
+   */
   public String getAirlineName(int airlineIndex) {
     m_lookupResult = m_airlineTable.findRow(String.valueOf(airlineIndex), "Key");
     return m_lookupResult.getString("Airline");
   }
 
-  // ...
-  public FlightType[] queryFlights(FlightType[] flightsList, FlightQueryType flightQuery, int queryValue) {    
+  /**
+   * T. Creagh
+   *
+   * Queries flights based on the given criteria.
+   *
+   * @param flightsList An array of FlightType objects to be queried.
+   * @param flightQuery The type of query to perform.
+   * @param queryValue The value to query against.
+   * @return An array of FlightType objects that match the query criteria.
+   */
+  public FlightType[] queryFlights(FlightType[] flightsList, FlightQueryType flightQuery, int queryValue) {
     if (!isLegalQuery(flightQuery)) {
       println("Error: FlightQuery.Type is illegal with FlightQuery.Operator");
       return flightsList;
     }
-    
+
     switch(flightQuery.Operator) {
     case EQUAL:
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) == queryValue)
         .toArray(FlightType[]::new);
-        
+
     case NOT_EQUAL:
       return Arrays.stream(flightsList)
         .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightQuery.Type) != queryValue)
@@ -157,28 +275,55 @@ class QueryManagerClass {
     default:
       println("Error: FlightQuery.Operator invalid");
       return flightsList;
-    }    
+    }
   }
 
-  // ...
+  /**
+   * T. Creagh
+   *
+   * Queries flights within a specified range based on the given flight range query.
+   *
+   * @param flightsList An array of FlightType objects to be queried.
+   * @param flightRangeQuery The type of range query to perform.
+   * @param start The starting index of the range.
+   * @param end The ending index of the range.
+   * @return An array of FlightType objects that fall within the specified range.
+   */
   private FlightType[] queryFlightsWithinRange(FlightType[] flightsList, FlightRangeQueryType flightRangeQuery, int start, int end) {
     if (!isLegalQuery(flightRangeQuery)) {
       println("Error: FlightRangeQuery.Type is illegal to query range");
       return flightsList;
     }
-    
+
     return Arrays.stream(flightsList)
       .filter(flight -> getFlightTypeFieldFromQueryType(flight, flightRangeQuery.Type) >= start &&
       getFlightTypeFieldFromQueryType(flight, flightRangeQuery.Type) < end)
       .toArray(FlightType[]::new);
   }
 
-  // ...
+  /**
+   * T. Creagh
+   *
+   * Retrieves the value of a field from a FlightType object based on the given query type.
+   *
+   * @param flight The FlightType object from which to retrieve the field value.
+   * @param queryType The type of query to perform.
+   * @return The value of the specified field from the FlightType object.
+   */
   private int getFlightTypeFieldFromQueryType(FlightType flight, QueryType queryType) {
     return getFlightTypeFieldFromQueryType(flight, queryType, false);
   }
 
-  // ...
+  /**
+   * T. Creagh
+   *
+   * Retrieves the value of a field from a FlightType object based on the given query type, with an option to convert times to minutes.
+   *
+   * @param flight The FlightType object from which to retrieve the field value.
+   * @param queryType The type of query to perform.
+   * @param convertTimes A boolean indicating whether to convert times to minutes.
+   * @return The value of the specified field from the FlightType object.
+   */
   private int getFlightTypeFieldFromQueryType(FlightType flight, QueryType queryType, boolean convertTimes) {
     switch(queryType) {
     case DAY:
@@ -234,14 +379,28 @@ class QueryManagerClass {
     }
   }
 
-  // ...
+  /**
+   * T. Creagh
+   *
+   * Converts a time in clock format to minutes.
+   *
+   * @param time The time in clock format.
+   * @return The time converted to minutes.
+   */
   private int convertClockToMinutes(int time) {
     int hours = (int)(time / 100.0f);
     int mins = (int)(time % 100.0f);
     return mins + (hours * 60);
   }
 
-  // ...
+  /**
+   * T. Creagh
+   *
+   * Checks if a flight query is legal based on the flight query type and location.
+   *
+   * @param flightQuery The FlightQueryType object representing the query.
+   * @return True if the query is legal, false otherwise.
+   */
   private boolean isLegalQuery(FlightQueryType flightQuery) {
     if (flightQuery.Location == QueryLocationType.US) {
       switch(flightQuery.Type) {
@@ -270,7 +429,14 @@ class QueryManagerClass {
     }
   }
 
-  // ...
+  /**
+   * T. Creagh
+   *
+   * Checks if a flight range query is legal based on the flight range query type and location.
+   *
+   * @param flightRangeQuery The FlightRangeQueryType object representing the query.
+   * @return True if the query is legal, false otherwise.
+   */
   private boolean isLegalQuery(FlightRangeQueryType flightRangeQuery) {
     if (flightRangeQuery.Location != QueryLocationType.WORLD)
       return false;
@@ -287,7 +453,15 @@ class QueryManagerClass {
     }
   }
 
-  // ...
+  /**
+   * T. Creagh
+   *
+   * Sorts an array of FlightType objects based on the given sort query.
+   *
+   * @param flightsList An array of FlightType objects to be sorted.
+   * @param flightSortQuery The type of sort to perform.
+   * @return The sorted array of FlightType objects.
+   */
   public FlightType[] sort(FlightType[] flightsList, FlightSortQueryType flightSortQuery) {
     Comparator<FlightType> flightComparator;
     switch(flightSortQuery.Type) {
@@ -355,32 +529,86 @@ class QueryManagerClass {
     return flightsList;
   }
 
-  // ...
+  /**
+   * T. Creagh
+   *
+   * Queries the frequency of flights matching the given criteria.
+   *
+   * @param flightsList An array of FlightType objects to be queried.
+   * @param flightQuery The type of query to perform.
+   * @param queryValue The value to query against.
+   * @param threadCount The number of threads to use for the query (not implemented yet).
+   * @return The frequency of flights matching the query criteria.
+   */
   public int queryFrequency(FlightType[] flightsList, FlightQueryType flightQuery, int queryValue, int threadCount) {
     return queryFlights(flightsList, flightQuery, queryValue).length;
   }
 
-  // ...
+  /**
+   * T. Creagh
+   *
+   * Queries the frequency of flights within a specified range.
+   *
+   * @param flightsList An array of FlightType objects to be queried.
+   * @param flightRangeQuery The type of range query to perform.
+   * @param start The starting index of the range.
+   * @param end The ending index of the range.
+   * @param threadCount The number of threads to use for the query (not implemented yet).
+   * @return The frequency of flights within the specified range.
+   */
   public int queryRangeFrequency(FlightType[] flightsList, FlightRangeQueryType flightRangeQuery, int start, int end, int threadCount) {
     return queryFlightsWithinRange(flightsList, flightRangeQuery, start, end).length;
   }
 
-  // ...
+  /**
+   * T. Creagh
+   *
+   * Returns the specified number of items from the beginning of an array of FlightType objects.
+   *
+   * @param flightList The array of FlightType objects.
+   * @param numberOfItems The number of items to retrieve.
+   * @return An array containing the specified number of items from the beginning of the input array.
+   */
   public FlightType[] getHead(FlightType[] flightList, int numberOfItems) {
     return Arrays.copyOfRange(flightList, 0, numberOfItems);
   }
 
-  // ...
+  /**
+   * T. Creagh
+   *
+   * Returns the specified number of items from the end of an array of FlightType objects.
+   *
+   * @param flightList The array of FlightType objects.
+   * @param numberOfItems The number of items to retrieve.
+   * @return An array containing the specified number of items from the end of the input array.
+   */
   public FlightType[] getFoot(FlightType[] flightList, int numberOfItems) {
     return Arrays.copyOfRange(flightList, numberOfItems, flightList.length);
   }
 
-  // ...
+  /**
+   * T. Creagh
+   *
+   * Returns a subarray of FlightType objects within the specified range.
+   *
+   * @param flightList The array of FlightType objects.
+   * @param start The starting index of the range.
+   * @param end The ending index of the range.
+   * @return An array containing FlightType objects within the specified range.
+   */
   public FlightType[] getWithinRange(FlightType[] flightList, int start, int end) {
     return Arrays.copyOfRange(flightList, start, end);
   }
 
-  // Parses a given query value from user input into a valid integer
+  /**
+   * T. Creagh
+   *
+   * Parses a given query value from user input into a valid integer based on the query type.
+   *
+   * @param queryType The type of query.
+   * @param inputString The input string to parse.
+   * @return The parsed query value as an integer.
+   */
   private int formatQueryValue(QueryType queryType, String inputString) {
     println(queryType);
     switch (queryType) {
