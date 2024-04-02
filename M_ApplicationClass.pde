@@ -16,6 +16,7 @@ class ApplicationClass {
 
   ScreenCharts m_screenCharts = null;
   Screen3DFM m_screen3DFM = null;
+  TwoDMapScreen m_screen2DFM = null;
 
   /**
    * F. Wright
@@ -35,6 +36,7 @@ class ApplicationClass {
 
     m_flightsManager.loadUSAndWorldFromFiles("hex_flight_data.bin", "hex_world_data.bin", 4, list -> {
       m_screen3DFM.insertFlightData(list);
+      m_screen2DFM.insertFlightData(list);
       m_screenCharts.insertBaseData(list);
     }
     );

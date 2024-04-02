@@ -65,4 +65,15 @@ class TwoDMapScreen extends Screen {
     markersEnabledCB.getLabel().setScale(130, 50);
     currentUIPosY += 60;
   }
+    
+    /**
+   * M. Orlowski
+   *
+   * Inserts flight data into the screen from M_Application class.
+   *
+   * @param flights The flight data to be inserted.
+   */
+  public void insertFlightData(FlightMultiDataType flights) {
+    m_flights  = flights;
+  }
 }
