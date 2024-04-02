@@ -202,8 +202,11 @@ class QueryManagerClass {
     case ARRIVAL_DELAY:
       return (int)flight.ArrivalDelay;
 
-    case CANCELLED_OR_DIVERTED:
+    case CANCELLED:
       return (int)flight.Cancelled;
+    
+    case DIVERTED:
+      return (int)flight.Diverted;
 
     case KILOMETRES_DISTANCE:
       return (int)flight.KmDistance;
@@ -249,7 +252,7 @@ class QueryManagerClass {
       case FLIGHT_NUMBER:
       case AIRPORT_ORIGIN_INDEX:
       case AIRPORT_DEST_INDEX:
-      case CANCELLED_OR_DIVERTED:
+      case CANCELLED:
         boolean opIsEqual = flightQuery.Operator == QueryOperatorType.EQUAL;
         boolean opIsNotEqual = flightQuery.Operator == QueryOperatorType.NOT_EQUAL;
         return opIsEqual || opIsNotEqual;
@@ -280,7 +283,7 @@ class QueryManagerClass {
     case FLIGHT_NUMBER:
     case AIRPORT_ORIGIN_INDEX:
     case AIRPORT_DEST_INDEX:
-    case CANCELLED_OR_DIVERTED:
+    case CANCELLED:
       return false;
     default:
       return true;
@@ -335,7 +338,7 @@ class QueryManagerClass {
       flightComparator = Comparator.comparingInt(flight -> flight.ArrivalTime);
       break;
 
-    case CANCELLED_OR_DIVERTED:
+    case CANCELLED:
       flightComparator = Comparator.comparingInt(flight -> flight.Cancelled);
       break;
 

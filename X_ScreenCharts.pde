@@ -86,7 +86,7 @@ class ScreenCharts extends Screen {
     m_freqDD.add(QueryType.CARRIER_CODE_INDEX);
     m_freqDD.add(QueryType.AIRPORT_ORIGIN_INDEX);
     m_freqDD.add(QueryType.AIRPORT_DEST_INDEX);
-    m_freqDD.add(QueryType.CANCELLED_OR_DIVERTED);
+    m_freqDD.add(QueryType.CANCELLED);
 
     m_scatterDDX = new DropdownUI<QueryType>(20, 200, 300, 200, 50, v -> v.toString());
     addWidget(m_scatterDDX);

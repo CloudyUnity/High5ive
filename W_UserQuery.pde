@@ -20,7 +20,7 @@ class UserQueryUI extends Widget {
   private ButtonUI  addItemButton;
   private ButtonUI  loadDataButton;
   private ButtonUI  setOperatorsBttn;
-  private CheckboxUI m_Cancelled;
+  
 
   private QueryLocationType m_location = QueryLocationType.US;
 
@@ -29,6 +29,7 @@ class UserQueryUI extends Widget {
   private FlightQueryType m_DestQuery;
   private FlightQueryType m_DistanceQuery;
   private FlightQueryType m_CancelledQuery;
+  private FlightQueryType m_DivertedQuery;
   private FlightType[] m_flights;
   private FlightMap3D m_flightMap3D;
   private Screen m_screen;
@@ -70,6 +71,22 @@ class UserQueryUI extends Widget {
     RadioButtonUI usRadio = new RadioButtonUI(width/2, 20, 50, 50, "Pie");
     usRadio.getOnCheckedEvent().addHandler(e -> changeDataToWorld());
     group.addMember(usRadio);
+    
+    RadioButtonGroupTypeUI cancelDivertGroup = new RadioButtonGroupTypeUI();
+    addWidgetGroup(cancelDivertGroup);
+    
+    RadioButtonUI cancelledRadio = new RadioButtonUI(20, 200, 20, 20, "Histogram");
+    worldRadio.getOnCheckedEvent().addHandler(e -> changeDataToUS());
+    group.addMember(worldRadio);
+
+    RadioButtonUI divertedRadio = new RadioButtonUI(45, 200, 50, 50, "Pie");
+    usRadio.getOnCheckedEvent().addHandler(e -> changeDataToWorld());
+    group.addMember(usRadio);
+    
+    RadioButtonUI successfulRadio = new RadioButtonUI(70, 200, 50, 50, "Pie");
+    usRadio.getOnCheckedEvent().addHandler(e -> changeDataToWorld());
+    group.addMember(usRadio);
+    
 
     addItemButton = new ButtonUI(20, 600, 80, 20);
     addWidget(addItemButton);
@@ -121,8 +138,11 @@ class UserQueryUI extends Widget {
     m_DistanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, m_location);
     m_flightQueries.add(m_DestQuery);
 
-
-    m_flightQueries.add(m_DestQuery);
+    m_CancelledQuery = new FlightQueryType(QueryType.CANCELLED, QueryOperatorType.NOT_EQUAL, m_location);
+    m_flightQueries.add(m_CancelledQuery);
+    
+    m_DivertedQuery = new FlightQueryType(QueryType.DIVERTED, QueryOperatorType.NOT_EQUAL, m_location);
+    m_flightQueries.add(m_CancelledQuery);
   }
 
   /**
@@ -195,6 +215,8 @@ class UserQueryUI extends Widget {
         m_activeQueries.add(inputQuery);
       }
     }
+    
+    
 
     // Adds to query output field textbox thing
     m_queryList.add((((TextboxUI)inputField).getText()).toUpperCase() );
