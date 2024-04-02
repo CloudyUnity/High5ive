@@ -22,7 +22,7 @@ class UserQueryUI extends Widget {
   private ButtonUI  setOperatorsBttn;
   private CheckboxUI m_Cancelled;
 
-  private QueryLocationType m_location = QueryLocationType.US;
+  private QueryLocationType m_location = QueryLocationType.WORLD;
 
   public int m_listCounter;
   private FlightQueryType m_OriginQuery;
@@ -133,7 +133,9 @@ class UserQueryUI extends Widget {
    */
   public void insertBaseData(FlightMultiDataType flightData) {
     m_flightsLists = flightData;
+
     m_onLoadDataEvent.accept(new FlightType[0]);
+
   }
 
   /**
