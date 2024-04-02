@@ -51,8 +51,8 @@ class ApplicationClass {
     ScreenHome screenHome = new ScreenHome(SCREEN_1_ID);
     m_screens.add(screenHome);
 
-    TwoDMapScreen screenFlightMap2D = new TwoDMapScreen(SCREEN_TWOD_MAP_ID, m_queryManager);
-    m_screens.add(screenFlightMap2D);
+    m_screen2DFM = new TwoDMapScreen(SCREEN_TWOD_MAP_ID, m_queryManager);
+    m_screens.add(m_screen2DFM);
 
     m_screen3DFM = new Screen3DFM(SCREEN_FLIGHT_MAP_ID, m_queryManager);
     m_screens.add(m_screen3DFM);
