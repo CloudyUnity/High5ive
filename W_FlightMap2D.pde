@@ -13,10 +13,15 @@ class FlightMap2DUI extends Widget {
     super.draw();
 
     fill(m_backgroundColour);
-    image(m_mapImage, 200, 0, (displayWidth-200), (displayHeight-100));
+    image(m_mapImage, 250, 0, (displayWidth-250), (displayHeight-125));
   }
 
-
+  public void loadFlights(FlightType[] flights, QueryManagerClass queries) {
+   
+    
+    
+    
+  }
 
 
 
