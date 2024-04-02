@@ -22,7 +22,7 @@ class UserQueryUI extends Widget {
   private ButtonUI  setOperatorsBttn;
   
 
-  private QueryLocationType m_location = QueryLocationType.US;
+  private QueryLocationType m_location = QueryLocationType.WORLD;
 
   public int m_listCounter;
   private FlightQueryType m_OriginQuery;
