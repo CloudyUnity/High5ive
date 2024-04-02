@@ -9,8 +9,8 @@ final String DATA_DIRECTOR_PATH = "/data/Preprocessed Data/";
 // Debug Options
 final boolean DEBUG_MODE = true; // Turns on various stats or console logging
 final int DEBUG_FPS_COUNTER_STORAGE = 30;
-final boolean DEBUG_FPS_ENABLED = true;
-final boolean DEBUG_PRINT_3D_LOADING = false;
+final boolean DEBUG_FPS_ENABLED = false;
+final boolean DEBUG_QUICK_LOAD_3D = false; // Turns off the earth shader for quick 3D loading
 
 // Color Palette
 final int CP_RED = #FF407D;
@@ -26,6 +26,8 @@ final int COLOR_FOREGROUND = #7e7f9a;
 final int COLOR_TEXT = #f9f8f8;
 final int COLOR_HIGHTLIGHT_1 = #f3de8a;
 final int COLOR_HIGHTLIGHT_2 = #eb9486;
+final int COLOR_3D_MARKER = #ff00cc;
+final int COLOR_3D_ARC = CP_WHITE;
 
 // Scene
 final int DEFAULT_FOREGROUND_COLOUR = CP_WHITE;
@@ -42,6 +44,7 @@ final int DEFAULT_WIDGET_ROUNDNESS_1 = 15;
 final int DEFAULT_WIDGET_ROUNDNESS_2 = 40;
 final float DEFAULT_WIDGET_STROKE = 3;
 final float WIDGET_GROW_MODE_MULT = 1.1f;
+final float SWITCH_SCREEN_DUR_3D = 1000.0f;
 
 // IDs
 final String SCREEN_1_ID = "Screen 1";
@@ -62,12 +65,14 @@ final float VERTICAL_SCROLL_LIMIT_3D = 0.9f;
 final float VERTICAL_DRAG_SPEED_3D = 0.000003f;
 final float EARTH_FRICTION_3D = 0.99f;
 final float ARC_HEIGHT_MULT_3D = 0.5f;
-final int ARC_SIZE_3D = 1;
+final int ARC_LINE_WIDTH_3D = 1;
+final int MARKER_LINE_WIDTH_3D = 3;
 final float MARKER_SIZE_3D = 1f;
 final int TEXT_SIZE_3D = 12;
 final PVector TEXT_DISPLACEMENT_3D = new PVector(0, 10, 10);
 final boolean DITHER_MODE_3D = false;
 final float MOUSE_SCROLL_STRENGTH_3D = 15;
+final int LOADING_THREAD_COUNT_3D = 1;
 
 // Descending code authorship changes:
 // F. Wright, Set up constants for the Engine and Debug, 8pm 23/02/24
