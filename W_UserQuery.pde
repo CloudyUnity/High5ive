@@ -108,7 +108,7 @@ class UserQueryUI extends Widget {
     clearListButton.setText("Clear");
     clearListButton.getOnClickEvent().addHandler(e -> clearQueries());
 
-    loadDataButton = new ButtonUI(220, 500, 180, 120);
+    loadDataButton = new ButtonUI(width - 60, 150, 50, height  - 160);
     addWidget(loadDataButton);
     loadDataButton.setText("Load Data");
     loadDataButton.getOnClickEvent().addHandler(e -> loadData());
@@ -134,7 +134,7 @@ class UserQueryUI extends Widget {
     m_DistanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, m_location);
     m_flightQueries.add(m_DestQuery);
 
-    m_Airline =  new TextboxUI(20, 360, 160, 30); //Throwing off screen until this works
+    m_Airline =  new TextboxUI(20, 350, 160, 30); //Throwing off screen until this works
     addWidget(m_Airline);
     m_Airline.setPlaceholderText("Airline");
 
