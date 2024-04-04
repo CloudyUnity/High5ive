@@ -50,8 +50,6 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
 
     m_textbox.setUserModifiable(false);
 
-    m_dropdownButton.setText("+");
-
     m_dropdownButton.getOnClickEvent().addHandler(e -> onDropdownButtonClicked(e));
     m_listbox.getOnClickEvent().addHandler(e -> onListboxClick(e));
     m_listbox.getOnSelectedEntryChangedEvent().addHandler(e -> onListboxSelectionChanged(e));
@@ -63,6 +61,8 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
     m_children.add(m_listbox);
     m_children.add(m_textbox);
     m_children.add(m_dropdownButton);
+    
+    closeList();
   }
 
   /**
