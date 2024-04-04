@@ -72,7 +72,7 @@ class Screen3DFM extends Screen {
     ButtonUI switchUIBttn = createButton(20, currentUIPosY, 160, 50);
     switchUIBttn.getOnClickEvent().addHandler(e -> switchUI());
     switchUIBttn.setGrowScale(1.05);
-    switchUIBttn.setText("Switch to Query");
+    switchUIBttn.setText("Switch");
     switchUIBttn.setTextSize(textSize);
     switchUIBttn.getLabel().setCentreAligned(true);
 

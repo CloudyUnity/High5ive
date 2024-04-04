@@ -2,7 +2,9 @@ class TwoDMapScreen extends Screen {
   FlightMap2DUI m_flightMap;
   QueryManagerClass m_twodQueryManager;
   UserQueryUI m_userQueryUI;
-  FlightMultiDataType m_flights;
+
+  FlightMultiDataType m_flights;      
+
 
   public TwoDMapScreen (String screenId, QueryManagerClass query) {
     super(screenId, DEFAULT_SCREEN_COLOUR);

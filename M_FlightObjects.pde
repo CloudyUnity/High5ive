@@ -68,7 +68,7 @@ class FlightMultiDataType {
 }
 
 // Data type for making a query on a FlightType[]
-class FlightQueryType {   
+class FlightQueryType {
   public int QueryValue;
   public QueryType Type;
   public QueryOperatorType Operator;
@@ -126,7 +126,8 @@ public enum QueryType {
     SCHEDULED_ARRIVAL_TIME,
     ARRIVAL_TIME,
     ARRIVAL_DELAY,
-    CANCELLED_OR_DIVERTED,
+    CANCELLED,
+    DIVERTED,
     KILOMETRES_DISTANCE,
 }
 
