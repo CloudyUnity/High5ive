@@ -1,4 +1,5 @@
-/**
+
+  /**
  * M.Poole:
  * Represents a user interface for querying flight data. Manages user inputs and interactions
  * for querying flight data and displaying results.
@@ -130,7 +131,7 @@ class UserQueryUI extends Widget {
     m_destQuery = new FlightQueryType(QueryType.AIRPORT_DEST_INDEX, QueryOperatorType.EQUAL, m_location);
     m_flightQueries.add(m_destQuery);
 
-    m_airlineTB =  new TextboxUI(20, 3500, 160, 30); //Throwing off screen until this works
+    m_airlineTB =  new TextboxUI(170, 350, 160, 30);
     addWidget(m_airlineTB);
     m_airlineTB.setPlaceholderText("Airline");
 

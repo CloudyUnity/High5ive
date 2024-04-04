@@ -689,6 +689,8 @@ class QueryManagerClass {
     case MONTH:
     case DAY:
     case FLIGHT_NUMBER:
+    //case TAIL_NUBMER:
+
     case KILOMETRES_DISTANCE:
     case DEPARTURE_DELAY:
     case ARRIVAL_DELAY:
