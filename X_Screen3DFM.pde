@@ -8,10 +8,10 @@
 class Screen3DFM extends Screen {
   FlightMap3D m_flightMap3D;
   QueryManagerClass m_queryManager;
-  EmptyWidgetUI m_flightMapUIParent;
+  EmptyWidgetUI m_flightMapUIParent = new EmptyWidgetUI(0, 0), m_worldUSUIParent = new EmptyWidgetUI(0, -300);
   UserQueryUI m_userQueryUI;
   FlightMultiDataType m_flights;
-  
+
   private PVector m_offScreenUIPos = new PVector(-2000, 0);
   private boolean m_isQueryDisplayed = false;
   private float m_switchUIStartTimeMillis = 0;
@@ -45,9 +45,9 @@ class Screen3DFM extends Screen {
     public void init() {
     super.init();
 
-    // ATTENTION MATTHEW, SEE HERE!
     m_userQueryUI = new UserQueryUI(0, 0, 1, 1, m_queryManager, this);
     m_userQueryUI.setPos(m_offScreenUIPos);
+    m_userQueryUI.setWorldUSParent(m_worldUSUIParent);
     addWidget(m_userQueryUI);
 
     m_userQueryUI.setOnLoadHandler(flights -> {
@@ -56,7 +56,6 @@ class Screen3DFM extends Screen {
     );
     m_userQueryUI.insertBaseData(m_flights);
 
-    m_flightMapUIParent = new EmptyWidgetUI(0, 0);
     int currentUIPosY = 60;
     int textSize = 20;
 
@@ -178,22 +177,26 @@ class Screen3DFM extends Screen {
   public void insertFlightData(FlightMultiDataType flights) {
     m_flights  = flights;
   }
-  
+
   @Override
-  public void draw(){
+    public void draw() {
     super.draw();
-    
+
     float frac = (millis() - m_switchUIStartTimeMillis) / SWITCH_SCREEN_DUR_3D;
     frac = clamp(frac, 0, 1);
     frac *= frac;
-        
+
     PVector flightMapTargetPos = m_isQueryDisplayed ? m_offScreenUIPos : new PVector(0, 0);
     PVector newFlightMapPos = PVector.lerp(m_flightMapUIParent.getPos(), flightMapTargetPos, frac);
     m_flightMapUIParent.setPos(newFlightMapPos);
-    
+
     PVector userQueryTargetPos = m_isQueryDisplayed ? new PVector(0, 0) : m_offScreenUIPos;
     PVector newUserQueryPos = PVector.lerp(m_userQueryUI.getPos(), userQueryTargetPos, frac);
     m_userQueryUI.setPos(newUserQueryPos);
+
+    PVector worldUSTargetPos = m_isQueryDisplayed ? new PVector(0, 0) : new PVector(0, -300);
+    PVector newWorldUSPos = PVector.lerp(m_worldUSUIParent.getPos(), worldUSTargetPos, frac);
+    m_worldUSUIParent.setPos(newWorldUSPos);
   }
 
   /**
