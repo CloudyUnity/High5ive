@@ -1,7 +1,7 @@
 // Data type for flight information
 class FlightType { // 23 bytes total
-  public byte Month;                      // supports all querys
-  public byte Day;                    // supports all queries
+  public byte Month;                    // supports all querys
+  public byte Day;                      // supports all queries
   public short CarrierCodeIndex;        // only supports EQUAL or NOT_EQUAL
   public short FlightNumber;            // only supports EQUAL or NOT_EQUAL
   public short TailNumber;              // only supports EQUAL or NOT_EQUAL
