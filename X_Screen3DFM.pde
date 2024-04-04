@@ -64,8 +64,14 @@ class Screen3DFM extends Screen {
     returnBttn.setGrowScale(1.05);
     returnBttn.setText("Return");
     returnBttn.setTextSize(textSize);
-    returnBttn.getLabel().setCentreAligned(true);
+    returnBttn.getLabel().setCentreAligned(true);       
 
+    currentUIPosY += 60;
+    
+    ButtonUI switchToCharts = createButton(20, currentUIPosY, 160, 50);
+    switchToCharts.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_CHARTS_ID));
+    switchToCharts.setText("Charts");
+    
     currentUIPosY += 60;
 
     ButtonUI switchUIBttn = createButton(20, currentUIPosY, 160, 50);

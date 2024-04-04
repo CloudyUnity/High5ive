@@ -56,6 +56,18 @@ class ScreenCharts extends Screen {
     public void init() {
     super.init();
 
+    ButtonUI returnBttn = createButton(20, 20, 100, 50);
+    returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
+    returnBttn.setText("Return");
+    returnBttn.setTextSize(25);
+    returnBttn.setGrowScale(1.05f);
+
+    ButtonUI switchTo3D = createButton(20, 80, 100, 50);
+    switchTo3D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_FLIGHT_MAP_ID));
+    switchTo3D.setText("3D");
+    switchTo3D.setTextSize(25);
+    switchTo3D.setGrowScale(1.05f);
+
     m_histogram = new HistogramChartUI<FlightType, Integer>(500, 100, 850, 850);
     addWidget(m_histogram);
     m_selectedGraph = m_histogram;
@@ -90,7 +102,7 @@ class ScreenCharts extends Screen {
     m_freqDD.add(QueryType.AIRPORT_DEST_INDEX);
     m_freqDD.add(QueryType.CANCELLED);
     m_freqDD.add(QueryType.DIVERTED);
-    
+
     m_scatterDDX = new DropdownUI<QueryType>(width-400, 200, 300, 200, 50, v -> v.toString());
     addWidget(m_scatterDDX);
     m_scatterDDX.setActive(false);
@@ -140,7 +152,8 @@ class ScreenCharts extends Screen {
     m_scatterDDY.add(QueryType.ARRIVAL_DELAY);
 
     m_scatterLabelX = createLabel(width-400, 100, 300, 100, "X-axis");
-    m_scatterLabelX.setTextSize(20);m_scatterLabelX.setActive(false);
+    m_scatterLabelX.setTextSize(20);
+    m_scatterLabelX.setActive(false);
     m_scatterLabelY = createLabel(width-400, 500, 300, 100, "Y-axis");
     m_scatterLabelY.setTextSize(20);
     m_scatterLabelY.setActive(false);
@@ -160,12 +173,6 @@ class ScreenCharts extends Screen {
     RadioButtonUI scatterRadio = new RadioButtonUI(width/3 * 2, 20, 50, 50, "Scatter Plot");
     scatterRadio.getOnCheckedEvent().addHandler(e -> selectScatterPlot());
     group.addMember(scatterRadio);
-
-    ButtonUI returnBttn = createButton(20, 20, 100, 100);
-    returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
-    returnBttn.setText("Return");
-    returnBttn.setTextSize(25);
-    returnBttn.setGrowScale(1.05);
 
     m_initialised = true;
   }
