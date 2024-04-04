@@ -17,6 +17,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
   private ListboxUI<T> m_listbox;
   private TextboxUI m_textbox;
   private ButtonUI m_dropdownButton;
+  private boolean m_isOpen = false;
 
   /**
    * A. Robertson
@@ -75,7 +76,8 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
     super.draw();
     m_textbox.draw();
     m_dropdownButton.draw();
-    if (m_listbox.getActive())
+    m_listbox.setActive(m_isOpen);
+    if (m_isOpen)
       m_listbox.draw();
   }
 
@@ -289,7 +291,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
    * Opens the list of items for the dropdown.
    */
   private void openList() {
-    m_listbox.setActive(true);
+    m_isOpen = true;
     m_dropdownButton.setText("-");
   }
 
@@ -299,7 +301,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
    * Closes the list of items for the dropdown.
    */
   private void closeList() {
-    m_listbox.setActive(false);
+    m_isOpen = false;
     m_dropdownButton.setText("+");
   }
 

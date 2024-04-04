@@ -15,7 +15,7 @@ class ScreenCharts extends Screen {
   UserQueryUI m_userQuery;
   FlightType[] m_cachedFlights = null;
 
-  QueryType m_histQuery = null;
+  QueryType m_freqQuery = null;
   QueryType m_scatterQueryX = null;
   QueryType m_scatterQueryY = null;
 
@@ -73,9 +73,9 @@ class ScreenCharts extends Screen {
     m_freqDD.getOnSelectionChanged().addHandler(e -> {
 
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
-      m_histQuery = (QueryType)elistbox.Data;
+      m_freqQuery = (QueryType)elistbox.Data;
 
-      if (m_histQuery == null || m_cachedFlights == null) {
+      if (m_freqQuery == null || m_cachedFlights == null) {
         println("Flight data not ready for charts yet, or invalid query");
         return;
       }
@@ -137,7 +137,6 @@ class ScreenCharts extends Screen {
     m_scatterDDY.add(QueryType.ARRIVAL_TIME);
     m_scatterDDY.add(QueryType.SCHEDULED_ARRIVAL_TIME);
     m_scatterDDY.add(QueryType.ARRIVAL_DELAY);
-
 
     m_scatterLabelX = createLabel(width-400, 100, 300, 100, "X-axis");
     m_scatterLabelX.setTextSize(20);m_scatterLabelX.setActive(false);
@@ -214,25 +213,25 @@ class ScreenCharts extends Screen {
    * Reloads the frequency data (histogram and pie chart) using the cached flights.
    */
   public void reloadFreq() {
-    if (m_cachedFlights == null || m_histQuery == null)
+    if (m_cachedFlights == null || m_freqQuery == null)
       return;
 
     s_DebugProfiler.startProfileTimer();
 
     m_histogram.removeData();
     m_histogram.addData(m_cachedFlights, f -> {
-      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_histQuery);
+      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_freqQuery);
     }
     );
-    m_histogram.setXAxisLabel(m_histQuery.toString());
-    m_histogram.setTranslationField(m_histQuery, m_queryRef);
+    m_histogram.setXAxisLabel(m_freqQuery.toString());
+    m_histogram.setTranslationField(m_freqQuery, m_queryRef);
 
     m_pieChart.removeData();
     m_pieChart.addData(m_cachedFlights, f -> {
-      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_histQuery);
+      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_freqQuery);
     }
     );
-    m_pieChart.setTranslationField(m_histQuery, m_queryRef);
+    m_pieChart.setTranslationField(m_freqQuery, m_queryRef);
 
     s_DebugProfiler.printTimeTakenMillis("Reloading data for frequency charts");
   }
