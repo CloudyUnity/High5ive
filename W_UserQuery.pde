@@ -16,12 +16,15 @@ class TextboxWithOpType {
  * for querying flight data and displaying results.
  */
 class UserQueryUI extends Widget {
+  private  QueryManagerClass m_queryManager;
+  private Screen m_screen;
+
+  private FlightMultiDataType m_flightsLists;
+  private ArrayList<FlightQueryType> m_activeQueries = new ArrayList<FlightQueryType>();
   private Consumer<FlightType[]> m_onLoadDataEvent;
 
-  private  QueryManagerClass m_queryManager;
-  private ArrayList<FlightQueryType> m_activeQueries = new ArrayList<FlightQueryType>();
-
   private ListboxUI m_queryLB;
+  private QueryLocationType m_location = QueryLocationType.US;
 
   private TextboxUI m_originTB;
   private TextboxUI m_destTB;
@@ -34,16 +37,10 @@ class UserQueryUI extends Widget {
   private RadioButtonUI m_successRadio;
   private RadioButtonUI m_worldRadio;
   private RadioButtonUI m_usRadio;
+
   private ButtonUI m_clearListButton;
   private ButtonUI m_addItemButton;
   private ButtonUI m_loadDataButton;
-
-  private QueryLocationType m_location = QueryLocationType.US;
-
-  public int m_listCounter;
-  private Screen m_screen;
-
-  private FlightMultiDataType m_flightsLists;
 
   /**
    * M.Poole:
@@ -65,6 +62,25 @@ class UserQueryUI extends Widget {
     m_queryLB = new ListboxUI<String>(20, 650, 200, 400, 40, v -> v);
     addWidget(m_queryLB);
 
+    // BUTTONS
+
+    m_addItemButton = new ButtonUI(20, 600, 80, 20);
+    addWidget(m_addItemButton);
+    m_addItemButton.setText("Add item");
+    m_addItemButton.getOnClickEvent().addHandler(e -> saveAllQueries());
+
+    m_clearListButton = new ButtonUI(120, 600, 80, 20);
+    addWidget(m_clearListButton);
+    m_clearListButton.setText("Clear");
+    m_clearListButton.getOnClickEvent().addHandler(e -> clearQueries());
+
+    m_loadDataButton = new ButtonUI(220, 500, 180, 120);
+    addWidget(m_loadDataButton);
+    m_loadDataButton.setText("Load Data");
+    m_loadDataButton.getOnClickEvent().addHandler(e -> loadData());
+
+    // WORLD - US RADIO BUTTONS
+
     RadioButtonGroupTypeUI worldUSGroup = new RadioButtonGroupTypeUI();
     addWidgetGroup(worldUSGroup);
 
@@ -76,6 +92,8 @@ class UserQueryUI extends Widget {
     m_usRadio.getOnCheckedEvent().addHandler(e -> changeDataToUS());
     worldUSGroup.addMember(m_usRadio);
     m_usRadio.setChecked(true);
+
+    // CANCELLED - DIVERTED - SUCCESSFUL RADIO BUTTONS
 
     RadioButtonGroupTypeUI cancelDivertGroup = new RadioButtonGroupTypeUI();
     addWidgetGroup(cancelDivertGroup);
@@ -95,40 +113,20 @@ class UserQueryUI extends Widget {
     cancelDivertGroup.addMember(m_successRadio);
     m_successRadio.setUncheckable(true);
 
+    // LABELS
+
     LabelUI cancelLabel = createLabel(17, 350, 160, 50, "C      D      N");
     cancelLabel.setTextSize(15);
     cancelLabel.setCentreAligned(false);
 
-    m_addItemButton = new ButtonUI(20, 600, 80, 20);
-    addWidget(m_addItemButton);
-    m_addItemButton.setText("Add item");
-    m_addItemButton.getOnClickEvent().addHandler(e -> saveAllQueries());
+    // TEXTBOXES
 
-    m_clearListButton = new ButtonUI(120, 600, 80, 20);
-    addWidget(m_clearListButton);
-    m_clearListButton.setText("Clear");
-    m_clearListButton.getOnClickEvent().addHandler(e -> clearQueries());
+    m_destTB = createTextboxUI(20, 550, 160, 30, "Dest");
+    m_originTB = createTextboxUI(20, 500, 160, 30, "Origin");    
+    m_airlineTB = createTextboxUI(20, 350, 160, 30, "Airline");
+    m_flightNumTB = createTextboxUI(20, 400, 160, 30, "Flight Number");
 
-    m_loadDataButton = new ButtonUI(220, 500, 180, 120);
-    addWidget(m_loadDataButton);
-    m_loadDataButton.setText("Load Data");
-    m_loadDataButton.getOnClickEvent().addHandler(e -> loadData());
-
-    m_originTB =  new TextboxUI(20, 500, 160, 30);
-    addWidget(m_originTB);
-    m_originTB.setPlaceholderText("Origin");
-
-    m_destTB =  new TextboxUI(20, 550, 160, 30);
-    addWidget(m_destTB);
-    m_destTB.setPlaceholderText("Destination");
-
-    m_airlineTB =  new TextboxUI(170, 350, 160, 30);
-    addWidget(m_airlineTB);
-    m_airlineTB.setPlaceholderText("Airline");
-
-    m_flightNumTB =  new TextboxUI(20, 400, 160, 30);
-    addWidget(m_flightNumTB);
-    m_flightNumTB.setPlaceholderText("Flight Number");
+    // TEXTBOXES WITH OPERATORS
 
     createTextboxWithOp(180, 450, 160, 40, "Distance", QueryType.KILOMETRES_DISTANCE);
     createTextboxWithOp(180, 300, 160, 40, "Arrival Time", QueryType.ARRIVAL_TIME);
@@ -139,10 +137,22 @@ class UserQueryUI extends Widget {
     createTextboxWithOp(180, 50, 160, 40, "Depart Delay", QueryType.DEPARTURE_DELAY);
   }
 
-  private TextboxWithOpType createTextboxWithOp(int posX, int posY, int scaleX, int scaleY, String placeholder, QueryType type) {
+  /**
+   * F. Wright
+   *
+   * Creates a textbox input field with attached operator dropdown. Adds them to the main m_tbopList
+   *
+   * @param posX The x position of the textbox
+   * @param posY The y position of the textbox
+   * @param scaleX The x scale of the textbox
+   * @param scaleY The y scale of the textbox
+   * @param placeholderTxt The placeholder text in the textbox
+   * @param type The query type to be checked
+   */
+  private TextboxWithOpType createTextboxWithOp(int posX, int posY, int scaleX, int scaleY, String placeholderTxt, QueryType type) {
     TextboxUI tb = new TextboxUI(posX, posY, scaleX, scaleY);
     addWidget(tb);
-    tb.setPlaceholderText(placeholder);
+    tb.setPlaceholderText(placeholderTxt);
 
     DropdownUI<QueryOperatorType> opDD = new DropdownUI<QueryOperatorType>(posX + scaleX, posY, 100, 400, 30, v -> formatText(v.toString()));
     addWidget(opDD);
@@ -153,9 +163,16 @@ class UserQueryUI extends Widget {
     opDD.add(QueryOperatorType.LESS_THAN);
     opDD.add(QueryOperatorType.GREATER_THAN);
 
-    TextboxWithOpType tbop = new TextboxWithOpType(tb, opDD, type); 
+    TextboxWithOpType tbop = new TextboxWithOpType(tb, opDD, type);
     m_tbopList.add(tbop);
     return tbop;
+  }
+  
+  private TextboxUI createTextboxUI(int posX, int posY, int scaleX, int scaleY, String placeholderTxt){
+    TextboxUI tb =  new TextboxUI(posX, posY, scaleX, scaleY);
+    addWidget(tb);
+    tb.setPlaceholderText(placeholderTxt);
+    return tb;
   }
 
   /**
@@ -205,7 +222,7 @@ class UserQueryUI extends Widget {
     QueryOperatorType op = tbop.OpDropdown.getSelected();
     if (op == null)
       op = QueryOperatorType.LESS_THAN;
-      
+
     saveQuery(tbop.Textbox, tbop.Type, op);
   }
 
@@ -243,7 +260,6 @@ class UserQueryUI extends Widget {
   private void addToQueryList(FlightQueryType query, String text) {
     m_activeQueries.add(query);
     m_queryLB.add(text);
-    m_listCounter++;
   }
 
   /**
@@ -263,12 +279,14 @@ class UserQueryUI extends Widget {
     if (m_cancelledRadio.getChecked()) {
       FlightQueryType fqt = new FlightQueryType(QueryType.CANCELLED, QueryOperatorType.EQUAL, m_location);
       addToQueryList(fqt, "Cancelled");
-    } 
-    else if (m_divertedRadio.getChecked()) {
+    }
+
+    if (m_divertedRadio.getChecked()) {
       FlightQueryType fqt = new FlightQueryType(QueryType.DIVERTED, QueryOperatorType.EQUAL, m_location);
       addToQueryList(fqt, "Diverted");
     }
-    else if (m_successRadio.getChecked()) {
+
+    if (m_successRadio.getChecked()) {
       FlightQueryType fqtC = new FlightQueryType(QueryType.CANCELLED, QueryOperatorType.NOT_EQUAL, m_location);
       FlightQueryType fqtD = new FlightQueryType(QueryType.DIVERTED, QueryOperatorType.NOT_EQUAL, m_location);
       addToQueryList(fqtC, "Not Cancelled");
