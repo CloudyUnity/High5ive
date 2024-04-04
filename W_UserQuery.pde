@@ -15,6 +15,7 @@ class UserQueryUI extends Widget {
   private TextboxUI m_Distance;
   private TextboxUI m_Airline;
   private TextboxUI m_FlightNum;
+  private DropdownUI m_DistanceOperator;
   private RadioButtonUI m_cancelledRadio;
   private RadioButtonUI m_divertedRadio;
   private RadioButtonUI m_successRadio;
@@ -36,6 +37,7 @@ class UserQueryUI extends Widget {
   private FlightQueryType m_AirlineQuery;
   private FlightQueryType m_FlightNumQuery;
   private Screen m_screen;
+ 
 
   private FlightMultiDataType m_flightsLists;
 
@@ -132,7 +134,7 @@ class UserQueryUI extends Widget {
     m_DistanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, m_location);
     m_flightQueries.add(m_DestQuery);
 
-    m_Airline =  new TextboxUI(20, 3500, 160, 30); //Throwing off screen until this works
+    m_Airline =  new TextboxUI(20, 360, 160, 30); //Throwing off screen until this works
     addWidget(m_Airline);
     m_Airline.setPlaceholderText("Airline");
 

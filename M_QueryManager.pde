@@ -120,6 +120,11 @@ class QueryManagerClass {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getInt("Key");
   }
+  
+  public int getAirlineIndex(String code){
+    m_lookupResult = m_airlineTable.findRow(code, "IATA");
+    return m_lookupResult.getInt("Key");
+  }
 
   /**
    * CKM
@@ -632,6 +637,13 @@ class QueryManagerClass {
       return tryParseInteger(inputString.replace(":", ""));
 
     case CARRIER_CODE_INDEX:
+      try {
+        return getAirlineIndex(inputString);
+      }
+      catch (Exception e) {
+        return -1;
+      }
+    
     case AIRPORT_ORIGIN_INDEX:
     case AIRPORT_DEST_INDEX:
       try {
