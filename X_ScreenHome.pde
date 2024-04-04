@@ -1,3 +1,6 @@
+import processing.video.*;
+Movie eathSpin;
+
 /**
  * F. Wright
  *
@@ -28,26 +31,39 @@ class ScreenHome extends Screen {
 
     float growScale = 1.05f;
 
-    ButtonUI switchTo2D = createButton(500, 100, width - 600, 200);
+    ButtonUI switchTo2D = createButton((int)width/2, 100, (int)width/2 - 100, 200);
+    switchTo2D.setBackgroundColour(COLOR_BLACK);
+    switchTo2D.setOutlineColour(COLOR_WHITE);
     switchTo2D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_TWOD_MAP_ID));
     switchTo2D.setText("2D (WIP)");
     switchTo2D.setTextSize(25);
     switchTo2D.setGrowScale(growScale);
 
-    ButtonUI switchTo3D = createButton(500, 400, width - 600, 200);
+    ButtonUI switchTo3D = createButton((int)width/2, 400, (int)width/2 - 100, 200);
+    switchTo3D.setBackgroundColour(COLOR_BLACK);
+    switchTo3D.setOutlineColour(COLOR_WHITE);
     switchTo3D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_FLIGHT_MAP_ID));
     switchTo3D.setText("3D");
     switchTo3D.setTextSize(25);
     switchTo3D.setGrowScale(growScale);
 
-    ButtonUI switchToCharts = createButton(500, 700, width - 600, 200);
+    ButtonUI switchToCharts = createButton((int)width/2, 700, (int)width/2 - 100, 200);
+    switchToCharts.setBackgroundColour(COLOR_BLACK);
+    switchToCharts.setOutlineColour(COLOR_WHITE);
     switchToCharts.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_CHARTS_ID));
     switchToCharts.setText("Charts");
     switchToCharts.setTextSize(25);
     
-    LabelUI name = createLabel(100, 100, 200, 100, "High5ive");
-    name.setCentreAligned(true);
-    name.setTextSize(40);   
+    LabelUI title = createLabel(100, 100, (int)width/2, 200, "High5ive");
+    title.setCentreAligned(false);
+    title.setTextSize(175);   
+
+    LabelUI subTitle = createLabel(110, 300, (int)width/2, 100, "Flights :)");
+    subTitle.setForegroundColour(COLOR_LIGHT_GRAY);
+    subTitle.setCentreAligned(false);
+    subTitle.setTextSize(64); 
+    myMovie = new Movie(this, "data/Videos/earth.mp4");
+    myMovie.play();
 
     switchToCharts.setGrowScale(growScale);
   }
