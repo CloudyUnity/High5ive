@@ -202,7 +202,7 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
    */
   private boolean doMouseClick(Widget widget) {
     boolean handled = false;
-    if (widget.getActive() && widget.getRenderingEnabled()) {
+    if (widget.getActive()) {
       if (widget instanceof IClickable) {
         if (widget.isPositionInside(mouseX, mouseY)) {
           ((IClickable)widget).getOnClickEvent().raise(new EventInfoType(mouseX, mouseY, widget));

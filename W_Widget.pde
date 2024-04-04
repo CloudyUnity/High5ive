@@ -119,6 +119,8 @@ abstract class Widget {
    */
   public void setActive(boolean active) {
     m_active = active;
+    for (Widget child : m_children)
+      child.setActive(active);
   }
 
   /**

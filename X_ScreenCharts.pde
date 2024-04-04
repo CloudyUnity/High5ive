@@ -62,11 +62,11 @@ class ScreenCharts extends Screen {
 
     m_pieChart = new PieChartUI<FlightType, Integer>(width/2, height/2, 250);
     addWidget(m_pieChart);
-    m_pieChart.setRendering(false);
+    m_pieChart.setActive(false);
 
     m_scatterPlot = new ScatterChartUI<FlightType>(500, 100, 850, 850);
     addWidget(m_scatterPlot);
-    m_scatterPlot.setRendering(false);
+    m_scatterPlot.setActive(false);
 
     m_freqDD = new DropdownUI<QueryType>(width-400, 200, 300, 200, 50, v -> v.toString());
     addWidget(m_freqDD);
@@ -89,10 +89,10 @@ class ScreenCharts extends Screen {
     m_freqDD.add(QueryType.AIRPORT_ORIGIN_INDEX);
     m_freqDD.add(QueryType.AIRPORT_DEST_INDEX);
     m_freqDD.add(QueryType.CANCELLED);
-
+    
     m_scatterDDX = new DropdownUI<QueryType>(width-400, 200, 300, 200, 50, v -> v.toString());
     addWidget(m_scatterDDX);
-    m_scatterDDX.setRendering(false);
+    m_scatterDDX.setActive(false);
     m_scatterDDX.getOnSelectionChanged().addHandler(e -> {
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
       m_scatterQueryX = (QueryType)elistbox.Data;
@@ -106,7 +106,7 @@ class ScreenCharts extends Screen {
 
     m_scatterDDY = new DropdownUI<QueryType>(width-400, 600, 300, 200, 50, v -> v.toString());
     addWidget(m_scatterDDY);
-    m_scatterDDY.setRendering(false);
+    m_scatterDDY.setActive(false);
     m_scatterDDY.getOnSelectionChanged().addHandler(e -> {
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
       m_scatterQueryY = (QueryType)elistbox.Data;
@@ -138,13 +138,19 @@ class ScreenCharts extends Screen {
     m_scatterDDY.add(QueryType.SCHEDULED_ARRIVAL_TIME);
     m_scatterDDY.add(QueryType.ARRIVAL_DELAY);
 
+
     m_scatterLabelX = createLabel(width-400, 100, 300, 100, "X-axis");
     m_scatterLabelX.setTextSize(20);
+<<<<<<< HEAD
     m_scatterLabelX.setRendering(false);
 
+=======
+    m_scatterLabelX.setActive(false);
+    
+>>>>>>> d73f04d96d0c0d9c2c8d79f77248a6469bcf8e18
     m_scatterLabelY = createLabel(width-400, 500, 300, 100, "Y-axis");
     m_scatterLabelY.setTextSize(20);
-    m_scatterLabelY.setRendering(false);
+    m_scatterLabelY.setActive(false);
 
     RadioButtonGroupTypeUI group = new RadioButtonGroupTypeUI();
     addWidgetGroup(group);
@@ -270,15 +276,15 @@ class ScreenCharts extends Screen {
    * Selects the histogram as the currently displayed graph.
    */
   public void selectHistogram() {
-    m_selectedGraph.setRendering(false);
+    m_selectedGraph.setActive(false);
     m_selectedGraph = m_histogram;
-    m_selectedGraph.setRendering(true);
+    m_selectedGraph.setActive(true);
 
-    m_freqDD.setRendering(true);
-    m_scatterDDX.setRendering(false);
-    m_scatterDDY.setRendering(false);
-    m_scatterLabelX.setRendering(false);
-    m_scatterLabelY.setRendering(false);
+    m_freqDD.setActive(true);
+    m_scatterDDX.setActive(false);
+    m_scatterDDY.setActive(false);
+    m_scatterLabelX.setActive(false);
+    m_scatterLabelY.setActive(false);
   }
 
   /**
@@ -287,15 +293,15 @@ class ScreenCharts extends Screen {
    * Selects the pie chart as the currently displayed graph.
    */
   public void selectPieChart() {
-    m_selectedGraph.setRendering(false);
+    m_selectedGraph.setActive(false);
     m_selectedGraph = m_pieChart;
-    m_selectedGraph.setRendering(true);
+    m_selectedGraph.setActive(true);
 
-    m_freqDD.setRendering(true);
-    m_scatterDDX.setRendering(false);
-    m_scatterDDY.setRendering(false);
-    m_scatterLabelX.setRendering(false);
-    m_scatterLabelY.setRendering(false);
+    m_freqDD.setActive(true);
+    m_scatterDDX.setActive(false);
+    m_scatterDDY.setActive(false);
+    m_scatterLabelX.setActive(false);
+    m_scatterLabelY.setActive(false);
   }
 
   /**
@@ -304,15 +310,15 @@ class ScreenCharts extends Screen {
    * Selects the scatter plot as the currently displayed graph.
    */
   public void selectScatterPlot() {
-    m_selectedGraph.setRendering(false);
+    m_selectedGraph.setActive(false);
     m_selectedGraph = m_scatterPlot;
-    m_selectedGraph.setRendering(true);
+    m_selectedGraph.setActive(true);
 
-    m_freqDD.setRendering(false);
-    m_scatterDDX.setRendering(true);
-    m_scatterDDY.setRendering(true);
-    m_scatterLabelX.setRendering(true);
-    m_scatterLabelY.setRendering(true);
+    m_freqDD.setActive(false);
+    m_scatterDDX.setActive(true);
+    m_scatterDDY.setActive(true);
+    m_scatterLabelX.setActive(true);
+    m_scatterLabelY.setActive(true);
   }
 }
 
