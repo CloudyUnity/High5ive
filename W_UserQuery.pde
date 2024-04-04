@@ -254,7 +254,7 @@ class UserQueryUI extends Widget {
 
     String queryTypeStr = formatText(queryType.toString());
     String opStr = formatText(op.toString());
-    addToQueryList(fqt, queryTypeStr + ": " + opStr + " [" + formatText(text) + "]");
+    addToQueryList(fqt, queryTypeStr + ": " + opStr + " [" + formatValue(text, queryType) + "]");
   }
 
   private void addToQueryList(FlightQueryType query, String text) {
@@ -311,6 +311,22 @@ class UserQueryUI extends Widget {
       return " =";
     case "NOT_EQUAL":
       return " !=";
+    default:
+      return text;
+    }
+  }
+  
+  private String formatValue(String text, QueryType query) {
+    switch (query) {
+    case ARRIVAL_TIME:
+    case SCHEDULED_ARRIVAL_TIME:
+    case DEPARTURE_TIME:
+    case SCHEDULED_DEPARTURE_TIME:
+      String cleanTxt = text.replace(":", "");
+      if (cleanTxt.length() == 3)
+        return cleanTxt.charAt(0) + ":" + cleanTxt.substring(1, 3);
+      return cleanTxt.substring(0, 2) + ":" + cleanTxt.substring(2, 4);
+      
     default:
       return text;
     }
