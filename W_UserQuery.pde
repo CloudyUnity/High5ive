@@ -154,7 +154,7 @@ class UserQueryUI extends Widget {
     m_DistanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, m_location);
     m_flightQueries.add(m_DestQuery);
     
-    m_Airline =  new TextboxUI(20, 350, 160, 30);
+    m_Airline =  new TextboxUI(20, 3500, 160, 30); //Throwing off screen until this works
     addWidget(m_Airline);
     m_Airline.setPlaceholderText("Airline");
 

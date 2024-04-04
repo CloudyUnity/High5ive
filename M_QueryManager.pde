@@ -423,6 +423,7 @@ class QueryManagerClass {
 
     switch(flightQuery.Type) {
     case CARRIER_CODE_INDEX:
+    case FLIGHT_NUMBER:
     case AIRPORT_ORIGIN_INDEX:
     case AIRPORT_DEST_INDEX:
     case CANCELLED: //This had to be added here or querting for cancelled and diverted flights wouldnt work. 
