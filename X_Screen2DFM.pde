@@ -17,7 +17,7 @@ class TwoDMapScreen extends Screen {
     int currentUIPosY = 20;
     int textSize = 20;
 
-    m_userQueryUI = new UserQueryUI(0, -130, 1, 1, m_twodQueryManager, this);
+    m_userQueryUI = new UserQueryUI(0, 20, 1, 1, m_twodQueryManager, this);
     addWidget(m_userQueryUI);
 
   //  m_userQueryUI.setOnLoadHandler(flights -> {
