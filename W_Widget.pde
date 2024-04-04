@@ -9,7 +9,7 @@ class WidgetGroupType {
 
   /**
    * A. Robertson
-   * 
+   *
    * Constructs a new WidgetGroup with an empty list of members.
    */
   public WidgetGroupType() {
@@ -59,7 +59,7 @@ abstract class Widget {
 
   /**
    * A. Robertson
-   * 
+   *
    * Constructs a new Widget from a position and scale.
    *
    * @param pos The position of the widget.
@@ -70,7 +70,7 @@ abstract class Widget {
     m_scale = scale;
     m_basePos = m_pos.copy();
     m_baseScale = m_scale.copy();
-    
+
     m_children = new ArrayList<Widget>();
 
     getOnMouseEnterEvent().addHandler(e -> m_mouseHovered = true);
@@ -79,7 +79,7 @@ abstract class Widget {
 
   /**
    * A. Robertson
-   * 
+   *
    * Constructs a new Widget from a individual position and scale values.
    *
    * @param posX The x position of the widget.
@@ -92,13 +92,13 @@ abstract class Widget {
     m_scale = new PVector(scaleX, scaleY);
     m_basePos = m_pos.copy();
     m_baseScale = m_scale.copy();
-    
+
     m_children = new ArrayList<Widget>();
 
     getOnMouseEnterEvent().addHandler(e -> m_mouseHovered = true);
     getOnMouseExitEvent().addHandler(e -> m_mouseHovered = false);
   }
-  
+
   /**
    * A. Robertson
    *
@@ -109,13 +109,13 @@ abstract class Widget {
   public boolean getActive() {
     return m_active;
   }
-  
+
   /**
    * A. Robertson
    *
    * Sets if the widget is active or not.
    *
-  * @param active A boolean representing if the control is active.
+   * @param active A boolean representing if the control is active.
    */
   public void setActive(boolean active) {
     m_active = active;
@@ -428,7 +428,7 @@ abstract class Widget {
 
   /**
    * A. Robertson
-   * 
+   *
    * Gets the on mouse enter event.
    *
    * @returns The onMouseEnterEvent.
@@ -439,7 +439,7 @@ abstract class Widget {
 
   /**
    * A. Robertson
-   * 
+   *
    * Gets the on mouse exit event.
    *
    * @returns The onMouseExitEvent.
@@ -447,10 +447,10 @@ abstract class Widget {
   public EventType<EventInfoType> getOnMouseExitEvent() {
     return m_onMouseExitEvent;
   }
- 
+
   /**
    * A. Robertson
-   * 
+   *
    * Gets the on focus gained event.
    *
    * @returns The onFocusGainedEvent.
@@ -461,7 +461,7 @@ abstract class Widget {
 
   /**
    * A. Robertson
-   * 
+   *
    * Gets the on focus lost event.
    *
    * @returns The onFocuslostEvent.

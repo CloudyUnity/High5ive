@@ -44,10 +44,10 @@ class ScreenHome extends Screen {
     switchToCharts.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_CHARTS_ID));
     switchToCharts.setText("Charts");
     switchToCharts.setTextSize(25);
-    
+
     LabelUI name = createLabel(100, 100, 200, 100, "High5ive");
     name.setCentreAligned(true);
-    name.setTextSize(40);   
+    name.setTextSize(40);
 
     switchToCharts.setGrowScale(growScale);
   }
