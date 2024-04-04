@@ -179,6 +179,7 @@ class UserQueryUI extends Widget {
 
     DropdownUI<QueryOperatorType> opDD = new DropdownUI<QueryOperatorType>(posX + scaleX, posY, 100, 400, 30, v -> formatText(v.toString()));
     addWidget(opDD);
+    opDD.setTextboxText(formatText("LESS_THAN"));
     opDD.getOnSelectionChanged().addHandler(e -> {
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
       QueryOperatorType op = (QueryOperatorType)elistbox.Data;
@@ -310,13 +311,13 @@ class UserQueryUI extends Widget {
       return "Dest";
 
     case "GREATER_THAN":
-      return "GT";
+      return " >";
     case "LESS_THAN":
-      return "LT";
+      return " <";
     case "EQUAL":
-      return "EQ";
+      return " =";
     case "NOT_EQUAL":
-      return "NEQ";
+      return " !=";
     default:
       return text;
     }
