@@ -1,15 +1,15 @@
 class FlightsManagerClass {
   private boolean m_working;
 
-
-/** T.Creagh
- * Loads the flight data from the given file paths.
- *
- * @param usFileName       The filename for US flight data.
- * @param worldFileName    The filename for world flight data.
- * @param threadCount      The number of threads to use for processing.
- * @param onTaskComplete  A consumer to be called when the task is complete.
- */
+  /**
+   * T.Creagh
+   * Loads the flight data from the given file paths.
+   *
+   * @param usFileName       The filename for US flight data.
+   * @param worldFileName    The filename for world flight data.
+   * @param threadCount      The number of threads to use for processing.
+   * @param onTaskComplete  A consumer to be called when the task is complete.
+   */
   // Loads the flight data from the given file paths
   public void loadUSAndWorldFromFiles(String usFileName, String worldFileName, int threadCount, Consumer<FlightMultiDataType> onTaskComplete) {
     boolean result = convertBinaryFileToFlightType(usFileName, worldFileName, US_LINE_BYTE_SIZE, WORLD_LINE_BYTE_SIZE, threadCount, onTaskComplete);
@@ -17,16 +17,16 @@ class FlightsManagerClass {
       println("ERROR: Flight binary failed to load successfully");
   }
 
-  
-/** T.Creagh
- * Converts a binary file to an array of FlightType asynchronously.
- *
- * @param filename         The name of the binary file.
- * @param threadCount      The number of threads to use for processing.
- * @param queryLocation    The location type for the flight data.
- * @param lineByteSize     The size of each line in bytes.
- * @return An array of FlightType representing the flight data.
- */
+  /**
+   * T.Creagh
+   * Converts a binary file to an array of FlightType asynchronously.
+   *
+   * @param filename         The name of the binary file.
+   * @param threadCount      The number of threads to use for processing.
+   * @param queryLocation    The location type for the flight data.
+   * @param lineByteSize     The size of each line in bytes.
+   * @return An array of FlightType representing the flight data.
+   */
   private boolean convertBinaryFileToFlightType(String usFileName, String worldFileName, int usLineByteSize, int worldLineByteSize, int threadCount, Consumer<FlightMultiDataType> onTaskComplete) {
     if (m_working) {
       println("Warning: m_working is true, convertBinaryFileToFlightType did not process correctly");
@@ -52,16 +52,16 @@ class FlightsManagerClass {
     return true;
   }
 
-
-/** T.Creagh
- * Converts a binary file to an array of FlightType asynchronously.
- *
- * @param filename         The name of the binary file.
- * @param threadCount      The number of threads to use for processing.
- * @param queryLocation    The location type for the flight data.
- * @param lineByteSize     The size of each line in bytes.
- * @return An array of FlightType representing the flight data.
- */
+  /**
+   * T.Creagh
+   * Converts a binary file to an array of FlightType asynchronously.
+   *
+   * @param filename         The name of the binary file.
+   * @param threadCount      The number of threads to use for processing.
+   * @param queryLocation    The location type for the flight data.
+   * @param lineByteSize     The size of each line in bytes.
+   * @return An array of FlightType representing the flight data.
+   */
   private FlightType[] convertBinaryFileToFlightTypeAsync(String filename, int threadCount, QueryLocationType queryLocation, int lineByteSize) {
     MappedByteBuffer buffer;
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
@@ -111,17 +111,17 @@ class FlightsManagerClass {
       return null;
     }
   }
-  
-  
-/** T.Creagh
- * Processes a chunk of flight data from a binary file for world flights.
- *
- * @param flightsList     The array to store processed flights.
- * @param buffer          The buffer containing binary data.
- * @param processingSize  The size of the chunk being processed.
- * @param startPosition   The starting position of the chunk.
- * @param lineByteSize    The size of each line in bytes.
- */
+
+  /**
+   * T.Creagh
+   * Processes a chunk of flight data from a binary file for world flights.
+   *
+   * @param flightsList     The array to store processed flights.
+   * @param buffer          The buffer containing binary data.
+   * @param processingSize  The size of the chunk being processed.
+   * @param startPosition   The starting position of the chunk.
+   * @param lineByteSize    The size of each line in bytes.
+   */
   private void processUSConvertBinaryFileToFlightTypeChunk(FlightType[] flightsList, MappedByteBuffer buffer, long processingSize, int startPosition, int lineByteSize) {
     long maxI = startPosition + processingSize;
     for (int i = startPosition; i < maxI; i++) {
@@ -148,15 +148,16 @@ class FlightsManagerClass {
         );
     }
   }
-/** T.Creagh
- * Processes a chunk of flight data from a binary file for world flights.
- *
- * @param flightsList     The array to store processed flights.
- * @param buffer          The buffer containing binary data.
- * @param processingSize  The size of the chunk being processed.
- * @param startPosition   The starting position of the chunk.
- * @param lineByteSize    The size of each line in bytes.
- */
+  /**
+   * T.Creagh
+   * Processes a chunk of flight data from a binary file for world flights.
+   *
+   * @param flightsList     The array to store processed flights.
+   * @param buffer          The buffer containing binary data.
+   * @param processingSize  The size of the chunk being processed.
+   * @param startPosition   The starting position of the chunk.
+   * @param lineByteSize    The size of each line in bytes.
+   */
   private void processWorldConvertBinaryFileToFlightTypeChunk(FlightType[] flightsList, MappedByteBuffer buffer, long processingSize, int startPosition, int lineByteSize) {
     long maxI = startPosition + processingSize;
     for (int i = startPosition; i < maxI; i++) {
@@ -169,24 +170,26 @@ class FlightsManagerClass {
     }
   }
 
-  /** T.Creagh
- * Prints the given array of flights based on the query type.
- *
- * @param flights    The array of flights to print.
- * @param queryType  The type of query to apply for printing.
- */
+  /**
+   * T.Creagh
+   * Prints the given array of flights based on the query type.
+   *
+   * @param flights    The array of flights to print.
+   * @param queryType  The type of query to apply for printing.
+   */
   public void printFlights(FlightType[] flights, QueryType queryType) {
     for (FlightType flight : flights) {
       printFlight(flight, queryType);
     }
   }
 
- /** T.Creagh
-  * Prints a single flight based on the given query type.
- *
- * @param flight     The flight to print.
- * @param queryType  The type of query to apply for printing.
- */
+  /**
+   * T.Creagh
+   * Prints a single flight based on the given query type.
+   *
+   * @param flight     The flight to print.
+   * @param queryType  The type of query to apply for printing.
+   */
   public void printFlight(FlightType flight, QueryType queryType) {
     switch(queryType) {
     case DAY:
@@ -220,7 +223,7 @@ class FlightsManagerClass {
       println("CancelledOrDiverted: " + flight.Cancelled);
       break;
     case DIVERTED:
-       println("CancelledOrDiverted: " + flight.Diverted);
+      println("CancelledOrDiverted: " + flight.Diverted);
       break;
     case KILOMETRES_DISTANCE:
       println("KilometresDistance: " + flight.KmDistance);
