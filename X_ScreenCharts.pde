@@ -152,6 +152,7 @@ class ScreenCharts extends Screen {
     RadioButtonUI histRadio = new RadioButtonUI(width/3, 20, 50, 50, "Histogram");
     histRadio.getOnCheckedEvent().addHandler(e -> selectHistogram());
     group.addMember(histRadio);
+    histRadio.setChecked(true);
 
     RadioButtonUI pieRadio = new RadioButtonUI(width/2, 20, 50, 50, "Pie");
     pieRadio.getOnCheckedEvent().addHandler(e -> selectPieChart());

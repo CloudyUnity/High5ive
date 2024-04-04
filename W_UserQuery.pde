@@ -24,7 +24,7 @@ class UserQueryUI extends Widget {
   private ButtonUI addItemButton;
   private ButtonUI loadDataButton;
 
-  private QueryLocationType m_location = QueryLocationType.WORLD;
+  private QueryLocationType m_location = QueryLocationType.US;
 
   public int m_listCounter;
   private FlightQueryType m_OriginQuery;
@@ -65,12 +65,13 @@ class UserQueryUI extends Widget {
     addWidgetGroup(worldUSGroup);
 
     m_worldRadio = new RadioButtonUI(width - 60, 20, 50, 50, "WORLD");
-    m_worldRadio.getOnCheckedEvent().addHandler(e -> changeDataToUS());
+    m_worldRadio.getOnCheckedEvent().addHandler(e -> changeDataToWorld());
     worldUSGroup.addMember(m_worldRadio);
 
     m_usRadio = new RadioButtonUI(width - 60, 80, 50, 50, "US");
-    m_usRadio.getOnCheckedEvent().addHandler(e -> changeDataToWorld());
+    m_usRadio.getOnCheckedEvent().addHandler(e -> changeDataToUS());
     worldUSGroup.addMember(m_usRadio);
+    m_usRadio.setChecked(true);
 
     RadioButtonGroupTypeUI cancelDivertGroup = new RadioButtonGroupTypeUI();
     addWidgetGroup(cancelDivertGroup);
