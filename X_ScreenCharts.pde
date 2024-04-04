@@ -9,6 +9,7 @@ class ScreenCharts extends Screen {
   ScatterChartUI m_scatterPlot;
 
   DropdownUI m_freqDD, m_scatterDDX, m_scatterDDY;
+  LabelUI m_scatterLabelX, m_scatterLabelY;
 
   QueryManagerClass m_queryRef;
   UserQueryUI m_userQuery;
@@ -19,7 +20,7 @@ class ScreenCharts extends Screen {
   QueryType m_scatterQueryY = null;
 
   Widget m_selectedGraph;
-  
+
   private boolean m_initialised = false;
 
   /**
@@ -40,7 +41,7 @@ class ScreenCharts extends Screen {
     m_userQuery.setOnLoadHandler(flights -> {
       loadData(flights);
       if (m_initialised)
-        reloadData();
+      reloadData();
     }
     );
   }
@@ -66,7 +67,7 @@ class ScreenCharts extends Screen {
     addWidget(m_scatterPlot);
     m_scatterPlot.setRendering(false);
 
-    m_freqDD = new DropdownUI<QueryType>(20, 200, 300, 200, 50, v -> v.toString());
+    m_freqDD = new DropdownUI<QueryType>(width-400, 200, 300, 200, 50, v -> v.toString());
     addWidget(m_freqDD);
     m_freqDD.getOnSelectionChanged().addHandler(e -> {
 
@@ -88,7 +89,7 @@ class ScreenCharts extends Screen {
     m_freqDD.add(QueryType.AIRPORT_DEST_INDEX);
     m_freqDD.add(QueryType.CANCELLED);
 
-    m_scatterDDX = new DropdownUI<QueryType>(20, 200, 300, 200, 50, v -> v.toString());
+    m_scatterDDX = new DropdownUI<QueryType>(width-400, 200, 300, 200, 50, v -> v.toString());
     addWidget(m_scatterDDX);
     m_scatterDDX.setRendering(false);
     m_scatterDDX.getOnSelectionChanged().addHandler(e -> {
@@ -102,7 +103,7 @@ class ScreenCharts extends Screen {
     }
     );
 
-    m_scatterDDY = new DropdownUI<QueryType>(320, 200, 300, 200, 50, v -> v.toString());
+    m_scatterDDY = new DropdownUI<QueryType>(width-400, 600, 300, 200, 50, v -> v.toString());
     addWidget(m_scatterDDY);
     m_scatterDDY.setRendering(false);
     m_scatterDDY.getOnSelectionChanged().addHandler(e -> {
@@ -136,6 +137,14 @@ class ScreenCharts extends Screen {
     m_scatterDDY.add(QueryType.SCHEDULED_ARRIVAL_TIME);
     m_scatterDDY.add(QueryType.ARRIVAL_DELAY);
 
+    m_scatterLabelX = createLabel(width-400, 100, 300, 100, "X-axis");
+    m_scatterLabelX.setTextSize(20);
+    m_scatterLabelX.setRendering(false);
+    
+    m_scatterLabelY = createLabel(width-400, 500, 300, 100, "Y-axis");
+    m_scatterLabelY.setTextSize(20);
+    m_scatterLabelY.setRendering(false);
+
     RadioButtonGroupTypeUI group = new RadioButtonGroupTypeUI();
     addWidgetGroup(group);
 
@@ -156,7 +165,7 @@ class ScreenCharts extends Screen {
     returnBttn.setText("Return");
     returnBttn.setTextSize(25);
     returnBttn.setGrowScale(1.05);
-    
+
     m_initialised = true;
   }
 
@@ -206,7 +215,7 @@ class ScreenCharts extends Screen {
   public void reloadFreq() {
     if (m_cachedFlights == null || m_histQuery == null)
       return;
-      
+
     s_DebugProfiler.startProfileTimer();
 
     m_histogram.removeData();
@@ -266,6 +275,8 @@ class ScreenCharts extends Screen {
     m_freqDD.setRendering(true);
     m_scatterDDX.setRendering(false);
     m_scatterDDY.setRendering(false);
+    m_scatterLabelX.setRendering(false);
+    m_scatterLabelY.setRendering(false);
   }
 
   /**
@@ -281,6 +292,8 @@ class ScreenCharts extends Screen {
     m_freqDD.setRendering(true);
     m_scatterDDX.setRendering(false);
     m_scatterDDY.setRendering(false);
+    m_scatterLabelX.setRendering(false);
+    m_scatterLabelY.setRendering(false);
   }
 
   /**
@@ -296,6 +309,8 @@ class ScreenCharts extends Screen {
     m_freqDD.setRendering(false);
     m_scatterDDX.setRendering(true);
     m_scatterDDY.setRendering(true);
+    m_scatterLabelX.setRendering(true);
+    m_scatterLabelY.setRendering(true);
   }
 }
 
