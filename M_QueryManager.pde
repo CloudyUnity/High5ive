@@ -265,6 +265,60 @@ class QueryManagerClass {
     m_lookupResult = m_aircraftTable.findRow(tailNumber, "Registration");
     return m_lookupResult.getInt("Key");
   }
+  
+    /**
+   * CKM
+   *
+   * Gets the list of aircraft of a certain type.
+   *
+   * @param plane type - the type of plane.
+   * @return The list of planes of that type.
+   */
+  public ArrayList<String> getAircraftbyType (String planeType) {
+    ArrayList<String> temp = new ArrayList<String>();
+    for (TableRow row : m_aircraftTable.rows()) {
+      if (row.getString("Type") == planeType) {
+        temp.add(row.getString("Registration"));
+      }
+    }
+    return temp;
+  }
+  
+  /**
+   * CKM
+   *
+   * Gets the list of airports in a country.
+   *
+   * @param countryCode - the ISO-3166 code for the country.
+   * @return The list of airports in that country.
+   */
+  public ArrayList<String> getAirportsbyISO3166 (String countryCode) {
+    ArrayList<String> temp = new ArrayList<String>();
+    for (TableRow row : m_airportTable.rows()) {
+      if (row.getString("ISO-3166") == countryCode) {
+        temp.add(row.getString("IATA"));
+      }
+    }
+    return temp;
+  }
+  
+    /**
+   * CKM
+   *
+   * Gets the list of airports in a country.
+   *
+   * @param countryText - the name for the country.
+   * @return The list of airports in that country.
+   */
+  public ArrayList<String> getAirportsbyCountry (String countryText) {
+    ArrayList<String> temp = new ArrayList<String>();
+    for (TableRow row : m_airportTable.rows()) {
+      if (row.getString("Country") == countryText) {
+        temp.add(row.getString("IATA"));
+      }
+    }
+    return temp;
+  }
 
   /**
    * T. Creagh
