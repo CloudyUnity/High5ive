@@ -202,19 +202,22 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
    */
   private boolean doMouseClick(Widget widget) {
     boolean handled = false;
-    if (widget.getActive()) {
+    if (widget.getActive() && widget.getRenderingEnabled()) {
       if (widget instanceof IClickable) {
         if (widget.isPositionInside(mouseX, mouseY)) {
           ((IClickable)widget).getOnClickEvent().raise(new EventInfoType(mouseX, mouseY, widget));
           widget.setFocused(true);
           handled = true;
-        } else {
+        } 
+        else {
           widget.setFocused(false);
         }
       }
     }
+    
     for (Widget w : widget.getChildren())
       handled |= doMouseClick(w);
+      
     return handled;
   }
 
@@ -230,7 +233,7 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
       handled |= doMouseClick(m_children.get(i)); 
     }
 
-    for (WidgetGroupType group : this.m_groups) {
+    for (WidgetGroupType group : m_groups) {
       for (int i = group.getMembers().size() - 1; i >= 0 && !handled; i--) {
         handled |= doMouseClick(group.getMembers().get(i));
       }
