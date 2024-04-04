@@ -8,9 +8,9 @@ class ScrollbarUI extends Widget implements IClickable, IWheelInput, IDraggable 
 
   public ScrollbarUI(int x, int y, int width, int height, int numElements, int numViewed) {
     super(x, y, width, height);
-    
+
     setDrawOutline(false);
-    
+
     m_numberOfElements = numElements;
     m_currentTopElement = 0;
     m_numberOfViewedElements = numViewed;
@@ -46,7 +46,7 @@ class ScrollbarUI extends Widget implements IClickable, IWheelInput, IDraggable 
   public EventType<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
-  
+
   public EventType<MouseDraggedEventInfoType> getOnDraggedEvent() {
     return m_onMouseDraggedEvent;
   }
@@ -72,19 +72,19 @@ class ScrollbarUI extends Widget implements IClickable, IWheelInput, IDraggable 
       boolean wheelCountNegative = e.WheelCount < 0;
       boolean wheelCountPositive = e.WheelCount > 0;
       boolean validElement = m_currentTopElement < m_numberOfElements - m_numberOfViewedElements; // This needs a better name but I don't understand it
-      
+
       if (wheelCountNegative && m_currentTopElement > 0)
         m_currentTopElement--;
       else if (wheelCountPositive && validElement)
         m_currentTopElement++;
     }
   }
-  
+
   private void onClick(EventInfoType e) {
     double percentage = (e.Y - m_pos.y) / m_scale.y;
     m_currentTopElement = Math.max(0, Math.min((int)(percentage * (double)m_numberOfElements) - 1, m_numberOfElements - m_numberOfViewedElements));
   }
-  
+
   private void onMouseDragged(MouseDraggedEventInfoType e) {
     onClick(new EventInfoType(0, e.Y, this));
   }

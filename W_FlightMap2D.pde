@@ -17,14 +17,7 @@ class FlightMap2DUI extends Widget {
   }
 
   public void loadFlights(FlightType[] flights, QueryManagerClass queries) {
-   
-    
-    
-    
   }
-
-
-
 
   void drawAirportPoint(int longitude, int lat)
   {
