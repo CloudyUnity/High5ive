@@ -9,6 +9,7 @@ class UserQueryUI extends Widget {
   QueryManagerClass m_queryManager;
   private ArrayList<FlightQueryType> m_activeQueries; // All query types are ordered like so (Day, Airline, FlightNum, Origin, Dest, SchDep, Dep, Depdelay, SchArr, Arr, ArrDelay, Cancelled, Dievrted, Miles  )
   private ArrayList<FlightQueryType> m_flightQueries;
+
   private ListboxUI m_queryLB;
   private TextboxUI m_originTB;
   private TextboxUI m_destTB;
@@ -16,6 +17,7 @@ class UserQueryUI extends Widget {
   private TextboxUI m_airlineTB;
   private TextboxUI m_flightNumTB;
   private TextboxUI m_arrTimeTB, m_arrSchTB, m_arrDelTB, m_depTimeTB, m_depSchTB, m_depDelTB;
+
   private RadioButtonUI m_cancelledRadio;
   private RadioButtonUI m_divertedRadio;
   private RadioButtonUI m_successRadio;
@@ -37,6 +39,7 @@ class UserQueryUI extends Widget {
   private FlightQueryType m_flightNumQuery;
   private FlightQueryType m_arrTimeQuery, m_arrSchQuery, m_arrDelQuery, m_depTimeQuery, m_depSchQuery, m_depDelQuery;
   private Screen m_screen;
+ 
 
   private FlightMultiDataType m_flightsLists;
 
@@ -96,6 +99,7 @@ class UserQueryUI extends Widget {
     LabelUI cancelLabel = createLabel(17, 350, 160, 50, "C      D      N");
     cancelLabel.setTextSize(15);
     cancelLabel.setCentreAligned(false);
+
 
     m_addItemButton = new ButtonUI(20, 600, 80, 20);
     addWidget(m_addItemButton);
