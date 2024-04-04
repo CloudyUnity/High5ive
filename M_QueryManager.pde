@@ -122,11 +122,6 @@ class QueryManagerClass {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getInt("Key");
   }
-  
-  public int getAirlineIndex(String code){
-    m_lookupResult = m_airlineTable.findRow(code, "IATA");
-    return m_lookupResult.getInt("Key");
-  }
 
   /**
    * CKM
@@ -694,7 +689,6 @@ class QueryManagerClass {
     case MONTH:
     case DAY:
     case FLIGHT_NUMBER:
-    case TAIL_NUBMER:
     case KILOMETRES_DISTANCE:
     case DEPARTURE_DELAY:
     case ARRIVAL_DELAY:
@@ -758,3 +752,5 @@ class QueryManagerClass {
 // T. Creagh, fixed querySort on delay tiems 00:00 24/03
 // T. Creagh, clean up 00:30 24/03
 // CKM, added new index based lookups, 20:00 26/03
+// CKM, added new queries 17:00 04/04
+// CKM, improved query verification 17:00 04/04

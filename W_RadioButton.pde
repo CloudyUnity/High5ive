@@ -41,7 +41,7 @@ class RadioButtonUI extends Widget implements IClickable {
         m_onCheckedEvent.raise(e);
         box.setChecked(true);
       } else if (m_uncheckable) {
-         box.setChecked(false);
+        box.setChecked(false);
       } else {
         box.setChecked(true);
       }
@@ -67,7 +67,7 @@ class RadioButtonUI extends Widget implements IClickable {
   public EventType<EventInfoType> getOnCheckedEvent() {
     return m_onCheckedEvent;
   }
-  
+
   public void setUncheckable(boolean uncheckable) {
     m_uncheckable = uncheckable;
   }

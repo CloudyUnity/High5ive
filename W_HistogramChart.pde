@@ -153,7 +153,7 @@ class HistogramChartUI<T, TData> extends Widget implements IChart<T, TData> {
     switch (m_translationField) {
     case CANCELLED:
       return val.equals("0") ? "None" :
-      val.equals("1") ? "Cancelled" : "Diverted";
+        val.equals("1") ? "Cancelled" : "Diverted";
     case CARRIER_CODE_INDEX:
       return m_queryManager.getAirlineName(Integer.parseInt(val));
     default:

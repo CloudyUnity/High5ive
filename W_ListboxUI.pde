@@ -23,7 +23,7 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
 
     m_onClickEvent.addHandler(e -> onClick(e));
     m_mouseWheelMovedEvent.addHandler(e -> onMouseWheelMoved(e));
-    
+
     m_children.add(m_scrollbar);
   }
 
@@ -34,24 +34,24 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
     if (!(m_onlyUseNeededHeight && neededHeight() == 0)) {
       fill(m_backgroundColour);
       rect(m_pos.x, m_pos.y, m_scale.x, shownHeight());
-      
+
       int drawIndex = 0;
       textAlign(LEFT, CENTER);
-      
+
       for (int i = 0; i < m_entries.size() && ((drawIndex + 1) * m_entryHeight) <= m_scale.y; i++) {
         int entry = i + m_scrollbar.getCurrentTop();
         if (m_entries.get(entry).getShown()) {
 
           fill(m_entries.get(entry).getSelected() ? m_entries.get(entry).getSelectedColour() : m_entries.get(entry).getBackgroundColour());
           rect(m_pos.x, m_pos.y + drawIndex * m_entryHeight, m_entryWidth, m_entryHeight);
-          
+
           fill(m_entries.get(entry).getTextColour());
           text(m_getDisplayString.apply(m_entries.get(entry).getData()), m_pos.x, m_pos.y + drawIndex * m_entryHeight, m_entryWidth, m_entryHeight);
-          
+
           drawIndex++;
         }
       }
-      
+
       if (m_scrollbar.getActive())
         m_scrollbar.draw();
     }
@@ -176,7 +176,7 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
   }
 
   @ Override
-  public boolean isPositionInside(int mx, int my) {
+    public boolean isPositionInside(int mx, int my) {
     return
       mx >= m_pos.x && mx <= (m_pos.x + m_entryWidth) &&
       my >= m_pos.y && my <= (m_pos.y + shownHeight());
@@ -201,7 +201,7 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
   private void onMouseWheelMoved(MouseWheelEventInfoType e) {
     m_scrollbar.getOnMouseWheelEvent().raise(e);
   }
-  
+
   private int neededHeight() {
     return m_entryHeight * m_entries.size();
   }
@@ -209,7 +209,7 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
   public int shownHeight() {
     return m_onlyUseNeededHeight ? Math.min(neededHeight(), (int)m_scale.y) : (int)m_scale.y;
   }
-  
+
   private int getNumberOfShown() {
     int sum = 0;
     for (var entry : m_entries)
@@ -231,7 +231,7 @@ class ListboxEntry<T> {
     m_data = data;
   }
 
-  public T getData() { 
+  public T getData() {
     return m_data;
   }
 
