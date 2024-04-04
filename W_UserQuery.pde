@@ -36,7 +36,7 @@ class UserQueryUI extends Widget {
   private FlightQueryType m_FlightNumQuery;
   private Screen m_screen;
 
-  private FlightMultiDataType m_flightsLists;  
+  private FlightMultiDataType m_flightsLists;
 
   /**
    * M.Poole:
@@ -59,7 +59,7 @@ class UserQueryUI extends Widget {
     addWidget(m_queryList);
 
     m_flightQueries = new ArrayList<FlightQueryType>();
-    m_activeQueries = new ArrayList<FlightQueryType>();    
+    m_activeQueries = new ArrayList<FlightQueryType>();
 
     RadioButtonGroupTypeUI worldUSGroup = new RadioButtonGroupTypeUI();
     addWidgetGroup(worldUSGroup);
@@ -94,7 +94,7 @@ class UserQueryUI extends Widget {
     );
     cancelDivertGroup.addMember(m_divertedRadio);
 
-    LabelUI cancelLabel = createLabel(17, 250, 160, 50, "C      D      S");
+    LabelUI cancelLabel = createLabel(17, 250, 160, 50, "C      D      N");
     cancelLabel.setTextSize(15);
     cancelLabel.setCentreAligned(false);
 
@@ -159,9 +159,11 @@ class UserQueryUI extends Widget {
 
     m_CancelledQuery = new FlightQueryType(QueryType.CANCELLED, QueryOperatorType.NOT_EQUAL, m_location);
     m_flightQueries.add(m_CancelledQuery);
+    m_CancelledQuery.setQueryValue(1);
 
     m_DivertedQuery = new FlightQueryType(QueryType.DIVERTED, QueryOperatorType.NOT_EQUAL, m_location);
     m_flightQueries.add(m_CancelledQuery);
+    m_DivertedQuery.setQueryValue(1);
   }
 
   /**
@@ -172,7 +174,6 @@ class UserQueryUI extends Widget {
    */
   public void insertBaseData(FlightMultiDataType flightData) {
     m_flightsLists = flightData;
-
     m_onLoadDataEvent.accept(new FlightType[0]);
   }
 
@@ -185,27 +186,22 @@ class UserQueryUI extends Widget {
   public void setOnLoadHandler(Consumer<FlightType[]> dataEvent) {
     m_onLoadDataEvent = dataEvent;
   }
-  
+
   /**
    * M.Poole:
    * Loads flight data based on the active queries. Queries the flight manager for relevant data
    * based on user input queries and updates the displayed data accordingly.
    */
   private void loadData() {
-
     FlightType[] result;
-    if (m_location == QueryLocationType.US) {
+    if (m_location == QueryLocationType.US)
       result = m_flightsLists.US;
-    } else {
+    else
       result = m_flightsLists.WORLD;
-    }
+
     for (FlightQueryType query : m_activeQueries) {
       result  = m_queryManager.queryFlights(result, query, query.QueryValue);
     }
-
-    //result = m_queryManager.getHead(m_flightsLists.WORLD , 10);
-
-    println(m_OriginQuery.QueryValue);
 
     s_DebugProfiler.startProfileTimer();
     m_onLoadDataEvent.accept(result);
@@ -220,28 +216,27 @@ class UserQueryUI extends Widget {
    * @param inputField The input field containing the user query.
    * @param inputQuery The query to be saved.
    */
-  private void saveQuery( TextboxUI inputField, FlightQueryType inputQuery) {
-    if ((inputField).getTextLength() > 0 ) {
-      int dayVal = m_queryManager.formatQueryValue(inputQuery.Type, inputField.getText().toUpperCase());
-      inputQuery.setQueryValue(dayVal);
-      m_activeQueries.add(inputQuery);
-      m_queryList.add((((TextboxUI)inputField).getText()).toUpperCase() );
-      m_listCounter++;
-      ((TextboxUI)inputField).setText("");
-    } else return;
+  private void saveQuery(TextboxUI inputField, FlightQueryType inputQuery) {
+    if (inputField.getTextLength() <= 0)
+      return;
 
-    // Adds to query output field textbox thing
-
-    // Set all user inputs back to default
+    String text = inputField.getText().toUpperCase();
+    inputField.setText("");
+    
+    int val = m_queryManager.formatQueryValue(inputQuery.Type, text);
+    if (val == -1)
+      return;
+    
+    inputQuery.setQueryValue(val);
+    addToQueryList(inputQuery, inputQuery.Type.toString() + ": " + text);    
   }
 
-  private void saveQuery(FlightQueryType inputQuery) {
-    // FOR TRUE OR FALSE QUERIES ONLY DO NOT USE IN ANY OTHER SCENARIO OR YOULL GET A BAD QUERY
-    int dayVal = 1;
-    inputQuery.setQueryValue(dayVal);
-    m_activeQueries.add(inputQuery);
+  private void addToQueryList(FlightQueryType query, String text) {
+    m_activeQueries.add(query);
+    m_queryList.add(text);
+    m_listCounter++;
   }
-  
+
   /**
    * M.Poole:
    * Saves all active queries entered by the user. Collects and stores all active queries
@@ -253,8 +248,11 @@ class UserQueryUI extends Widget {
     saveQuery(m_Distance, m_DistanceQuery);
     saveQuery(m_Airline, m_AirlineQuery);
     saveQuery(m_FlightNum, m_FlightNumQuery);
-    saveQuery(m_CancelledQuery);
-    saveQuery(m_DivertedQuery);
+    
+    if (m_cancelledRadio.getChecked() || m_divertedRadio.getChecked()){
+      addToQueryList(m_CancelledQuery, "Cancelled");
+      addToQueryList(m_DivertedQuery, "Diverted");
+    }
   }
 
   /**
@@ -268,7 +266,6 @@ class UserQueryUI extends Widget {
   private void changeOperator(FlightQueryType input, QueryOperatorType inputOperator) {
     input.setOperator(inputOperator);
   }
-
 
   private void setOperators() {
   }
@@ -284,8 +281,8 @@ class UserQueryUI extends Widget {
     m_DistanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, m_location);
     m_AirlineQuery = new FlightQueryType(QueryType.CARRIER_CODE_INDEX, QueryOperatorType.EQUAL, m_location);
     m_FlightNumQuery = new FlightQueryType(QueryType.FLIGHT_NUMBER, QueryOperatorType.EQUAL, m_location);
-    m_activeQueries = new ArrayList<FlightQueryType>();
-
+    
+    m_activeQueries.clear();
     m_queryList.clear();
   }
 
@@ -321,19 +318,19 @@ class UserQueryUI extends Widget {
   private void addWidgetGroup(WidgetGroupType group) {
     m_screen.addWidgetGroup(group);
   }
-  
+
   public LabelUI createLabel(int posX, int posY, int scaleX, int scaleY, String text) {
     LabelUI label = new LabelUI(posX, posY, scaleX, scaleY, text);
     addWidget(label);
     return label;
   }
-  
-  public void setRenderWorldUSButtons(boolean enabled){
+
+  public void setRenderWorldUSButtons(boolean enabled) {
     m_worldRadio.setRendering(enabled);
     m_usRadio.setRendering(enabled);
   }
-  
-  public void setWorldUSParent(Widget parent){
+
+  public void setWorldUSParent(Widget parent) {
     m_worldRadio.setParent(parent);
     m_usRadio.setParent(parent);
   }
