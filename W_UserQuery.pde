@@ -9,39 +9,37 @@ class UserQueryUI extends Widget {
   QueryManagerClass m_queryManager;
   private ArrayList<FlightQueryType> m_activeQueries; // All query types are ordered like so (Day, Airline, FlightNum, Origin, Dest, SchDep, Dep, Depdelay, SchArr, Arr, ArrDelay, Cancelled, Dievrted, Miles  )
   private ArrayList<FlightQueryType> m_flightQueries;
-
-  private ListboxUI m_queryLB;
-  private TextboxUI m_originTB;
-  private TextboxUI m_destTB;
-  private TextboxUI m_distanceTB;
-  private TextboxUI m_airlineTB;
-  private TextboxUI m_flightNumTB;
-  private TextboxUI m_arrTimeTB, m_arrSchTB, m_arrDelTB, m_depTimeTB, m_depSchTB, m_depDelTB;
-
+  private ListboxUI m_queryList;
+  private TextboxUI m_Origin;
+  private TextboxUI m_Dest;
+  private TextboxUI m_Distance;
+  private TextboxUI m_Airline;
+  private TextboxUI m_FlightNum;
   private RadioButtonUI m_cancelledRadio;
   private RadioButtonUI m_divertedRadio;
   private RadioButtonUI m_successRadio;
   private RadioButtonUI m_worldRadio;
   private RadioButtonUI m_usRadio;
-  private ButtonUI m_clearListButton;
-  private ButtonUI m_addItemButton;
-  private ButtonUI m_loadDataButton;
+  private ButtonUI clearListButton;
+  private ButtonUI removeSelectedButton;
+  private ButtonUI addItemButton;
+  private ButtonUI loadDataButton;
 
   private QueryLocationType m_location = QueryLocationType.US;
 
   public int m_listCounter;
-  private FlightQueryType m_originQuery;
-  private FlightQueryType m_destQuery;
-  private FlightQueryType m_distanceQuery;
-  private FlightQueryType m_cancelledQuery;
-  private FlightQueryType m_divertedQuery;
-  private FlightQueryType m_airlineQuery;
-  private FlightQueryType m_flightNumQuery;
-  private FlightQueryType m_arrTimeQuery, m_arrSchQuery, m_arrDelQuery, m_depTimeQuery, m_depSchQuery, m_depDelQuery;
+  private FlightQueryType m_OriginQuery;
+  private FlightQueryType m_DestQuery;
+  private FlightQueryType m_DistanceQuery;
+  private FlightQueryType m_CancelledQuery;
+  private FlightQueryType m_DivertedQuery;
+  private FlightQueryType m_AirlineQuery;
+  private FlightQueryType m_FlightNumQuery;
   private Screen m_screen;
  
 
   private FlightMultiDataType m_flightsLists;
+// This is a funny comment
 
   /**
    * M.Poole:
@@ -60,8 +58,8 @@ class UserQueryUI extends Widget {
     m_queryManager = queryManager;
     m_screen = screen;
 
-    m_queryLB = new ListboxUI<String>(20, 650, 200, 400, 40, v -> v);
-    addWidget(m_queryLB);
+    m_queryList = new ListboxUI<String>(20, 650, 200, 400, 40, v -> v);
+    addWidget(m_queryList);
 
     m_flightQueries = new ArrayList<FlightQueryType>();
     m_activeQueries = new ArrayList<FlightQueryType>();
@@ -81,120 +79,82 @@ class UserQueryUI extends Widget {
     RadioButtonGroupTypeUI cancelDivertGroup = new RadioButtonGroupTypeUI();
     addWidgetGroup(cancelDivertGroup);
 
-    m_cancelledRadio = new RadioButtonUI(20, 350, 20, 20, "CANCELLED");
+    m_cancelledRadio = new RadioButtonUI(20, 300, 20, 20, "CANCELLED");
     addWidget(m_cancelledRadio);
     m_cancelledRadio.setUncheckable(true);
     cancelDivertGroup.addMember(m_cancelledRadio);
 
-    m_divertedRadio = new RadioButtonUI(55, 350, 20, 20, "DIVERTED");
+    m_divertedRadio = new RadioButtonUI(55, 300, 20, 20, "DIVERTED");
     addWidget(m_divertedRadio);
     m_divertedRadio.setUncheckable(true);
     cancelDivertGroup.addMember(m_divertedRadio);
 
-    m_successRadio = new RadioButtonUI(90, 350, 20, 20, "SUCCESS");
+    m_successRadio = new RadioButtonUI(90, 300, 20, 20, "SUCCESS");
     addWidget(m_successRadio);
     cancelDivertGroup.addMember(m_successRadio);
     m_successRadio.setUncheckable(true);
 
-    LabelUI cancelLabel = createLabel(17, 350, 160, 50, "C      D      N");
+    LabelUI cancelLabel = createLabel(17, 250, 160, 50, "C      D      N");
     cancelLabel.setTextSize(15);
     cancelLabel.setCentreAligned(false);
 
+    addItemButton = new ButtonUI(20, 600, 80, 20);
+    addWidget(addItemButton);
+    addItemButton.setText("Add item");
+    addItemButton.getOnClickEvent().addHandler(e -> saveAllQueries());
 
-    m_addItemButton = new ButtonUI(20, 600, 80, 20);
-    addWidget(m_addItemButton);
-    m_addItemButton.setText("Add item");
-    m_addItemButton.getOnClickEvent().addHandler(e -> saveAllQueries());
+    clearListButton = new ButtonUI(120, 600, 80, 20);
+    addWidget(clearListButton);
+    clearListButton.setText("Clear");
+    clearListButton.getOnClickEvent().addHandler(e -> clearQueries());
 
-    m_clearListButton = new ButtonUI(120, 600, 80, 20);
-    addWidget(m_clearListButton);
-    m_clearListButton.setText("Clear");
-    m_clearListButton.getOnClickEvent().addHandler(e -> clearQueries());
+    loadDataButton = new ButtonUI(width - 60, 150, 50, height  - 160);
+    addWidget(loadDataButton);
+    loadDataButton.setText("Load Data");
+    loadDataButton.getOnClickEvent().addHandler(e -> loadData());
 
-    m_loadDataButton = new ButtonUI(220, 500, 180, 120);
-    addWidget(m_loadDataButton);
-    m_loadDataButton.setText("Load Data");
-    m_loadDataButton.getOnClickEvent().addHandler(e -> loadData());
+    m_Origin =  new TextboxUI(20, 500, 160, 30);
+    addWidget(m_Origin);
+    m_Origin.setPlaceholderText("Origin");
 
-    m_originTB =  new TextboxUI(20, 500, 160, 30);
-    addWidget(m_originTB);
-    m_originTB.setPlaceholderText("Origin");
+    m_OriginQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, m_location);
+    m_flightQueries.add(m_OriginQuery);
 
-    m_originQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, m_location);
-    m_flightQueries.add(m_originQuery);
+    m_Dest =  new TextboxUI(20, 550, 160, 30);
+    addWidget(m_Dest);
+    m_Dest.setPlaceholderText("Destination");
 
-    m_destTB =  new TextboxUI(20, 550, 160, 30);
-    addWidget(m_destTB);
-    m_destTB.setPlaceholderText("Destination");
+    m_DestQuery = new FlightQueryType(QueryType.AIRPORT_DEST_INDEX, QueryOperatorType.EQUAL, m_location);
+    m_flightQueries.add(m_DestQuery);
 
-    m_destQuery = new FlightQueryType(QueryType.AIRPORT_DEST_INDEX, QueryOperatorType.EQUAL, m_location);
-    m_flightQueries.add(m_destQuery);
+    m_Distance =  new TextboxUI(20, 450, 160, 30);
+    addWidget(m_Distance);
+    m_Distance.setPlaceholderText("Kilometers ");
 
-    m_airlineTB =  new TextboxUI(20, 3500, 160, 30); //Throwing off screen until this works
-    addWidget(m_airlineTB);
-    m_airlineTB.setPlaceholderText("Airline");
+    m_DistanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, m_location);
+    m_flightQueries.add(m_DestQuery);
 
-    m_airlineQuery = new FlightQueryType(QueryType.CARRIER_CODE_INDEX, QueryOperatorType.EQUAL, m_location);
-    m_flightQueries.add(m_airlineQuery);
+    m_Airline =  new TextboxUI(20, 350, 160, 30); //Throwing off screen until this works
+    addWidget(m_Airline);
+    m_Airline.setPlaceholderText("Airline");
 
-    m_flightNumTB =  new TextboxUI(20, 400, 160, 30);
-    addWidget(m_flightNumTB);
-    m_flightNumTB.setPlaceholderText("Flight Number");
+    m_AirlineQuery = new FlightQueryType(QueryType.CARRIER_CODE_INDEX, QueryOperatorType.EQUAL, m_location);
+    m_flightQueries.add(m_AirlineQuery);
 
-    m_flightNumQuery = new FlightQueryType(QueryType.FLIGHT_NUMBER, QueryOperatorType.EQUAL, m_location);
-    m_flightQueries.add(m_flightNumQuery);
+    m_FlightNum =  new TextboxUI(20, 400, 160, 30);
+    addWidget(m_FlightNum);
+    m_FlightNum.setPlaceholderText("Flight Number");
 
-    m_cancelledQuery = new FlightQueryType(QueryType.CANCELLED, QueryOperatorType.NOT_EQUAL, m_location);
-    m_flightQueries.add(m_cancelledQuery);
-    m_cancelledQuery.setQueryValue(1);
+    m_FlightNumQuery = new FlightQueryType(QueryType.FLIGHT_NUMBER, QueryOperatorType.EQUAL, m_location);
+    m_flightQueries.add(m_FlightNumQuery);
 
-    m_divertedQuery = new FlightQueryType(QueryType.DIVERTED, QueryOperatorType.NOT_EQUAL, m_location);
-    m_flightQueries.add(m_cancelledQuery);
-    m_divertedQuery.setQueryValue(1);
+    m_CancelledQuery = new FlightQueryType(QueryType.CANCELLED, QueryOperatorType.NOT_EQUAL, m_location);
+    m_flightQueries.add(m_CancelledQuery);
+    m_CancelledQuery.setQueryValue(1);
 
-    m_distanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, m_location);
-    m_distanceTB = createTextboxWithOp(20, 450, 160, 40, "Distance", m_distanceQuery);
-
-    m_arrTimeQuery = new FlightQueryType(QueryType.ARRIVAL_TIME, QueryOperatorType.LESS_THAN, m_location);
-    m_arrTimeTB = createTextboxWithOp(20, 300, 160, 40, "Arrival Time (00:00)", m_arrTimeQuery);
-
-    m_arrSchQuery = new FlightQueryType(QueryType.SCHEDULED_ARRIVAL_TIME, QueryOperatorType.LESS_THAN, m_location);
-    m_arrSchTB = createTextboxWithOp(20, 250, 160, 40, "Scheduled Arrival", m_arrSchQuery);
-
-    m_arrDelQuery = new FlightQueryType(QueryType.ARRIVAL_DELAY, QueryOperatorType.LESS_THAN, m_location);
-    m_arrDelTB = createTextboxWithOp(20, 200, 160, 40, "Arrival Delay", m_arrDelQuery);
-    
-    m_depTimeQuery = new FlightQueryType(QueryType.DEPARTURE_TIME, QueryOperatorType.LESS_THAN, m_location);
-    m_depTimeTB = createTextboxWithOp(20, 150, 160, 40, "Depart Time (00:00)", m_depTimeQuery);
-    
-    m_depSchQuery = new FlightQueryType(QueryType.SCHEDULED_DEPARTURE_TIME, QueryOperatorType.LESS_THAN, m_location);
-    m_depSchTB = createTextboxWithOp(180, 100, 160, 40, "Scheduled Depart", m_depSchQuery);
-    
-    m_depDelQuery = new FlightQueryType(QueryType.DEPARTURE_DELAY, QueryOperatorType.LESS_THAN, m_location);
-    m_depDelTB = createTextboxWithOp(180, 50, 160, 40, "Depart Delay", m_depDelQuery);
-  }
-
-  private TextboxUI createTextboxWithOp(int posX, int posY, int scaleX, int scaleY, String placeholder, FlightQueryType fqt) {
-    TextboxUI tb = new TextboxUI(posX, posY, scaleX, scaleY);
-    addWidget(tb);
-    tb.setPlaceholderText(placeholder);
-
-    m_flightQueries.add(fqt);
-
-    DropdownUI<QueryOperatorType> opDD = new DropdownUI<QueryOperatorType>(posX + scaleX, posY, 100, 400, 30, v -> formatText(v.toString()));
-    addWidget(opDD);
-    opDD.getOnSelectionChanged().addHandler(e -> {
-      ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
-      QueryOperatorType op = (QueryOperatorType)elistbox.Data;
-      fqt.setOperator(op);
-    }
-    );
-    opDD.add(QueryOperatorType.EQUAL);
-    opDD.add(QueryOperatorType.NOT_EQUAL);
-    opDD.add(QueryOperatorType.LESS_THAN);
-    opDD.add(QueryOperatorType.GREATER_THAN);
-
-    return tb;
+    m_DivertedQuery = new FlightQueryType(QueryType.DIVERTED, QueryOperatorType.NOT_EQUAL, m_location);
+    m_flightQueries.add(m_CancelledQuery);
+    m_DivertedQuery.setQueryValue(1);
   }
 
   /**
@@ -252,9 +212,6 @@ class UserQueryUI extends Widget {
       return;
 
     String text = inputField.getText().toUpperCase();
-    if (text.isEmpty())
-      return;
-
     inputField.setText("");
 
     int val = m_queryManager.formatQueryValue(inputQuery.Type, text);
@@ -262,12 +219,12 @@ class UserQueryUI extends Widget {
       return;
 
     inputQuery.setQueryValue(val);
-    addToQueryList(inputQuery, formatText(inputQuery.Type.toString()) + ": " + formatText(inputQuery.Operator.toString()) + " [" + formatText(text) + "]");
+    addToQueryList(inputQuery, inputQuery.Type.toString() + ": " + text);
   }
 
   private void addToQueryList(FlightQueryType query, String text) {
     m_activeQueries.add(query);
-    m_queryLB.add(text);
+    m_queryList.add(text);
     m_listCounter++;
   }
 
@@ -277,52 +234,27 @@ class UserQueryUI extends Widget {
    * for loading data.
    */
   private void saveAllQueries() {
-    saveQuery(m_originTB, m_originQuery);
-    saveQuery(m_destTB, m_destQuery);
-    saveQuery(m_distanceTB, m_distanceQuery);
-    saveQuery(m_airlineTB, m_airlineQuery);
-    saveQuery(m_flightNumTB, m_flightNumQuery);
-    saveQuery(m_arrTimeTB, m_arrTimeQuery);
-    saveQuery(m_arrSchTB, m_arrSchQuery);
-    saveQuery(m_arrDelTB, m_arrDelQuery);
+    saveQuery(m_Origin, m_OriginQuery);
+    saveQuery(m_Dest, m_DestQuery);
+    saveQuery(m_Distance, m_DistanceQuery);
+    saveQuery(m_Airline, m_AirlineQuery);
+    saveQuery(m_FlightNum, m_FlightNumQuery);
 
     if (m_cancelledRadio.getChecked()) {
-      m_cancelledQuery.setOperator(QueryOperatorType.EQUAL);
-      addToQueryList(m_cancelledQuery, "Cancelled");
+      m_CancelledQuery.setOperator(QueryOperatorType.EQUAL);
+      addToQueryList(m_CancelledQuery, "Cancelled");
     }
 
     if (m_divertedRadio.getChecked()) {
-      m_divertedQuery.setOperator(QueryOperatorType.EQUAL);
-      addToQueryList(m_divertedQuery, "Diverted");
+      m_DivertedQuery.setOperator(QueryOperatorType.EQUAL);
+      addToQueryList(m_DivertedQuery, "Diverted");
     }
 
     if (m_successRadio.getChecked()) {
-      m_cancelledQuery.setOperator(QueryOperatorType.NOT_EQUAL);
-      m_divertedQuery.setOperator(QueryOperatorType.NOT_EQUAL);
-      addToQueryList(m_cancelledQuery, "Not Cancelled");
-      addToQueryList(m_divertedQuery, "Not Diverted");
-    }
-  }
-
-  private String formatText(String text) {
-    switch (text) {
-    case "KILOMETRES_DISTANCE":
-      return "KM";
-    case "AIRPORT_ORIGIN_INDEX":
-      return "Origin";
-    case "AIRPORT_DEST_INDEX":
-      return "Dest";
-
-    case "GREATER_THAN":
-      return "GT";
-    case "LESS_THAN":
-      return "LT";
-    case "EQUAL":
-      return "EQ";
-    case "NOT_EQUAL":
-      return "NEQ";
-    default:
-      return text;
+      m_CancelledQuery.setOperator(QueryOperatorType.NOT_EQUAL);
+      m_DivertedQuery.setOperator(QueryOperatorType.NOT_EQUAL);
+      addToQueryList(m_CancelledQuery, "Not Cancelled");
+      addToQueryList(m_DivertedQuery, "Not Diverted");
     }
   }
 
@@ -347,14 +279,14 @@ class UserQueryUI extends Widget {
    * saved queries and resetting input fields.
    */
   private void clearQueries() {
-    m_originQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, m_location);
-    m_destQuery = new FlightQueryType(QueryType.AIRPORT_DEST_INDEX, QueryOperatorType.EQUAL, m_location);
-    m_distanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, m_location);
-    m_airlineQuery = new FlightQueryType(QueryType.CARRIER_CODE_INDEX, QueryOperatorType.EQUAL, m_location);
-    m_flightNumQuery = new FlightQueryType(QueryType.FLIGHT_NUMBER, QueryOperatorType.EQUAL, m_location);
+    m_OriginQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, m_location);
+    m_DestQuery = new FlightQueryType(QueryType.AIRPORT_DEST_INDEX, QueryOperatorType.EQUAL, m_location);
+    m_DistanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, m_location);
+    m_AirlineQuery = new FlightQueryType(QueryType.CARRIER_CODE_INDEX, QueryOperatorType.EQUAL, m_location);
+    m_FlightNumQuery = new FlightQueryType(QueryType.FLIGHT_NUMBER, QueryOperatorType.EQUAL, m_location);
 
     m_activeQueries.clear();
-    m_queryLB.clear();
+    m_queryList.clear();
   }
 
   /**
