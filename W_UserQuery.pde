@@ -331,6 +331,11 @@ class UserQueryUI extends Widget {
     m_worldRadio.setRendering(enabled);
     m_usRadio.setRendering(enabled);
   }
+  
+  public void setWorldUSParent(Widget parent){
+    m_worldRadio.setParent(parent);
+    m_usRadio.setParent(parent);
+  }
 }
 
 // F.Wright  created Framework for UserQuery class 8pm 3/14/24
