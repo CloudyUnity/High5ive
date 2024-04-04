@@ -229,13 +229,19 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   private void onMouseClick() {
     boolean handled = false;
     
-    for (int i = m_children.size() - 1; i >= 0 && !handled; i--) {
-      handled |= doMouseClick(m_children.get(i)); 
+    for (int i = m_children.size() - 1; i >= 0; i--) {
+      if (!handled)
+        handled |= doMouseClick(m_children.get(i));
+      else
+        m_children.get(i).setFocused(false);
     }
 
     for (WidgetGroupType group : m_groups) {
-      for (int i = group.getMembers().size() - 1; i >= 0 && !handled; i--) {
-        handled |= doMouseClick(group.getMembers().get(i));
+      for (int i = group.getMembers().size() - 1; i >= 0; i--) {
+        if (!handled)
+          handled |= doMouseClick(group.getMembers().get(i));
+        else
+          group.getMembers().get(i).setFocused(false);
       }
     }
   }
