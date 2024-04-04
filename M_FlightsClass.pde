@@ -1,8 +1,8 @@
 class FlightsManagerClass {
   private boolean m_working;
 
-
-  /** T.Creagh
+  /**
+   * T.Creagh
    * Loads the flight data from the given file paths.
    *
    * @param usFileName       The filename for US flight data.
@@ -17,8 +17,8 @@ class FlightsManagerClass {
       println("ERROR: Flight binary failed to load successfully");
   }
 
-
-  /** T.Creagh
+  /**
+   * T.Creagh
    * Converts a binary file to an array of FlightType asynchronously.
    *
    * @param filename         The name of the binary file.
@@ -52,8 +52,8 @@ class FlightsManagerClass {
     return true;
   }
 
-
-  /** T.Creagh
+  /**
+   * T.Creagh
    * Converts a binary file to an array of FlightType asynchronously.
    *
    * @param filename         The name of the binary file.
@@ -112,8 +112,8 @@ class FlightsManagerClass {
     }
   }
 
-
-  /** T.Creagh
+  /**
+   * T.Creagh
    * Processes a chunk of flight data from a binary file for world flights.
    *
    * @param flightsList     The array to store processed flights.
@@ -148,7 +148,9 @@ class FlightsManagerClass {
         );
     }
   }
-  /** T.Creagh
+
+  /**
+   * T.Creagh
    * Processes a chunk of flight data from a binary file for world flights.
    *
    * @param flightsList     The array to store processed flights.
@@ -169,7 +171,8 @@ class FlightsManagerClass {
     }
   }
 
-  /** T.Creagh
+  /**
+   * T.Creagh
    * Prints the given array of flights based on the query type.
    *
    * @param flights    The array of flights to print.
@@ -181,7 +184,8 @@ class FlightsManagerClass {
     }
   }
 
-  /** T.Creagh
+  /**
+   * T.Creagh
    * Prints a single flight based on the given query type.
    *
    * @param flight     The flight to print.
