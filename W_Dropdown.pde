@@ -310,6 +310,10 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
     m_dropdownButton.setParent(parent);
     m_listbox.setParent(parent);
   }
+  
+  public void setTextboxText(String text){
+    m_textbox.setText(text);
+  }
 }
 
 // A. Robertson, Dropdown widget created, 20:30 13/03/2024
