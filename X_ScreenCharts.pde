@@ -140,14 +140,7 @@ class ScreenCharts extends Screen {
 
 
     m_scatterLabelX = createLabel(width-400, 100, 300, 100, "X-axis");
-    m_scatterLabelX.setTextSize(20);
-<<<<<<< HEAD
-    m_scatterLabelX.setRendering(false);
-
-=======
-    m_scatterLabelX.setActive(false);
-    
->>>>>>> d73f04d96d0c0d9c2c8d79f77248a6469bcf8e18
+    m_scatterLabelX.setTextSize(20);m_scatterLabelX.setActive(false);
     m_scatterLabelY = createLabel(width-400, 500, 300, 100, "Y-axis");
     m_scatterLabelY.setTextSize(20);
     m_scatterLabelY.setActive(false);
