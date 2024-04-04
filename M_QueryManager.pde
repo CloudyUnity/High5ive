@@ -1,6 +1,7 @@
 class QueryManagerClass {
   private Table m_airlineTable;
   private Table m_airportTable;
+  private Table m_aircraftTable;
   private TableRow m_lookupResult;
 
   /**
@@ -11,8 +12,9 @@ class QueryManagerClass {
   public void init() {
     m_airlineTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "airlines.csv", "header");
     m_airportTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "airports.csv", "header");
+    m_aircraftTable = loadTable(sketchPath() + DATA_DIRECTOR_PATH + "aircraft.csv", "header");
 
-    if (m_airportTable == null || m_airlineTable == null) {
+    if (m_airportTable == null || m_airlineTable == null || m_aircraftTable == null) {
       println("ERROR ON INIT QUERY MANAGER");
     }
   }
@@ -224,6 +226,45 @@ class QueryManagerClass {
     m_lookupResult = m_airlineTable.findRow(String.valueOf(airlineIndex), "Key");
     return m_lookupResult.getString("Airline");
   }
+  
+    /**
+   * CKM
+   *
+   * Gets the index of an airline carrier from its IATA code.
+   *
+   * @param airlineCode The code of the airline.
+   * @return The index of the airline carrier.
+   */
+  public int getAirlineIndex(String airlineCode) {
+    m_lookupResult = m_airlineTable.findRow(airlineCode, "IATA");
+    return m_lookupResult.getInt("Key");
+  }
+  
+  /**
+   * CKM
+   *
+   * Gets the tail number of an aircraft from the index.
+   *
+   * @param planeIndex The index of the plane.
+   * @return The registration of the plane.
+   */
+  public String getTailNumberfromIndex (int planeIndex) {
+    m_lookupResult = m_aircraftTable.findRow(String.valueOf(planeIndex), "Key");
+    return m_lookupResult.getString("Registration");
+  }
+  
+  /**
+   * CKM
+   *
+   * Gets the index of an aircraft from its tail number.
+   *
+   * @param tailNumber The registration of the plane.
+   * @return The index of the plane.
+   */
+  public int getIndexfromTailNumber (String tailNumber) {
+    m_lookupResult = m_aircraftTable.findRow(tailNumber, "Registration");
+    return m_lookupResult.getInt("Key");
+  }
 
   /**
    * T. Creagh
@@ -326,6 +367,9 @@ class QueryManagerClass {
    */
   private int getFlightTypeFieldFromQueryType(FlightType flight, QueryType queryType, boolean convertTimes) {
     switch(queryType) {
+    case MONTH:
+      return (int)flight.Month;
+      
     case DAY:
       return (int)flight.Day;
 
@@ -334,6 +378,9 @@ class QueryManagerClass {
 
     case FLIGHT_NUMBER:
       return (int)flight.FlightNumber;
+      
+    case TAIL_NUMBER:
+      return (int)flight.TailNumber;
 
     case AIRPORT_ORIGIN_INDEX:
       return (int)flight.AirportOriginIndex;
@@ -352,6 +399,12 @@ class QueryManagerClass {
 
     case DIVERTED:
       return (int)flight.Diverted;
+      
+    case SCHEDULED_DURATION:
+      return (int)flight.ScheduledDuration;
+      
+    case ACTUAL_DURATION:
+      return (int)flight.ActualDuration;
 
     case KILOMETRES_DISTANCE:
       return (int)flight.KmDistance;
@@ -409,6 +462,7 @@ class QueryManagerClass {
       switch(flightQuery.Type) {
       case CARRIER_CODE_INDEX:
       case FLIGHT_NUMBER:
+      case TAIL_NUMBER:
       case AIRPORT_ORIGIN_INDEX:
       case AIRPORT_DEST_INDEX:
       case CANCELLED:
@@ -423,11 +477,8 @@ class QueryManagerClass {
 
     switch(flightQuery.Type) {
     case CARRIER_CODE_INDEX:
-    case FLIGHT_NUMBER:
     case AIRPORT_ORIGIN_INDEX:
     case AIRPORT_DEST_INDEX:
-    case CANCELLED: //This had to be added here or querting for cancelled and diverted flights wouldnt work.
-    case DIVERTED:
       boolean opIsEqual = flightQuery.Operator == QueryOperatorType.EQUAL;
       boolean opIsNotEqual = flightQuery.Operator == QueryOperatorType.NOT_EQUAL;
       return opIsEqual || opIsNotEqual;
@@ -445,12 +496,13 @@ class QueryManagerClass {
    * @return True if the query is legal, false otherwise.
    */
   private boolean isLegalQuery(FlightRangeQueryType flightRangeQuery) {
-    if (flightRangeQuery.Location != QueryLocationType.WORLD)
+    if (flightRangeQuery.Location == QueryLocationType.WORLD)
       return false;
 
     switch(flightRangeQuery.Type) {
     case CARRIER_CODE_INDEX:
     case FLIGHT_NUMBER:
+    case TAIL_NUMBER:
     case AIRPORT_ORIGIN_INDEX:
     case AIRPORT_DEST_INDEX:
     case CANCELLED:
@@ -472,6 +524,10 @@ class QueryManagerClass {
   public FlightType[] sort(FlightType[] flightsList, FlightSortQueryType flightSortQuery) {
     Comparator<FlightType> flightComparator;
     switch(flightSortQuery.Type) {
+    case MONTH:
+      flightComparator = Comparator.comparingInt(flight -> flight.Month);
+      break;
+      
     case DAY:
       flightComparator = Comparator.comparingInt(flight -> flight.Day);
       break;
@@ -482,6 +538,10 @@ class QueryManagerClass {
 
     case FLIGHT_NUMBER:
       flightComparator = Comparator.comparingInt(flight -> flight.FlightNumber);
+      break;
+      
+    case TAIL_NUMBER:
+      flightComparator = Comparator.comparingInt(flight -> flight.TailNumber);
       break;
 
     case AIRPORT_ORIGIN_INDEX:
@@ -518,6 +578,14 @@ class QueryManagerClass {
 
     case CANCELLED:
       flightComparator = Comparator.comparingInt(flight -> flight.Cancelled);
+      break;
+      
+    case SCHEDULED_DURATION:
+      flightComparator = Comparator.comparingInt(flight -> flight.ScheduledDuration);
+      break;
+    
+    case ACTUAL_DURATION:
+      flightComparator = Comparator.comparingInt(flight -> flight.ActualDuration);
       break;
 
     case KILOMETRES_DISTANCE:
@@ -618,11 +686,16 @@ class QueryManagerClass {
    */
   private int formatQueryValue(QueryType queryType, String inputString) {
     switch (queryType) {
+    case MONTH:
     case DAY:
     case FLIGHT_NUMBER:
+    //case TAIL_NUBMER:
+
     case KILOMETRES_DISTANCE:
     case DEPARTURE_DELAY:
     case ARRIVAL_DELAY:
+    case SCHEDULED_DURATION:
+    case ACTUAL_DURATION:
       return tryParseInteger(inputString);
 
     case SCHEDULED_DEPARTURE_TIME:
@@ -632,10 +705,25 @@ class QueryManagerClass {
       return tryParseInteger(inputString.replace(":", ""));
 
     case CARRIER_CODE_INDEX:
+      try {
+        return getAirlineIndex(inputString);
+      }
+      catch (Exception e) {
+        return -1;
+      }
+    
     case AIRPORT_ORIGIN_INDEX:
     case AIRPORT_DEST_INDEX:
       try {
         return getIndex(inputString);
+      }
+      catch (Exception e) {
+        return -1;
+      }
+    
+    case TAIL_NUMBER:
+      try {
+        return getIndexfromTailNumber(inputString);
       }
       catch (Exception e) {
         return -1;
@@ -666,3 +754,5 @@ class QueryManagerClass {
 // T. Creagh, fixed querySort on delay tiems 00:00 24/03
 // T. Creagh, clean up 00:30 24/03
 // CKM, added new index based lookups, 20:00 26/03
+// CKM, added new queries 17:00 04/04
+// CKM, improved query verification 17:00 04/04

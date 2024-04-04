@@ -148,6 +148,7 @@ class FlightsManagerClass {
         );
     }
   }
+
   /**
    * T.Creagh
    * Processes a chunk of flight data from a binary file for world flights.
@@ -201,6 +202,9 @@ class FlightsManagerClass {
     case FLIGHT_NUMBER:
       println("FlightNumber: " + flight.FlightNumber);
       break;
+    case TAIL_NUMBER:
+      println("Tail Number: " + flight.TailNumber);
+      break;
     case AIRPORT_ORIGIN_INDEX:
       println("AirportOriginIndex: " + flight.AirportOriginIndex);
       break;
@@ -220,10 +224,16 @@ class FlightsManagerClass {
       println("ArrivalTime: " + flight.ArrivalTime);
       break;
     case CANCELLED:
-      println("CancelledOrDiverted: " + flight.Cancelled);
+      println("Cancelled: " + flight.Cancelled);
       break;
     case DIVERTED:
-      println("CancelledOrDiverted: " + flight.Diverted);
+      println("Diverted: " + flight.Diverted);
+      break;
+    case SCHEDULED_DURATION:
+      println("Scheduled Duration: " + flight.ScheduledDuration);
+      break;
+    case ACTUAL_DURATION:
+      println("Actual Duration: " + flight.ActualDuration);
       break;
     case KILOMETRES_DISTANCE:
       println("KilometresDistance: " + flight.KmDistance);
@@ -272,3 +282,4 @@ class FlightsManagerClass {
 // T. Creagh, added world for init and aysnc functions, 3pm 13/03
 // T. Creagh, implemetned world fix, 9pm 13/03
 // F. Wright, Code cleanup 9am 19/03/24
+// CKM, added more queries 16:00 04/04

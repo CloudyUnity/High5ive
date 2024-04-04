@@ -20,13 +20,12 @@
 
 - [ ] Try and scrape flightradar24 to replace the routes database to be better
 
-## Widgets (Alex)
+## Dropdown Issues
 
-- [X] Listbox
-- [X] Dropdown menu
-- [ ] Rich text box
-- [ ] Scatter chart
-- [ ] Pie chart
+- [ ] Scroll bars too long
+- [ ] All dropdowns focused on frame 1
+- [ ] Multiple dropdowns can be focused
+ 
 - [ ] Write docs for widgets
     - [ ] Button
     - [ ] Textbox

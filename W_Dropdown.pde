@@ -59,7 +59,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
     m_textbox.getOnKeyPressedEvent().addHandler(e -> textboxChanged(e));
     m_textbox.getOnStringEnteredEvent().addHandler(e -> textboxTextEntered(e));
     m_textbox.getOnClickEvent().addHandler(e -> openList());
-    
+
     m_children.add(m_listbox);
     m_children.add(m_textbox);
     m_children.add(m_dropdownButton);
@@ -67,18 +67,18 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
 
   /**
    * A. Robertson
-   * 
+   *
    * Draws the dropdown widget.
    */
   @ Override
-  public void draw() {
+    public void draw() {
     super.draw();
     m_textbox.draw();
     m_dropdownButton.draw();
     if (m_listbox.getActive())
       m_listbox.draw();
   }
-  
+
   /**
    * A. Robertson
    *
@@ -127,20 +127,20 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
    *
    * An override of the Widget.isPositionInside method to ensure that it adapts to the box
    * being hidden or shown.
-   * 
+   *
    * @param mx The x component of the position to be checked.
    * @param my The y component of the position to be checked.
    * @returns Whether the given position is inside the widget.
    */
   @ Override
-  public boolean isPositionInside(int mx, int my) {
+    public boolean isPositionInside(int mx, int my) {
     if (m_listbox.getActive()) {
       return  mx >= m_pos.x && mx <= (m_pos.x + m_scale.x) &&
         my >= m_pos.y && my <= (m_pos.y + m_textbox.getScale().y + m_listbox.shownHeight());
-    } 
-    
+    }
+
     return mx >= m_pos.x && mx <= (m_pos.x + m_scale.x) &&
-        my >= m_pos.y && my <= (m_pos.y + m_textbox.getScale().y);
+      my >= m_pos.y && my <= (m_pos.y + m_textbox.getScale().y);
   }
 
   /**
@@ -175,7 +175,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
   public EventType<ListboxSelectedEntryChangedEventInfoType> getOnSelectionChanged() {
     return m_onSelectionChanged;
   }
-  
+
   /**
    * A. Robertson
    *
@@ -184,7 +184,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
    * @param searchable Whether the dropdown is searchable.
    */
   public void setSearchable(boolean searchable) {
-    if (!searchable)  
+    if (!searchable)
       m_listbox.removeFilter();
     m_textbox.setUserModifiable(searchable);
   }
@@ -201,7 +201,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
       closeList();
       return;
     }
-    
+
     openList();
   }
 
@@ -242,7 +242,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
       m_listbox.getOnMouseWheelEvent().raise(e);
     }
   }
-  
+
   /**
    * A. Robertson
    *
@@ -252,15 +252,15 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
    */
   private void textboxChanged(KeyPressedEventInfoType e) {
     TextboxUI tb = ((TextboxUI)e.Widget);
-    
+
     if (tb.getText() == "") {
       m_listbox.removeFilter();
       return;
-    } 
-    
+    }
+
     m_listbox.filterEntries(o -> m_getDisplayString.apply(o).startsWith(tb.getText()));
   }
-  
+
   /**
    * A. Robertson
    *
