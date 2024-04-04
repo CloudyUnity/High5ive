@@ -216,8 +216,11 @@ class FlightsManagerClass {
     case ARRIVAL_TIME:
       println("ArrivalTime: " + flight.ArrivalTime);
       break;
-    case CANCELLED_OR_DIVERTED:
+    case CANCELLED:
       println("CancelledOrDiverted: " + flight.Cancelled);
+      break;
+    case DIVERTED:
+       println("CancelledOrDiverted: " + flight.Diverted);
       break;
     case KILOMETRES_DISTANCE:
       println("KilometresDistance: " + flight.KmDistance);

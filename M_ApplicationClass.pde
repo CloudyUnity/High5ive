@@ -16,6 +16,7 @@ class ApplicationClass {
 
   ScreenCharts m_screenCharts = null;
   Screen3DFM m_screen3DFM = null;
+  TwoDMapScreen m_screen2DFM = null;
 
   /**
    * F. Wright
@@ -35,6 +36,7 @@ class ApplicationClass {
 
     m_flightsManager.loadUSAndWorldFromFiles("hex_flight_data.bin", "hex_world_data.bin", 4, list -> {
       m_screen3DFM.insertFlightData(list);
+      m_screen2DFM.insertFlightData(list);
       m_screenCharts.insertBaseData(list);
     }
     );
@@ -49,8 +51,8 @@ class ApplicationClass {
     ScreenHome screenHome = new ScreenHome(SCREEN_1_ID);
     m_screens.add(screenHome);
 
-    TwoDMapScreen screenFlightMap2D = new TwoDMapScreen(SCREEN_TWOD_MAP_ID, m_queryManager);
-    m_screens.add(screenFlightMap2D);
+    m_screen2DFM = new TwoDMapScreen(SCREEN_TWOD_MAP_ID, m_queryManager);
+    m_screens.add(m_screen2DFM);
 
     m_screen3DFM = new Screen3DFM(SCREEN_FLIGHT_MAP_ID, m_queryManager);
     m_screens.add(m_screen3DFM);

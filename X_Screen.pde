@@ -200,19 +200,25 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
    *
    * @param widget The widget to check for mouse clicks.
    */
-  private void doMouseClick(Widget widget) {
-    if (widget.getActive()) {
+  private boolean doMouseClick(Widget widget) {
+    boolean handled = false;
+    if (widget.getActive() && widget.getRenderingEnabled()) {
       if (widget instanceof IClickable) {
         if (widget.isPositionInside(mouseX, mouseY)) {
           ((IClickable)widget).getOnClickEvent().raise(new EventInfoType(mouseX, mouseY, widget));
           widget.setFocused(true);
-        } else {
+          handled = true;
+        } 
+        else {
           widget.setFocused(false);
         }
       }
     }
+    
     for (Widget w : widget.getChildren())
-      doMouseClick(w);
+      handled |= doMouseClick(w);
+      
+    return handled;
   }
 
   /**
@@ -221,12 +227,17 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
    * Handles the mouse click event.
    */
   private void onMouseClick() {
-    for (Widget child : m_children)
-      doMouseClick(child);
+    boolean handled = false;
+    
+    for (int i = m_children.size() - 1; i >= 0 && !handled; i--) {
+      handled |= doMouseClick(m_children.get(i)); 
+    }
 
-    for (WidgetGroupType group : this.m_groups)
-      for (Widget child : group.getMembers())
-        doMouseClick(child);
+    for (WidgetGroupType group : m_groups) {
+      for (int i = group.getMembers().size() - 1; i >= 0 && !handled; i--) {
+        handled |= doMouseClick(group.getMembers().get(i));
+      }
+    }
   }
 
   /**
@@ -300,30 +311,42 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
    * @param widget The widget to check for key pressed events.
    * @param e      The key pressed event information.
    */
-  private void doKeyPressed(Widget widget, KeyPressedEventInfoType e) {
+  private boolean doKeyPressed(Widget widget, KeyPressedEventInfoType e) {
+    boolean handled = false;
     if (widget.getActive()) {
-      if (widget instanceof IKeyInput && widget.isFocused())
+      if (widget instanceof IKeyInput && widget.isFocused()) {
         ((IKeyInput)widget).getOnKeyPressedEvent().raise(new KeyPressedEventInfoType(e.X, e.Y, e.PressedKey, e.PressedKeyCode, widget));
+        handled = true;
+      }
     }
-    for (Widget w : widget.getChildren())
-      doKeyPressed(w, e);
+
+    if (widget.getChildren().size() > 0) {
+      for (int i = 0; i < widget.getChildren().size(); i++) {
+        handled |= doKeyPressed(widget.getChildren().get(i), e); 
+      }
+    }
+    return handled;
   }
 
   /**
    * A. Robertson
    *
-   * Handles the key pressed event.
+   * Handles the key pressed event, allowing it to only be handled by 1 widget and its children.
    *
    * @param e The key pressed event information.
    */
   private void onKeyPressed(KeyPressedEventInfoType e) {
-    for (Widget child : m_children)
-      doKeyPressed(child, e);
+    boolean handled = false;
+    for (int i = m_children.size() - 1; i >= 0 && !handled; i--) {
+      handled |= doKeyPressed(m_children.get(i), e);
+    }
 
 
-    for (WidgetGroupType group : this.m_groups)
-      for (Widget child : group.getMembers())
-        doKeyPressed(child, e);
+    for (WidgetGroupType group : this.m_groups) {
+      for (int i = group.getMembers().size() - 1; i >= 0 && !handled; i--) {
+        handled |= doKeyPressed(group.getMembers().get(i), e);
+      }
+    }
   }
 
   /**
