@@ -24,6 +24,7 @@ class RadioButtonUI extends Widget implements IClickable {
   private EventType<EventInfoType> m_onCheckedEvent;
   private LabelUI m_label;
   private boolean m_checked;
+  private boolean m_uncheckable;
   private color m_checkedColour = DEFAULT_RADIOBUTTON_CHECKED_COLOUR;
 
   public RadioButtonUI(int posX, int posY, int scaleX, int scaleY, String label) {
@@ -38,8 +39,12 @@ class RadioButtonUI extends Widget implements IClickable {
       RadioButtonUI box = (RadioButtonUI)e.Widget;
       if (!box.getChecked()) {
         m_onCheckedEvent.raise(e);
+        box.setChecked(true);
+      } else if (m_uncheckable) {
+         box.setChecked(false);
+      } else {
+        box.setChecked(true);
       }
-      box.setChecked(true);
     }
     );
   }
@@ -61,6 +66,10 @@ class RadioButtonUI extends Widget implements IClickable {
 
   public EventType<EventInfoType> getOnCheckedEvent() {
     return m_onCheckedEvent;
+  }
+  
+  public void setUncheckable(boolean uncheckable) {
+    m_uncheckable = uncheckable;
   }
 
   public void check() {
