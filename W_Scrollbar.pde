@@ -6,8 +6,8 @@ class ScrollbarUI extends Widget implements IClickable, IWheelInput, IDraggable 
   private EventType<MouseWheelEventInfoType> m_onMouseWheelEvent;
   private EventType<MouseDraggedEventInfoType> m_onMouseDraggedEvent;
 
-  public ScrollbarUI(int x, int y, int width, int height, int numElements, int numViewed) {
-    super(x, y, width, height);
+  public ScrollbarUI(int x, int y, int scaleX, int scaleY, int numElements, int numViewed) {
+    super(x, y, scaleX, scaleY);
 
     setDrawOutline(false);
 

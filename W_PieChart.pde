@@ -179,8 +179,9 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
 
     switch (m_translationField) {
     case CANCELLED:
-      return val.equals("0") ? "None" :
-        val.equals("1") ? "Cancelled" : "Diverted";
+      return val.equals("0") ? "None" : "Cancelled";
+    case DIVERTED:
+      return val.equals("0") ? "None" : "Diverted";
     case CARRIER_CODE_INDEX:
       return m_queryManager.getAirlineName(Integer.parseInt(val));
     case AIRPORT_ORIGIN_INDEX:
