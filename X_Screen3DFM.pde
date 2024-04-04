@@ -15,6 +15,8 @@ class Screen3DFM extends Screen {
   private PVector m_offScreenUIPos = new PVector(-2000, 0);
   private boolean m_isQueryDisplayed = false;
   private float m_switchUIStartTimeMillis = 0;
+  
+  private Consumer<FlightType[]> m_loadIntoChartsConsumer;
 
   /**
    * F. Wright
@@ -24,10 +26,11 @@ class Screen3DFM extends Screen {
    * @param screenId The ID of the screen.
    * @param query The QueryManagerClass instance.
    */
-  public Screen3DFM(String screenId, QueryManagerClass query) {
+  public Screen3DFM(String screenId, QueryManagerClass query, Consumer<FlightType[]> loadIntoCharts) {
     super(screenId, color(0, 0, 0, 255));
 
     m_queryManager = query;
+    m_loadIntoChartsConsumer = loadIntoCharts;
 
     int dragWindowX = width - 400;
     int dragWindowY = height;
@@ -46,15 +49,16 @@ class Screen3DFM extends Screen {
     super.init();
 
     m_userQueryUI = new UserQueryUI(0, 0, 1, 1, m_queryManager, this);
+    addWidget(m_userQueryUI);
     m_userQueryUI.setPos(m_offScreenUIPos);
     m_userQueryUI.setWorldUSParent(m_worldUSUIParent);
-    addWidget(m_userQueryUI);
-
     m_userQueryUI.setOnLoadHandler(flights -> {
       m_flightMap3D.loadFlights(flights, m_queryManager);
     }
     );
     m_userQueryUI.insertBaseData(m_flights);
+    m_userQueryUI.setLoadOtherScreenText("Load into Charts");
+    m_userQueryUI.setOnLoadOtherScreenHandler(m_loadIntoChartsConsumer);
 
     int currentUIPosY = 60;
     int textSize = 20;
@@ -70,7 +74,10 @@ class Screen3DFM extends Screen {
     
     ButtonUI switchToCharts = createButton(20, currentUIPosY, 160, 50);
     switchToCharts.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_CHARTS_ID));
+    returnBttn.setGrowScale(1.05);
     switchToCharts.setText("Charts");
+    switchToCharts.setTextSize(textSize);
+    switchToCharts.getLabel().setCentreAligned(true);   
     
     currentUIPosY += 60;
 
@@ -182,6 +189,10 @@ class Screen3DFM extends Screen {
    */
   public void insertFlightData(FlightMultiDataType flights) {
     m_flights  = flights;
+  }
+  
+  public void loadFlights(FlightType[] flights){
+    m_flightMap3D.loadFlights(flights, m_queryManager);
   }
 
   @Override

@@ -48,16 +48,28 @@ class ApplicationClass {
    * Initializes the screens of the application.
    */
   private void createScreens() {
+    Consumer<FlightType[]> loadDataChartsTo3D = (flights -> {
+      m_screen3DFM.loadFlights(flights);
+      switchScreen(new SwitchScreenEventInfoType(0, 0, SCREEN_FLIGHT_MAP_ID, null));
+    }
+    );
+    
+    Consumer<FlightType[]> loadData3DToCharts = (flights -> {
+      m_screenCharts.loadData(flights);
+      switchScreen(new SwitchScreenEventInfoType(0, 0, SCREEN_CHARTS_ID, null));
+    }
+    );
+    
     ScreenHome screenHome = new ScreenHome(SCREEN_1_ID);
     m_screens.add(screenHome);
 
     m_screen2DFM = new TwoDMapScreen(SCREEN_TWOD_MAP_ID, m_queryManager);
     m_screens.add(m_screen2DFM);
 
-    m_screen3DFM = new Screen3DFM(SCREEN_FLIGHT_MAP_ID, m_queryManager);
+    m_screen3DFM = new Screen3DFM(SCREEN_FLIGHT_MAP_ID, m_queryManager, loadData3DToCharts);
     m_screens.add(m_screen3DFM);
 
-    m_screenCharts = new ScreenCharts(SCREEN_CHARTS_ID, m_queryManager);
+    m_screenCharts = new ScreenCharts(SCREEN_CHARTS_ID, m_queryManager, loadDataChartsTo3D);
     m_screens.add(m_screenCharts);
 
     m_currentScreen = screenHome;
@@ -157,7 +169,8 @@ class ApplicationClass {
    * @param e The event containing information about the switch screen event.
    */
   private void switchScreen(SwitchScreenEventInfoType e) {
-    e.Widget.getOnMouseExitEvent().raise((EventInfoType)e);
+    if (e.Widget != null)
+      e.Widget.getOnMouseExitEvent().raise((EventInfoType)e);
 
     for (Screen screen : m_screens) {
       if (e.NewScreenId.compareTo(screen.getScreenId()) != 0)

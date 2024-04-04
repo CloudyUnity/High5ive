@@ -31,7 +31,7 @@ class ScreenCharts extends Screen {
    * @param screenId The ID of the screen.
    * @param query    The query manager.
    */
-  public ScreenCharts(String screenId, QueryManagerClass query) {
+  public ScreenCharts(String screenId, QueryManagerClass query, Consumer<FlightType[]> loadInto3D) {
     super(screenId, DEFAULT_SCREEN_COLOUR);
 
     m_queryRef = query;
@@ -42,9 +42,11 @@ class ScreenCharts extends Screen {
     m_userQuery.setOnLoadHandler(flights -> {
       loadData(flights);
       if (m_initialised)
-      reloadData();
+        reloadData();
     }
     );
+    m_userQuery.setOnLoadOtherScreenHandler(loadInto3D);
+    m_userQuery.setLoadOtherScreenText("Load into 3D");
   }
 
   /**
