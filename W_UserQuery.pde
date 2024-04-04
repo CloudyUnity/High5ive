@@ -159,6 +159,15 @@ class UserQueryUI extends Widget {
 
     m_arrDelQuery = new FlightQueryType(QueryType.ARRIVAL_DELAY, QueryOperatorType.LESS_THAN, m_location);
     m_arrDelTB = createTextboxWithOp(20, 200, 160, 40, "Arrival Delay", m_arrDelQuery);
+    
+    m_depTimeQuery = new FlightQueryType(QueryType.DEPARTURE_TIME, QueryOperatorType.LESS_THAN, m_location);
+    m_depTimeTB = createTextboxWithOp(20, 150, 160, 40, "Depart Time (00:00)", m_depTimeQuery);
+    
+    m_depSchQuery = new FlightQueryType(QueryType.SCHEDULED_DEPARTURE_TIME, QueryOperatorType.LESS_THAN, m_location);
+    m_depSchTB = createTextboxWithOp(180, 100, 160, 40, "Scheduled Depart", m_depSchQuery);
+    
+    m_depDelQuery = new FlightQueryType(QueryType.DEPARTURE_DELAY, QueryOperatorType.LESS_THAN, m_location);
+    m_depDelTB = createTextboxWithOp(180, 50, 160, 40, "Depart Delay", m_depDelQuery);
   }
 
   private TextboxUI createTextboxWithOp(int posX, int posY, int scaleX, int scaleY, String placeholder, FlightQueryType fqt) {
