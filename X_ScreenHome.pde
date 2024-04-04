@@ -70,7 +70,7 @@ class ScreenHome extends Screen {
   }
   @Override
   public void draw() {
-    super.draw()
+    super.draw();
     image(earth, 0, 0);
   }
 }
