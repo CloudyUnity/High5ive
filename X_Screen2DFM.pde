@@ -2,7 +2,9 @@ class TwoDMapScreen extends Screen {
   FlightMap2DUI m_flightMap;
   QueryManagerClass m_twodQueryManager;
   UserQueryUI m_userQueryUI;
+
   FlightMultiDataType m_flights;      
+
 
   public TwoDMapScreen (String screenId, QueryManagerClass query) {
     super(screenId, DEFAULT_SCREEN_COLOUR);
@@ -14,20 +16,24 @@ class TwoDMapScreen extends Screen {
     super.init();
     int currentUIPosY = 20;
     int textSize = 20;
-    
 
-    m_flightMap = new FlightMap2DUI(100, 0, 100, 100);
+    m_userQueryUI = new UserQueryUI(0, -130, 1, 1, m_twodQueryManager, this);
+    addWidget(m_userQueryUI);
+
+  //  m_userQueryUI.setOnLoadHandler(flights -> {
+  //   m_flightMap.loadFlights(flights, m_twodQueryManager);
+  //  }
+  //  );
+  //  m_userQueryUI.insertBaseData(m_flights);
+
+
+    m_flightMap = new FlightMap2DUI(0, 0, 100, 100);
     addWidget(m_flightMap);
-
-    ButtonUI uiBackground = createButton(0, -1, 200, (displayHeight));
-    uiBackground.setHighlightOutlineOnEnter(false);
-    uiBackground.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
-    uiBackground.setText("");
-
-    ButtonUI uiBackgroundTwo = createButton(0, (displayHeight-100), (displayWidth), (100));
-    uiBackgroundTwo.setHighlightOutlineOnEnter(false);
-    uiBackgroundTwo.setBackgroundColour(color(DEFAULT_SCREEN_COLOUR));
-    uiBackgroundTwo.setText("");
+    
+    LabelUI label = createLabel(20, currentUIPosY, 150, 40, "2D Flight Map");
+    label.setForegroundColour(color(255, 255, 255, 255));
+    label.setTextSize(30);
+    currentUIPosY += 60;
 
     ButtonUI returnBttn = createButton(20, currentUIPosY, 160, 50);
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
@@ -65,4 +71,16 @@ class TwoDMapScreen extends Screen {
     markersEnabledCB.getLabel().setScale(130, 50);
     currentUIPosY += 60;
   }
+
+  /**
+   * M. Orlowski
+   *
+   * Inserts flight data into the screen from M_Application class.
+   *
+   * @param flights The flight data to be inserted.
+   */
+  public void insertFlightData(FlightMultiDataType flights) {
+    m_flights  = flights;
+  }
+   
 }

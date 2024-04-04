@@ -41,7 +41,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
 
     m_onMouseWheelMoved.addHandler(e -> onMouseWheelMoved(e));
 
-    int tbHeight = Math.min((int)(m_scale.y * 0.1), 40);
+    int tbHeight = Math.max((int)(m_scale.y * 0.1), 40);
 
     m_textbox = new TextboxUI(posX, posY, (int)(m_scale.x - tbHeight), tbHeight);
     m_dropdownButton = new ButtonUI((int)(posX + m_textbox.getScale().x), posY, (int)m_textbox.getScale().y, (int)m_textbox.getScale().y);
@@ -80,7 +80,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
     if (m_listbox.getActive())
       m_listbox.draw();
   }
-
+  
   /**
    * A. Robertson
    *
