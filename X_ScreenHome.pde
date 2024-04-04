@@ -1,6 +1,5 @@
 import processing.video.*;
-Movie eathSpin;
-
+Movie earth;
 /**
  * F. Wright
  *
@@ -25,11 +24,17 @@ class ScreenHome extends Screen {
    *
    * Initializes the screen by adding UI elements and setting their properties.
    */
+  void movieEvent(Movie movie) {
+    movie.read();
+  }
   @Override
     public void init() {
     super.init();
 
     float growScale = 1.05f;
+
+    earth = new Movie(s_theApp, "data/Videos/earth.mp4");
+    earth.loop();
 
     ButtonUI switchTo2D = createButton((int)width/2, 100, (int)width/2 - 100, 200);
     switchTo2D.setBackgroundColour(COLOR_BLACK);
@@ -62,10 +67,13 @@ class ScreenHome extends Screen {
     subTitle.setForegroundColour(COLOR_LIGHT_GRAY);
     subTitle.setCentreAligned(false);
     subTitle.setTextSize(64); 
-    myMovie = new Movie(this, "data/Videos/earth.mp4");
-    myMovie.play();
 
     switchToCharts.setGrowScale(growScale);
+  }
+  @Override
+  public void draw() {
+    super.draw();
+    image(earth, 0, 0);
   }
 }
 

@@ -76,6 +76,18 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
     m_initialised = true;
   }
 
+  // public color getBackgroundColor() {
+  //   return m_backgroundColor;
+  // }
+
+  // public ArrayList<WidgetGroupType> getGroups() {
+  //   return m_groups;
+  // }
+
+  // public ArrayList<Widget> getChildren() {
+  //   return m_children;
+  // }
+
   /**
    * A. Robertson
    *
