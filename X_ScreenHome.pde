@@ -24,9 +24,7 @@ class ScreenHome extends Screen {
    *
    * Initializes the screen by adding UI elements and setting their properties.
    */
-  void movieEvent(Movie movie) {
-    movie.read();
-  }
+
   @Override
     public void init() {
     super.init();
@@ -72,7 +70,7 @@ class ScreenHome extends Screen {
   }
   @Override
   public void draw() {
-    super.draw();
+    super.draw()
     image(earth, 0, 0);
   }
 }

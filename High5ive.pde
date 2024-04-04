@@ -57,6 +57,10 @@ void keyPressed() {
   s_ApplicationClass.onKeyPressed(key, keyCode);
 }
 
+void movieEvent(Movie movie) {
+  movie.read();
+}
+
 /**
  * F. Wright
  *
