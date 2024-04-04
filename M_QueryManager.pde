@@ -449,10 +449,10 @@ class QueryManagerClass {
       return (int)flight.ArrivalDelay;
 
     case CANCELLED:
-      return (int)flight.Cancelled;
+      return flight.Cancelled == 0 ? 0 : 1;
 
     case DIVERTED:
-      return (int)flight.Diverted;
+      return flight.Diverted == 0 ? 0 : 1;
       
     case SCHEDULED_DURATION:
       return (int)flight.ScheduledDuration;

@@ -15,9 +15,9 @@ class ScreenCharts extends Screen {
   UserQueryUI m_userQuery;
   FlightType[] m_cachedFlights = null;
 
-  QueryType m_freqQuery = null;
-  QueryType m_scatterQueryX = null;
-  QueryType m_scatterQueryY = null;
+  QueryType m_freqQueryType = null;
+  QueryType m_scatterQueryTypeX = null;
+  QueryType m_scatterQueryTypeY = null;
 
   Widget m_selectedGraph;
 
@@ -73,9 +73,9 @@ class ScreenCharts extends Screen {
     m_freqDD.getOnSelectionChanged().addHandler(e -> {
 
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
-      m_freqQuery = (QueryType)elistbox.Data;
+      m_freqQueryType = (QueryType)elistbox.Data;
 
-      if (m_freqQuery == null || m_cachedFlights == null) {
+      if (m_freqQueryType == null || m_cachedFlights == null) {
         println("Flight data not ready for charts yet, or invalid query");
         return;
       }
@@ -89,15 +89,16 @@ class ScreenCharts extends Screen {
     m_freqDD.add(QueryType.AIRPORT_ORIGIN_INDEX);
     m_freqDD.add(QueryType.AIRPORT_DEST_INDEX);
     m_freqDD.add(QueryType.CANCELLED);
+    m_freqDD.add(QueryType.DIVERTED);
     
     m_scatterDDX = new DropdownUI<QueryType>(width-400, 200, 300, 200, 50, v -> v.toString());
     addWidget(m_scatterDDX);
     m_scatterDDX.setActive(false);
     m_scatterDDX.getOnSelectionChanged().addHandler(e -> {
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
-      m_scatterQueryX = (QueryType)elistbox.Data;
+      m_scatterQueryTypeX = (QueryType)elistbox.Data;
 
-      if (m_scatterQueryX == null || m_scatterQueryY == null)
+      if (m_scatterQueryTypeX == null || m_scatterQueryTypeY == null)
       return;
 
       reloadScatter();
@@ -109,9 +110,9 @@ class ScreenCharts extends Screen {
     m_scatterDDY.setActive(false);
     m_scatterDDY.getOnSelectionChanged().addHandler(e -> {
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
-      m_scatterQueryY = (QueryType)elistbox.Data;
+      m_scatterQueryTypeY = (QueryType)elistbox.Data;
 
-      if (m_scatterQueryX == null || m_scatterQueryY == null || m_cachedFlights == null) {
+      if (m_scatterQueryTypeX == null || m_scatterQueryTypeY == null || m_cachedFlights == null) {
         println("Flight data not ready for charts yet, or invalid query");
         return;
       }
@@ -213,25 +214,25 @@ class ScreenCharts extends Screen {
    * Reloads the frequency data (histogram and pie chart) using the cached flights.
    */
   public void reloadFreq() {
-    if (m_cachedFlights == null || m_freqQuery == null)
+    if (m_cachedFlights == null || m_freqQueryType == null)
       return;
 
     s_DebugProfiler.startProfileTimer();
 
     m_histogram.removeData();
     m_histogram.addData(m_cachedFlights, f -> {
-      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_freqQuery);
+      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_freqQueryType);
     }
     );
-    m_histogram.setXAxisLabel(m_freqQuery.toString());
-    m_histogram.setTranslationField(m_freqQuery, m_queryRef);
+    m_histogram.setXAxisLabel(m_freqQueryType.toString());
+    m_histogram.setTranslationField(m_freqQueryType, m_queryRef);
 
     m_pieChart.removeData();
     m_pieChart.addData(m_cachedFlights, f -> {
-      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_freqQuery);
+      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_freqQueryType);
     }
     );
-    m_pieChart.setTranslationField(m_freqQuery, m_queryRef);
+    m_pieChart.setTranslationField(m_freqQueryType, m_queryRef);
 
     s_DebugProfiler.printTimeTakenMillis("Reloading data for frequency charts");
   }
@@ -242,7 +243,7 @@ class ScreenCharts extends Screen {
    * Reloads the scatter plot data using the cached flights.
    */
   public void reloadScatter() {
-    if (m_cachedFlights == null || m_scatterQueryX == null || m_scatterQueryY == null)
+    if (m_cachedFlights == null || m_scatterQueryTypeX == null || m_scatterQueryTypeY == null)
       return;
 
     s_DebugProfiler.startProfileTimer();
@@ -250,14 +251,14 @@ class ScreenCharts extends Screen {
     m_scatterPlot.removeData();
     m_scatterPlot.addData(m_cachedFlights,
       fX -> {
-      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)fX, m_scatterQueryX, true);
+      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)fX, m_scatterQueryTypeX, true);
     }
     ,
       fY -> {
-      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)fY, m_scatterQueryY, true);
+      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)fY, m_scatterQueryTypeY, true);
     }
     );
-    m_scatterPlot.setAxisLabels(m_scatterQueryX.toString(), m_scatterQueryY.toString());
+    m_scatterPlot.setAxisLabels(m_scatterQueryTypeX.toString(), m_scatterQueryTypeY.toString());
 
     s_DebugProfiler.printTimeTakenMillis("Reloading data for scatter chart");
   }
