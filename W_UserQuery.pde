@@ -152,9 +152,56 @@ class UserQueryUI extends Widget {
     m_flightQueries.add(m_CancelledQuery);
     m_CancelledQuery.setQueryValue(1);
 
+<<<<<<< HEAD
     m_DivertedQuery = new FlightQueryType(QueryType.DIVERTED, QueryOperatorType.NOT_EQUAL, m_location);
     m_flightQueries.add(m_CancelledQuery);
     m_DivertedQuery.setQueryValue(1);
+=======
+    m_distanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, m_location);
+    m_distanceTB = createTextboxWithOp(20, 450, 160, 40, "Distance", m_distanceQuery);
+
+    m_arrTimeQuery = new FlightQueryType(QueryType.ARRIVAL_TIME, QueryOperatorType.LESS_THAN, m_location);
+    m_arrTimeTB = createTextboxWithOp(20, 300, 160, 40, "Arrival Time (00:00)", m_arrTimeQuery);
+
+    m_arrSchQuery = new FlightQueryType(QueryType.SCHEDULED_ARRIVAL_TIME, QueryOperatorType.LESS_THAN, m_location);
+    m_arrSchTB = createTextboxWithOp(20, 250, 160, 40, "Scheduled Arrival", m_arrSchQuery);
+
+    m_arrDelQuery = new FlightQueryType(QueryType.ARRIVAL_DELAY, QueryOperatorType.LESS_THAN, m_location);
+    m_arrDelTB = createTextboxWithOp(20, 200, 160, 40, "Arrival Delay", m_arrDelQuery);
+    
+    m_depTimeQuery = new FlightQueryType(QueryType.DEPARTURE_TIME, QueryOperatorType.LESS_THAN, m_location);
+    m_depTimeTB = createTextboxWithOp(20, 150, 160, 40, "Depart Time (00:00)", m_depTimeQuery);
+    
+    m_depSchQuery = new FlightQueryType(QueryType.SCHEDULED_DEPARTURE_TIME, QueryOperatorType.LESS_THAN, m_location);
+    m_depSchTB = createTextboxWithOp(180, 100, 160, 40, "Scheduled Depart", m_depSchQuery);
+    
+    m_depDelQuery = new FlightQueryType(QueryType.DEPARTURE_DELAY, QueryOperatorType.LESS_THAN, m_location);
+    m_depDelTB = createTextboxWithOp(180, 50, 160, 40, "Depart Delay", m_depDelQuery);
+  }
+
+  private TextboxUI createTextboxWithOp(int posX, int posY, int scaleX, int scaleY, String placeholder, FlightQueryType fqt) {
+    TextboxUI tb = new TextboxUI(posX, posY, scaleX, scaleY);
+    addWidget(tb);
+    tb.setPlaceholderText(placeholder);
+
+    m_flightQueries.add(fqt);
+
+    DropdownUI<QueryOperatorType> opDD = new DropdownUI<QueryOperatorType>(posX + scaleX, posY, 100, 400, 30, v -> formatText(v.toString()));
+    addWidget(opDD);
+    opDD.setTextboxText(formatText("LESS_THAN"));
+    opDD.getOnSelectionChanged().addHandler(e -> {
+      ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
+      QueryOperatorType op = (QueryOperatorType)elistbox.Data;
+      fqt.setOperator(op);
+    }
+    );
+    opDD.add(QueryOperatorType.EQUAL);
+    opDD.add(QueryOperatorType.NOT_EQUAL);
+    opDD.add(QueryOperatorType.LESS_THAN);
+    opDD.add(QueryOperatorType.GREATER_THAN);
+
+    return tb;
+>>>>>>> 2dbaef3f2c09619a1e7190b3194d938d169981d5
   }
 
   /**
@@ -251,10 +298,39 @@ class UserQueryUI extends Widget {
     }
 
     if (m_successRadio.getChecked()) {
+<<<<<<< HEAD
       m_CancelledQuery.setOperator(QueryOperatorType.NOT_EQUAL);
       m_DivertedQuery.setOperator(QueryOperatorType.NOT_EQUAL);
       addToQueryList(m_CancelledQuery, "Not Cancelled");
       addToQueryList(m_DivertedQuery, "Not Diverted");
+=======
+      m_cancelledQuery.setOperator(QueryOperatorType.NOT_EQUAL);
+      m_divertedQuery.setOperator(QueryOperatorType.NOT_EQUAL);
+      addToQueryList(m_cancelledQuery, "Not Cancelled");
+      addToQueryList(m_divertedQuery, "Not Diverted");
+    }
+  }
+
+  private String formatText(String text) {
+    switch (text) {
+    case "KILOMETRES_DISTANCE":
+      return "KM";
+    case "AIRPORT_ORIGIN_INDEX":
+      return "Origin";
+    case "AIRPORT_DEST_INDEX":
+      return "Dest";
+
+    case "GREATER_THAN":
+      return " >";
+    case "LESS_THAN":
+      return " <";
+    case "EQUAL":
+      return " =";
+    case "NOT_EQUAL":
+      return " !=";
+    default:
+      return text;
+>>>>>>> 2dbaef3f2c09619a1e7190b3194d938d169981d5
     }
   }
 
