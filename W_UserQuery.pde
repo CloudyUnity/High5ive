@@ -17,6 +17,7 @@ class UserQueryUI extends Widget {
   private TextboxUI m_FlightNum;
   private RadioButtonUI m_cancelledRadio;
   private RadioButtonUI m_divertedRadio;
+  private RadioButtonUI m_successRadio;
   private RadioButtonUI m_worldRadio;
   private RadioButtonUI m_usRadio;
   private ButtonUI clearListButton;
@@ -78,34 +79,22 @@ class UserQueryUI extends Widget {
 
     m_cancelledRadio = new RadioButtonUI(20, 300, 20, 20, "CANCELLED");
     addWidget(m_cancelledRadio);
-    m_cancelledRadio.getOnCheckedEvent().addHandler(e -> {
-      m_CancelledQuery.setOperator(QueryOperatorType.EQUAL);
-      m_DivertedQuery.setOperator(QueryOperatorType.NOT_EQUAL);
-    }
-    );
+    m_cancelledRadio.setUncheckable(true);
     cancelDivertGroup.addMember(m_cancelledRadio);
 
     m_divertedRadio = new RadioButtonUI(55, 300, 20, 20, "DIVERTED");
     addWidget(m_divertedRadio);
-    m_divertedRadio.getOnCheckedEvent().addHandler(e -> {
-      m_CancelledQuery.setOperator(QueryOperatorType.NOT_EQUAL);
-      m_DivertedQuery.setOperator(QueryOperatorType.EQUAL);
-    }
-    );
+    m_divertedRadio.setUncheckable(true);
     cancelDivertGroup.addMember(m_divertedRadio);
+
+    m_successRadio = new RadioButtonUI(90, 300, 20, 20, "SUCCESS");
+    addWidget(m_successRadio);
+    cancelDivertGroup.addMember(m_successRadio);
+    m_successRadio.setUncheckable(true);
 
     LabelUI cancelLabel = createLabel(17, 250, 160, 50, "C      D      N");
     cancelLabel.setTextSize(15);
     cancelLabel.setCentreAligned(false);
-
-    RadioButtonUI successfulRadio = new RadioButtonUI(90, 300, 20, 20, "SUCCESS");
-    addWidget(successfulRadio);
-    successfulRadio.getOnCheckedEvent().addHandler(e -> {
-      m_CancelledQuery.setOperator(QueryOperatorType.NOT_EQUAL);
-      m_DivertedQuery.setOperator(QueryOperatorType.NOT_EQUAL);
-    }
-    );
-    cancelDivertGroup.addMember(successfulRadio);
 
     addItemButton = new ButtonUI(20, 600, 80, 20);
     addWidget(addItemButton);
@@ -222,13 +211,13 @@ class UserQueryUI extends Widget {
 
     String text = inputField.getText().toUpperCase();
     inputField.setText("");
-    
+
     int val = m_queryManager.formatQueryValue(inputQuery.Type, text);
     if (val == -1)
       return;
-    
+
     inputQuery.setQueryValue(val);
-    addToQueryList(inputQuery, inputQuery.Type.toString() + ": " + text);    
+    addToQueryList(inputQuery, inputQuery.Type.toString() + ": " + text);
   }
 
   private void addToQueryList(FlightQueryType query, String text) {
@@ -248,10 +237,22 @@ class UserQueryUI extends Widget {
     saveQuery(m_Distance, m_DistanceQuery);
     saveQuery(m_Airline, m_AirlineQuery);
     saveQuery(m_FlightNum, m_FlightNumQuery);
-    
-    if (m_cancelledRadio.getChecked() || m_divertedRadio.getChecked()){
+
+    if (m_cancelledRadio.getChecked()) {
+      m_CancelledQuery.setOperator(QueryOperatorType.EQUAL);
       addToQueryList(m_CancelledQuery, "Cancelled");
+    }
+
+    if (m_divertedRadio.getChecked()) {
+      m_DivertedQuery.setOperator(QueryOperatorType.EQUAL);
       addToQueryList(m_DivertedQuery, "Diverted");
+    }
+
+    if (m_successRadio.getChecked()) {
+      m_CancelledQuery.setOperator(QueryOperatorType.NOT_EQUAL);
+      m_DivertedQuery.setOperator(QueryOperatorType.NOT_EQUAL);
+      addToQueryList(m_CancelledQuery, "Not Cancelled");
+      addToQueryList(m_DivertedQuery, "Not Diverted");
     }
   }
 
@@ -281,7 +282,7 @@ class UserQueryUI extends Widget {
     m_DistanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, m_location);
     m_AirlineQuery = new FlightQueryType(QueryType.CARRIER_CODE_INDEX, QueryOperatorType.EQUAL, m_location);
     m_FlightNumQuery = new FlightQueryType(QueryType.FLIGHT_NUMBER, QueryOperatorType.EQUAL, m_location);
-    
+
     m_activeQueries.clear();
     m_queryList.clear();
   }
