@@ -127,14 +127,14 @@ class UserQueryUI extends Widget {
     m_flightNumTB = createTextboxUI(20, 400, 160, 30, "Flight Number");
 
     // TEXTBOXES WITH OPERATORS
-
+    
     createTextboxWithOp(180, 450, 160, 40, "Distance", QueryType.KILOMETRES_DISTANCE);
     createTextboxWithOp(180, 300, 160, 40, "Arrival Time", QueryType.ARRIVAL_TIME);
     createTextboxWithOp(180, 250, 160, 40, "Sch Arrival", QueryType.SCHEDULED_ARRIVAL_TIME);
     createTextboxWithOp(180, 200, 160, 40, "Arrival Delay", QueryType.ARRIVAL_DELAY);
     createTextboxWithOp(180, 150, 160, 40, "Depart Time", QueryType.DEPARTURE_TIME);
     createTextboxWithOp(180, 100, 160, 40, "Sch Depart", QueryType.SCHEDULED_DEPARTURE_TIME);
-    createTextboxWithOp(180, 50, 160, 40, "Depart Delay", QueryType.DEPARTURE_DELAY);
+    createTextboxWithOp(180,  50, 160, 40, "Depart Delay", QueryType.DEPARTURE_DELAY);
   }
 
   /**
@@ -154,7 +154,7 @@ class UserQueryUI extends Widget {
     addWidget(tb);
     tb.setPlaceholderText(placeholderTxt);
 
-    DropdownUI<QueryOperatorType> opDD = new DropdownUI<QueryOperatorType>(posX + scaleX, posY, 100, 400, 30, v -> formatText(v.toString()));
+    DropdownUI<QueryOperatorType> opDD = new DropdownUI<QueryOperatorType>(posX + scaleX, posY, 100, 400, 40, v -> formatText(v.toString()));
     addWidget(opDD);
     opDD.setTextboxText(formatText("LESS_THAN"));
 
