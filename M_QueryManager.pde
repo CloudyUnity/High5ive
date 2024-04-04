@@ -349,7 +349,7 @@ class QueryManagerClass {
 
     case CANCELLED:
       return (int)flight.Cancelled;
-    
+
     case DIVERTED:
       return (int)flight.Diverted;
 
@@ -426,7 +426,7 @@ class QueryManagerClass {
     case FLIGHT_NUMBER:
     case AIRPORT_ORIGIN_INDEX:
     case AIRPORT_DEST_INDEX:
-    case CANCELLED: //This had to be added here or querting for cancelled and diverted flights wouldnt work. 
+    case CANCELLED: //This had to be added here or querting for cancelled and diverted flights wouldnt work.
     case DIVERTED:
       boolean opIsEqual = flightQuery.Operator == QueryOperatorType.EQUAL;
       boolean opIsNotEqual = flightQuery.Operator == QueryOperatorType.NOT_EQUAL;
@@ -617,7 +617,6 @@ class QueryManagerClass {
    * @return The parsed query value as an integer.
    */
   private int formatQueryValue(QueryType queryType, String inputString) {
-    println(queryType);
     switch (queryType) {
     case DAY:
     case FLIGHT_NUMBER:
@@ -635,7 +634,12 @@ class QueryManagerClass {
     case CARRIER_CODE_INDEX:
     case AIRPORT_ORIGIN_INDEX:
     case AIRPORT_DEST_INDEX:
-      return getIndex(inputString);
+      try {
+        return getIndex(inputString);
+      }
+      catch (Exception e) {
+        return -1;
+      }
 
     default:
       return -1;
