@@ -237,7 +237,7 @@ class QueryManagerClass {
    */
   public FlightType[] queryFlights(FlightType[] flightsList, FlightQueryType flightQuery, int queryValue) {
     if (!isLegalQuery(flightQuery)) {
-      println("Error: FlightQuery.Type is illegal with FlightQuery.Operator");
+      println("Error: FlightQuery.Type is illegal with FlightQuery.Operator" + flightQuery.Operator);
       return flightsList;
     }
 
@@ -412,6 +412,7 @@ class QueryManagerClass {
       case AIRPORT_ORIGIN_INDEX:
       case AIRPORT_DEST_INDEX:
       case CANCELLED:
+      case DIVERTED:
         boolean opIsEqual = flightQuery.Operator == QueryOperatorType.EQUAL;
         boolean opIsNotEqual = flightQuery.Operator == QueryOperatorType.NOT_EQUAL;
         return opIsEqual || opIsNotEqual;
@@ -424,6 +425,8 @@ class QueryManagerClass {
     case CARRIER_CODE_INDEX:
     case AIRPORT_ORIGIN_INDEX:
     case AIRPORT_DEST_INDEX:
+    case CANCELLED: //This had to be added here or querting for cancelled and diverted flights wouldnt work. 
+    case DIVERTED:
       boolean opIsEqual = flightQuery.Operator == QueryOperatorType.EQUAL;
       boolean opIsNotEqual = flightQuery.Operator == QueryOperatorType.NOT_EQUAL;
       return opIsEqual || opIsNotEqual;
