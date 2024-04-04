@@ -123,10 +123,6 @@ class QueryManagerClass {
     return m_lookupResult.getInt("Key");
   }
   
-  public int getAirlineIndex(String code){
-    m_lookupResult = m_airlineTable.findRow(code, "IATA");
-    return m_lookupResult.getInt("Key");
-  }
 
   /**
    * CKM
@@ -694,7 +690,7 @@ class QueryManagerClass {
     case MONTH:
     case DAY:
     case FLIGHT_NUMBER:
-    case TAIL_NUBMER:
+    //case TAIL_NUBMER:
     case KILOMETRES_DISTANCE:
     case DEPARTURE_DELAY:
     case ARRIVAL_DELAY:
