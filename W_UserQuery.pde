@@ -17,7 +17,7 @@ class UserQueryUI extends Widget {
   private TextboxUI m_distanceTB;
   private TextboxUI m_airlineTB;
   private TextboxUI m_flightNumTB;
-  private TextboxUI m_arrTimeTB, m_arrSchTB, m_arrDelTB, m_depTimeTB, m_depSchTB, m_depDelTB;
+  private TextboxUI m_arrTimeTB, m_arrSchTB, m_arrDelTB, m_depTimeTB, m_depSchTB, m_depDelTB, m_tailNumTB;
 
   private RadioButtonUI m_cancelledRadio;
   private RadioButtonUI m_divertedRadio;
@@ -38,7 +38,7 @@ class UserQueryUI extends Widget {
   private FlightQueryType m_divertedQuery;
   private FlightQueryType m_airlineQuery;
   private FlightQueryType m_flightNumQuery;
-  private FlightQueryType m_arrTimeQuery, m_arrSchQuery, m_arrDelQuery, m_depTimeQuery, m_depSchQuery, m_depDelQuery;
+  private FlightQueryType m_arrTimeQuery, m_arrSchQuery, m_arrDelQuery, m_depTimeQuery, m_depSchQuery, m_depDelQuery, m_tailNumQuery;
   private Screen m_screen;
  
 
@@ -69,7 +69,7 @@ class UserQueryUI extends Widget {
 
     RadioButtonGroupTypeUI worldUSGroup = new RadioButtonGroupTypeUI();
     addWidgetGroup(worldUSGroup);
-
+    
     m_worldRadio = new RadioButtonUI(width - 60, 20, 50, 50, "WORLD");
     m_worldRadio.getOnCheckedEvent().addHandler(e -> changeDataToWorld());
     worldUSGroup.addMember(m_worldRadio);
@@ -117,28 +117,28 @@ class UserQueryUI extends Widget {
     m_loadDataButton.setText("Load Data");
     m_loadDataButton.getOnClickEvent().addHandler(e -> loadData());
 
-    m_originTB =  new TextboxUI(20, 500, 160, 30);
+    m_originTB =  new TextboxUI(width - 240, 500, 160, 30);
     addWidget(m_originTB);
     m_originTB.setPlaceholderText("Origin");
-
+    
     m_originQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, m_location);
     m_flightQueries.add(m_originQuery);
 
-    m_destTB =  new TextboxUI(20, 550, 160, 30);
+    m_destTB =  new TextboxUI(width - 240, 550, 160, 30);
     addWidget(m_destTB);
     m_destTB.setPlaceholderText("Destination");
 
     m_destQuery = new FlightQueryType(QueryType.AIRPORT_DEST_INDEX, QueryOperatorType.EQUAL, m_location);
     m_flightQueries.add(m_destQuery);
 
-    m_airlineTB =  new TextboxUI(170, 350, 160, 30);
+    m_airlineTB =  new TextboxUI(width - 240, 350, 160, 30);
     addWidget(m_airlineTB);
     m_airlineTB.setPlaceholderText("Airline");
 
     m_airlineQuery = new FlightQueryType(QueryType.CARRIER_CODE_INDEX, QueryOperatorType.EQUAL, m_location);
     m_flightQueries.add(m_airlineQuery);
 
-    m_flightNumTB =  new TextboxUI(20, 400, 160, 30);
+    m_flightNumTB =  new TextboxUI(width - 240, 400, 160, 30);
     addWidget(m_flightNumTB);
     m_flightNumTB.setPlaceholderText("Flight Number");
 
@@ -154,25 +154,30 @@ class UserQueryUI extends Widget {
     m_divertedQuery.setQueryValue(1);
 
     m_distanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, m_location);
-    m_distanceTB = createTextboxWithOp(20, 450, 160, 40, "Distance", m_distanceQuery);
+    m_distanceTB = createTextboxWithOp(width - 240, 450, 160, 40, "Distance", m_distanceQuery);
 
     m_arrTimeQuery = new FlightQueryType(QueryType.ARRIVAL_TIME, QueryOperatorType.LESS_THAN, m_location);
-    m_arrTimeTB = createTextboxWithOp(20, 300, 160, 40, "Arrival Time (00:00)", m_arrTimeQuery);
+    m_arrTimeTB = createTextboxWithOp(width - 240, 300, 160, 40, "Arrival Time (00:00)", m_arrTimeQuery);
 
     m_arrSchQuery = new FlightQueryType(QueryType.SCHEDULED_ARRIVAL_TIME, QueryOperatorType.LESS_THAN, m_location);
-    m_arrSchTB = createTextboxWithOp(20, 250, 160, 40, "Scheduled Arrival", m_arrSchQuery);
+    m_arrSchTB = createTextboxWithOp(width - 240, 250, 160, 40, "Scheduled Arrival", m_arrSchQuery);
 
     m_arrDelQuery = new FlightQueryType(QueryType.ARRIVAL_DELAY, QueryOperatorType.LESS_THAN, m_location);
-    m_arrDelTB = createTextboxWithOp(20, 200, 160, 40, "Arrival Delay", m_arrDelQuery);
+    m_arrDelTB = createTextboxWithOp(width - 240, 200, 160, 40, "Arrival Delay", m_arrDelQuery);
     
     m_depTimeQuery = new FlightQueryType(QueryType.DEPARTURE_TIME, QueryOperatorType.LESS_THAN, m_location);
-    m_depTimeTB = createTextboxWithOp(20, 150, 160, 40, "Depart Time (00:00)", m_depTimeQuery);
+    m_depTimeTB = createTextboxWithOp(width - 240, 150, 160, 40, "Depart Time (00:00)", m_depTimeQuery);
     
     m_depSchQuery = new FlightQueryType(QueryType.SCHEDULED_DEPARTURE_TIME, QueryOperatorType.LESS_THAN, m_location);
-    m_depSchTB = createTextboxWithOp(180, 100, 160, 40, "Scheduled Depart", m_depSchQuery);
+    m_depSchTB = createTextboxWithOp(width - 240, 100, 160, 40, "Scheduled Depart", m_depSchQuery);
     
     m_depDelQuery = new FlightQueryType(QueryType.DEPARTURE_DELAY, QueryOperatorType.LESS_THAN, m_location);
-    m_depDelTB = createTextboxWithOp(180, 50, 160, 40, "Depart Delay", m_depDelQuery);
+    m_depDelTB = createTextboxWithOp(width - 240, 50, 160, 40, "Depart Delay", m_depDelQuery);
+    
+    m_tailNumQuery = new FlightQueryType(QueryType.TAIL_NUMBER, QueryOperatorType.EQUAL, m_location);
+    m_tailNumTB =  new TextboxUI(width - 240, 900, 160, 30);
+    addWidget(m_tailNumTB);
+    m_flightNumTB.setPlaceholderText("Tail Number");
   }
 
   private TextboxUI createTextboxWithOp(int posX, int posY, int scaleX, int scaleY, String placeholder, FlightQueryType fqt) {
@@ -182,7 +187,7 @@ class UserQueryUI extends Widget {
 
     m_flightQueries.add(fqt);
 
-    DropdownUI<QueryOperatorType> opDD = new DropdownUI<QueryOperatorType>(posX + scaleX, posY, 100, 400, 30, v -> formatText(v.toString()));
+    DropdownUI<QueryOperatorType> opDD = new DropdownUI<QueryOperatorType>(scaleX, 0, 100, 400, 30, v -> formatText(v.toString()));
     addWidget(opDD);
     opDD.setTextboxText(formatText("LESS_THAN"));
     opDD.getOnSelectionChanged().addHandler(e -> {
@@ -287,6 +292,10 @@ class UserQueryUI extends Widget {
     saveQuery(m_arrTimeTB, m_arrTimeQuery);
     saveQuery(m_arrSchTB, m_arrSchQuery);
     saveQuery(m_arrDelTB, m_arrDelQuery);
+    saveQuery(m_depTimeTB, m_depTimeQuery);
+    saveQuery(m_depSchTB, m_depSchQuery);
+    saveQuery(m_depDelTB, m_depDelQuery);
+    saveQuery(m_tailNumTB, m_tailNumQuery);
 
     if (m_cancelledRadio.getChecked()) {
       m_cancelledQuery.setOperator(QueryOperatorType.EQUAL);
@@ -328,20 +337,6 @@ class UserQueryUI extends Widget {
     }
   }
 
-  /**
-   * M.Poole:
-   * Changes the operator for a given query. Modifies the operator used in a query based
-   * on user interaction or selection.
-   *
-   * @param input         The query for which the operator needs to be changed.
-   * @param inputOperator The new operator for the query.
-   */
-  private void changeOperator(FlightQueryType input, QueryOperatorType inputOperator) {
-    input.setOperator(inputOperator);
-  }
-
-  private void setOperators() {
-  }
 
   /**
    * M.Poole:
@@ -351,6 +346,11 @@ class UserQueryUI extends Widget {
   private void clearQueries() {
     m_originQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, m_location);
     m_destQuery = new FlightQueryType(QueryType.AIRPORT_DEST_INDEX, QueryOperatorType.EQUAL, m_location);
+    m_distanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, m_location);
+    m_airlineQuery = new FlightQueryType(QueryType.CARRIER_CODE_INDEX, QueryOperatorType.EQUAL, m_location);
+    m_flightNumQuery = new FlightQueryType(QueryType.FLIGHT_NUMBER, QueryOperatorType.EQUAL, m_location);
+    m_arrTimeQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, m_location);
+    m_depTimeQuery = new FlightQueryType(QueryType.AIRPORT_DEST_INDEX, QueryOperatorType.EQUAL, m_location);
     m_distanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, m_location);
     m_airlineQuery = new FlightQueryType(QueryType.CARRIER_CODE_INDEX, QueryOperatorType.EQUAL, m_location);
     m_flightNumQuery = new FlightQueryType(QueryType.FLIGHT_NUMBER, QueryOperatorType.EQUAL, m_location);
@@ -406,6 +406,22 @@ class UserQueryUI extends Widget {
   public void setWorldUSParent(Widget parent) {
     m_worldRadio.setParent(parent);
     m_usRadio.setParent(parent);
+  }
+  
+  public void setTextboxesParent(Widget parent){
+    m_originTB.setParent(parent);
+    m_destTB.setParent(parent);
+    m_airlineTB.setParent(parent);
+    m_flightNumTB.setParent(parent);
+    m_distanceTB.setParent(parent);
+    m_arrTimeTB.setParent(parent);
+    m_arrSchTB.setParent(parent);
+    m_arrDelTB.setParent(parent);
+    m_depTimeTB.setParent(parent);
+    m_depSchTB.setParent(parent);
+    m_depDelTB.setParent(parent);
+    m_tailNumTB.setParent(parent);
+    
   }
 }
 

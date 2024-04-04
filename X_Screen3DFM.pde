@@ -8,7 +8,7 @@
 class Screen3DFM extends Screen {
   FlightMap3D m_flightMap3D;
   QueryManagerClass m_queryManager;
-  EmptyWidgetUI m_flightMapUIParent = new EmptyWidgetUI(0, 0), m_worldUSUIParent = new EmptyWidgetUI(0, -300);
+  EmptyWidgetUI m_flightMapUIParent = new EmptyWidgetUI(0, 0), m_worldUSUIParent = new EmptyWidgetUI(0, -300), m_TextboxUIParent = new EmptyWidgetUI(width, 0);
   UserQueryUI m_userQueryUI;
   FlightMultiDataType m_flights;
 
@@ -48,6 +48,7 @@ class Screen3DFM extends Screen {
     m_userQueryUI = new UserQueryUI(0, 0, 1, 1, m_queryManager, this);
     m_userQueryUI.setPos(m_offScreenUIPos);
     m_userQueryUI.setWorldUSParent(m_worldUSUIParent);
+    m_userQueryUI.setTextboxesParent(m_TextboxUIParent);
     addWidget(m_userQueryUI);
 
     m_userQueryUI.setOnLoadHandler(flights -> {
@@ -197,6 +198,10 @@ class Screen3DFM extends Screen {
     PVector worldUSTargetPos = m_isQueryDisplayed ? new PVector(0, 0) : new PVector(0, -300);
     PVector newWorldUSPos = PVector.lerp(m_worldUSUIParent.getPos(), worldUSTargetPos, frac);
     m_worldUSUIParent.setPos(newWorldUSPos);
+    
+    PVector textboxTargetPos = m_isQueryDisplayed ? new PVector(0,0)  : new PVector(width, 0);
+    PVector newTextboxPos = PVector.lerp(m_TextboxUIParent.getPos(), textboxTargetPos, frac);
+    m_TextboxUIParent.setPos(newTextboxPos);
   }
 
   /**
