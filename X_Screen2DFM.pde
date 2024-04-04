@@ -3,7 +3,7 @@ class TwoDMapScreen extends Screen {
   QueryManagerClass m_twodQueryManager;
   UserQueryUI m_userQueryUI;
 
-  FlightMultiDataType m_flights;      
+  FlightMultiDataType m_flights;
 
 
   public TwoDMapScreen (String screenId, QueryManagerClass query) {
@@ -20,16 +20,16 @@ class TwoDMapScreen extends Screen {
     m_userQueryUI = new UserQueryUI(0, 20, 1, 1, m_twodQueryManager, this);
     addWidget(m_userQueryUI);
 
-  //  m_userQueryUI.setOnLoadHandler(flights -> {
-  //   m_flightMap.loadFlights(flights, m_twodQueryManager);
-  //  }
-  //  );
-  //  m_userQueryUI.insertBaseData(m_flights);
+    //  m_userQueryUI.setOnLoadHandler(flights -> {
+    //   m_flightMap.loadFlights(flights, m_twodQueryManager);
+    //  }
+    //  );
+    //  m_userQueryUI.insertBaseData(m_flights);
 
 
     m_flightMap = new FlightMap2DUI(0, 0, 100, 100);
     addWidget(m_flightMap);
-    
+
     LabelUI label = createLabel(20, currentUIPosY, 150, 40, "2D Flight Map");
     label.setForegroundColour(color(255, 255, 255, 255));
     label.setTextSize(30);
@@ -82,5 +82,4 @@ class TwoDMapScreen extends Screen {
   public void insertFlightData(FlightMultiDataType flights) {
     m_flights  = flights;
   }
-   
 }

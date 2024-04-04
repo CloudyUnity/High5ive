@@ -169,7 +169,7 @@ class ApplicationClass {
         m_currentScreen.init();
         s_DebugProfiler.printTimeTakenMillis("Initialisation of: " + screen.getScreenId());
       }
-      
+
       return;
     }
   }

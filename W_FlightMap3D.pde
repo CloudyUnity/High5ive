@@ -155,7 +155,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
    * @param flights The array of FlightType containing flight data.
    * @param queries The QueryManagerClass object for querying airport data.
    */
-  public void loadFlightsAsync(FlightType[] flights, QueryManagerClass queries) {    
+  public void loadFlightsAsync(FlightType[] flights, QueryManagerClass queries) {
     ExecutorService executor = Executors.newFixedThreadPool(LOADING_THREAD_COUNT_3D);
     CountDownLatch latch = new CountDownLatch(LOADING_THREAD_COUNT_3D);
 
@@ -347,7 +347,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_loadingScreenDotChangeTimer += s_deltaTime;
     if (m_loadingScreenDotChangeTimer >= m_loadingScreenDotChangeCooldown) {
       m_loadingScreenDotChangeTimer = 0;
-      
+
       if (m_loadingScreenString.equals("Loading."))
         m_loadingScreenString = "Loading..";
       else if (m_loadingScreenString.equals("Loading.."))

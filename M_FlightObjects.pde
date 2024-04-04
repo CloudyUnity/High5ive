@@ -115,9 +115,11 @@ class FlightSortQueryType {
 
 // Enum for the fields in FlightType
 public enum QueryType {
-  DAY,
+  MONTH,
+    DAY,
     CARRIER_CODE_INDEX,
     FLIGHT_NUMBER,
+    TAIL_NUMBER,
     AIRPORT_ORIGIN_INDEX,
     AIRPORT_DEST_INDEX,
     SCHEDULED_DEPARTURE_TIME,
@@ -128,6 +130,8 @@ public enum QueryType {
     ARRIVAL_DELAY,
     CANCELLED,
     DIVERTED,
+    SCHEDULED_DURATION,
+    ACTUAL_DURATION,
     KILOMETRES_DISTANCE,
 }
 
@@ -191,3 +195,4 @@ class AirportPoint3DType {
 // T. Creagh, added in FlightRangeQuery, 9pm 12/03/24
 // T. Creagh, added in FlightSortQuery, 10pm 12/03/24
 // F. Wright, Refactoring, 7pm 25/03/24
+// CKM, Added additional queries 16:00 04/04
