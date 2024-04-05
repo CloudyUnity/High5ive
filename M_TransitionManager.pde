@@ -112,3 +112,5 @@ class TransitionManagerClass {
     return m_inTransitionState;
   }
 }
+
+//CKM had job taken by program
