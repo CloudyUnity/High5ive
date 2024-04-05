@@ -14,7 +14,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   private PShape m_modelEarth, m_modelSun, m_modelSkySphere;
   private PImage m_texEarthDay, m_texEarthNight, m_texSun, m_texSkySphereStars;
   private PImage m_texEarthNormalMap, m_texEarthSpecularMap, m_texDitherNoise;
-  private PShader m_shaderEarth, m_shaderSun, m_shaderPP, m_shaderSkySphere;
+  private PShader m_shaderEarth, m_shaderSun, m_shaderDitherPP, m_shaderCRTPP, m_shaderSkySphere;
 
   private PVector m_earthRotation = new PVector(0, 0, 0);
   private PVector m_earthRotationalVelocity = new PVector(0, 0, 0);
@@ -29,11 +29,14 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   private boolean m_markersEnabled = true;
   private boolean m_lockTime = false;
 
+  private boolean m_ditheringEnabled = false;
+  private boolean m_crtEnabled = false;
+
   private boolean m_assetsLoaded = false;
   private boolean m_drawnLoadingScreen = false;
   private boolean m_flightDataLoaded = false;
   private boolean m_working = false;
-  private boolean m_profiledFirstRender = false;
+  private boolean m_ranFirstRender = false;
 
   private float m_rotationYModified = 0;
   private float m_totalTimeElapsed = 0;
@@ -103,7 +106,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
 
     m_shaderEarth = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
     m_shaderSun = loadShader("data/Shaders/SunFrag.glsl", "data/Shaders/BaseVert.glsl");
-    m_shaderPP = loadShader("data/Shaders/PostProcessing.glsl");
+    m_shaderDitherPP = loadShader("data/Shaders/PPDither.glsl");
+    m_shaderCRTPP = loadShader("data/Shaders/PPCRT.glsl");
     m_shaderSkySphere = loadShader("data/Shaders/SkyboxFrag.glsl", "data/Shaders/SkyboxVert.glsl");
 
     m_shaderEarth.set("texDay", m_texEarthDay);
@@ -111,7 +115,9 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_shaderEarth.set("normalMap", m_texEarthNormalMap);
     m_shaderEarth.set("specularMap", m_texEarthSpecularMap);
     m_shaderSun.set("tex", m_texSun);
-    m_shaderPP.set("noise", m_texDitherNoise);
+    m_shaderDitherPP.set("noise", m_texDitherNoise);
+    m_shaderDitherPP.set("resolution", (float)width, (float)height);
+    m_shaderCRTPP.set("resolution", (float)width, (float)height);
     m_shaderSkySphere.set("tex", m_texSkySphereStars);
 
     setPermaDay(false);
@@ -155,7 +161,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
    * @param flights The array of FlightType containing flight data.
    * @param queries The QueryManagerClass object for querying airport data.
    */
-  public void loadFlightsAsync(FlightType[] flights, QueryManagerClass queries) {    
+  public void loadFlightsAsync(FlightType[] flights, QueryManagerClass queries) {
     ExecutorService executor = Executors.newFixedThreadPool(LOADING_THREAD_COUNT_3D);
     CountDownLatch latch = new CountDownLatch(LOADING_THREAD_COUNT_3D);
 
@@ -303,7 +309,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_arcFraction = (millis() - m_arcStartGrowMillis) / m_arcGrowMillis;
     m_arcFraction = clamp(m_arcFraction, 0.0f, 1.0f);
 
-    if (!m_assetsLoaded || !m_drawnLoadingScreen || !m_flightDataLoaded) {
+    boolean firstTransitionInto = s_ApplicationClass.getTransitionState() && !m_ranFirstRender;
+    if (!m_assetsLoaded || !m_drawnLoadingScreen || !m_flightDataLoaded || firstTransitionInto) {
       drawLoadingScreen();
       m_drawnLoadingScreen = true;
       return;
@@ -314,9 +321,9 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
 
     PVector lightDir = new PVector(cos(m_totalTimeElapsed), 0, sin(m_totalTimeElapsed));
     m_shaderEarth.set("lightDir", lightDir);
-    m_rotationYModified = m_earthRotation.y + m_totalTimeElapsed;
-    m_earthPos.z = EARTH_Z_3D + m_zoomLevel;
     m_shaderSun.set("texTranslation", 0, m_totalTimeElapsed * 0.5f);
+    m_rotationYModified = m_earthRotation.y + m_totalTimeElapsed;
+    m_earthPos.z = EARTH_Z_3D + m_zoomLevel;    
 
     s_3D.beginDraw();
 
@@ -326,10 +333,13 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     if (m_textEnabled)
       drawMarkerText();
 
-    if (DEBUG_MODE && DITHER_MODE_3D)
-      s_3D.filter(m_shaderPP);
+    if (m_ditheringEnabled)
+      s_3D.filter(m_shaderDitherPP);
 
     drawSkybox();
+
+    if (m_crtEnabled)
+      s_3D.filter(m_shaderCRTPP);
 
     s_3D.endDraw();
 
@@ -347,7 +357,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_loadingScreenDotChangeTimer += s_deltaTime;
     if (m_loadingScreenDotChangeTimer >= m_loadingScreenDotChangeCooldown) {
       m_loadingScreenDotChangeTimer = 0;
-      
+
       if (m_loadingScreenString.equals("Loading."))
         m_loadingScreenString = "Loading..";
       else if (m_loadingScreenString.equals("Loading.."))
@@ -381,15 +391,15 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     s_3D.rotateX(m_earthRotation.x);
     s_3D.rotateY(m_rotationYModified);
 
-    if (!m_profiledFirstRender)
+    if (!m_ranFirstRender)
       s_DebugProfiler.startProfileTimer();
 
     s_3D.shape(m_modelEarth);
 
-    if (!m_profiledFirstRender)
+    if (!m_ranFirstRender)
       s_DebugProfiler.printTimeTakenMillis("First earth render");
 
-    m_profiledFirstRender = true;
+    m_ranFirstRender = true;
     s_3D.resetShader();
     s_3D.popMatrix();
   }
@@ -663,6 +673,14 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
    */
   public void setDayCycleSpeed(float speed) {
     m_dayCycleSpeed = speed;
+  }
+
+  public void setDitheringEnabled(boolean enabled) {
+    m_ditheringEnabled = enabled;
+  }
+
+  public void setCRTEnabled(boolean enabled) {
+    m_crtEnabled = enabled;
   }
 }
 

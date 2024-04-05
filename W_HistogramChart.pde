@@ -139,8 +139,10 @@ class HistogramChartUI<T, TData> extends Widget implements IChart<T, TData> {
       String key = entry.getKey().toString();
       fill(255);
       text(translateXValues(key), m_pos.x + m_sidePadding + i * m_barWidth, m_pos.y + m_scale.y - m_bottomPadding, m_barWidth, m_bottomPadding);
-      fill(0);
-      text(entry.getValue().toString(), m_pos.x + m_sidePadding + i * m_barWidth, valTextYTop, m_barWidth, m_numberTextBoxHeight);
+      if (HISTOGRAM_BAR_TEXT_ENABLED) {
+        fill(0);
+        text(entry.getValue().toString(), m_pos.x + m_sidePadding + i * m_barWidth, valTextYTop, m_barWidth, m_numberTextBoxHeight);
+      }
 
       i++;
     }
@@ -151,9 +153,9 @@ class HistogramChartUI<T, TData> extends Widget implements IChart<T, TData> {
       return val;
 
     switch (m_translationField) {
-    case CANCELLED_OR_DIVERTED:
+    case CANCELLED:
       return val.equals("0") ? "None" :
-      val.equals("1") ? "Cancelled" : "Diverted";
+        val.equals("1") ? "Cancelled" : "Diverted";
     case CARRIER_CODE_INDEX:
       return m_queryManager.getAirlineName(Integer.parseInt(val));
     default:

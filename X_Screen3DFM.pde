@@ -8,13 +8,14 @@
 class Screen3DFM extends Screen {
   FlightMap3D m_flightMap3D;
   QueryManagerClass m_queryManager;
-  EmptyWidgetUI m_flightMapUIParent;
+  EmptyWidgetUI m_flightMapUIParent = new EmptyWidgetUI(0, 0), m_worldUSUIParent = new EmptyWidgetUI(0, -300);
   UserQueryUI m_userQueryUI;
   FlightMultiDataType m_flights;
-  
-  private PVector m_offScreenUIPos = new PVector(-2000, 0);
+
   private boolean m_isQueryDisplayed = false;
   private float m_switchUIStartTimeMillis = 0;
+
+  private Consumer<FlightType[]> m_loadIntoChartsConsumer;
 
   /**
    * F. Wright
@@ -24,15 +25,16 @@ class Screen3DFM extends Screen {
    * @param screenId The ID of the screen.
    * @param query The QueryManagerClass instance.
    */
-  public Screen3DFM(String screenId, QueryManagerClass query) {
+  public Screen3DFM(String screenId, QueryManagerClass query, Consumer<FlightType[]> loadIntoCharts) {
     super(screenId, color(0, 0, 0, 255));
 
     m_queryManager = query;
+    m_loadIntoChartsConsumer = loadIntoCharts;
 
     int dragWindowX = width - 400;
     int dragWindowY = height;
     m_flightMap3D = new FlightMap3D(200, 0, dragWindowX, dragWindowY);
-    addWidget(m_flightMap3D);
+    addWidget(m_flightMap3D, -9999);
   }
 
   /**
@@ -45,18 +47,17 @@ class Screen3DFM extends Screen {
     public void init() {
     super.init();
 
-    // ATTENTION MATTHEW, SEE HERE!
-    m_userQueryUI = new UserQueryUI(0, 0, 1, 1, m_queryManager, this);
-    m_userQueryUI.setPos(m_offScreenUIPos);
-    addWidget(m_userQueryUI);
-
+    m_userQueryUI = new UserQueryUI(-2000, UQUI_3D_POS_Y, 1, 1, m_queryManager, this);
+    addWidget(m_userQueryUI, 100);
+    m_userQueryUI.setWorldUSParent(m_worldUSUIParent);
     m_userQueryUI.setOnLoadHandler(flights -> {
       m_flightMap3D.loadFlights(flights, m_queryManager);
     }
     );
     m_userQueryUI.insertBaseData(m_flights);
+    m_userQueryUI.setLoadOtherScreenText("Load into Charts");
+    m_userQueryUI.setOnLoadOtherScreenHandler(m_loadIntoChartsConsumer);
 
-    m_flightMapUIParent = new EmptyWidgetUI(0, 0);
     int currentUIPosY = 60;
     int textSize = 20;
 
@@ -69,12 +70,31 @@ class Screen3DFM extends Screen {
 
     currentUIPosY += 60;
 
+    ButtonUI switchToCharts = createButton(20, currentUIPosY, 160, 50);
+    switchToCharts.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_CHARTS_ID));
+    returnBttn.setGrowScale(1.05);
+    switchToCharts.setText("Charts");
+    switchToCharts.setTextSize(textSize);
+    switchToCharts.getLabel().setCentreAligned(true);
+
+    currentUIPosY += 60;
+
     ButtonUI switchUIBttn = createButton(20, currentUIPosY, 160, 50);
     switchUIBttn.getOnClickEvent().addHandler(e -> switchUI());
     switchUIBttn.setGrowScale(1.05);
-    switchUIBttn.setText("Switch to Query");
+    switchUIBttn.setText("Switch");
     switchUIBttn.setTextSize(textSize);
     switchUIBttn.getLabel().setCentreAligned(true);
+
+    currentUIPosY += 60;
+
+    ButtonUI resetArcGrow = createButton(20, currentUIPosY, 160, 50);
+    resetArcGrow.getOnClickEvent().addHandler(e -> m_flightMap3D.setArcGrowMillis(10_000, 0));
+    resetArcGrow.setGrowScale(1.05);
+    resetArcGrow.setText("Reset Arcs");
+    resetArcGrow.setTextSize(textSize);
+    resetArcGrow.getLabel().setCentreAligned(true);
+    resetArcGrow.setParent(m_flightMapUIParent);
 
     currentUIPosY += 60;
 
@@ -142,13 +162,29 @@ class Screen3DFM extends Screen {
 
     currentUIPosY += 60;
 
-    ButtonUI resetArcGrow = createButton(20, currentUIPosY, 160, 50);
-    resetArcGrow.getOnClickEvent().addHandler(e -> m_flightMap3D.setArcGrowMillis(10_000, 0));
-    resetArcGrow.setGrowScale(1.05);
-    resetArcGrow.setText("Reset Arcs");
-    resetArcGrow.setTextSize(textSize);
-    resetArcGrow.getLabel().setCentreAligned(true);
-    resetArcGrow.setParent(m_flightMapUIParent);
+    CheckboxUI ditheringCB = createCheckbox(20, currentUIPosY, 50, 50, "Dithering");
+    ditheringCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setDitheringEnabled(ditheringCB.getChecked()));
+    ditheringCB.setGrowScale(1.05);
+    ditheringCB.setChecked(false);
+    ditheringCB.getLabel().setTextXOffset(0);
+    ditheringCB.setTextSize(textSize);
+    ditheringCB.getLabel().setCentreAligned(true);
+    ditheringCB.getLabel().setScale(130, 50);
+    ditheringCB.getLabel().setParent(m_flightMapUIParent);
+    ditheringCB.setParent(m_flightMapUIParent);
+
+    currentUIPosY += 60;
+
+    CheckboxUI crtCB = createCheckbox(20, currentUIPosY, 50, 50, "CRT");
+    crtCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setCRTEnabled(crtCB.getChecked()));
+    crtCB.setGrowScale(1.05);
+    crtCB.setChecked(false);
+    crtCB.getLabel().setTextXOffset(0);
+    crtCB.setTextSize(textSize);
+    crtCB.getLabel().setCentreAligned(true);
+    crtCB.getLabel().setScale(130, 50);
+    crtCB.getLabel().setParent(m_flightMapUIParent);
+    crtCB.setParent(m_flightMapUIParent);
 
     currentUIPosY += 60;
 
@@ -178,22 +214,30 @@ class Screen3DFM extends Screen {
   public void insertFlightData(FlightMultiDataType flights) {
     m_flights  = flights;
   }
-  
+
+  public void loadFlights(FlightType[] flights) {
+    m_flightMap3D.loadFlights(flights, m_queryManager);
+  }
+
   @Override
-  public void draw(){
+    public void draw() {
     super.draw();
-    
+
     float frac = (millis() - m_switchUIStartTimeMillis) / SWITCH_SCREEN_DUR_3D;
     frac = clamp(frac, 0, 1);
     frac *= frac;
-        
-    PVector flightMapTargetPos = m_isQueryDisplayed ? m_offScreenUIPos : new PVector(0, 0);
+
+    PVector flightMapTargetPos = m_isQueryDisplayed ? new PVector(-2000, 0) : new PVector(0, 0);
     PVector newFlightMapPos = PVector.lerp(m_flightMapUIParent.getPos(), flightMapTargetPos, frac);
     m_flightMapUIParent.setPos(newFlightMapPos);
-    
-    PVector userQueryTargetPos = m_isQueryDisplayed ? new PVector(0, 0) : m_offScreenUIPos;
+
+    PVector userQueryTargetPos = m_isQueryDisplayed ? new PVector(0, UQUI_3D_POS_Y) : new PVector(-2000, UQUI_3D_POS_Y);
     PVector newUserQueryPos = PVector.lerp(m_userQueryUI.getPos(), userQueryTargetPos, frac);
     m_userQueryUI.setPos(newUserQueryPos);
+
+    PVector worldUSTargetPos = m_isQueryDisplayed ? new PVector(0, 0) : new PVector(0, -300);
+    PVector newWorldUSPos = PVector.lerp(m_worldUSUIParent.getPos(), worldUSTargetPos, frac);
+    m_worldUSUIParent.setPos(newWorldUSPos);
   }
 
   /**

@@ -126,30 +126,17 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
         float middleAngle = lastAngle + (arcSize * 0.5f);
         float textPosX = m_pos.x + (cos(middleAngle) * diameterOfArc * 1.3f);
         float textPosY = m_pos.y + (sin(middleAngle) * diameterOfArc * 1.3f);
+        float textScale = (m_arcSizes.get(i) - 1) / 0.1f;
+        
         fill(255);
         textAlign(CENTER);
+        textSize(max(textScale * 30, 1));
         text(translateXValues(entry.getKey().toString()), textPosX, textPosY);
       }
 
       lastAngle += arcSize;
       i++;
     }
-  }
-
-  /**
-   * F. Wright
-   *
-   * Generates a random color based on a given seed.
-   *
-   * @param seed The seed value for generating the color.
-   * @return The generated color.
-   */
-  private color randomColor(int seed) {
-    randomSeed(seed * 4639);
-    colorMode(HSB, 360, 100, 100);
-    color result = color(random(360), random(100), random(100));
-    colorMode(RGB, 255, 255, 255);
-    return result;
   }
 
   /**
@@ -178,9 +165,10 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
       return val;
 
     switch (m_translationField) {
-    case CANCELLED_OR_DIVERTED:
-      return val.equals("0") ? "None" :
-        val.equals("1") ? "Cancelled" : "Diverted";
+    case CANCELLED:
+      return val.equals("0") ? "None" : "Cancelled";
+    case DIVERTED:
+      return val.equals("0") ? "None" : "Diverted";
     case CARRIER_CODE_INDEX:
       return m_queryManager.getAirlineName(Integer.parseInt(val));
     case AIRPORT_ORIGIN_INDEX:

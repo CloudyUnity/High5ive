@@ -9,17 +9,19 @@ class ScreenCharts extends Screen {
   ScatterChartUI m_scatterPlot;
 
   DropdownUI m_freqDD, m_scatterDDX, m_scatterDDY;
+  LabelUI m_scatterLabelX, m_scatterLabelY;
+  LabelUI m_histEmptyLabel, m_pieEmptyLabel, m_scatterEmptyLabel;
 
   QueryManagerClass m_queryRef;
   UserQueryUI m_userQuery;
   FlightType[] m_cachedFlights = null;
 
-  QueryType m_histQuery = null;
-  QueryType m_scatterQueryX = null;
-  QueryType m_scatterQueryY = null;
+  QueryType m_freqQueryType = null;
+  QueryType m_scatterQueryTypeX = null;
+  QueryType m_scatterQueryTypeY = null;
 
   Widget m_selectedGraph;
-  
+
   private boolean m_initialised = false;
 
   /**
@@ -30,19 +32,22 @@ class ScreenCharts extends Screen {
    * @param screenId The ID of the screen.
    * @param query    The query manager.
    */
-  public ScreenCharts(String screenId, QueryManagerClass query) {
+  public ScreenCharts(String screenId, QueryManagerClass query, Consumer<FlightType[]> loadInto3D) {
     super(screenId, DEFAULT_SCREEN_COLOUR);
 
     m_queryRef = query;
 
     m_userQuery = new UserQueryUI(0, 0, 1, 1, m_queryRef, this);
-    addWidget(m_userQuery);
+    addWidget(m_userQuery, 100);
+    m_userQuery.setRenderWorldUSButtons(false);
     m_userQuery.setOnLoadHandler(flights -> {
       loadData(flights);
       if (m_initialised)
-        reloadData();
+      reloadData();
     }
     );
+    m_userQuery.setOnLoadOtherScreenHandler(loadInto3D);
+    m_userQuery.setLoadOtherScreenText("Load into 3D");
   }
 
   /**
@@ -54,30 +59,62 @@ class ScreenCharts extends Screen {
     public void init() {
     super.init();
 
-    m_histogram = new HistogramChartUI<FlightType, Integer>(500, 100, 850, 850);
+    ButtonUI returnBttn = createButton(20, 50, 150, 40);
+    returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
+    returnBttn.setText("Return");
+    returnBttn.setTextSize(20);
+    returnBttn.setGrowScale(1.05f);
+
+    ButtonUI switchTo3D = createButton(20, 100, 150, 40);
+    switchTo3D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_FLIGHT_MAP_ID));
+    switchTo3D.setText("3D");
+    switchTo3D.setTextSize(20);
+    switchTo3D.setGrowScale(1.05f);
+
+    int chartScale = 850;
+    int halfChartScale = (int)(chartScale * 0.5f);
+
+    m_histogram = new HistogramChartUI<FlightType, Integer>(width/2 - halfChartScale, height/2 - halfChartScale, chartScale, chartScale);
     addWidget(m_histogram);
     m_selectedGraph = m_histogram;
 
-    m_pieChart = new PieChartUI<FlightType, Integer>(width/2, height/2, 250);
+    m_pieChart = new PieChartUI<FlightType, Integer>(width/2, height/2, 300);
     addWidget(m_pieChart);
-    m_pieChart.setRendering(false);
+    m_pieChart.setActive(false);
 
-    m_scatterPlot = new ScatterChartUI<FlightType>(500, 100, 850, 850);
+    m_scatterPlot = new ScatterChartUI<FlightType>(width/2 - halfChartScale, height/2 - halfChartScale, chartScale, chartScale);
     addWidget(m_scatterPlot);
-    m_scatterPlot.setRendering(false);
+    m_scatterPlot.setActive(false);
 
-    m_freqDD = new DropdownUI<QueryType>(20, 200, 300, 200, 50, v -> v.toString());
+    m_histEmptyLabel = createLabel(width/2 - 200, height/2 - 100, 400, 200, "Histogram Empty");
+    m_histEmptyLabel.setActive(true);
+    m_histEmptyLabel.setTextSize(40);
+    m_histEmptyLabel.setCentreAligned(true);
+
+    m_pieEmptyLabel = createLabel(width/2 - 200, height/2 - 100, 400, 200, "Pie Chart Empty");
+    m_pieEmptyLabel.setActive(false);
+    m_pieEmptyLabel.setTextSize(40);
+    m_pieEmptyLabel.setCentreAligned(true);
+
+    m_scatterEmptyLabel = createLabel(width/2 - 200, height/2 - 100, 400, 200, "Scatter Plot Empty");
+    m_scatterEmptyLabel.setActive(false);
+    m_scatterEmptyLabel.setTextSize(40);
+    m_scatterEmptyLabel.setCentreAligned(true);
+
+    m_freqDD = new DropdownUI<QueryType>(width-400, 200, 300, 300, 50, v -> v.toString());
     addWidget(m_freqDD);
     m_freqDD.getOnSelectionChanged().addHandler(e -> {
 
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
-      m_histQuery = (QueryType)elistbox.Data;
+      m_freqQueryType = (QueryType)elistbox.Data;
 
-      if (m_histQuery == null || m_cachedFlights == null) {
+      if (m_freqQueryType == null || m_cachedFlights == null) {
         println("Flight data not ready for charts yet, or invalid query");
         return;
       }
 
+      m_histEmptyLabel.setActive(false);
+      m_pieEmptyLabel.setActive(false);
       reloadFreq();
     }
     );
@@ -86,34 +123,43 @@ class ScreenCharts extends Screen {
     m_freqDD.add(QueryType.CARRIER_CODE_INDEX);
     m_freqDD.add(QueryType.AIRPORT_ORIGIN_INDEX);
     m_freqDD.add(QueryType.AIRPORT_DEST_INDEX);
-    m_freqDD.add(QueryType.CANCELLED_OR_DIVERTED);
+    m_freqDD.add(QueryType.CANCELLED);
+    m_freqDD.add(QueryType.DIVERTED);
 
-    m_scatterDDX = new DropdownUI<QueryType>(20, 200, 300, 200, 50, v -> v.toString());
+    m_scatterDDX = new DropdownUI<QueryType>(width-400, 200, 300, 300, 50, v -> v.toString());
     addWidget(m_scatterDDX);
-    m_scatterDDX.setRendering(false);
+    m_scatterDDX.setActive(false);
     m_scatterDDX.getOnSelectionChanged().addHandler(e -> {
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
-      m_scatterQueryX = (QueryType)elistbox.Data;
+      m_scatterQueryTypeX = (QueryType)elistbox.Data;
 
-      if (m_scatterQueryX == null || m_scatterQueryY == null)
+      if (m_scatterQueryTypeX == null || m_cachedFlights == null) {
+        println("Flight data not ready for charts yet, or invalid query");
+        return;
+      }
+
+      if (m_scatterQueryTypeY == null)
       return;
 
       reloadScatter();
     }
     );
 
-    m_scatterDDY = new DropdownUI<QueryType>(320, 200, 300, 200, 50, v -> v.toString());
+    m_scatterDDY = new DropdownUI<QueryType>(width-400, 600, 300, 300, 50, v -> v.toString());
     addWidget(m_scatterDDY);
-    m_scatterDDY.setRendering(false);
+    m_scatterDDY.setActive(false);
     m_scatterDDY.getOnSelectionChanged().addHandler(e -> {
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
-      m_scatterQueryY = (QueryType)elistbox.Data;
+      m_scatterQueryTypeY = (QueryType)elistbox.Data;
 
-      if (m_scatterQueryX == null || m_scatterQueryY == null || m_cachedFlights == null) {
+      if (m_scatterQueryTypeY == null || m_cachedFlights == null) {
         println("Flight data not ready for charts yet, or invalid query");
         return;
       }
 
+      if (m_scatterQueryTypeX == null)
+      return;
+      
       reloadScatter();
     }
     );
@@ -136,27 +182,34 @@ class ScreenCharts extends Screen {
     m_scatterDDY.add(QueryType.SCHEDULED_ARRIVAL_TIME);
     m_scatterDDY.add(QueryType.ARRIVAL_DELAY);
 
+    m_scatterLabelX = createLabel(width-400, 100, 300, 100, "X-axis");
+    m_scatterLabelX.setTextSize(20);
+    m_scatterLabelX.setActive(false);
+    m_scatterLabelY = createLabel(width-400, 500, 300, 100, "Y-axis");
+    m_scatterLabelY.setTextSize(20);
+    m_scatterLabelY.setActive(false);
+
     RadioButtonGroupTypeUI group = new RadioButtonGroupTypeUI();
     addWidgetGroup(group);
 
-    RadioButtonUI histRadio = new RadioButtonUI(width/3, 20, 50, 50, "Histogram");
+    int iconScale = 70;
+    int halfIconScale = (int)(iconScale * 0.5f);
+    RadioButtonUI histRadio = new RadioImageButtonUI(width/3 - halfIconScale, 20, iconScale, iconScale, "Histogram", "data/Images/HistIcon.png", "data/Images/HistIconOff.png");
     histRadio.getOnCheckedEvent().addHandler(e -> selectHistogram());
+    histRadio.setGrowScale(1.1f);
     group.addMember(histRadio);
+    histRadio.setChecked(true);
 
-    RadioButtonUI pieRadio = new RadioButtonUI(width/2, 20, 50, 50, "Pie");
+    RadioButtonUI pieRadio = new RadioImageButtonUI(width/2 - halfIconScale, 20, iconScale, iconScale, "Pie", "data/Images/PieIcon.png", "data/Images/PieIconOff.png");
     pieRadio.getOnCheckedEvent().addHandler(e -> selectPieChart());
+    pieRadio.setGrowScale(1.1f);
     group.addMember(pieRadio);
 
-    RadioButtonUI scatterRadio = new RadioButtonUI(width/3 * 2, 20, 50, 50, "Scatter Plot");
+    RadioButtonUI scatterRadio = new RadioImageButtonUI(width/3 * 2 - halfIconScale, 20, iconScale, iconScale, "Scatter Plot", "data/Images/ScatterIconChunky.png", "data/Images/ScatterIconChunkyOff.png");
     scatterRadio.getOnCheckedEvent().addHandler(e -> selectScatterPlot());
+    scatterRadio.setGrowScale(1.1f);
     group.addMember(scatterRadio);
 
-    ButtonUI returnBttn = createButton(20, 20, 100, 100);
-    returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
-    returnBttn.setText("Return");
-    returnBttn.setTextSize(25);
-    returnBttn.setGrowScale(1.05);
-    
     m_initialised = true;
   }
 
@@ -204,25 +257,25 @@ class ScreenCharts extends Screen {
    * Reloads the frequency data (histogram and pie chart) using the cached flights.
    */
   public void reloadFreq() {
-    if (m_cachedFlights == null || m_histQuery == null)
+    if (m_cachedFlights == null || m_freqQueryType == null)
       return;
-      
+
     s_DebugProfiler.startProfileTimer();
 
     m_histogram.removeData();
     m_histogram.addData(m_cachedFlights, f -> {
-      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_histQuery);
+      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_freqQueryType);
     }
     );
-    m_histogram.setXAxisLabel(m_histQuery.toString());
-    m_histogram.setTranslationField(m_histQuery, m_queryRef);
+    m_histogram.setXAxisLabel(m_freqQueryType.toString());
+    m_histogram.setTranslationField(m_freqQueryType, m_queryRef);
 
     m_pieChart.removeData();
     m_pieChart.addData(m_cachedFlights, f -> {
-      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_histQuery);
+      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_freqQueryType);
     }
     );
-    m_pieChart.setTranslationField(m_histQuery, m_queryRef);
+    m_pieChart.setTranslationField(m_freqQueryType, m_queryRef);
 
     s_DebugProfiler.printTimeTakenMillis("Reloading data for frequency charts");
   }
@@ -233,24 +286,32 @@ class ScreenCharts extends Screen {
    * Reloads the scatter plot data using the cached flights.
    */
   public void reloadScatter() {
-    if (m_cachedFlights == null || m_scatterQueryX == null || m_scatterQueryY == null)
+    if (m_cachedFlights == null || m_scatterQueryTypeX == null || m_scatterQueryTypeY == null)
       return;
+      
+    m_scatterEmptyLabel.setText("Loading...");
+      
+    new Thread(() -> {
+      s_DebugProfiler.startProfileTimer();
+      reloadScatterAsync();
+      s_DebugProfiler.printTimeTakenMillis("Reloading data for scatter chart");
+      
+      m_scatterEmptyLabel.setActive(false);
+    }).start();             
+  }
 
-    s_DebugProfiler.startProfileTimer();
-
+  public void reloadScatterAsync() {
     m_scatterPlot.removeData();
     m_scatterPlot.addData(m_cachedFlights,
       fX -> {
-      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)fX, m_scatterQueryX, true);
+      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)fX, m_scatterQueryTypeX, true);
     }
     ,
       fY -> {
-      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)fY, m_scatterQueryY, true);
+      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)fY, m_scatterQueryTypeY, true);
     }
     );
-    m_scatterPlot.setAxisLabels(m_scatterQueryX.toString(), m_scatterQueryY.toString());
-
-    s_DebugProfiler.printTimeTakenMillis("Reloading data for scatter chart");
+    m_scatterPlot.setAxisLabels(m_scatterQueryTypeX.toString(), m_scatterQueryTypeY.toString());
   }
 
   /**
@@ -259,13 +320,19 @@ class ScreenCharts extends Screen {
    * Selects the histogram as the currently displayed graph.
    */
   public void selectHistogram() {
-    m_selectedGraph.setRendering(false);
+    m_selectedGraph.setActive(false);
     m_selectedGraph = m_histogram;
-    m_selectedGraph.setRendering(true);
+    m_selectedGraph.setActive(true);
 
-    m_freqDD.setRendering(true);
-    m_scatterDDX.setRendering(false);
-    m_scatterDDY.setRendering(false);
+    m_freqDD.setActive(true);
+    m_scatterDDX.setActive(false);
+    m_scatterDDY.setActive(false);
+    m_scatterLabelX.setActive(false);
+    m_scatterLabelY.setActive(false);
+    if (m_freqQueryType == null)
+      m_histEmptyLabel.setActive(true);
+    m_pieEmptyLabel.setActive(false);
+    m_scatterEmptyLabel.setActive(false);
   }
 
   /**
@@ -274,13 +341,19 @@ class ScreenCharts extends Screen {
    * Selects the pie chart as the currently displayed graph.
    */
   public void selectPieChart() {
-    m_selectedGraph.setRendering(false);
+    m_selectedGraph.setActive(false);
     m_selectedGraph = m_pieChart;
-    m_selectedGraph.setRendering(true);
+    m_selectedGraph.setActive(true);
 
-    m_freqDD.setRendering(true);
-    m_scatterDDX.setRendering(false);
-    m_scatterDDY.setRendering(false);
+    m_freqDD.setActive(true);
+    m_scatterDDX.setActive(false);
+    m_scatterDDY.setActive(false);
+    m_scatterLabelX.setActive(false);
+    m_scatterLabelY.setActive(false);
+    if (m_freqQueryType == null)
+      m_pieEmptyLabel.setActive(true);
+    m_histEmptyLabel.setActive(false);
+    m_scatterEmptyLabel.setActive(false);
   }
 
   /**
@@ -289,13 +362,19 @@ class ScreenCharts extends Screen {
    * Selects the scatter plot as the currently displayed graph.
    */
   public void selectScatterPlot() {
-    m_selectedGraph.setRendering(false);
+    m_selectedGraph.setActive(false);
     m_selectedGraph = m_scatterPlot;
-    m_selectedGraph.setRendering(true);
+    m_selectedGraph.setActive(true);
 
-    m_freqDD.setRendering(false);
-    m_scatterDDX.setRendering(true);
-    m_scatterDDY.setRendering(true);
+    m_freqDD.setActive(false);
+    m_scatterDDX.setActive(true);
+    m_scatterDDY.setActive(true);
+    m_scatterLabelX.setActive(true);
+    m_scatterLabelY.setActive(true);
+    if (m_scatterQueryTypeX == null || m_scatterQueryTypeY == null)
+      m_scatterEmptyLabel.setActive(true);
+    m_histEmptyLabel.setActive(false);
+    m_pieEmptyLabel.setActive(false);
   }
 }
 

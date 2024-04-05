@@ -1,7 +1,7 @@
 // Data type for flight information
 class FlightType { // 23 bytes total
-  public byte Month;                      // supports all querys
-  public byte Day;                    // supports all queries
+  public byte Month;                    // supports all querys
+  public byte Day;                      // supports all queries
   public short CarrierCodeIndex;        // only supports EQUAL or NOT_EQUAL
   public short FlightNumber;            // only supports EQUAL or NOT_EQUAL
   public short TailNumber;              // only supports EQUAL or NOT_EQUAL
@@ -26,24 +26,24 @@ class FlightType { // 23 bytes total
     short arrivalTime, short arrivalDelay, byte cancelled, byte diverted,
     short scheduledDuration, short duration, short kmDistance) {
 
-    this.Month = month;
-    this.Day = day;
-    this.CarrierCodeIndex = carrierCodeIndex;
-    this.FlightNumber = flightNumber;
-    this.TailNumber = tailNumber;
-    this.AirportOriginIndex = airportOriginIndex;
-    this.AirportDestIndex = airportDestIndex;
-    this.ScheduledDepartureTime = scheduledDepartureTime;
-    this.DepartureTime = departureTime;
-    this.DepartureDelay = departureDelay;
-    this.ScheduledArrivalTime = scheduledArrivalTime;
-    this.ArrivalTime = arrivalTime;
-    this.ArrivalDelay = arrivalDelay;
-    this.Cancelled = cancelled;
-    this.Diverted = diverted;
-    this.ScheduledDuration = scheduledDuration;
-    this.ActualDuration = duration;
-    this.KmDistance = kmDistance;
+    Month = month;
+    Day = day;
+    CarrierCodeIndex = carrierCodeIndex;
+    FlightNumber = flightNumber;
+    TailNumber = tailNumber;
+    AirportOriginIndex = airportOriginIndex;
+    AirportDestIndex = airportDestIndex;
+    ScheduledDepartureTime = scheduledDepartureTime;
+    DepartureTime = departureTime;
+    DepartureDelay = departureDelay;
+    ScheduledArrivalTime = scheduledArrivalTime;
+    ArrivalTime = arrivalTime;
+    ArrivalDelay = arrivalDelay;
+    Cancelled = cancelled;
+    Diverted = diverted;
+    ScheduledDuration = scheduledDuration;
+    ActualDuration = duration;
+    KmDistance = kmDistance;
   }
 
   FlightType(short carrierCodeIndex, short airportOriginIndex, short airportDestIndex) {
@@ -62,13 +62,13 @@ class FlightMultiDataType {
   public FlightType[] WORLD;
 
   FlightMultiDataType(FlightType[] us, FlightType[] world) {
-    this.US = us;
-    this.WORLD = world;
+    US = us;
+    WORLD = world;
   }
 }
 
 // Data type for making a query on a FlightType[]
-class FlightQueryType {   
+class FlightQueryType {
   public int QueryValue;
   public QueryType Type;
   public QueryOperatorType Operator;
@@ -97,8 +97,8 @@ class FlightRangeQueryType {
   public QueryLocationType Location;
 
   FlightRangeQueryType(QueryType type, QueryLocationType location) {
-    this.Type = type;
-    this.Location = location;
+    Type = type;
+    Location = location;
   }
 }
 
@@ -115,9 +115,11 @@ class FlightSortQueryType {
 
 // Enum for the fields in FlightType
 public enum QueryType {
-  DAY,
+  MONTH,
+    DAY,
     CARRIER_CODE_INDEX,
     FLIGHT_NUMBER,
+    TAIL_NUMBER,
     AIRPORT_ORIGIN_INDEX,
     AIRPORT_DEST_INDEX,
     SCHEDULED_DEPARTURE_TIME,
@@ -126,7 +128,10 @@ public enum QueryType {
     SCHEDULED_ARRIVAL_TIME,
     ARRIVAL_TIME,
     ARRIVAL_DELAY,
-    CANCELLED_OR_DIVERTED,
+    CANCELLED,
+    DIVERTED,
+    SCHEDULED_DURATION,
+    ACTUAL_DURATION,
     KILOMETRES_DISTANCE,
 }
 
@@ -190,3 +195,5 @@ class AirportPoint3DType {
 // T. Creagh, added in FlightRangeQuery, 9pm 12/03/24
 // T. Creagh, added in FlightSortQuery, 10pm 12/03/24
 // F. Wright, Refactoring, 7pm 25/03/24
+// CKM, Added additional queries 16:00 04/04
+// CKM, Basework for 2nd level querying 22:00 05/04
