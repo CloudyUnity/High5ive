@@ -19,7 +19,7 @@ class ImageUI extends Widget {
  * @param posX   The x-coordinate of the image's position.
  * @param posY   The y-coordinate of the image's position.
  */
-  ImageUI(int scaleY, int scaleX, int posX, int posY) {
+  ImageUI(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
     m_imageWidth = scaleX;
     m_imageLength = scaleY;
@@ -37,8 +37,8 @@ class ImageUI extends Widget {
  * @param posY       The y-coordinate of the image's position.
  */
 
-  ImageUI(PImage inputImage, int scaleY, int scaleX, int posX, int posY) {
-    this(scaleY, scaleX, posX, posY);
+  ImageUI(PImage inputImage, int posX, int posY, int scaleX, int scaleY) {
+    this(posX, posY, scaleX, scaleY);
     m_displayedImage = inputImage;
   }
 /**
@@ -60,6 +60,21 @@ class ImageUI extends Widget {
  */
   public void setImage(PImage inputImage) {
     m_displayedImage = inputImage;
+  }
+// toms functions
+  public void setPos(posX, posY) {
+    m_posX = posX;
+    m_posY = posY;
+  }
+  public void setScale(scaleX, scaleY) {
+    m_scaleX = scaleX;
+    m_scaleY = scaleY;
+  }
+  public int[] getPos() {
+    return {m_posX, m_posY}
+  }
+  public int[] getScale() {
+    return {m_scaleX, m_scaleY}
   }
 }
 

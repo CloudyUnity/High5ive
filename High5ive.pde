@@ -9,7 +9,7 @@ import java.nio.channels.FileChannel;
 
 ApplicationClass s_ApplicationClass = new ApplicationClass();
 DebugProfilerClass s_DebugProfiler = new DebugProfilerClass();
-PApplet s_theApp = this;
+// PApplet s_theApp = this;
 PGraphics s_3D;
 int s_deltaTime;
 
@@ -57,9 +57,9 @@ void keyPressed() {
   s_ApplicationClass.onKeyPressed(key, keyCode);
 }
 
-void movieEvent(Movie movie) {
-  movie.read();
-}
+// void movieEvent(Movie movie) {
+//   movie.read();
+// }
 
 /**
  * F. Wright

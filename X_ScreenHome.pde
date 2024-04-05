@@ -1,11 +1,14 @@
-import processing.video.*;
-Movie earth;
+// import processing.video.*;
+// Movie earth;
 /**
  * F. Wright
  *
  * Screen representing the home screen of the application.
  */
+
 class ScreenHome extends Screen {
+
+  PImage earthImage;
 
   /**
    * F. Wright
@@ -28,11 +31,16 @@ class ScreenHome extends Screen {
   @Override
     public void init() {
     super.init();
+    earthImage = loadImage("data/Images/earthTitleScreen.png");
+
+    float imgScale = 0.5;
+    ImageUI earth = new ImageUI(earthImage, 100, (int)(height - (earthImage.height*imgScale))-100, (int)(earthImage.width*imgScale), (int)(earthImage.height*imgScale));
+    addWidget(earth);
 
     float growScale = 1.05f;
 
-    earth = new Movie(s_theApp, "data/Videos/earth.mp4");
-    earth.loop();
+    // earth = new Movie(s_theApp, "data/Videos/earth.mp4");
+    // earth.loop();
 
     ButtonUI switchTo2D = createButton((int)width/2, 100, (int)width/2 - 100, 200);
     switchTo2D.setBackgroundColour(COLOR_BLACK);
@@ -68,11 +76,11 @@ class ScreenHome extends Screen {
 
     switchToCharts.setGrowScale(growScale);
   }
-  @Override
-  public void draw() {
-    super.draw();
-    image(earth, 0, 0);
-  }
+  // @Override
+  // public void draw() {
+  //   super.draw();
+  //   image(earthImage, 0, 0);
+  // }
 }
 
 // Descending code authorship changes:
