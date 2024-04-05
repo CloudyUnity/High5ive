@@ -56,35 +56,37 @@ class UserQueryUI extends Widget {
 
     // LISTBOXES
 
-    int buttonScale = 150;
+    int buttonScale = 150;    
 
     m_queryLB = new ListboxUI<String>(20, 250, buttonScale, 390, 40, v -> v);
     addWidget(m_queryLB);
 
     // BUTTONS
+    
+    int textSize = 15;
 
     ButtonUI addItemButton = new ButtonUI(20, 150, buttonScale, 40);
     addWidget(addItemButton);
     addItemButton.setText("Add Query");
-    addItemButton.setTextSize(20);
+    addItemButton.setTextSize(textSize);
     addItemButton.getOnClickEvent().addHandler(e -> saveAllQueries());
 
     ButtonUI clearListButton = new ButtonUI(20, 200, buttonScale, 40);
     addWidget(clearListButton);
     clearListButton.setText("Clear All");
-    clearListButton.setTextSize(20);
+    clearListButton.setTextSize(textSize);
     clearListButton.getOnClickEvent().addHandler(e -> clearQueries());
 
     ButtonUI loadDataButton = new ButtonUI(20, 650, buttonScale, 40);
     addWidget(loadDataButton);
     loadDataButton.setText("Load Data");
-    loadDataButton.setTextSize(20);
+    loadDataButton.setTextSize(textSize);
     loadDataButton.getOnClickEvent().addHandler(e -> loadData());
 
     m_loadDataOtherScreenButton = new ButtonUI(20, 700, buttonScale, 40);
     addWidget(m_loadDataOtherScreenButton);
     m_loadDataOtherScreenButton.setText("Load into Charts");
-    m_loadDataOtherScreenButton.setTextSize(20);
+    m_loadDataOtherScreenButton.setTextSize(textSize);
     m_loadDataOtherScreenButton.getOnClickEvent().addHandler(e -> loadDataOtherScreen());
 
     // WORLD - US RADIO BUTTONS
