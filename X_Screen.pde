@@ -92,14 +92,17 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
       return;
       
     widget.setLayer(layer);
+    println("Start " + layer);
     for (int i = 0; i < m_children.size(); i++){
-      if (m_children.get(i).getLayer() < layer){
+      println(i + " - " + m_children.get(i).getLayer());
+      if (m_children.get(i).getLayer() > layer){
         m_children.add(i, widget);
+        println("*" + i + "* " + m_children.get(i).getLayer() + " " + layer + " " + m_children.get(i));
         return;
       }
     }
     
-    m_children.add(widget);
+    m_children.add(widget);    
   }
 
   /**

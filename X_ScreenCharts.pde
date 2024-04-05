@@ -37,7 +37,7 @@ class ScreenCharts extends Screen {
     m_queryRef = query;
 
     m_userQuery = new UserQueryUI(0, 0, 1, 1, m_queryRef, this);
-    addWidget(m_userQuery);
+    addWidget(m_userQuery, 100);
     m_userQuery.setRenderWorldUSButtons(false);
     m_userQuery.setOnLoadHandler(flights -> {
       loadData(flights);
