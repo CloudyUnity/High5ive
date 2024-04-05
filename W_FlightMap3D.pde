@@ -36,7 +36,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   private boolean m_drawnLoadingScreen = false;
   private boolean m_flightDataLoaded = false;
   private boolean m_working = false;
-  private boolean m_profiledFirstRender = false;
+  private boolean m_ranFirstRender = false;
 
   private float m_rotationYModified = 0;
   private float m_totalTimeElapsed = 0;
@@ -309,7 +309,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_arcFraction = (millis() - m_arcStartGrowMillis) / m_arcGrowMillis;
     m_arcFraction = clamp(m_arcFraction, 0.0f, 1.0f);
 
-    if (!m_assetsLoaded || !m_drawnLoadingScreen || !m_flightDataLoaded) {
+    boolean firstTransitionInto = s_ApplicationClass.getTransitionState() && !m_ranFirstRender;
+    if (!m_assetsLoaded || !m_drawnLoadingScreen || !m_flightDataLoaded || firstTransitionInto) {
       drawLoadingScreen();
       m_drawnLoadingScreen = true;
       return;
@@ -320,9 +321,9 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
 
     PVector lightDir = new PVector(cos(m_totalTimeElapsed), 0, sin(m_totalTimeElapsed));
     m_shaderEarth.set("lightDir", lightDir);
-    m_rotationYModified = m_earthRotation.y + m_totalTimeElapsed;
-    m_earthPos.z = EARTH_Z_3D + m_zoomLevel;
     m_shaderSun.set("texTranslation", 0, m_totalTimeElapsed * 0.5f);
+    m_rotationYModified = m_earthRotation.y + m_totalTimeElapsed;
+    m_earthPos.z = EARTH_Z_3D + m_zoomLevel;    
 
     s_3D.beginDraw();
 
@@ -390,15 +391,15 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     s_3D.rotateX(m_earthRotation.x);
     s_3D.rotateY(m_rotationYModified);
 
-    if (!m_profiledFirstRender)
+    if (!m_ranFirstRender)
       s_DebugProfiler.startProfileTimer();
 
     s_3D.shape(m_modelEarth);
 
-    if (!m_profiledFirstRender)
+    if (!m_ranFirstRender)
       s_DebugProfiler.printTimeTakenMillis("First earth render");
 
-    m_profiledFirstRender = true;
+    m_ranFirstRender = true;
     s_3D.resetShader();
     s_3D.popMatrix();
   }
