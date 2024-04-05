@@ -810,3 +810,5 @@ class QueryManagerClass {
 // CKM, added new index based lookups, 20:00 26/03
 // CKM, added new queries 17:00 04/04
 // CKM, improved query verification 17:00 04/04
+// CKM, added 2D querying basework 22:00 05/05
+// CKM, despaired at length of file, 23:00 05/05
