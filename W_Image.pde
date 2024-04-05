@@ -7,16 +7,20 @@
 class ImageUI extends Widget {
   private PImage m_displayedImage = null;
 
-  /**
-   * M.Poole:
-   * Constructs an ImageUI object with the specified dimensions and position.
-   *
-   * @param scaleX The width of the image.
-   * @param scaleY The height of the image.
-   * @param posX   The x-coordinate of the image's position.
-   * @param posY   The y-coordinate of the image's position.
-   */
-  ImageUI(int posX, int posY, int scaleY, int scaleX) {
+  private int m_posX;
+  private int m_posY;
+  private int m_imageLength;
+  private int m_imageWidth;
+/**
+ * M.Poole:
+ * Constructs an ImageUI object with the specified dimensions and position.
+ *
+ * @param scaleX The width of the image.
+ * @param scaleY The height of the image.
+ * @param posX   The x-coordinate of the image's position.
+ * @param posY   The y-coordinate of the image's position.
+ */
+  ImageUI(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
   }
   
@@ -31,8 +35,10 @@ class ImageUI extends Widget {
    * @param posY       The y-coordinate of the image's position.
    */
 
-  ImageUI(PImage inputImage, int posX, int posY, int scaleY, int scaleX) {
-    this( posX, posY, scaleX, scaleY);
+#
+  ImageUI(PImage inputImage, int posX, int posY, int scaleX, int scaleY) {
+    this(posX, posY, scaleX, scaleY);
+
     m_displayedImage = inputImage;
   }
   

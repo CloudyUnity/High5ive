@@ -1,9 +1,18 @@
+// import processing.video.*;
+// Movie earth;
 /**
  * F. Wright
  *
  * Screen representing the home screen of the application.
  */
+
 class ScreenHome extends Screen {
+
+  PImage earthImage;
+  ImageUI earth;
+  PVector lastMousePos;
+  PVector mousePos;
+  PVector earthPos;
 
   /**
    * F. Wright
@@ -22,34 +31,88 @@ class ScreenHome extends Screen {
    *
    * Initializes the screen by adding UI elements and setting their properties.
    */
+
   @Override
     public void init() {
     super.init();
+    earthImage = loadImage("data/Images/earthTitleScreen.png");
+
+    float imgScale = 0.5;
+    earthPos = new PVector(100, (int)(height - (earthImage.height*imgScale))-100);
+    earth = new ImageUI(earthImage, (int)earthPos.x, (int)earthPos.y, (int)(earthImage.width*imgScale), (int)(earthImage.height*imgScale));
+    // lastMouseX = (int)earth.getPos().x;
+    // lastMouseY = (int)earth.getPos().y;
+    mousePos = new PVector(mouseX, mouseY);
+    lastMousePos = new PVector(mouseX, mouseY);
+    addWidget(earth);
 
     float growScale = 1.05f;
 
-    ButtonUI switchTo2D = createButton(500, 100, width - 600, 200);
+    // earth = new Movie(s_theApp, "data/Videos/earth.mp4");
+    // earth.loop();
+
+    ButtonUI switchTo2D = createButton((int)width/2, 100, (int)width/2 - 100, 200);
+    switchTo2D.setBackgroundColour(COLOR_BLACK);
+    switchTo2D.setOutlineColour(COLOR_WHITE);
     switchTo2D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_TWOD_MAP_ID));
     switchTo2D.setText("2D (WIP)");
     switchTo2D.setTextSize(25);
     switchTo2D.setGrowScale(growScale);
 
-    ButtonUI switchTo3D = createButton(500, 400, width - 600, 200);
+    ButtonUI switchTo3D = createButton((int)width/2, 400, (int)width/2 - 100, 200);
+    switchTo3D.setBackgroundColour(COLOR_BLACK);
+    switchTo3D.setOutlineColour(COLOR_WHITE);
     switchTo3D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_FLIGHT_MAP_ID));
     switchTo3D.setText("3D");
     switchTo3D.setTextSize(25);
     switchTo3D.setGrowScale(growScale);
 
-    ButtonUI switchToCharts = createButton(500, 700, width - 600, 200);
+    ButtonUI switchToCharts = createButton((int)width/2, 700, (int)width/2 - 100, 200);
+    switchToCharts.setBackgroundColour(COLOR_BLACK);
+    switchToCharts.setOutlineColour(COLOR_WHITE);
     switchToCharts.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_CHARTS_ID));
     switchToCharts.setText("Charts");
     switchToCharts.setTextSize(25);
 
-    LabelUI name = createLabel(100, 100, 200, 100, "High5ive");
-    name.setCentreAligned(true);
-    name.setTextSize(40);
+    // LabelUI name = createLabel(100, 100, 200, 100, "High5ive");
+    // name.setCentreAligned(true);
+    // name.setTextSize(40);
+    
+    LabelUI title = createLabel(100, 100, (int)width/2, 200, "High5ive");
+    title.setCentreAligned(false);
+    title.setTextSize(175);   
+
+    LabelUI subTitle = createLabel(110, 300, (int)width/2, 100, "Flights :)");
+    subTitle.setForegroundColour(COLOR_LIGHT_GRAY);
+    subTitle.setCentreAligned(false);
+    subTitle.setTextSize(64); 
 
     switchToCharts.setGrowScale(growScale);
+  }
+
+  public PVector sinVec(PVector inpVec) {
+    return new PVector((int)sin(inpVec.x), (int)sin(inpVec.y));
+  }
+
+  public PVector moveEarthPosInd(PVector earthPos, PVector mousePos, PVector lastMousePos, int wigglePower, int strength) {
+    PVector wiggleStrength = mousePos.sub(lastMousePos).mult(wigglePower);
+    PVector totalStrength = wiggleStrength.mult(strength).mult((sin(wiggleStrength.x) + sin(wiggleStrength.y))/2);
+    return totalStrength;
+  }
+
+  public PVector moveEarthPos(PVector earthPos, PVector mousePos, PVector lastMousePos, int wigglePower, int scaler) { 
+    PVector movement = moveEarthPosInd(earthPos, mousePos, lastMousePos, wigglePower, 8);
+    return movement.normalize().mult(scaler).add(earthPos);
+  }
+
+  @Override
+  public void draw() {
+    super.draw();
+    mousePos = new PVector(mouseX, mouseY); 
+    PVector temp = moveEarthPos(earthPos, mousePos, lastMousePos, 2, 1);
+    println(temp);
+    earth.setPos(temp);
+    lastMousePos = mousePos;
   }
 }
 
