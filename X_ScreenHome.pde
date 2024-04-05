@@ -96,16 +96,16 @@ class ScreenHome extends Screen {
     return totalStrength;
   }
 
-  public PVector moveEarthPos(PVector earthPos, PVector mousePos, PVector lastMousePos, int wigglePower) { 
-    PVector scaler = moveEarthPosInd(earthPos, mousePos, lastMousePos, wigglePower, 8);
-    return scaler.normalize().mult(1).add(earthPos);
+  public PVector moveEarthPos(PVector earthPos, PVector mousePos, PVector lastMousePos, int wigglePower, int scaler) { 
+    PVector movement = moveEarthPosInd(earthPos, mousePos, lastMousePos, wigglePower, 8);
+    return movement.normalize().mult(scaler).add(earthPos);
   }
 
   @Override
   public void draw() {
     super.draw();
     mousePos = new PVector(mouseX, mouseY); 
-    PVector temp = moveEarthPos(earthPos, mousePos, lastMousePos, 2);
+    PVector temp = moveEarthPos(earthPos, mousePos, lastMousePos, 2, 1);
     println(temp);
     earth.setPos(temp);
     lastMousePos = mousePos;
