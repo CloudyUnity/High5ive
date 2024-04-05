@@ -107,9 +107,6 @@ class ScatterChartUI<T> extends Widget implements IChart2Axis<T, Integer> {
     s_DebugProfiler.startProfileTimer();
 
     m_pointsShape.beginShape(POINTS);
-
-    float strokeWeight = lerp(8.0f, 2.0f, data.length / 650_000.0f);
-    m_pointsShape.strokeWeight(strokeWeight);
     
     HashSet<PVector> vectorHashSet = new HashSet<PVector>();
 
