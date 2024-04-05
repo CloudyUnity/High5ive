@@ -203,6 +203,8 @@ class UserQueryUI extends Widget {
     opDD.add(QueryOperatorType.NOT_EQUAL);
     opDD.add(QueryOperatorType.LESS_THAN);
     opDD.add(QueryOperatorType.GREATER_THAN);
+    opDD.add(QueryOperatorType.LESS_THAN_EQUAL);
+    opDD.add(QueryOperatorType.GREATER_THAN_EQUAL);
 
     TextboxWithOpType tbop = new TextboxWithOpType(tb, opDD, type);
     m_tbopList.add(tbop);
@@ -375,6 +377,10 @@ class UserQueryUI extends Widget {
       return " =";
     case "NOT_EQUAL":
       return " !=";
+    case "LESS_THAN_EQUAL":
+      return " <=";
+    case "GREATER_THAN_EQUAL":
+      return " >=";
     default:
       return text;
     }
