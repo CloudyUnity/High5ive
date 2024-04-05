@@ -108,7 +108,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_shaderSun = loadShader("data/Shaders/SunFrag.glsl", "data/Shaders/BaseVert.glsl");
     m_shaderDitherPP = loadShader("data/Shaders/PPDither.glsl");
     m_shaderCRTPP = loadShader("data/Shaders/PPCRT.glsl");
-    m_shaderSkySphere = loadShader("data/Shaders/SkyboxFrag.glsl", "data/Shaders/SkyboxVert.glsl");
+    m_shaderSkySphere = loadShader("data/Shaders/SkyboxFrag.glsl", "data/Shaders/SkyboxVert.glsl");      
 
     m_shaderEarth.set("texDay", m_texEarthDay);
     m_shaderEarth.set("texNight", m_texEarthNight);
@@ -118,7 +118,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_shaderDitherPP.set("noise", m_texDitherNoise);
     m_shaderDitherPP.set("resolution", (float)width, (float)height);
     m_shaderCRTPP.set("resolution", (float)width, (float)height);
-    m_shaderSkySphere.set("tex", m_texSkySphereStars);
+    m_shaderSkySphere.set("tex", m_texSkySphereStars);    
 
     setPermaDay(false);
     m_assetsLoaded = true;
