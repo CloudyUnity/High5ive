@@ -27,10 +27,7 @@ class UserQueryUI extends Widget {
   private ListboxUI m_queryLB;
   private QueryLocationType m_location = QueryLocationType.US;
 
-  private TextboxUI m_originTB;
-  private TextboxUI m_destTB;
-  private TextboxUI m_airlineTB;
-  private TextboxUI m_flightNumTB;
+  private TextboxUI m_originTB, m_destTB, m_airlineTB, m_flightNumTB;
   private ArrayList<TextboxWithOpType> m_tbopList = new ArrayList<TextboxWithOpType>();
 
   private RadioButtonUI m_cancelledRadio;
@@ -100,7 +97,7 @@ class UserQueryUI extends Widget {
     m_usRadio.setChecked(true);
 
     // CANCELLED - DIVERTED - SUCCESSFUL RADIO BUTTONS
-    
+
     int cdsPosY = 300;
 
     RadioButtonGroupTypeUI cancelDivertGroup = new RadioButtonGroupTypeUI();
@@ -131,8 +128,8 @@ class UserQueryUI extends Widget {
 
     m_destTB = createTextboxUI(20, 550, 160, 30, "Dest");
     m_originTB = createTextboxUI(20, 500, 160, 30, "Origin");
-    m_airlineTB = createTextboxUI(20, 350, 160, 30, "Airline");
     m_flightNumTB = createTextboxUI(20, 400, 160, 30, "Flight Number");
+    m_airlineTB = createTextboxUI(20, 350, 160, 30, "Airline");
 
     // TEXTBOXES WITH OPERATORS
 
@@ -143,6 +140,7 @@ class UserQueryUI extends Widget {
     createTextboxWithOp(180, 150, 160, 40, "Depart Time", QueryType.DEPARTURE_TIME);
     createTextboxWithOp(180, 100, 160, 40, "Sch Depart", QueryType.SCHEDULED_DEPARTURE_TIME);
     createTextboxWithOp(180, 50, 160, 40, "Depart Delay", QueryType.DEPARTURE_DELAY);
+    createTextboxWithOp(180, 0, 160, 40, "Day", QueryType.DAY);
   }
 
   /**
@@ -226,7 +224,7 @@ class UserQueryUI extends Widget {
     m_onLoadDataEvent.accept(createFlightTypeArr());
     s_DebugProfiler.printTimeTakenMillis("User query event");
   }
-  
+
   private void loadDataOtherScreen() {
     s_DebugProfiler.startProfileTimer();
     m_onLoadDataOtherScreenEvent.accept(createFlightTypeArr());
@@ -250,7 +248,7 @@ class UserQueryUI extends Widget {
   private void saveQuery(TextboxWithOpType tbop) {
     QueryOperatorType op = tbop.OpDropdown.getSelected();
     if (op == null)
-    op = QueryOperatorType.LESS_THAN;
+      op = QueryOperatorType.LESS_THAN;
 
     saveQuery(tbop.Textbox, tbop.Type, op);
   }
@@ -266,17 +264,17 @@ class UserQueryUI extends Widget {
    */
   private void saveQuery(TextboxUI inputField, QueryType queryType, QueryOperatorType op) {
     if (inputField.getTextLength() <= 0)
-    return;
+      return;
 
     String text = inputField.getText().toUpperCase();
     if (text.isEmpty())
-    return;
+      return;
 
     inputField.setText("");
 
     int val = m_queryManager.formatQueryValue(queryType, text);
     if (val == -1)
-    return;
+      return;
 
     FlightQueryType fqt = new FlightQueryType(queryType, op, m_location);
     fqt.setQueryValue(val);
@@ -304,7 +302,7 @@ class UserQueryUI extends Widget {
     saveQuery(m_flightNumTB, QueryType.FLIGHT_NUMBER, QueryOperatorType.EQUAL);
 
     for (int i = 0; i < m_tbopList.size(); i++)
-    saveQuery(m_tbopList.get(i));
+      saveQuery(m_tbopList.get(i));
 
     if (m_cancelledRadio.getChecked()) {
       FlightQueryType fqt = new FlightQueryType(QueryType.CANCELLED, QueryOperatorType.EQUAL, m_location);
@@ -354,7 +352,7 @@ class UserQueryUI extends Widget {
     case SCHEDULED_DEPARTURE_TIME:
       String cleanTxt = text.replace(":", "");
       if (cleanTxt.length() == 3)
-      return cleanTxt.charAt(0) + ":" + cleanTxt.substring(1, 3);
+        return cleanTxt.charAt(0) + ":" + cleanTxt.substring(1, 3);
       return cleanTxt.substring(0, 2) + ":" + cleanTxt.substring(2, 4);
 
     default:
@@ -420,8 +418,8 @@ class UserQueryUI extends Widget {
     m_worldRadio.setParent(parent);
     m_usRadio.setParent(parent);
   }
-  
-  public void setLoadOtherScreenText(String str){
+
+  public void setLoadOtherScreenText(String str) {
     m_loadDataOtherScreenButton.setText(str);
   }
 }
