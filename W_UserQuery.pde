@@ -29,13 +29,19 @@ class UserQueryUI extends Widget {
 
   private TextboxUI m_originTB, m_destTB, m_airlineTB, m_flightNumTB, m_tailNumTB;
   private ArrayList<TextboxWithOpType> m_tbopList = new ArrayList<TextboxWithOpType>();
-
+  private ArrayList<TextboxUI> m_usOnlyTextboxesList = new ArrayList<TextboxUI>();
+  private ArrayList<ImageUI> m_lockBoxesList = new ArrayList<ImageUI>();
   private RadioButtonUI m_cancelledRadio;
   private RadioButtonUI m_divertedRadio;
   private RadioButtonUI m_successRadio;
   private RadioButtonUI m_worldRadio;
   private RadioButtonUI m_usRadio;
   private ButtonUI m_loadDataOtherScreenButton;
+  private RadioButtonGroupTypeUI cancelDivertGroup;
+  private PImage m_longLock = loadImage("data/Images/Long_Lock.png");
+  private PImage m_normalLock = loadImage("data/Images/Normal_Lock.png");
+
+
 
   /**
    * M.Poole:
@@ -54,15 +60,17 @@ class UserQueryUI extends Widget {
     m_queryManager = queryManager;
     m_screen = screen;
 
+
+
     // LISTBOXES
 
-    int buttonScale = 150;    
+    int buttonScale = 150;
 
     m_queryLB = new ListboxUI<String>(20, 250, buttonScale, 390, 40, v -> v);
     addWidget(m_queryLB);
 
     // BUTTONS
-    
+
     int textSize = 15;
 
     ButtonUI addItemButton = new ButtonUI(20, 150, buttonScale, 40);
@@ -96,12 +104,21 @@ class UserQueryUI extends Widget {
 
     int iconSize = 70;
     m_worldRadio = new RadioImageButtonUI(width - iconSize - 10, 20, iconSize, iconSize, "WORLD", "data/Images/GlobeIcon.png", "data/Images/GlobeIconOff.png");
-    m_worldRadio.getOnCheckedEvent().addHandler(e -> changeDataToWorld());
+    m_worldRadio.getOnCheckedEvent().addHandler(e -> {
+      changeDataToWorld();
+      greyOutUSQueries();
+      
+    }
+    );
     m_worldRadio.setGrowScale(1.1f);
     worldUSGroup.addMember(m_worldRadio);
 
     m_usRadio = new RadioImageButtonUI(width - iconSize - 10, 50 + iconSize, iconSize, iconSize, "US", "data/Images/USIcon.png", "data/Images/USIconOff.png");
-    m_usRadio.getOnCheckedEvent().addHandler(e -> changeDataToUS());
+    m_usRadio.getOnCheckedEvent().addHandler(e -> {
+      activateUSQueries();
+      changeDataToUS();
+    }
+    );
     m_usRadio.setGrowScale(1.1f);
     worldUSGroup.addMember(m_usRadio);
     m_usRadio.setChecked(true);
@@ -135,15 +152,18 @@ class UserQueryUI extends Widget {
     m_destTB = createTextboxUI(tbPosX, tbPosY, "Dest");
     tbPosY += 50;
     m_flightNumTB = createTextboxUI(tbPosX, tbPosY, "Flight Number");
+    m_usOnlyTextboxesList.add(m_flightNumTB);
     tbPosY += 50;
     m_airlineTB = createTextboxUI(tbPosX, tbPosY, "Airline");
+    m_usOnlyTextboxesList.add(m_airlineTB);
     tbPosY += 50;
     m_tailNumTB = createTextboxUI(tbPosX, tbPosY, "Tail Number");
+    m_usOnlyTextboxesList.add(m_tailNumTB);
     tbPosY += 50;
 
     // CANCELLED - DIVERTED - SUCCESSFUL RADIO BUTTONS
 
-    RadioButtonGroupTypeUI cancelDivertGroup = new RadioButtonGroupTypeUI();
+    cancelDivertGroup = new RadioButtonGroupTypeUI();
     addWidgetGroup(cancelDivertGroup);
 
     m_cancelledRadio = new RadioButtonUI(tbPosX, tbPosY, 40, 40, "CANCELLED");
@@ -161,7 +181,7 @@ class UserQueryUI extends Widget {
     addWidget(m_divertedRadio);
     m_divertedRadio.setUncheckable(true);
     cancelDivertGroup.addMember(m_divertedRadio);
-    
+
     LabelUI divertLabel = createLabel(tbPosX + 50, tbPosY - 5, 160, 40, "Diverted");
     divertLabel.setTextSize(20);
     divertLabel.setCentreAligned(false);
@@ -172,10 +192,13 @@ class UserQueryUI extends Widget {
     addWidget(m_successRadio);
     cancelDivertGroup.addMember(m_successRadio);
     m_successRadio.setUncheckable(true);
-    
+
     LabelUI successLabel = createLabel(tbPosX + 50, tbPosY - 5, 160, 40, "Successful");
     successLabel.setTextSize(20);
     successLabel.setCentreAligned(false);
+
+    // LOCKBOXES
+    createLockBoxes();
   }
 
   /**
@@ -442,11 +465,12 @@ class UserQueryUI extends Widget {
     widget.setParent(this);
   }
 
+
   /**
-   * M.Poole:
+   * F.Wright:
    *
    * Adds a widget to the user interface. Incorporates a new widget into the interface layout
-   * for user interaction and data display.
+   * for user interaction and assigns it to a specific layer.
    *
    * @param widget The widget to be added to the interface.
    * @param layer The layer of the widget draw order
@@ -456,6 +480,44 @@ class UserQueryUI extends Widget {
     widget.setParent(this);
   }
 
+  private void activateUSQueries() {
+
+    
+    for (int textbox = 0; textbox < m_usOnlyTextboxesList.size(); textbox++) {
+      m_usOnlyTextboxesList.get(textbox).setUserModifiable(false);
+    }
+    for (int tbOp = 0; tbOp <  m_tbopList.size(); tbOp++ ) {
+      (m_tbopList.get(tbOp).Textbox).setUserModifiable(false);
+    }
+    for (int lockbox = 0; lockbox < 14; lockbox++) {
+      m_lockBoxesList.get(lockbox).setPos(-270, int(m_lockBoxesList.get(lockbox).m_pos.y) -100);
+    }
+     m_cancelledRadio.setActive(true);
+     m_divertedRadio.setActive(true);
+     m_successRadio.setActive(true);
+    
+  }
+
+
+
+  private void greyOutUSQueries() {
+
+    for (int textbox = 0; textbox < m_usOnlyTextboxesList.size(); textbox++) {
+      m_usOnlyTextboxesList.get(textbox).setUserModifiable(true);
+    }
+    for (int tbOp = 0; tbOp <  m_tbopList.size(); tbOp++ ) {
+      (m_tbopList.get(tbOp).Textbox).setUserModifiable(true);
+    }
+    for (int lockbox = 0; lockbox < 14; lockbox++) {
+      m_lockBoxesList.get(lockbox).setPos(220, int(m_lockBoxesList.get(lockbox).m_pos.y) - 100);
+    }
+     m_cancelledRadio.setActive(false);
+     m_divertedRadio.setActive(false);
+     m_successRadio.setActive(false);
+    
+  }
+
+
   private void addWidgetGroup(WidgetGroupType group) {
     m_screen.addWidgetGroup(group);
   }
@@ -464,6 +526,9 @@ class UserQueryUI extends Widget {
     LabelUI label = new LabelUI(posX, posY, scaleX, scaleY, text);
     addWidget(label);
     return label;
+  }
+
+  public void setLocksParent(Widget parent) {
   }
 
   public void setRenderWorldUSButtons(boolean enabled) {
@@ -478,6 +543,30 @@ class UserQueryUI extends Widget {
 
   public void setLoadOtherScreenText(String str) {
     m_loadDataOtherScreenButton.setText(str);
+  }
+
+  private void createLockBoxes() {
+
+    int lockboxYpos = 49;
+    int lockboxStartingXpos = -265;
+    for (int i = 0; i < 8; i++) {
+
+      ImageUI longLockBox = new ImageUI(m_longLock, lockboxStartingXpos, lockboxYpos, 265, 43 );
+      addWidget(longLockBox);
+      m_lockBoxesList.add(longLockBox );
+      lockboxYpos += 50;
+    }
+
+    lockboxYpos += 100;
+
+
+    for (int i = 8; i < 14; i++ ) {
+
+      ImageUI normalLockBox = new ImageUI(m_normalLock, lockboxStartingXpos, lockboxYpos, 160, 40 );
+      addWidget(normalLockBox, 50);
+      m_lockBoxesList.add(normalLockBox);
+      lockboxYpos += 50;
+    }
   }
 }
 

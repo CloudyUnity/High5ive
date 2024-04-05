@@ -35,8 +35,10 @@ class ImageUI extends Widget {
    * @param posY       The y-coordinate of the image's position.
    */
 
+#
   ImageUI(PImage inputImage, int posX, int posY, int scaleX, int scaleY) {
     this(posX, posY, scaleX, scaleY);
+
     m_displayedImage = inputImage;
   }
   
