@@ -142,22 +142,6 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
   /**
    * F. Wright
    *
-   * Generates a random color based on a given seed.
-   *
-   * @param seed The seed value for generating the color.
-   * @return The generated color.
-   */
-  private color randomColor(int seed) {
-    randomSeed(seed * 4639);
-    colorMode(HSB, 360, 100, 100);
-    color result = color(random(360), random(100), random(100));
-    colorMode(RGB, 255, 255, 255);
-    return result;
-  }
-
-  /**
-   * F. Wright
-   *
    * Sets the translation field and query manager for translating X values of the pie chart.
    *
    * @param query The query type for translation.
