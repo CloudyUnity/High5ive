@@ -193,6 +193,8 @@ class FlightsManagerClass {
    */
   public void printFlight(FlightType flight, QueryType queryType) {
     switch(queryType) {
+    case MONTH:
+      println("Month: " + flight.Month);
     case DAY:
       println("Day: " + flight.Day);
       break;
@@ -236,7 +238,7 @@ class FlightsManagerClass {
       println("Actual Duration: " + flight.ActualDuration);
       break;
     case KILOMETRES_DISTANCE:
-      println("KilometresDistance: " + flight.KmDistance);
+      println("Distance (km): " + flight.KmDistance);
       break;
     default:
       println("Error: FlightSortQuery.Type invalid");

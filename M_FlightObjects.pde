@@ -196,3 +196,4 @@ class AirportPoint3DType {
 // T. Creagh, added in FlightSortQuery, 10pm 12/03/24
 // F. Wright, Refactoring, 7pm 25/03/24
 // CKM, Added additional queries 16:00 04/04
+// CKM, Basework for 2nd level querying 22:00 05/04

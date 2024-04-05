@@ -90,10 +90,13 @@ class TransitionManagerClass {
   }
 
   public void render() {
+    if (!m_inTransitionState)
+      return;
+      
     int columns = m_transSquareMatrix.length;
     int rows = m_transSquareMatrix[0].length;
 
-    stroke(CP_BLACK);
+    stroke(CP_BLACK);   
 
     for (int i = 0; i < columns; i++) {
       for (int j = 0; j < rows; j++) {
@@ -105,10 +108,12 @@ class TransitionManagerClass {
         fill(col);
         rect(pos.x, pos.y, scale.x, scale.y);
       }
-    }   
+    }       
   }
 
   public boolean getTransitionState() {
     return m_inTransitionState;
   }
 }
+
+//CKM had job taken by program
