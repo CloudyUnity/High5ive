@@ -32,7 +32,7 @@ class ImageUI extends Widget {
    */
 
   ImageUI(PImage inputImage, int posX, int posY, int scaleY, int scaleX) {
-    this(scaleY, scaleX, posX, posY);
+    this( posX, posY, scaleX, scaleY);
     m_displayedImage = inputImage;
   }
   
