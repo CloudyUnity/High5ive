@@ -163,17 +163,22 @@ class ScreenCharts extends Screen {
     RadioButtonGroupTypeUI group = new RadioButtonGroupTypeUI();
     addWidgetGroup(group);
 
-    RadioButtonUI histRadio = new RadioButtonUI(width/3, 20, 50, 50, "Histogram");
+    int iconScale = 70;
+    int halfIconScale = (int)(iconScale * 0.5f);
+    RadioButtonUI histRadio = new RadioImageButtonUI(width/3 - halfIconScale, 20, iconScale, iconScale, "Histogram", "data/Images/HistIcon.png", "data/Images/HistIconOff.png");
     histRadio.getOnCheckedEvent().addHandler(e -> selectHistogram());
+    histRadio.setGrowScale(1.1f);
     group.addMember(histRadio);
     histRadio.setChecked(true);
 
-    RadioButtonUI pieRadio = new RadioButtonUI(width/2, 20, 50, 50, "Pie");
+    RadioButtonUI pieRadio = new RadioImageButtonUI(width/2 - halfIconScale, 20, iconScale, iconScale, "Pie", "data/Images/PieIcon.png", "data/Images/PieIconOff.png");
     pieRadio.getOnCheckedEvent().addHandler(e -> selectPieChart());
+    pieRadio.setGrowScale(1.1f);
     group.addMember(pieRadio);
 
-    RadioButtonUI scatterRadio = new RadioButtonUI(width/3 * 2, 20, 50, 50, "Scatter Plot");
+    RadioButtonUI scatterRadio = new RadioImageButtonUI(width/3 * 2 - halfIconScale, 20, iconScale, iconScale, "Scatter Plot", "data/Images/ScatterIconChunky.png", "data/Images/ScatterIconChunkyOff.png");
     scatterRadio.getOnCheckedEvent().addHandler(e -> selectScatterPlot());
+    scatterRadio.setGrowScale(1.1f);
     group.addMember(scatterRadio);
 
     m_initialised = true;
