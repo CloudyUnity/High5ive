@@ -23,9 +23,10 @@ class RadioButtonUI extends Widget implements IClickable {
   private EventType<EventInfoType> m_onClickEvent;
   private EventType<EventInfoType> m_onCheckedEvent;
   private LabelUI m_label;
-  private boolean m_checked;
+  protected boolean m_checked;
   private boolean m_uncheckable;
   private color m_checkedColour = DEFAULT_RADIOBUTTON_CHECKED_COLOUR;
+  private boolean m_drawCircle = true;
 
   public RadioButtonUI(int posX, int posY, int scaleX, int scaleY, String label) {
     super(posX, posY, scaleX, scaleY);
@@ -53,9 +54,11 @@ class RadioButtonUI extends Widget implements IClickable {
     public void draw() {
     super.draw();
 
-    ellipseMode(RADIUS);
-    fill(color(m_checked ? m_checkedColour : m_backgroundColour));
-    circle(m_pos.x + m_scale.y / 2, m_pos.y + m_scale.y / 2, m_scale.y / 2);
+    if (m_drawCircle) {
+      ellipseMode(RADIUS);
+      fill(color(m_checked ? m_checkedColour : m_backgroundColour));
+      circle(m_pos.x + m_scale.y / 2, m_pos.y + m_scale.y / 2, m_scale.y / 2);
+    }
 
     m_label.draw();
   }
@@ -100,6 +103,43 @@ class RadioButtonUI extends Widget implements IClickable {
 
   public LabelUI getLabel() {
     return m_label;
+  }
+
+  public void setDrawCircle(boolean enabled) {
+    m_drawCircle = enabled;
+  }
+}
+
+class RadioImageButtonUI extends RadioButtonUI {
+  public PImage m_enabledImage;
+  public PImage m_disabledImage;
+
+  public RadioImageButtonUI(int posX, int posY, int scaleX, int scaleY, String label, PImage enImg, PImage disenImg) {
+    super(posX, posY, scaleX, scaleY, label);
+    m_enabledImage = enImg;
+    m_disabledImage = disenImg;
+    setDrawCircle(false);
+  }
+
+  public RadioImageButtonUI(int posX, int posY, int scaleX, int scaleY, String label, String enImgPath, String disenImgPath) {
+    super(posX, posY, scaleX, scaleY, label);
+    m_enabledImage = loadImage(enImgPath);
+    m_disabledImage = loadImage(disenImgPath);
+    setDrawCircle(false);
+  }
+
+  @Override
+    public void draw() {
+    super.draw();
+    
+    fill(m_backgroundColour);
+    int scaleOffset = (int)((m_scale.x * 1.1f - m_scale.x) * 0.5f);
+    rect(m_pos.x - scaleOffset, m_pos.y - scaleOffset, m_scale.x * 1.1f, m_scale.y * 1.1f, DEFAULT_WIDGET_ROUNDNESS_1);
+
+    if (m_checked)
+      image(m_enabledImage, m_pos.x, m_pos.y, m_scale.x, m_scale.y);
+    else
+      image(m_disabledImage, m_pos.x, m_pos.y, m_scale.x, m_scale.y);            
   }
 }
 

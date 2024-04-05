@@ -87,12 +87,15 @@ class UserQueryUI extends Widget {
     RadioButtonGroupTypeUI worldUSGroup = new RadioButtonGroupTypeUI();
     addWidgetGroup(worldUSGroup);
 
-    m_worldRadio = new RadioButtonUI(width - 60, 20, 50, 50, "WORLD");
+    int iconSize = 70;
+    m_worldRadio = new RadioImageButtonUI(width - iconSize - 10, 20, iconSize, iconSize, "WORLD", "data/Images/GlobeIcon.png", "data/Images/GlobeIconOff.png");
     m_worldRadio.getOnCheckedEvent().addHandler(e -> changeDataToWorld());
+    m_worldRadio.setGrowScale(1.1f);
     worldUSGroup.addMember(m_worldRadio);
 
-    m_usRadio = new RadioButtonUI(width - 60, 80, 50, 50, "US");
+    m_usRadio = new RadioImageButtonUI(width - iconSize - 10, 50 + iconSize, iconSize, iconSize, "US", "data/Images/USIcon.png", "data/Images/USIconOff.png");
     m_usRadio.getOnCheckedEvent().addHandler(e -> changeDataToUS());
+    m_usRadio.setGrowScale(1.1f);
     worldUSGroup.addMember(m_usRadio);
     m_usRadio.setChecked(true);
 
