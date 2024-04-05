@@ -9,6 +9,10 @@
 class ScreenHome extends Screen {
 
   PImage earthImage;
+  ImageUI earth;
+  PVector lastMousePos;
+  PVector mousePos;
+  PVector earthPos;
 
   /**
    * F. Wright
@@ -34,7 +38,12 @@ class ScreenHome extends Screen {
     earthImage = loadImage("data/Images/earthTitleScreen.png");
 
     float imgScale = 0.5;
-    ImageUI earth = new ImageUI(earthImage, 100, (int)(height - (earthImage.height*imgScale))-100, (int)(earthImage.width*imgScale), (int)(earthImage.height*imgScale));
+    earthPos = new PVector(100, (int)(height - (earthImage.height*imgScale))-100);
+    earth = new ImageUI(earthImage, (int)earthPos.x, (int)earthPos.y, (int)(earthImage.width*imgScale), (int)(earthImage.height*imgScale));
+    // lastMouseX = (int)earth.getPos().x;
+    // lastMouseY = (int)earth.getPos().y;
+    mousePos = new PVector(mouseX, mouseY);
+    lastMousePos = new PVector(mouseX, mouseY);
     addWidget(earth);
 
     float growScale = 1.05f;
@@ -76,11 +85,31 @@ class ScreenHome extends Screen {
 
     switchToCharts.setGrowScale(growScale);
   }
-  // @Override
-  // public void draw() {
-  //   super.draw();
-  //   image(earthImage, 0, 0);
-  // }
+
+  public PVector sinVec(PVector inpVec) {
+    return new PVector((int)sin(inpVec.x), (int)sin(inpVec.y));
+  }
+
+  public PVector moveEarthPosInd(PVector earthPos, PVector mousePos, PVector lastMousePos, int wigglePower, int strength) {
+    PVector wiggleStrength = mousePos.sub(lastMousePos).mult(wigglePower);
+    PVector totalStrength = wiggleStrength.mult(strength).mult((sin(wiggleStrength.x) + sin(wiggleStrength.y))/2);
+    return totalStrength;
+  }
+
+  public PVector moveEarthPos(PVector earthPos, PVector mousePos, PVector lastMousePos, int wigglePower) { 
+    PVector scaler = moveEarthPosInd(earthPos, mousePos, lastMousePos, wigglePower, 8);
+    return scaler.normalize().mult(1).add(earthPos);
+  }
+
+  @Override
+  public void draw() {
+    super.draw();
+    mousePos = new PVector(mouseX, mouseY); 
+    PVector temp = moveEarthPos(earthPos, mousePos, lastMousePos, 2);
+    println(temp);
+    earth.setPos(temp);
+    lastMousePos = mousePos;
+  }
 }
 
 // Descending code authorship changes:

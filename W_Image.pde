@@ -61,21 +61,6 @@ class ImageUI extends Widget {
   public void setImage(PImage inputImage) {
     m_displayedImage = inputImage;
   }
-// toms functions
-  public void setPos(posX, posY) {
-    m_posX = posX;
-    m_posY = posY;
-  }
-  public void setScale(scaleX, scaleY) {
-    m_scaleX = scaleX;
-    m_scaleY = scaleY;
-  }
-  public int[] getPos() {
-    return {m_posX, m_posY}
-  }
-  public int[] getScale() {
-    return {m_scaleX, m_scaleY}
-  }
 }
 
 //code authorship
