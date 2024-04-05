@@ -47,6 +47,7 @@ final float WIDGET_GROW_MODE_MULT = 1.1f;
 final float SWITCH_SCREEN_DUR_3D = 1000.0f;
 final PVector UQUI_TB_SCALE = new PVector(160, 40);
 final boolean HISTOGRAM_BAR_TEXT_ENABLED = false; 
+final int UQUI_3D_POS_Y = 100;
 
 // IDs
 final String SCREEN_1_ID = "Screen 1";

@@ -194,7 +194,7 @@ class UserQueryUI extends Widget {
     tb.setPlaceholderText(placeholderTxt);
 
     DropdownUI<QueryOperatorType> opDD = new DropdownUI<QueryOperatorType>(posX + (int)UQUI_TB_SCALE.x, posY, 100, 400, 40, v -> formatText(v.toString()));
-    addWidget(opDD, posY);
+    addWidget(opDD, -posY);
     opDD.setTextboxText(formatText("LESS_THAN"));
 
     opDD.add(QueryOperatorType.EQUAL);
@@ -314,7 +314,7 @@ class UserQueryUI extends Widget {
 
     String queryTypeStr = formatText(queryType.toString());
     String opStr = formatText(op.toString());
-    addToQueryList(fqt, queryTypeStr + ": " + opStr + " [" + formatValue(text, queryType) + "]");
+    addToQueryList(fqt, queryTypeStr + " " + opStr + " " + formatValue(text, queryType));
   }
 
   private void addToQueryList(FlightQueryType query, String text) {
@@ -441,6 +441,7 @@ class UserQueryUI extends Widget {
    * for user interaction and data display.
    *
    * @param widget The widget to be added to the interface.
+   * @param layer The layer of the widget draw order
    */
   private void addWidget(Widget widget, int layer) {
     m_screen.addWidget(widget, layer);

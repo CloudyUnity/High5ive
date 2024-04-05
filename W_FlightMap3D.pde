@@ -14,7 +14,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   private PShape m_modelEarth, m_modelSun, m_modelSkySphere;
   private PImage m_texEarthDay, m_texEarthNight, m_texSun, m_texSkySphereStars;
   private PImage m_texEarthNormalMap, m_texEarthSpecularMap, m_texDitherNoise;
-  private PShader m_shaderEarth, m_shaderSun, m_shaderPP, m_shaderSkySphere;
+  private PShader m_shaderEarth, m_shaderSun, m_shaderDitherPP, m_shaderCRTPP, m_shaderSkySphere;
 
   private PVector m_earthRotation = new PVector(0, 0, 0);
   private PVector m_earthRotationalVelocity = new PVector(0, 0, 0);
@@ -28,6 +28,9 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   private boolean m_textEnabled = true;
   private boolean m_markersEnabled = true;
   private boolean m_lockTime = false;
+
+  private boolean m_ditheringEnabled = false;
+  private boolean m_crtEnabled = false;
 
   private boolean m_assetsLoaded = false;
   private boolean m_drawnLoadingScreen = false;
@@ -103,7 +106,8 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
 
     m_shaderEarth = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
     m_shaderSun = loadShader("data/Shaders/SunFrag.glsl", "data/Shaders/BaseVert.glsl");
-    m_shaderPP = loadShader("data/Shaders/PostProcessing.glsl");
+    m_shaderDitherPP = loadShader("data/Shaders/PPDither.glsl");
+    m_shaderCRTPP = loadShader("data/Shaders/PPCRT.glsl");
     m_shaderSkySphere = loadShader("data/Shaders/SkyboxFrag.glsl", "data/Shaders/SkyboxVert.glsl");
 
     m_shaderEarth.set("texDay", m_texEarthDay);
@@ -111,7 +115,9 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_shaderEarth.set("normalMap", m_texEarthNormalMap);
     m_shaderEarth.set("specularMap", m_texEarthSpecularMap);
     m_shaderSun.set("tex", m_texSun);
-    m_shaderPP.set("noise", m_texDitherNoise);
+    m_shaderDitherPP.set("noise", m_texDitherNoise);
+    m_shaderDitherPP.set("resolution", (float)width, (float)height);
+    m_shaderCRTPP.set("resolution", (float)width, (float)height);
     m_shaderSkySphere.set("tex", m_texSkySphereStars);
 
     setPermaDay(false);
@@ -326,10 +332,13 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     if (m_textEnabled)
       drawMarkerText();
 
-    if (DEBUG_MODE && DITHER_MODE_3D)
-      s_3D.filter(m_shaderPP);
+    if (m_ditheringEnabled)
+      s_3D.filter(m_shaderDitherPP);
 
     drawSkybox();
+
+    if (m_crtEnabled)
+      s_3D.filter(m_shaderCRTPP);
 
     s_3D.endDraw();
 
@@ -663,6 +672,14 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
    */
   public void setDayCycleSpeed(float speed) {
     m_dayCycleSpeed = speed;
+  }
+
+  public void setDitheringEnabled(boolean enabled) {
+    m_ditheringEnabled = enabled;
+  }
+
+  public void setCRTEnabled(boolean enabled) {
+    m_crtEnabled = enabled;
   }
 }
 
