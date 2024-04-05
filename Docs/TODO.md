@@ -25,8 +25,6 @@
 ## Dropdown Issues
 
 - [ ] Scroll bars too long
-- [ ] All dropdowns focused on frame 1
-- [ ] Multiple dropdowns can be focused
  
 - [ ] Write docs for widgets
     - [ ] Button
