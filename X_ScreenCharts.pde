@@ -10,6 +10,7 @@ class ScreenCharts extends Screen {
 
   DropdownUI m_freqDD, m_scatterDDX, m_scatterDDY;
   LabelUI m_scatterLabelX, m_scatterLabelY;
+  LabelUI m_histEmptyLabel, m_pieEmptyLabel, m_scatterEmptyLabel;
 
   QueryManagerClass m_queryRef;
   UserQueryUI m_userQuery;
@@ -42,7 +43,7 @@ class ScreenCharts extends Screen {
     m_userQuery.setOnLoadHandler(flights -> {
       loadData(flights);
       if (m_initialised)
-        reloadData();
+      reloadData();
     }
     );
     m_userQuery.setOnLoadOtherScreenHandler(loadInto3D);
@@ -69,7 +70,7 @@ class ScreenCharts extends Screen {
     switchTo3D.setText("3D");
     switchTo3D.setTextSize(20);
     switchTo3D.setGrowScale(1.05f);
-    
+
     int chartScale = 850;
     int halfChartScale = (int)(chartScale * 0.5f);
 
@@ -85,7 +86,22 @@ class ScreenCharts extends Screen {
     addWidget(m_scatterPlot);
     m_scatterPlot.setActive(false);
 
-    m_freqDD = new DropdownUI<QueryType>(width-400, 200, 300, 200, 50, v -> v.toString());
+    m_histEmptyLabel = createLabel(width/2 - 200, height/2 - 100, 400, 200, "Histogram Empty");
+    m_histEmptyLabel.setActive(true);
+    m_histEmptyLabel.setTextSize(40);
+    m_histEmptyLabel.setCentreAligned(true);
+
+    m_pieEmptyLabel = createLabel(width/2 - 200, height/2 - 100, 400, 200, "Pie Chart Empty");
+    m_pieEmptyLabel.setActive(false);
+    m_pieEmptyLabel.setTextSize(40);
+    m_pieEmptyLabel.setCentreAligned(true);
+
+    m_scatterEmptyLabel = createLabel(width/2 - 200, height/2 - 100, 400, 200, "Scatter Plot Empty");
+    m_scatterEmptyLabel.setActive(false);
+    m_scatterEmptyLabel.setTextSize(40);
+    m_scatterEmptyLabel.setCentreAligned(true);
+
+    m_freqDD = new DropdownUI<QueryType>(width-400, 200, 300, 300, 50, v -> v.toString());
     addWidget(m_freqDD);
     m_freqDD.getOnSelectionChanged().addHandler(e -> {
 
@@ -97,6 +113,8 @@ class ScreenCharts extends Screen {
         return;
       }
 
+      m_histEmptyLabel.setActive(false);
+      m_pieEmptyLabel.setActive(false);
       reloadFreq();
     }
     );
@@ -108,32 +126,40 @@ class ScreenCharts extends Screen {
     m_freqDD.add(QueryType.CANCELLED);
     m_freqDD.add(QueryType.DIVERTED);
 
-    m_scatterDDX = new DropdownUI<QueryType>(width-400, 200, 300, 200, 50, v -> v.toString());
+    m_scatterDDX = new DropdownUI<QueryType>(width-400, 200, 300, 300, 50, v -> v.toString());
     addWidget(m_scatterDDX);
     m_scatterDDX.setActive(false);
     m_scatterDDX.getOnSelectionChanged().addHandler(e -> {
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
       m_scatterQueryTypeX = (QueryType)elistbox.Data;
 
-      if (m_scatterQueryTypeX == null || m_scatterQueryTypeY == null)
+      if (m_scatterQueryTypeX == null || m_cachedFlights == null) {
+        println("Flight data not ready for charts yet, or invalid query");
+        return;
+      }
+
+      if (m_scatterQueryTypeY == null)
       return;
 
       reloadScatter();
     }
     );
 
-    m_scatterDDY = new DropdownUI<QueryType>(width-400, 600, 300, 200, 50, v -> v.toString());
+    m_scatterDDY = new DropdownUI<QueryType>(width-400, 600, 300, 300, 50, v -> v.toString());
     addWidget(m_scatterDDY);
     m_scatterDDY.setActive(false);
     m_scatterDDY.getOnSelectionChanged().addHandler(e -> {
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
       m_scatterQueryTypeY = (QueryType)elistbox.Data;
 
-      if (m_scatterQueryTypeX == null || m_scatterQueryTypeY == null || m_cachedFlights == null) {
+      if (m_scatterQueryTypeY == null || m_cachedFlights == null) {
         println("Flight data not ready for charts yet, or invalid query");
         return;
       }
 
+      if (m_scatterQueryTypeX == null)
+      return;
+      
       reloadScatter();
     }
     );
@@ -262,9 +288,19 @@ class ScreenCharts extends Screen {
   public void reloadScatter() {
     if (m_cachedFlights == null || m_scatterQueryTypeX == null || m_scatterQueryTypeY == null)
       return;
+      
+    m_scatterEmptyLabel.setText("Loading...");
+      
+    new Thread(() -> {
+      s_DebugProfiler.startProfileTimer();
+      reloadScatterAsync();
+      s_DebugProfiler.printTimeTakenMillis("Reloading data for scatter chart");
+      
+      m_scatterEmptyLabel.setActive(false);
+    }).start();             
+  }
 
-    s_DebugProfiler.startProfileTimer();
-
+  public void reloadScatterAsync() {
     m_scatterPlot.removeData();
     m_scatterPlot.addData(m_cachedFlights,
       fX -> {
@@ -276,8 +312,6 @@ class ScreenCharts extends Screen {
     }
     );
     m_scatterPlot.setAxisLabels(m_scatterQueryTypeX.toString(), m_scatterQueryTypeY.toString());
-
-    s_DebugProfiler.printTimeTakenMillis("Reloading data for scatter chart");
   }
 
   /**
@@ -295,6 +329,10 @@ class ScreenCharts extends Screen {
     m_scatterDDY.setActive(false);
     m_scatterLabelX.setActive(false);
     m_scatterLabelY.setActive(false);
+    if (m_freqQueryType == null)
+      m_histEmptyLabel.setActive(true);
+    m_pieEmptyLabel.setActive(false);
+    m_scatterEmptyLabel.setActive(false);
   }
 
   /**
@@ -312,6 +350,10 @@ class ScreenCharts extends Screen {
     m_scatterDDY.setActive(false);
     m_scatterLabelX.setActive(false);
     m_scatterLabelY.setActive(false);
+    if (m_freqQueryType == null)
+      m_pieEmptyLabel.setActive(true);
+    m_histEmptyLabel.setActive(false);
+    m_scatterEmptyLabel.setActive(false);
   }
 
   /**
@@ -329,6 +371,10 @@ class ScreenCharts extends Screen {
     m_scatterDDY.setActive(true);
     m_scatterLabelX.setActive(true);
     m_scatterLabelY.setActive(true);
+    if (m_scatterQueryTypeX == null || m_scatterQueryTypeY == null)
+      m_scatterEmptyLabel.setActive(true);
+    m_histEmptyLabel.setActive(false);
+    m_pieEmptyLabel.setActive(false);
   }
 }
 
