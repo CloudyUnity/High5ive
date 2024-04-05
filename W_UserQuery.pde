@@ -1,37 +1,41 @@
+class TextboxWithOpType {
+  public TextboxUI Textbox;
+  public DropdownUI<QueryOperatorType> OpDropdown;
+  public QueryType Type;
+
+  public TextboxWithOpType(TextboxUI tb, DropdownUI<QueryOperatorType> opDD, QueryType type) {
+    Textbox = tb;
+    OpDropdown = opDD;
+    Type = type;
+  }
+}
+
 /**
  * M.Poole:
  * Represents a user interface for querying flight data. Manages user inputs and interactions
  * for querying flight data and displaying results.
  */
-
 class UserQueryUI extends Widget {
-
-  private Consumer<FlightType[]> m_onLoadDataEvent;
-
-  QueryManagerClass m_queryManager;
-  private ArrayList<FlightQueryType> m_activeQueries; // All query types are ordered like so (Day, Airline, FlightNum, Origin, Dest, SchDep, Dep, Depdelay, SchArr, Arr, ArrDelay, Cancelled, Dievrted, Miles  )
-  private ArrayList<FlightQueryType> m_flightQueries;
-  private ListboxUI m_queryList;
-  private TextboxUI m_Origin;
-  private TextboxUI m_Dest;
-  private TextboxUI m_Distance;
-  private ButtonUI  clearListButton;
-  private ButtonUI  removeSelectedButton;
-  private ButtonUI  addItemButton;
-  private ButtonUI  loadDataButton;
-  private ButtonUI  setOperatorsBttn;
-  private CheckboxUI m_Cancelled;
-  private QueryLocationType m_location;
-  public int m_listCounter;
-  private FlightQueryType m_OriginQuery;
-  private FlightQueryType m_DestQuery;
-  private FlightQueryType m_DistanceQuery;
-  private FlightQueryType m_CancelledQuery;
-  private FlightType[] m_flights;
-  private FlightMap3D m_flightMap3D;
+  private  QueryManagerClass m_queryManager;
   private Screen m_screen;
 
   private FlightMultiDataType m_flightsLists;
+  private ArrayList<FlightQueryType> m_activeQueries = new ArrayList<FlightQueryType>();
+  private Consumer<FlightType[]> m_onLoadDataEvent;
+  private Consumer<FlightType[]> m_onLoadDataOtherScreenEvent;
+
+  private ListboxUI m_queryLB;
+  private QueryLocationType m_location = QueryLocationType.US;
+
+  private TextboxUI m_originTB, m_destTB, m_airlineTB, m_flightNumTB, m_tailNumTB;
+  private ArrayList<TextboxWithOpType> m_tbopList = new ArrayList<TextboxWithOpType>();
+
+  private RadioButtonUI m_cancelledRadio;
+  private RadioButtonUI m_divertedRadio;
+  private RadioButtonUI m_successRadio;
+  private RadioButtonUI m_worldRadio;
+  private RadioButtonUI m_usRadio;
+  private ButtonUI m_loadDataOtherScreenButton;
 
   /**
    * M.Poole:
@@ -44,82 +48,174 @@ class UserQueryUI extends Widget {
    * @param queryManager The query manager responsible for handling flight data queries.
    * @param screen       The screen where the user interface will be displayed.
    */
-
   UserQueryUI(int posX, int posY, int scaleX, int scaleY, QueryManagerClass queryManager, Screen screen) {
     super(posX, posY, scaleX, scaleY);
 
     m_queryManager = queryManager;
     m_screen = screen;
 
-    m_queryList = new ListboxUI<String>(20, 650, 200, 400, 40, v -> v);
+    // LISTBOXES
 
-    m_flightQueries = new ArrayList<FlightQueryType>();
-    m_activeQueries = new ArrayList<FlightQueryType>();
+    int buttonScale = 150;    
 
-    addWidget(m_queryList);
+    m_queryLB = new ListboxUI<String>(20, 250, buttonScale, 390, 40, v -> v);
+    addWidget(m_queryLB);
 
+    // BUTTONS
+    
+    int textSize = 15;
 
-    addItemButton = new ButtonUI(20, 600, 80, 20);
+    ButtonUI addItemButton = new ButtonUI(20, 150, buttonScale, 40);
     addWidget(addItemButton);
-    addItemButton.setText("Add item");
+    addItemButton.setText("Add Query");
+    addItemButton.setTextSize(textSize);
     addItemButton.getOnClickEvent().addHandler(e -> saveAllQueries());
 
-    clearListButton = new ButtonUI(120, 600, 80, 20);
+    ButtonUI clearListButton = new ButtonUI(20, 200, buttonScale, 40);
     addWidget(clearListButton);
-    clearListButton.setText("Clear");
+    clearListButton.setText("Clear All");
+    clearListButton.setTextSize(textSize);
     clearListButton.getOnClickEvent().addHandler(e -> clearQueries());
 
-    removeSelectedButton = new ButtonUI(120, 500, 80, 20);
-    addWidget(removeSelectedButton);
-    removeSelectedButton.setText("Remove selected");
-    removeSelectedButton.getOnClickEvent().addHandler(e -> m_queryList.removeSelected());
-
-    loadDataButton = new ButtonUI(220, 500, 180, 120);
+    ButtonUI loadDataButton = new ButtonUI(20, 650, buttonScale, 40);
     addWidget(loadDataButton);
     loadDataButton.setText("Load Data");
+    loadDataButton.setTextSize(textSize);
     loadDataButton.getOnClickEvent().addHandler(e -> loadData());
 
-    setOperatorsBttn = new ButtonUI(220, 700, 180, 120);
-    addWidget(loadDataButton);
-    loadDataButton.setText("Load Data");
-    loadDataButton.getOnClickEvent().addHandler(e -> setOperators());
+    m_loadDataOtherScreenButton = new ButtonUI(20, 700, buttonScale, 40);
+    addWidget(m_loadDataOtherScreenButton);
+    m_loadDataOtherScreenButton.setText("Load into Charts");
+    m_loadDataOtherScreenButton.setTextSize(textSize);
+    m_loadDataOtherScreenButton.getOnClickEvent().addHandler(e -> loadDataOtherScreen());
 
-    m_Origin =  new TextboxUI(20, 500, 160, 30);
-    addWidget(m_Origin);
-    m_Origin.setPlaceholderText("Origin");
+    // WORLD - US RADIO BUTTONS
 
+    RadioButtonGroupTypeUI worldUSGroup = new RadioButtonGroupTypeUI();
+    addWidgetGroup(worldUSGroup);
 
-    m_OriginQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US);
-    m_flightQueries.add(m_OriginQuery);
+    int iconSize = 70;
+    m_worldRadio = new RadioImageButtonUI(width - iconSize - 10, 20, iconSize, iconSize, "WORLD", "data/Images/GlobeIcon.png", "data/Images/GlobeIconOff.png");
+    m_worldRadio.getOnCheckedEvent().addHandler(e -> changeDataToWorld());
+    m_worldRadio.setGrowScale(1.1f);
+    worldUSGroup.addMember(m_worldRadio);
 
+    m_usRadio = new RadioImageButtonUI(width - iconSize - 10, 50 + iconSize, iconSize, iconSize, "US", "data/Images/USIcon.png", "data/Images/USIconOff.png");
+    m_usRadio.getOnCheckedEvent().addHandler(e -> changeDataToUS());
+    m_usRadio.setGrowScale(1.1f);
+    worldUSGroup.addMember(m_usRadio);
+    m_usRadio.setChecked(true);
 
-    m_Dest =  new TextboxUI(20, 550, 160, 30);
-    addWidget(m_Dest);
-    m_Dest.setPlaceholderText("Destination");
+    // TEXTBOXES WITH OPERATORS
 
+    int tbPosX = 220;
+    int tbPosY = 50;
 
-    m_DestQuery = new FlightQueryType(QueryType.AIRPORT_DEST_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US);
-    m_flightQueries.add(m_DestQuery);
+    createTextboxWithOp(tbPosX, tbPosY, "Distance", QueryType.KILOMETRES_DISTANCE);
+    tbPosY += 50;
+    createTextboxWithOp(tbPosX, tbPosY, "Day", QueryType.DAY);
+    tbPosY += 50;
+    createTextboxWithOp(tbPosX, tbPosY, "Arrival Time", QueryType.ARRIVAL_TIME);
+    tbPosY += 50;
+    createTextboxWithOp(tbPosX, tbPosY, "Sch Arrival", QueryType.SCHEDULED_ARRIVAL_TIME);
+    tbPosY += 50;
+    createTextboxWithOp(tbPosX, tbPosY, "Arrival Delay", QueryType.ARRIVAL_DELAY);
+    tbPosY += 50;
+    createTextboxWithOp(tbPosX, tbPosY, "Depart Time", QueryType.DEPARTURE_TIME);
+    tbPosY += 50;
+    createTextboxWithOp(tbPosX, tbPosY, "Sch Depart", QueryType.SCHEDULED_DEPARTURE_TIME);
+    tbPosY += 50;
+    createTextboxWithOp(tbPosX, tbPosY, "Depart Delay", QueryType.DEPARTURE_DELAY);
+    tbPosY += 50;
 
-    m_Distance =  new TextboxUI(20, 450, 160, 30);
-    addWidget(m_Distance);
-    m_Distance.setPlaceholderText("Kilometers ");
+    // TEXTBOXES
 
+    m_originTB = createTextboxUI(tbPosX, tbPosY, "Origin");
+    tbPosY += 50;
+    m_destTB = createTextboxUI(tbPosX, tbPosY, "Dest");
+    tbPosY += 50;
+    m_flightNumTB = createTextboxUI(tbPosX, tbPosY, "Flight Number");
+    tbPosY += 50;
+    m_airlineTB = createTextboxUI(tbPosX, tbPosY, "Airline");
+    tbPosY += 50;
+    m_tailNumTB = createTextboxUI(tbPosX, tbPosY, "Tail Number");
+    tbPosY += 50;
 
-    m_DistanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, QueryLocationType.US);
-    m_flightQueries.add(m_DestQuery);
+    // CANCELLED - DIVERTED - SUCCESSFUL RADIO BUTTONS
 
-    m_Cancelled = new CheckboxUI(20, 250, 25, 25, "Cancelled");
-    addWidget(m_Cancelled);
-    m_Cancelled.setGrowScale(1.05);
-    m_Cancelled.getOnClickEvent().addHandler(e -> changeOperator( m_CancelledQuery, QueryOperatorType.EQUAL));
-    // m_Cancelled.getLabel().setTextXOffset(0);
+    RadioButtonGroupTypeUI cancelDivertGroup = new RadioButtonGroupTypeUI();
+    addWidgetGroup(cancelDivertGroup);
 
-    //m_Cancelled.getLabel().setCentreAligned(true);
-    //m_Cancelled.getLabel().setScale(130, 50);
+    m_cancelledRadio = new RadioButtonUI(tbPosX, tbPosY, 40, 40, "CANCELLED");
+    addWidget(m_cancelledRadio);
+    m_cancelledRadio.setUncheckable(true);
+    cancelDivertGroup.addMember(m_cancelledRadio);
 
-    m_CancelledQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.EQUAL, QueryLocationType.US);
-    m_flightQueries.add(m_DestQuery);
+    LabelUI cancelLabel = createLabel(tbPosX + 50, tbPosY - 5, 160, 40, "Cancelled");
+    cancelLabel.setTextSize(20);
+    cancelLabel.setCentreAligned(false);
+
+    tbPosY += 50;
+
+    m_divertedRadio = new RadioButtonUI(tbPosX, tbPosY, 40, 40, "DIVERTED");
+    addWidget(m_divertedRadio);
+    m_divertedRadio.setUncheckable(true);
+    cancelDivertGroup.addMember(m_divertedRadio);
+    
+    LabelUI divertLabel = createLabel(tbPosX + 50, tbPosY - 5, 160, 40, "Diverted");
+    divertLabel.setTextSize(20);
+    divertLabel.setCentreAligned(false);
+
+    tbPosY += 50;
+
+    m_successRadio = new RadioButtonUI(tbPosX, tbPosY, 40, 40, "SUCCESS");
+    addWidget(m_successRadio);
+    cancelDivertGroup.addMember(m_successRadio);
+    m_successRadio.setUncheckable(true);
+    
+    LabelUI successLabel = createLabel(tbPosX + 50, tbPosY - 5, 160, 40, "Successful");
+    successLabel.setTextSize(20);
+    successLabel.setCentreAligned(false);
+  }
+
+  /**
+   * F. Wright
+   *
+   * Creates a textbox input field with attached operator dropdown. Adds them to the main m_tbopList
+   *
+   * @param posX The x position of the textbox
+   * @param posY The y position of the textbox
+   * @param scaleX The x scale of the textbox
+   * @param scaleY The y scale of the textbox
+   * @param placeholderTxt The placeholder text in the textbox
+   * @param type The query type to be checked
+   */
+  private TextboxWithOpType createTextboxWithOp(int posX, int posY, String placeholderTxt, QueryType type) {
+    TextboxUI tb = new TextboxUI(posX, posY, (int)UQUI_TB_SCALE.x, (int)UQUI_TB_SCALE.y);
+    addWidget(tb);
+    tb.setPlaceholderText(placeholderTxt);
+
+    DropdownUI<QueryOperatorType> opDD = new DropdownUI<QueryOperatorType>(posX + (int)UQUI_TB_SCALE.x, posY, 100, 400, 40, v -> formatText(v.toString()));
+    addWidget(opDD, -posY);
+    opDD.setTextboxText(formatText("LESS_THAN"));
+
+    opDD.add(QueryOperatorType.EQUAL);
+    opDD.add(QueryOperatorType.NOT_EQUAL);
+    opDD.add(QueryOperatorType.LESS_THAN);
+    opDD.add(QueryOperatorType.GREATER_THAN);
+    opDD.add(QueryOperatorType.LESS_THAN_EQUAL);
+    opDD.add(QueryOperatorType.GREATER_THAN_EQUAL);
+
+    TextboxWithOpType tbop = new TextboxWithOpType(tb, opDD, type);
+    m_tbopList.add(tbop);
+    return tbop;
+  }
+
+  private TextboxUI createTextboxUI(int posX, int posY, String placeholderTxt) {
+    TextboxUI tb =  new TextboxUI(posX, posY, (int)UQUI_TB_SCALE.x, (int)UQUI_TB_SCALE.y);
+    addWidget(tb);
+    tb.setPlaceholderText(placeholderTxt);
+    return tb;
   }
 
   /**
@@ -143,81 +239,167 @@ class UserQueryUI extends Widget {
     m_onLoadDataEvent = dataEvent;
   }
 
+  /**
+   * M.Poole:
+   * Sets the handler for the data load event. This event occurs when flight data needs to be loaded.
+   *
+   * @param dataEvent The event handler for loading flight data.
+   */
+  public void setOnLoadOtherScreenHandler(Consumer<FlightType[]> dataEvent) {
+    m_onLoadDataOtherScreenEvent = dataEvent;
+  }
+
 
   /**
    * M.Poole:
+   *
    * Loads flight data based on the active queries. Queries the flight manager for relevant data
    * based on user input queries and updates the displayed data accordingly.
    */
   private void loadData() {
-    FlightType[] result = m_flightsLists.US;
+    s_DebugProfiler.startProfileTimer();
+    m_onLoadDataEvent.accept(createFlightTypeArr());
+    s_DebugProfiler.printTimeTakenMillis("User query event");
+  }
+
+  private void loadDataOtherScreen() {
+    s_DebugProfiler.startProfileTimer();
+    m_onLoadDataOtherScreenEvent.accept(createFlightTypeArr());
+    s_DebugProfiler.printTimeTakenMillis("Loading data into other screen");
+  }
+
+  private FlightType[] createFlightTypeArr() {
+    FlightType[] result;
+    if (m_location == QueryLocationType.US)
+      result = m_flightsLists.US;
+    else
+      result = m_flightsLists.WORLD;
 
     for (FlightQueryType query : m_activeQueries) {
       result  = m_queryManager.queryFlights(result, query, query.QueryValue);
     }
-  
-    //result = m_queryManager.getHead(m_flightsLists.WORLD , 10);
 
-    println(m_OriginQuery.QueryValue);
-    
-    s_DebugProfiler.startProfileTimer();
-    m_onLoadDataEvent.accept(result);
-    s_DebugProfiler.printTimeTakenMillis("User query event");
+    return result;
+  }
+
+  private void saveQuery(TextboxWithOpType tbop) {
+    QueryOperatorType op = tbop.OpDropdown.getSelected();
+    if (op == null)
+      op = QueryOperatorType.LESS_THAN;
+
+    saveQuery(tbop.Textbox, tbop.Type, op);
   }
 
   /**
    * M.Poole:
-   * Saves a query based on the provided input field and query type. Captures user input and saves
-   * it as a query for further data retrieval and analysis.
+   *
+   * Saves a query based on the provided textbox and query type. Captures user input and saves
+   * it as a query for loading data.
    *
    * @param inputField The input field containing the user query.
    * @param inputQuery The query to be saved.
    */
+  private void saveQuery(TextboxUI inputField, QueryType queryType, QueryOperatorType op) {
+    if (inputField.getTextLength() <= 0)
+      return;
 
-  private void saveQuery( Widget inputField, FlightQueryType inputQuery) {
-    // Saves currently written user input into a quer
-    if (inputField instanceof TextboxUI) {
+    String text = inputField.getText().toUpperCase();
+    if (text.isEmpty())
+      return;
 
-      if (((TextboxUI)inputField).getTextLength() > 0 ) {
-        int dayVal = m_queryManager.formatQueryValue(inputQuery.Type, ((TextboxUI)inputField).getText().toUpperCase());
-        inputQuery.setQueryValue(dayVal);
-        m_activeQueries.add(inputQuery);
-      }
-    }
+    inputField.setText("");
 
-    // Adds to query output field textbox thing
-    m_queryList.add((((TextboxUI)inputField).getText()).toUpperCase() );
-    m_listCounter++;
+    int val = m_queryManager.formatQueryValue(queryType, text);
+    if (val == -1)
+      return;
 
-    // Set all user inputs back to default
-    ((TextboxUI)inputField).setText("");
+    FlightQueryType fqt = new FlightQueryType(queryType, op, m_location);
+    fqt.setQueryValue(val);
+
+    String queryTypeStr = formatText(queryType.toString());
+    String opStr = formatText(op.toString());
+    addToQueryList(fqt, queryTypeStr + " " + opStr + " " + formatValue(text, queryType));
   }
+
+  private void addToQueryList(FlightQueryType query, String text) {
+    m_activeQueries.add(query);
+    m_queryLB.add(text);
+  }
+
   /**
    * M.Poole:
+   *
    * Saves all active queries entered by the user. Collects and stores all active queries
-   * for subsequent data retrieval and analysis.
+   * for loading data.
    */
   private void saveAllQueries() {
-    saveQuery(m_Origin, m_OriginQuery);
-    saveQuery(m_Dest, m_DestQuery);
-    saveQuery(m_Distance, m_DistanceQuery);
+    saveQuery(m_originTB, QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL);
+    saveQuery(m_destTB, QueryType.AIRPORT_DEST_INDEX, QueryOperatorType.EQUAL);
+    saveQuery(m_airlineTB, QueryType.CARRIER_CODE_INDEX, QueryOperatorType.EQUAL);
+    saveQuery(m_flightNumTB, QueryType.FLIGHT_NUMBER, QueryOperatorType.EQUAL);
+    saveQuery(m_tailNumTB, QueryType.TAIL_NUMBER, QueryOperatorType.EQUAL);
+
+    for (int i = 0; i < m_tbopList.size(); i++)
+      saveQuery(m_tbopList.get(i));
+
+    if (m_cancelledRadio.getChecked()) {
+      FlightQueryType fqt = new FlightQueryType(QueryType.CANCELLED, QueryOperatorType.EQUAL, m_location);
+      addToQueryList(fqt, "Cancelled");
+    }
+
+    if (m_divertedRadio.getChecked()) {
+      FlightQueryType fqt = new FlightQueryType(QueryType.DIVERTED, QueryOperatorType.EQUAL, m_location);
+      addToQueryList(fqt, "Diverted");
+    }
+
+    if (m_successRadio.getChecked()) {
+      FlightQueryType fqtC = new FlightQueryType(QueryType.CANCELLED, QueryOperatorType.NOT_EQUAL, m_location);
+      FlightQueryType fqtD = new FlightQueryType(QueryType.DIVERTED, QueryOperatorType.NOT_EQUAL, m_location);
+      addToQueryList(fqtC, "Not Cancelled");
+      addToQueryList(fqtD, "Not Diverted");
+    }
   }
 
-  /**
-   * M.Poole:
-   * Changes the operator for a given query. Modifies the operator used in a query based
-   * on user interaction or selection.
-   *
-   * @param input         The query for which the operator needs to be changed.
-   * @param inputOperator The new operator for the query.
-   */
-  private void changeOperator(FlightQueryType input, QueryOperatorType inputOperator) {
+  private String formatText(String text) {
+    switch (text) {
+    case "KILOMETRES_DISTANCE":
+      return "KM";
+    case "AIRPORT_ORIGIN_INDEX":
+      return "Origin";
+    case "AIRPORT_DEST_INDEX":
+      return "Dest";
 
-    input.setOperator(inputOperator);
+    case "GREATER_THAN":
+      return " >";
+    case "LESS_THAN":
+      return " <";
+    case "EQUAL":
+      return " =";
+    case "NOT_EQUAL":
+      return " !=";
+    case "LESS_THAN_EQUAL":
+      return " <=";
+    case "GREATER_THAN_EQUAL":
+      return " >=";
+    default:
+      return text;
+    }
   }
 
+  private String formatValue(String text, QueryType query) {
+    switch (query) {
+    case ARRIVAL_TIME:
+    case SCHEDULED_ARRIVAL_TIME:
+    case DEPARTURE_TIME:
+    case SCHEDULED_DEPARTURE_TIME:
+      String cleanTxt = text.replace(":", "");
+      if (cleanTxt.length() == 3)
+        return cleanTxt.charAt(0) + ":" + cleanTxt.substring(1, 3);
+      return cleanTxt.substring(0, 2) + ":" + cleanTxt.substring(2, 4);
 
-  private void setOperators() {
+    default:
+      return text;
+    }
   }
 
   /**
@@ -226,16 +408,10 @@ class UserQueryUI extends Widget {
    * saved queries and resetting input fields.
    */
   private void clearQueries() {
-    // Clear all currently saved user queries
-
-
-    m_OriginQuery = new FlightQueryType(QueryType.AIRPORT_ORIGIN_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US);
-    m_DestQuery = new FlightQueryType(QueryType.AIRPORT_DEST_INDEX, QueryOperatorType.EQUAL, QueryLocationType.US);
-    m_DistanceQuery = new FlightQueryType(QueryType.KILOMETRES_DISTANCE, QueryOperatorType.LESS_THAN, QueryLocationType.US);
-    m_activeQueries = new ArrayList<FlightQueryType>();
-
-    m_queryList.clear();
+    m_activeQueries.clear();
+    m_queryLB.clear();
   }
+
   /**
    * M.Poole:
    * Changes the data location to US. Updates the interface to reflect data relevant
@@ -244,25 +420,64 @@ class UserQueryUI extends Widget {
   private void changeDataToUS() {
     m_location = QueryLocationType.US;
   }
+
   /**
    * M.Poole:
    * Changes the data location to World. Updates the interface to reflect global data.
    */
-
   private void changeDataToWorld() {
-    m_location = QueryLocationType.US;
+    m_location = QueryLocationType.WORLD;
   }
+
   /**
    * M.Poole:
+   *
    * Adds a widget to the user interface. Incorporates a new widget into the interface layout
    * for user interaction and data display.
    *
    * @param widget The widget to be added to the interface.
    */
-
   private void addWidget(Widget widget) {
     m_screen.addWidget(widget);
     widget.setParent(this);
+  }
+
+  /**
+   * M.Poole:
+   *
+   * Adds a widget to the user interface. Incorporates a new widget into the interface layout
+   * for user interaction and data display.
+   *
+   * @param widget The widget to be added to the interface.
+   * @param layer The layer of the widget draw order
+   */
+  private void addWidget(Widget widget, int layer) {
+    m_screen.addWidget(widget, layer);
+    widget.setParent(this);
+  }
+
+  private void addWidgetGroup(WidgetGroupType group) {
+    m_screen.addWidgetGroup(group);
+  }
+
+  public LabelUI createLabel(int posX, int posY, int scaleX, int scaleY, String text) {
+    LabelUI label = new LabelUI(posX, posY, scaleX, scaleY, text);
+    addWidget(label);
+    return label;
+  }
+
+  public void setRenderWorldUSButtons(boolean enabled) {
+    m_worldRadio.setRendering(enabled);
+    m_usRadio.setRendering(enabled);
+  }
+
+  public void setWorldUSParent(Widget parent) {
+    m_worldRadio.setParent(parent);
+    m_usRadio.setParent(parent);
+  }
+
+  public void setLoadOtherScreenText(String str) {
+    m_loadDataOtherScreenButton.setText(str);
   }
 }
 

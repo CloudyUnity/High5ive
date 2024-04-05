@@ -51,6 +51,8 @@ void draw() {
 }
 
 /**
+ * F. Wright
+ *
  * Called when a key is pressed and delegates to the application class.
  */
 void keyPressed() {
@@ -107,5 +109,5 @@ void mouseWheel(MouseEvent event) {
 // F. Wright, Used symbolic linking to allow us to put all UI pde files into subfolder, 11pm 05/03/24
 // M. Poole, Modified to add to add mouseWheel(), 1pm 12/3/24
 // CKM, implemented working fullscreen 15:00 12/03
-// CKM, commented out deprecated input class 16:00 12/03
+// CKM, removed deprecated input class 16:00 12/03
 // CKM, moved all imported libraries into main 00:00 15/03

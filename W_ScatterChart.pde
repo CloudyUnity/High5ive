@@ -55,10 +55,18 @@ class ScatterChartUI<T> extends Widget implements IChart2Axis<T, Integer> {
 
     float strokeWeight = lerp(8.0f, 2.0f, data.length / 650_000.0f);
     m_pointsShape.strokeWeight(strokeWeight);
+    
+    HashSet<PVector> vectorHashSet = new HashSet<PVector>();
 
     for (var value : data) {
       Integer x = getKeyX.apply(value) + 1;
       Integer y = getKeyY.apply(value) + 1;
+      
+      PVector vec = new PVector(x, y);
+      if (vectorHashSet.contains(vec))
+        continue;
+      vectorHashSet.add(vec);
+      
       float fracX = x / (float)m_maxValX;
       float fracY = y / (float)m_maxValY;
       m_pointsShape.vertex(fracX * m_scale.x, (1 - fracY) * m_scale.y);
@@ -99,10 +107,18 @@ class ScatterChartUI<T> extends Widget implements IChart2Axis<T, Integer> {
     s_DebugProfiler.startProfileTimer();
 
     m_pointsShape.beginShape(POINTS);
+    
+    HashSet<PVector> vectorHashSet = new HashSet<PVector>();
 
     for (var value : data) {
       Integer x = getKeyX.apply(value) + 1;
       Integer y = getKeyY.apply(value) + 1;
+      
+      PVector vec = new PVector(x, y);
+      if (vectorHashSet.contains(vec))
+        continue;
+      vectorHashSet.add(vec);
+      
       float fracX = x / (float)m_maxValX;
       float fracY = y / (float)m_maxValY;
       m_pointsShape.vertex(fracX * m_scale.x, (1 - fracY) * m_scale.y);

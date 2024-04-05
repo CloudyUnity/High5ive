@@ -73,6 +73,10 @@ class ScreenHome extends Screen {
     switchToCharts.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_CHARTS_ID));
     switchToCharts.setText("Charts");
     switchToCharts.setTextSize(25);
+
+    // LabelUI name = createLabel(100, 100, 200, 100, "High5ive");
+    // name.setCentreAligned(true);
+    // name.setTextSize(40);
     
     LabelUI title = createLabel(100, 100, (int)width/2, 200, "High5ive");
     title.setCentreAligned(false);
@@ -123,3 +127,4 @@ class ScreenHome extends Screen {
 // M. Orlowski, Added 2D calls, 12:00 13/03
 // M. Poole added TextBoxes and removed background 5pm 13/03
 // F.Wright Split HomeScreen into new File 26/03
+// CKM, fixed reversion issue, 17:00 28/03

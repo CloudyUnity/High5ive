@@ -1,4 +1,4 @@
-// Data type for event info 
+// Data type for event info
 class EventInfoType {
   public Widget Widget;
   public int X, Y;
@@ -28,7 +28,7 @@ class EventType<T extends EventInfoType> {
 // ...
 class StringEnteredEventInfoType extends EventInfoType {
   public String Data;
-  
+
   public StringEnteredEventInfoType(int x, int y, String data, Widget widget) {
     super(x, y, widget);
     Data = data;
@@ -39,7 +39,7 @@ class StringEnteredEventInfoType extends EventInfoType {
 class KeyPressedEventInfoType extends EventInfoType {
   public char PressedKey;
   public int PressedKeyCode;
-  
+
   public KeyPressedEventInfoType(int x, int y, char k, int kc, Widget widget) {
     super(x, y, widget);
     PressedKey = k;

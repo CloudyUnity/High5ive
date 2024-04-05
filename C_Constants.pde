@@ -46,6 +46,9 @@ final int DEFAULT_WIDGET_ROUNDNESS_2 = 40;
 final float DEFAULT_WIDGET_STROKE = 3;
 final float WIDGET_GROW_MODE_MULT = 1.1f;
 final float SWITCH_SCREEN_DUR_3D = 1000.0f;
+final PVector UQUI_TB_SCALE = new PVector(160, 40);
+final boolean HISTOGRAM_BAR_TEXT_ENABLED = false; 
+final int UQUI_3D_POS_Y = 100;
 
 // IDs
 final String SCREEN_1_ID = "Screen 1";
@@ -64,7 +67,7 @@ final PVector FORWARD_VECTOR = new PVector(0, 0, 1);
 final int EARTH_Z_3D = -20;
 final float VERTICAL_SCROLL_LIMIT_3D = 0.9f;
 final float VERTICAL_DRAG_SPEED_3D = 0.000003f;
-final float EARTH_FRICTION_3D = 0.99f;
+final float EARTH_FRICTION_3D = 0.98f;
 final float ARC_HEIGHT_MULT_3D = 0.5f;
 final int ARC_LINE_WIDTH_3D = 1;
 final int MARKER_LINE_WIDTH_3D = 3;
