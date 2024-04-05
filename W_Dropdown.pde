@@ -74,8 +74,10 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
   @ Override
     public void draw() {
     super.draw();
+    
     m_textbox.draw();
     m_dropdownButton.draw();
+    
     m_listbox.setActive(m_isOpen);
     if (m_isOpen)
       m_listbox.draw();

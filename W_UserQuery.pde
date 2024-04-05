@@ -55,7 +55,7 @@ class UserQueryUI extends Widget {
     m_screen = screen;
 
     // LISTBOXES
-    
+
     int buttonScale = 150;
 
     m_queryLB = new ListboxUI<String>(20, 250, buttonScale, 390, 40, v -> v);
@@ -180,7 +180,7 @@ class UserQueryUI extends Widget {
     tb.setPlaceholderText(placeholderTxt);
 
     DropdownUI<QueryOperatorType> opDD = new DropdownUI<QueryOperatorType>(posX + (int)UQUI_TB_SCALE.x, posY, 100, 400, 40, v -> formatText(v.toString()));
-    addWidget(opDD);
+    addWidget(opDD, posY);
     opDD.setTextboxText(formatText("LESS_THAN"));
 
     opDD.add(QueryOperatorType.EQUAL);
@@ -338,7 +338,7 @@ class UserQueryUI extends Widget {
       FlightQueryType fqtC = new FlightQueryType(QueryType.CANCELLED, QueryOperatorType.NOT_EQUAL, m_location);
       FlightQueryType fqtD = new FlightQueryType(QueryType.DIVERTED, QueryOperatorType.NOT_EQUAL, m_location);
       addToQueryList(fqtC, "Not Cancelled");
-      addToQueryList(fqtD, "Not Cancelled");
+      addToQueryList(fqtD, "Not Diverted");
     }
   }
 
@@ -409,6 +409,7 @@ class UserQueryUI extends Widget {
 
   /**
    * M.Poole:
+   *
    * Adds a widget to the user interface. Incorporates a new widget into the interface layout
    * for user interaction and data display.
    *
@@ -416,6 +417,19 @@ class UserQueryUI extends Widget {
    */
   private void addWidget(Widget widget) {
     m_screen.addWidget(widget);
+    widget.setParent(this);
+  }
+
+  /**
+   * M.Poole:
+   *
+   * Adds a widget to the user interface. Incorporates a new widget into the interface layout
+   * for user interaction and data display.
+   *
+   * @param widget The widget to be added to the interface.
+   */
+  private void addWidget(Widget widget, int layer) {
+    m_screen.addWidget(widget, layer);
     widget.setParent(this);
   }
 
