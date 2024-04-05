@@ -8,7 +8,7 @@
 - [X] Get rid of ui background
 - [X] New colors
 - [X] Design UI
-- [ ] Make UI actaully look nice
+- [X] Make UI actaully look nice
 
 ## 2D MAP
 
