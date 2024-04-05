@@ -45,6 +45,7 @@ final int DEFAULT_WIDGET_ROUNDNESS_2 = 40;
 final float DEFAULT_WIDGET_STROKE = 3;
 final float WIDGET_GROW_MODE_MULT = 1.1f;
 final float SWITCH_SCREEN_DUR_3D = 1000.0f;
+final PVector UQUI_TB_SCALE = new PVector(160, 40);
 
 // IDs
 final String SCREEN_1_ID = "Screen 1";
