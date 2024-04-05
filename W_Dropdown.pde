@@ -46,6 +46,8 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
 
     m_textbox = new TextboxUI(posX, posY, (int)(m_scale.x - tbHeight), tbHeight);
     m_dropdownButton = new ButtonUI((int)(posX + m_textbox.getScale().x), posY, (int)m_textbox.getScale().y, (int)m_textbox.getScale().y);
+    m_dropdownButton.getLabel().setCentreAligned(true);
+    m_dropdownButton.setTextSize(20);
     m_listbox = new ListboxUI<T>((int)m_pos.x, (int)m_pos.y + (int)m_textbox.getScale().y, (int)m_scale.x, (int)(m_scale.y - m_textbox.getScale().y), entryHeight, getDisplayString);
     m_listbox.setOnlyUseNeededHeight(true);
 
@@ -294,7 +296,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
    */
   private void openList() {
     m_isOpen = true;
-    m_dropdownButton.setText("-");
+    m_dropdownButton.setText("- ");
   }
 
   /**
@@ -304,7 +306,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
    */
   private void closeList() {
     m_isOpen = false;
-    m_dropdownButton.setText("+");
+    m_dropdownButton.setText("+ ");
   }
 
   @Override

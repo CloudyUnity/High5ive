@@ -66,21 +66,25 @@ class UserQueryUI extends Widget {
     ButtonUI addItemButton = new ButtonUI(20, 150, buttonScale, 40);
     addWidget(addItemButton);
     addItemButton.setText("Add Query");
+    addItemButton.setTextSize(20);
     addItemButton.getOnClickEvent().addHandler(e -> saveAllQueries());
 
     ButtonUI clearListButton = new ButtonUI(20, 200, buttonScale, 40);
     addWidget(clearListButton);
     clearListButton.setText("Clear All");
+    clearListButton.setTextSize(20);
     clearListButton.getOnClickEvent().addHandler(e -> clearQueries());
 
     ButtonUI loadDataButton = new ButtonUI(20, 650, buttonScale, 40);
     addWidget(loadDataButton);
     loadDataButton.setText("Load Data");
+    loadDataButton.setTextSize(20);
     loadDataButton.getOnClickEvent().addHandler(e -> loadData());
 
     m_loadDataOtherScreenButton = new ButtonUI(20, 700, buttonScale, 40);
     addWidget(m_loadDataOtherScreenButton);
     m_loadDataOtherScreenButton.setText("Load into Charts");
+    m_loadDataOtherScreenButton.setTextSize(20);
     m_loadDataOtherScreenButton.getOnClickEvent().addHandler(e -> loadDataOtherScreen());
 
     // WORLD - US RADIO BUTTONS
@@ -124,9 +128,9 @@ class UserQueryUI extends Widget {
 
     // TEXTBOXES
 
-    m_destTB = createTextboxUI(tbPosX, tbPosY, "Dest");
-    tbPosY += 50;
     m_originTB = createTextboxUI(tbPosX, tbPosY, "Origin");
+    tbPosY += 50;
+    m_destTB = createTextboxUI(tbPosX, tbPosY, "Dest");
     tbPosY += 50;
     m_flightNumTB = createTextboxUI(tbPosX, tbPosY, "Flight Number");
     tbPosY += 50;
@@ -140,26 +144,36 @@ class UserQueryUI extends Widget {
     RadioButtonGroupTypeUI cancelDivertGroup = new RadioButtonGroupTypeUI();
     addWidgetGroup(cancelDivertGroup);
 
-    m_cancelledRadio = new RadioButtonUI(240, tbPosY, 20, 20, "CANCELLED");
+    m_cancelledRadio = new RadioButtonUI(tbPosX, tbPosY, 40, 40, "CANCELLED");
     addWidget(m_cancelledRadio);
     m_cancelledRadio.setUncheckable(true);
     cancelDivertGroup.addMember(m_cancelledRadio);
 
-    m_divertedRadio = new RadioButtonUI(275, tbPosY, 20, 20, "DIVERTED");
+    LabelUI cancelLabel = createLabel(tbPosX + 50, tbPosY - 5, 160, 40, "Cancelled");
+    cancelLabel.setTextSize(20);
+    cancelLabel.setCentreAligned(false);
+
+    tbPosY += 50;
+
+    m_divertedRadio = new RadioButtonUI(tbPosX, tbPosY, 40, 40, "DIVERTED");
     addWidget(m_divertedRadio);
     m_divertedRadio.setUncheckable(true);
     cancelDivertGroup.addMember(m_divertedRadio);
+    
+    LabelUI divertLabel = createLabel(tbPosX + 50, tbPosY - 5, 160, 40, "Diverted");
+    divertLabel.setTextSize(20);
+    divertLabel.setCentreAligned(false);
 
-    m_successRadio = new RadioButtonUI(310, tbPosY, 20, 20, "SUCCESS");
+    tbPosY += 50;
+
+    m_successRadio = new RadioButtonUI(tbPosX, tbPosY, 40, 40, "SUCCESS");
     addWidget(m_successRadio);
     cancelDivertGroup.addMember(m_successRadio);
     m_successRadio.setUncheckable(true);
-
-    // LABELS
-
-    LabelUI cancelLabel = createLabel(237, tbPosY, 160, 50, "C      D      N");
-    cancelLabel.setTextSize(15);
-    cancelLabel.setCentreAligned(false);
+    
+    LabelUI successLabel = createLabel(tbPosX + 50, tbPosY - 5, 160, 40, "Successful");
+    successLabel.setTextSize(20);
+    successLabel.setCentreAligned(false);
   }
 
   /**
