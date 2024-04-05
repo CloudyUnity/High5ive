@@ -126,8 +126,11 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
         float middleAngle = lastAngle + (arcSize * 0.5f);
         float textPosX = m_pos.x + (cos(middleAngle) * diameterOfArc * 1.3f);
         float textPosY = m_pos.y + (sin(middleAngle) * diameterOfArc * 1.3f);
+        float textScale = (m_arcSizes.get(i) - 1) / 0.1f;
+        
         fill(255);
         textAlign(CENTER);
+        textSize(max(textScale * 30, 1));
         text(translateXValues(entry.getKey().toString()), textPosX, textPosY);
       }
 

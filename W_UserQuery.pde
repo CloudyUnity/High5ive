@@ -66,21 +66,25 @@ class UserQueryUI extends Widget {
     ButtonUI addItemButton = new ButtonUI(20, 150, buttonScale, 40);
     addWidget(addItemButton);
     addItemButton.setText("Add Query");
+    addItemButton.setTextSize(20);
     addItemButton.getOnClickEvent().addHandler(e -> saveAllQueries());
 
     ButtonUI clearListButton = new ButtonUI(20, 200, buttonScale, 40);
     addWidget(clearListButton);
     clearListButton.setText("Clear All");
+    clearListButton.setTextSize(20);
     clearListButton.getOnClickEvent().addHandler(e -> clearQueries());
 
     ButtonUI loadDataButton = new ButtonUI(20, 650, buttonScale, 40);
     addWidget(loadDataButton);
     loadDataButton.setText("Load Data");
+    loadDataButton.setTextSize(20);
     loadDataButton.getOnClickEvent().addHandler(e -> loadData());
 
     m_loadDataOtherScreenButton = new ButtonUI(20, 700, buttonScale, 40);
     addWidget(m_loadDataOtherScreenButton);
     m_loadDataOtherScreenButton.setText("Load into Charts");
+    m_loadDataOtherScreenButton.setTextSize(20);
     m_loadDataOtherScreenButton.getOnClickEvent().addHandler(e -> loadDataOtherScreen());
 
     // WORLD - US RADIO BUTTONS

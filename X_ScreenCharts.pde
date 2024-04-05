@@ -58,27 +58,30 @@ class ScreenCharts extends Screen {
     public void init() {
     super.init();
 
-    ButtonUI returnBttn = createButton(20, 20, 100, 50);
+    ButtonUI returnBttn = createButton(20, 50, 150, 40);
     returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
     returnBttn.setText("Return");
-    returnBttn.setTextSize(25);
+    returnBttn.setTextSize(20);
     returnBttn.setGrowScale(1.05f);
 
-    ButtonUI switchTo3D = createButton(20, 80, 100, 50);
+    ButtonUI switchTo3D = createButton(20, 100, 150, 40);
     switchTo3D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_FLIGHT_MAP_ID));
     switchTo3D.setText("3D");
-    switchTo3D.setTextSize(25);
+    switchTo3D.setTextSize(20);
     switchTo3D.setGrowScale(1.05f);
+    
+    int chartScale = 850;
+    int halfChartScale = (int)(chartScale * 0.5f);
 
-    m_histogram = new HistogramChartUI<FlightType, Integer>(500, 100, 850, 850);
+    m_histogram = new HistogramChartUI<FlightType, Integer>(width/2 - halfChartScale, height/2 - halfChartScale, chartScale, chartScale);
     addWidget(m_histogram);
     m_selectedGraph = m_histogram;
 
-    m_pieChart = new PieChartUI<FlightType, Integer>(width/2, height/2, 250);
+    m_pieChart = new PieChartUI<FlightType, Integer>(width/2, height/2, 300);
     addWidget(m_pieChart);
     m_pieChart.setActive(false);
 
-    m_scatterPlot = new ScatterChartUI<FlightType>(500, 100, 850, 850);
+    m_scatterPlot = new ScatterChartUI<FlightType>(width/2 - halfChartScale, height/2 - halfChartScale, chartScale, chartScale);
     addWidget(m_scatterPlot);
     m_scatterPlot.setActive(false);
 
