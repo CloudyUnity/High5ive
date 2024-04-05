@@ -9,6 +9,7 @@ import java.nio.channels.FileChannel;
 
 ApplicationClass s_ApplicationClass = new ApplicationClass();
 DebugProfilerClass s_DebugProfiler = new DebugProfilerClass();
+// PApplet s_theApp = this;
 PGraphics s_3D;
 int s_deltaTime;
 
@@ -27,7 +28,7 @@ void setup() {
   surface.setTitle("High5ive Flight Sim");
 
   frameRate(FRAME_RATE);
-  textFont(createFont("Century Gothic Bold", 48, true));
+  textFont(createFont("Century Gothic Bold", 200, true));
 
   s_3D = createGraphics(width, height, P3D);
   s_3D.hint(ENABLE_DEPTH_SORT);
@@ -57,6 +58,10 @@ void draw() {
 void keyPressed() {
   s_ApplicationClass.onKeyPressed(key, keyCode);
 }
+
+// void movieEvent(Movie movie) {
+//   movie.read();
+// }
 
 /**
  * F. Wright
