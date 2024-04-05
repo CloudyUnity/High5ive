@@ -11,8 +11,10 @@ class ApplicationClass {
 
   private FlightsManagerClass m_flightsManager = new FlightsManagerClass();
   private QueryManagerClass m_queryManager = new QueryManagerClass();
+  private TransitionManagerClass m_transManager = new TransitionManagerClass();
 
   private EventType<SwitchScreenEventInfoType> m_onSwitchEvent = new EventType<SwitchScreenEventInfoType>();
+  private String m_cachedSwitchScreenID;
 
   ScreenCharts m_screenCharts = null;
   Screen3DFM m_screen3DFM = null;
@@ -40,6 +42,16 @@ class ApplicationClass {
       m_screenCharts.insertBaseData(list);
     }
     );
+
+    s_DebugProfiler.startProfileTimer();
+    m_transManager.init();
+    m_transManager.startDetransition();
+    m_transManager.setOnTrans(o -> {
+      triggerSwitchScreen();
+      m_transManager.startDetransition();      
+    }
+    );
+    s_DebugProfiler.printTimeTakenMillis("Trans manager initialisation");
   }
 
   /**
@@ -48,16 +60,28 @@ class ApplicationClass {
    * Initializes the screens of the application.
    */
   private void createScreens() {
+    Consumer<FlightType[]> loadDataChartsTo3D = (flights -> {
+      m_screen3DFM.loadFlights(flights);
+      switchScreen(new SwitchScreenEventInfoType(0, 0, SCREEN_FLIGHT_MAP_ID, null));
+    }
+    );
+
+    Consumer<FlightType[]> loadData3DToCharts = (flights -> {
+      m_screenCharts.loadData(flights);
+      switchScreen(new SwitchScreenEventInfoType(0, 0, SCREEN_CHARTS_ID, null));
+    }
+    );
+
     ScreenHome screenHome = new ScreenHome(SCREEN_1_ID);
     m_screens.add(screenHome);
 
     m_screen2DFM = new TwoDMapScreen(SCREEN_TWOD_MAP_ID, m_queryManager);
     m_screens.add(m_screen2DFM);
 
-    m_screen3DFM = new Screen3DFM(SCREEN_FLIGHT_MAP_ID, m_queryManager);
+    m_screen3DFM = new Screen3DFM(SCREEN_FLIGHT_MAP_ID, m_queryManager, loadData3DToCharts);
     m_screens.add(m_screen3DFM);
 
-    m_screenCharts = new ScreenCharts(SCREEN_CHARTS_ID, m_queryManager);
+    m_screenCharts = new ScreenCharts(SCREEN_CHARTS_ID, m_queryManager, loadDataChartsTo3D);
     m_screens.add(m_screenCharts);
 
     m_currentScreen = screenHome;
@@ -74,6 +98,9 @@ class ApplicationClass {
     m_timeLastFrame = millis();
 
     m_currentScreen.draw();
+
+    m_transManager.frame();
+    m_transManager.render();
 
     if (DEBUG_MODE && DEBUG_FPS_ENABLED) {
       fill(255, 0, 0, 255);
@@ -157,10 +184,19 @@ class ApplicationClass {
    * @param e The event containing information about the switch screen event.
    */
   private void switchScreen(SwitchScreenEventInfoType e) {
-    e.Widget.getOnMouseExitEvent().raise((EventInfoType)e);
+    if (m_cachedSwitchScreenID != null)
+      return;
+      
+    if (e.Widget != null)
+      e.Widget.getOnMouseExitEvent().raise((EventInfoType)e);
+      
+    m_cachedSwitchScreenID = e.NewScreenId;
+    m_transManager.startTransition();
+  }
 
+  private void triggerSwitchScreen() {
     for (Screen screen : m_screens) {
-      if (e.NewScreenId.compareTo(screen.getScreenId()) != 0)
+      if (m_cachedSwitchScreenID.compareTo(screen.getScreenId()) != 0)
         continue;
 
       m_currentScreen = screen;
@@ -169,9 +205,14 @@ class ApplicationClass {
         m_currentScreen.init();
         s_DebugProfiler.printTimeTakenMillis("Initialisation of: " + screen.getScreenId());
       }
-      
+
+      m_cachedSwitchScreenID = null;
       return;
     }
+  }
+  
+  public boolean getTransitionState(){
+    return m_transManager.getTransitionState();
   }
 }
 

@@ -2,13 +2,13 @@
 
 ## UI
 
-- [ ] Implement a UI for querying
+- [X] Implement a UI for querying
 - [ ] Implement some sort of text based output thatll show you a table of all flights that meet your search criteria
-- [ ] Implement some sort of graphical statistics that show e.g. American Airlines most used airports
+- [X] Implement some sort of graphical statistics that show e.g. American Airlines most used airports
 - [X] Get rid of ui background
 - [X] New colors
-- [ ] Design UI
-- [ ] Make UI actaully look nice
+- [X] Design UI
+- [X] Make UI actaully look nice
 
 ## 2D MAP
 
@@ -16,15 +16,15 @@
 
 ## Querying
 
+- [ ] Second level queries - i.e. for every airport in a state or country, or every type of a plane
+
 ## Data
 
-- [ ] Try and scrape flightradar24 to replace the routes database to be better
+- [X] Try and scrape flightradar24 to replace the routes database to be better
 
 ## Dropdown Issues
 
 - [ ] Scroll bars too long
-- [ ] All dropdowns focused on frame 1
-- [ ] Multiple dropdowns can be focused
  
 - [ ] Write docs for widgets
     - [ ] Button

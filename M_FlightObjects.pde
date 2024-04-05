@@ -26,24 +26,24 @@ class FlightType { // 23 bytes total
     short arrivalTime, short arrivalDelay, byte cancelled, byte diverted,
     short scheduledDuration, short duration, short kmDistance) {
 
-    this.Month = month;
-    this.Day = day;
-    this.CarrierCodeIndex = carrierCodeIndex;
-    this.FlightNumber = flightNumber;
-    this.TailNumber = tailNumber;
-    this.AirportOriginIndex = airportOriginIndex;
-    this.AirportDestIndex = airportDestIndex;
-    this.ScheduledDepartureTime = scheduledDepartureTime;
-    this.DepartureTime = departureTime;
-    this.DepartureDelay = departureDelay;
-    this.ScheduledArrivalTime = scheduledArrivalTime;
-    this.ArrivalTime = arrivalTime;
-    this.ArrivalDelay = arrivalDelay;
-    this.Cancelled = cancelled;
-    this.Diverted = diverted;
-    this.ScheduledDuration = scheduledDuration;
-    this.ActualDuration = duration;
-    this.KmDistance = kmDistance;
+    Month = month;
+    Day = day;
+    CarrierCodeIndex = carrierCodeIndex;
+    FlightNumber = flightNumber;
+    TailNumber = tailNumber;
+    AirportOriginIndex = airportOriginIndex;
+    AirportDestIndex = airportDestIndex;
+    ScheduledDepartureTime = scheduledDepartureTime;
+    DepartureTime = departureTime;
+    DepartureDelay = departureDelay;
+    ScheduledArrivalTime = scheduledArrivalTime;
+    ArrivalTime = arrivalTime;
+    ArrivalDelay = arrivalDelay;
+    Cancelled = cancelled;
+    Diverted = diverted;
+    ScheduledDuration = scheduledDuration;
+    ActualDuration = duration;
+    KmDistance = kmDistance;
   }
 
   FlightType(short carrierCodeIndex, short airportOriginIndex, short airportDestIndex) {
@@ -62,8 +62,8 @@ class FlightMultiDataType {
   public FlightType[] WORLD;
 
   FlightMultiDataType(FlightType[] us, FlightType[] world) {
-    this.US = us;
-    this.WORLD = world;
+    US = us;
+    WORLD = world;
   }
 }
 
@@ -97,8 +97,8 @@ class FlightRangeQueryType {
   public QueryLocationType Location;
 
   FlightRangeQueryType(QueryType type, QueryLocationType location) {
-    this.Type = type;
-    this.Location = location;
+    Type = type;
+    Location = location;
   }
 }
 

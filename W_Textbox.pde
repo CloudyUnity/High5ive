@@ -65,7 +65,7 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
   public String getText() {
     return m_text.toString();
   }
-  public int getTextLength(){
+  public int getTextLength() {
     return m_text.length();
   }
 

@@ -17,6 +17,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
   private ListboxUI<T> m_listbox;
   private TextboxUI m_textbox;
   private ButtonUI m_dropdownButton;
+  private boolean m_isOpen = false;
 
   /**
    * A. Robertson
@@ -41,16 +42,16 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
 
     m_onMouseWheelMoved.addHandler(e -> onMouseWheelMoved(e));
 
-    int tbHeight = Math.max((int)(m_scale.y * 0.1), 40);
+    int tbHeight = max((int)(m_scale.y * 0.1), 40);
 
-    m_textbox = new TextboxUI(posX, posY, (int)(m_scale.x - tbHeight), tbHeight);    
-    m_dropdownButton = new ButtonUI((int)(posX + m_textbox.getScale().x), posY, (int)m_textbox.getScale().y, (int)m_textbox.getScale().y);    
+    m_textbox = new TextboxUI(posX, posY, (int)(m_scale.x - tbHeight), tbHeight);
+    m_dropdownButton = new ButtonUI((int)(posX + m_textbox.getScale().x), posY, (int)m_textbox.getScale().y, (int)m_textbox.getScale().y);
+    m_dropdownButton.getLabel().setCentreAligned(true);
+    m_dropdownButton.setTextSize(20);
     m_listbox = new ListboxUI<T>((int)m_pos.x, (int)m_pos.y + (int)m_textbox.getScale().y, (int)m_scale.x, (int)(m_scale.y - m_textbox.getScale().y), entryHeight, getDisplayString);
     m_listbox.setOnlyUseNeededHeight(true);
 
     m_textbox.setUserModifiable(false);
-
-    m_dropdownButton.setText("+");
 
     m_dropdownButton.getOnClickEvent().addHandler(e -> onDropdownButtonClicked(e));
     m_listbox.getOnClickEvent().addHandler(e -> onListboxClick(e));
@@ -59,26 +60,31 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
     m_textbox.getOnKeyPressedEvent().addHandler(e -> textboxChanged(e));
     m_textbox.getOnStringEnteredEvent().addHandler(e -> textboxTextEntered(e));
     m_textbox.getOnClickEvent().addHandler(e -> openList());
-    
+
     m_children.add(m_listbox);
     m_children.add(m_textbox);
     m_children.add(m_dropdownButton);
+
+    closeList();
   }
 
   /**
    * A. Robertson
-   * 
+   *
    * Draws the dropdown widget.
    */
   @ Override
-  public void draw() {
+    public void draw() {
     super.draw();
+    
     m_textbox.draw();
     m_dropdownButton.draw();
-    if (m_listbox.getActive())
+    
+    m_listbox.setActive(m_isOpen);
+    if (m_isOpen)
       m_listbox.draw();
   }
-  
+
   /**
    * A. Robertson
    *
@@ -127,20 +133,20 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
    *
    * An override of the Widget.isPositionInside method to ensure that it adapts to the box
    * being hidden or shown.
-   * 
+   *
    * @param mx The x component of the position to be checked.
    * @param my The y component of the position to be checked.
    * @returns Whether the given position is inside the widget.
    */
   @ Override
-  public boolean isPositionInside(int mx, int my) {
+    public boolean isPositionInside(int mx, int my) {
     if (m_listbox.getActive()) {
       return  mx >= m_pos.x && mx <= (m_pos.x + m_scale.x) &&
         my >= m_pos.y && my <= (m_pos.y + m_textbox.getScale().y + m_listbox.shownHeight());
-    } 
-    
+    }
+
     return mx >= m_pos.x && mx <= (m_pos.x + m_scale.x) &&
-        my >= m_pos.y && my <= (m_pos.y + m_textbox.getScale().y);
+      my >= m_pos.y && my <= (m_pos.y + m_textbox.getScale().y);
   }
 
   /**
@@ -175,7 +181,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
   public EventType<ListboxSelectedEntryChangedEventInfoType> getOnSelectionChanged() {
     return m_onSelectionChanged;
   }
-  
+
   /**
    * A. Robertson
    *
@@ -184,7 +190,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
    * @param searchable Whether the dropdown is searchable.
    */
   public void setSearchable(boolean searchable) {
-    if (!searchable)  
+    if (!searchable)
       m_listbox.removeFilter();
     m_textbox.setUserModifiable(searchable);
   }
@@ -201,7 +207,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
       closeList();
       return;
     }
-    
+
     openList();
   }
 
@@ -242,7 +248,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
       m_listbox.getOnMouseWheelEvent().raise(e);
     }
   }
-  
+
   /**
    * A. Robertson
    *
@@ -252,15 +258,15 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
    */
   private void textboxChanged(KeyPressedEventInfoType e) {
     TextboxUI tb = ((TextboxUI)e.Widget);
-    
+
     if (tb.getText() == "") {
       m_listbox.removeFilter();
       return;
-    } 
-    
+    }
+
     m_listbox.filterEntries(o -> m_getDisplayString.apply(o).startsWith(tb.getText()));
   }
-  
+
   /**
    * A. Robertson
    *
@@ -289,8 +295,8 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
    * Opens the list of items for the dropdown.
    */
   private void openList() {
-    m_listbox.setActive(true);
-    m_dropdownButton.setText("-");
+    m_isOpen = true;
+    m_dropdownButton.setText("- ");
   }
 
   /**
@@ -299,19 +305,19 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
    * Closes the list of items for the dropdown.
    */
   private void closeList() {
-    m_listbox.setActive(false);
-    m_dropdownButton.setText("+");
-  } 
-  
-   @Override
-  public void setParent(Widget parent){
+    m_isOpen = false;
+    m_dropdownButton.setText("+ ");
+  }
+
+  @Override
+    public void setParent(Widget parent) {
     super.setParent(parent);
     m_textbox.setParent(parent);
     m_dropdownButton.setParent(parent);
     m_listbox.setParent(parent);
   }
-  
-  public void setTextboxText(String text){
+
+  public void setTextboxText(String text) {
     m_textbox.setText(text);
   }
 }

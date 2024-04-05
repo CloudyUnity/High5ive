@@ -122,7 +122,6 @@ class QueryManagerClass {
     m_lookupResult = m_airportTable.findRow(code, "IATA");
     return m_lookupResult.getInt("Key");
   }
-  
 
   /**
    * CKM
@@ -266,6 +265,60 @@ class QueryManagerClass {
     m_lookupResult = m_aircraftTable.findRow(tailNumber, "Registration");
     return m_lookupResult.getInt("Key");
   }
+  
+    /**
+   * CKM
+   *
+   * Gets the list of aircraft of a certain type.
+   *
+   * @param plane type - the type of plane.
+   * @return The list of planes of that type.
+   */
+  public ArrayList<String> getAircraftbyType (String planeType) {
+    ArrayList<String> temp = new ArrayList<String>();
+    for (TableRow row : m_aircraftTable.rows()) {
+      if (row.getString("Type") == planeType) {
+        temp.add(row.getString("Registration"));
+      }
+    }
+    return temp;
+  }
+  
+  /**
+   * CKM
+   *
+   * Gets the list of airports in a country.
+   *
+   * @param countryCode - the ISO-3166 code for the country.
+   * @return The list of airports in that country.
+   */
+  public ArrayList<String> getAirportsbyISO3166 (String countryCode) {
+    ArrayList<String> temp = new ArrayList<String>();
+    for (TableRow row : m_airportTable.rows()) {
+      if (row.getString("ISO-3166") == countryCode) {
+        temp.add(row.getString("IATA"));
+      }
+    }
+    return temp;
+  }
+  
+    /**
+   * CKM
+   *
+   * Gets the list of airports in a country.
+   *
+   * @param countryText - the name for the country.
+   * @return The list of airports in that country.
+   */
+  public ArrayList<String> getAirportsbyCountry (String countryText) {
+    ArrayList<String> temp = new ArrayList<String>();
+    for (TableRow row : m_airportTable.rows()) {
+      if (row.getString("Country") == countryText) {
+        temp.add(row.getString("IATA"));
+      }
+    }
+    return temp;
+  }
 
   /**
    * T. Creagh
@@ -396,10 +449,10 @@ class QueryManagerClass {
       return (int)flight.ArrivalDelay;
 
     case CANCELLED:
-      return (int)flight.Cancelled;
+      return flight.Cancelled == 0 ? 0 : 1;
 
     case DIVERTED:
-      return (int)flight.Diverted;
+      return flight.Diverted == 0 ? 0 : 1;
       
     case SCHEDULED_DURATION:
       return (int)flight.ScheduledDuration;
@@ -691,6 +744,7 @@ class QueryManagerClass {
     case DAY:
     case FLIGHT_NUMBER:
     //case TAIL_NUBMER:
+
     case KILOMETRES_DISTANCE:
     case DEPARTURE_DELAY:
     case ARRIVAL_DELAY:
@@ -754,3 +808,5 @@ class QueryManagerClass {
 // T. Creagh, fixed querySort on delay tiems 00:00 24/03
 // T. Creagh, clean up 00:30 24/03
 // CKM, added new index based lookups, 20:00 26/03
+// CKM, added new queries 17:00 04/04
+// CKM, improved query verification 17:00 04/04
