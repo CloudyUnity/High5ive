@@ -37,6 +37,7 @@ abstract class Widget {
 
   protected PVector m_pos, m_scale;
   protected PVector m_basePos, m_baseScale;
+  protected int m_layer = -1;
   protected Widget m_parentWidget = null;
   protected ArrayList<Widget> m_children;
 
@@ -121,6 +122,14 @@ abstract class Widget {
     m_active = active;
     for (Widget child : m_children)
       child.setActive(active);
+  }
+  
+  public int getLayer(){
+    return m_layer;
+  }
+  
+  public void setLayer(int layer){
+    m_layer = layer;
   }
 
   /**

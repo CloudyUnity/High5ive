@@ -17,6 +17,7 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
   private ListboxUI<T> m_listbox;
   private TextboxUI m_textbox;
   private ButtonUI m_dropdownButton;
+  private boolean m_isOpen = false;
 
   /**
    * A. Robertson
@@ -41,16 +42,16 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
 
     m_onMouseWheelMoved.addHandler(e -> onMouseWheelMoved(e));
 
-    int tbHeight = Math.max((int)(m_scale.y * 0.1), 40);
+    int tbHeight = max((int)(m_scale.y * 0.1), 40);
 
-    m_textbox = new TextboxUI(posX, posY, (int)(m_scale.x - tbHeight), tbHeight);    
-    m_dropdownButton = new ButtonUI((int)(posX + m_textbox.getScale().x), posY, (int)m_textbox.getScale().y, (int)m_textbox.getScale().y);    
+    m_textbox = new TextboxUI(posX, posY, (int)(m_scale.x - tbHeight), tbHeight);
+    m_dropdownButton = new ButtonUI((int)(posX + m_textbox.getScale().x), posY, (int)m_textbox.getScale().y, (int)m_textbox.getScale().y);
+    m_dropdownButton.getLabel().setCentreAligned(true);
+    m_dropdownButton.setTextSize(20);
     m_listbox = new ListboxUI<T>((int)m_pos.x, (int)m_pos.y + (int)m_textbox.getScale().y, (int)m_scale.x, (int)(m_scale.y - m_textbox.getScale().y), entryHeight, getDisplayString);
     m_listbox.setOnlyUseNeededHeight(true);
 
     m_textbox.setUserModifiable(false);
-
-    m_dropdownButton.setText("+");
 
     m_dropdownButton.getOnClickEvent().addHandler(e -> onDropdownButtonClicked(e));
     m_listbox.getOnClickEvent().addHandler(e -> onListboxClick(e));
@@ -63,6 +64,8 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
     m_children.add(m_listbox);
     m_children.add(m_textbox);
     m_children.add(m_dropdownButton);
+
+    closeList();
   }
 
   /**
@@ -73,9 +76,12 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
   @ Override
     public void draw() {
     super.draw();
+    
     m_textbox.draw();
     m_dropdownButton.draw();
-    if (m_listbox.getActive())
+    
+    m_listbox.setActive(m_isOpen);
+    if (m_isOpen)
       m_listbox.draw();
   }
 
@@ -289,8 +295,8 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
    * Opens the list of items for the dropdown.
    */
   private void openList() {
-    m_listbox.setActive(true);
-    m_dropdownButton.setText("-");
+    m_isOpen = true;
+    m_dropdownButton.setText("- ");
   }
 
   /**
@@ -299,19 +305,19 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
    * Closes the list of items for the dropdown.
    */
   private void closeList() {
-    m_listbox.setActive(false);
-    m_dropdownButton.setText("+");
-  } 
-  
-   @Override
-  public void setParent(Widget parent){
+    m_isOpen = false;
+    m_dropdownButton.setText("+ ");
+  }
+
+  @Override
+    public void setParent(Widget parent) {
     super.setParent(parent);
     m_textbox.setParent(parent);
     m_dropdownButton.setParent(parent);
     m_listbox.setParent(parent);
   }
-  
-  public void setTextboxText(String text){
+
+  public void setTextboxText(String text) {
     m_textbox.setText(text);
   }
 }

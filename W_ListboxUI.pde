@@ -9,8 +9,8 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
   private boolean m_onlyUseNeededHeight = false;
   private ScrollbarUI m_scrollbar;
 
-  public ListboxUI(int x, int y, int width, int maxHeight, int entryHeight, Function<T, String> getDisplayString) {
-    super(x, y, width, maxHeight);
+  public ListboxUI(int x, int y, int scaleX, int maxHeight, int entryHeight, Function<T, String> getDisplayString) {
+    super(x, y, scaleX, maxHeight);
     m_getDisplayString = getDisplayString;
     m_onClickEvent = new EventType<EventInfoType>();
     m_onSelectedEntryChangedEvent = new EventType<ListboxSelectedEntryChangedEventInfoType<T>>();

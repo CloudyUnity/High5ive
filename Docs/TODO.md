@@ -8,7 +8,7 @@
 - [X] Get rid of ui background
 - [X] New colors
 - [X] Design UI
-- [ ] Make UI actaully look nice
+- [X] Make UI actaully look nice
 
 ## 2D MAP
 
@@ -25,8 +25,6 @@
 ## Dropdown Issues
 
 - [ ] Scroll bars too long
-- [ ] All dropdowns focused on frame 1
-- [ ] Multiple dropdowns can be focused
  
 - [ ] Write docs for widgets
     - [ ] Button
