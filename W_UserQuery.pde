@@ -102,6 +102,7 @@ class UserQueryUI extends Widget {
     m_worldRadio.getOnCheckedEvent().addHandler(e -> {
       changeDataToWorld();
       setLocksEnabled(true);
+      clearUSQueries();
     }
     );
     m_worldRadio.setGrowScale(1.1f);
@@ -561,6 +562,18 @@ class UserQueryUI extends Widget {
       bg.setHighlightOutlineOnEnter(false);      
       m_lockBoxesList.add(bg);
       bg.setActive(false);
+    }
+  }
+  
+  private void clearUSQueries(){
+    for (int i = 0; i < m_activeQueries.size(); i++){
+      QueryType qType = m_activeQueries.get(i).Type; 
+      boolean isOrigin = qType == QueryType.AIRPORT_ORIGIN_INDEX;
+      boolean isDest = qType == QueryType.AIRPORT_DEST_INDEX;
+      if (isOrigin || isDest)
+        continue;
+      m_activeQueries.remove(i);
+      m_queryLB.removeAt(i);
     }
   }
 }
