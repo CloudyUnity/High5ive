@@ -41,6 +41,9 @@ class ImageUI extends Widget {
 
     m_displayedImage = inputImage;
   }
+
+  public void behindImage() {
+  }
   
   /**
    * M.Poole:
@@ -52,6 +55,7 @@ class ImageUI extends Widget {
     super.draw();
     if (m_displayedImage == null)
       return;
+    behindImage();
 
     image(m_displayedImage, m_pos.x, m_pos.y, m_scale.x, m_scale.y);
   }
