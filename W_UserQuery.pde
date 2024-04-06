@@ -31,7 +31,7 @@ class UserQueryUI extends Widget {
   private ArrayList<TextboxWithOpType> m_tbopList = new ArrayList<TextboxWithOpType>();
   private ArrayList<Widget> m_lockBoxesList = new ArrayList<Widget>();
   private ArrayList<Widget> m_usOnlyFields = new ArrayList<Widget>();
-  
+
   private RadioButtonUI m_cancelledRadio;
   private RadioButtonUI m_divertedRadio;
   private RadioButtonUI m_successRadio;
@@ -39,7 +39,7 @@ class UserQueryUI extends Widget {
   private RadioButtonUI m_usRadio;
   private ButtonUI m_loadDataOtherScreenButton;
   private RadioButtonGroupTypeUI cancelDivertGroup;
-  
+
   private PImage m_lockImg = loadImage("data/Images/Lock.png");
 
   /**
@@ -93,6 +93,7 @@ class UserQueryUI extends Widget {
     m_loadDataOtherScreenButton.setText("Load into Charts");
     m_loadDataOtherScreenButton.setTextSize(textSize);
     m_loadDataOtherScreenButton.getOnClickEvent().addHandler(e -> loadDataOtherScreen());
+    m_usOnlyFields.add(m_loadDataOtherScreenButton);
 
     // WORLD - US RADIO BUTTONS
 
@@ -196,9 +197,9 @@ class UserQueryUI extends Widget {
     LabelUI successLabel = createLabel(tbPosX + 50, tbPosY - 5, 160, 40, "Successful");
     successLabel.setTextSize(20);
     successLabel.setCentreAligned(false);
-    
+
     // LOCKBOXES
-    
+
     createLockBoxes();
   }
 
@@ -488,9 +489,9 @@ class UserQueryUI extends Widget {
   private void setLocksEnabled(boolean enabled) {
     for (int i = 0; i < m_usOnlyFields.size(); i++)
       m_usOnlyFields.get(i).setActive(!enabled);
-      
+
     for (int i = 0; i < m_lockBoxesList.size(); i++)
-      m_lockBoxesList.get(i).setActive(enabled);    
+      m_lockBoxesList.get(i).setActive(enabled);
   }
 
   private void addWidgetGroup(WidgetGroupType group) {
@@ -522,57 +523,81 @@ class UserQueryUI extends Widget {
     int posX = 220;
     int lockPosX = int(posX + (265 * 0.5f) - 20);
     
-    for (int i = 150; i < 550; i += 50){
-      ImageUI lock = new ImageUI(m_lockImg, lockPosX, i, 40, 40); 
+    // TBOPs
+
+    for (int i = 150; i < 550; i += 50) {
+      ImageUI lock = new ImageUI(m_lockImg, lockPosX, i, 40, 40);
       addWidget(lock);
       lock.setLayer(5);
       m_lockBoxesList.add(lock);
       lock.setActive(false);
-      
+
       ButtonUI bg = new ButtonUI(posX, i, 265, 40);
       bg.setText("");
       addWidget(bg);
-      bg.setHighlightOutlineOnEnter(false);      
+      bg.setHighlightOutlineOnEnter(false);
       m_lockBoxesList.add(bg);
       bg.setActive(false);
     }
-    
+
     lockPosX = int(posX + (160 * 0.5f) - 20);
     
-    for (int i = 650; i < 800; i += 50){
-      ImageUI lock = new ImageUI(m_lockImg, lockPosX, i, 40, 40); 
+    // Textboxes
+
+    for (int i = 650; i < 800; i += 50) {
+      ImageUI lock = new ImageUI(m_lockImg, lockPosX, i, 40, 40);
       addWidget(lock);
       lock.setLayer(5);
       m_lockBoxesList.add(lock);
       lock.setActive(false);
-      
+
       ButtonUI bg = new ButtonUI(posX, i, 160, 40);
       bg.setText("");
       addWidget(bg);
-      bg.setHighlightOutlineOnEnter(false);      
+      bg.setHighlightOutlineOnEnter(false);
       m_lockBoxesList.add(bg);
       bg.setActive(false);
     }
     
-    for (int i = 800; i < 950; i += 50){
-      ImageUI lock = new ImageUI(m_lockImg, posX, i, 40, 40); 
+    // C/D/S
+
+    for (int i = 800; i < 950; i += 50) {
+      ImageUI lock = new ImageUI(m_lockImg, posX, i, 40, 40);
       addWidget(lock);
       lock.setLayer(5);
       m_lockBoxesList.add(lock);
       lock.setActive(false);
-      
+
       ButtonUI bg = new ButtonUI(posX, i, 40, 40);
       bg.setText("");
       addWidget(bg);
-      bg.setHighlightOutlineOnEnter(false);      
+      bg.setHighlightOutlineOnEnter(false);
       m_lockBoxesList.add(bg);
       bg.setActive(false);
     }
+    
+    // "Load Into Charts"
+    
+    posX = 20;
+    lockPosX = int(posX + (150 * 0.5f) - 20);
+
+    ImageUI lock = new ImageUI(m_lockImg, lockPosX, 700, 40, 40);
+    addWidget(lock);
+    lock.setLayer(5);
+    m_lockBoxesList.add(lock);
+    lock.setActive(false);
+
+    ButtonUI bg = new ButtonUI(posX, 700, 150, 40);
+    bg.setText("");
+    addWidget(bg);
+    bg.setHighlightOutlineOnEnter(false);
+    m_lockBoxesList.add(bg);
+    bg.setActive(false);
   }
-  
-  private void clearUSQueries(){
-    for (int i = 0; i < m_activeQueries.size(); i++){
-      QueryType qType = m_activeQueries.get(i).Type; 
+
+  private void clearUSQueries() {
+    for (int i = 0; i < m_activeQueries.size(); i++) {
+      QueryType qType = m_activeQueries.get(i).Type;
       boolean isOrigin = qType == QueryType.AIRPORT_ORIGIN_INDEX;
       boolean isDest = qType == QueryType.AIRPORT_DEST_INDEX;
       if (isOrigin || isDest)
