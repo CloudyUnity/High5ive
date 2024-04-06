@@ -209,10 +209,6 @@ private color getColor(int i) {
     return COLOR_HIGHTLIGHT_4;
   case 4:
     return COLOR_HIGHTLIGHT_5;
-  // case 5:
-  //   return COLOR_HIGHTLIGHT_6;
-  // case 6:
-  //   return COLOR_HIGHTLIGHT_7;
   default:
     return COLOR_HIGHTLIGHT_1;
   }
