@@ -1,3 +1,13 @@
+"""
+CKM
+
+Code to scrape every flight operating in the next week around the world
+
+// @param iata: list of airports to look for routes from
+// return output.csv: a list of every pair of airports with a flight operating from the first to the second in the next week (meaning the average route will appear twice)
+
+"""
+
 import requests, time, string, random
 from bs4 import BeautifulSoup
 
