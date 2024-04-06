@@ -10,6 +10,7 @@ import java.nio.channels.FileChannel;
 ApplicationClass s_ApplicationClass = new ApplicationClass();
 DebugProfilerClass s_DebugProfiler = new DebugProfilerClass();
 PGraphics s_3D;
+PGraphics s_roundedRectImage8;
 int s_deltaTime;
 
 /**
@@ -34,6 +35,12 @@ void setup() {
   if (!s_3D.isGL()) {
     println("OpenGL is not available. Make sure hardware acceleration is enabled.");
   }
+
+  s_roundedRectImage8 = createGraphics(160, 40, P2D);
+  s_roundedRectImage8.beginDraw();
+  s_roundedRectImage8.fill(COLOR_WHITE);
+  s_roundedRectImage8.rect(0, 0, 160, 40, 8);
+  s_roundedRectImage8.endDraw(); 
 
   s_ApplicationClass.init();
 

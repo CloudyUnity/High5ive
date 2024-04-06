@@ -12,8 +12,6 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
   private boolean m_userModifiable = true;
   private String m_placeholderText = "";
 
-  PGraphics m_rectGraphic;
-
   public TextboxUI(int x, int y, int scaleX, int scaleY) {
     super(x, y, scaleX, scaleY);
     m_backgroundColour = #FFFFFF;
@@ -24,18 +22,12 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
     m_onStringEnteredEvent = new EventType<StringEnteredEventInfoType>();
 
     m_onKeyPressedEvent.addHandler(e -> onKeyPressed(e));
-
-    m_rectGraphic = createGraphics(160, 40, P2D);
-    m_rectGraphic.beginDraw();
-    m_rectGraphic.fill(m_backgroundColour);
-    m_rectGraphic.rect(0, 0, 160, 40, DEFAULT_WIDGET_ROUNDNESS_3);
-    m_rectGraphic.endDraw();
   }
 
   void draw() {
     super.draw();
 
-    image(m_rectGraphic, m_pos.x, m_pos.y, m_scale.x, m_scale.y);
+    image(s_roundedRectImage8, m_pos.x, m_pos.y, m_scale.x, m_scale.y);
 
     String curText = m_text.toString();
 
