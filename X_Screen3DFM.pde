@@ -47,7 +47,7 @@ class Screen3DFM extends Screen {
     public void init() {
     super.init();
 
-    m_userQueryUI = new UserQueryUI(-2000, UQUI_3D_POS_Y, 1, 1, m_queryManager, this);
+    m_userQueryUI = new UserQueryUI(OFFSCREEN_X_3D, UQUI_3D_POS_Y, 1, 1, m_queryManager, this);
     addWidget(m_userQueryUI, 100);
     m_userQueryUI.setWorldUSParent(m_worldUSUIParent);
     m_userQueryUI.setOnLoadHandler(flights -> {
@@ -226,12 +226,14 @@ class Screen3DFM extends Screen {
     float frac = (millis() - m_switchUIStartTimeMillis) / SWITCH_SCREEN_DUR_3D;
     frac = clamp(frac, 0, 1);
     frac *= frac;
+    
+    m_userQueryUI.setActive(m_isQueryDisplayed || frac <= 1);
 
-    PVector flightMapTargetPos = m_isQueryDisplayed ? new PVector(-2000, 0) : new PVector(0, 0);
+    PVector flightMapTargetPos = m_isQueryDisplayed ? new PVector(OFFSCREEN_X_3D, 0) : new PVector(0, 0);
     PVector newFlightMapPos = PVector.lerp(m_flightMapUIParent.getPos(), flightMapTargetPos, frac);
     m_flightMapUIParent.setPos(newFlightMapPos);
 
-    PVector userQueryTargetPos = m_isQueryDisplayed ? new PVector(0, UQUI_3D_POS_Y) : new PVector(-2000, UQUI_3D_POS_Y);
+    PVector userQueryTargetPos = m_isQueryDisplayed ? new PVector(0, UQUI_3D_POS_Y) : new PVector(OFFSCREEN_X_3D, UQUI_3D_POS_Y);
     PVector newUserQueryPos = PVector.lerp(m_userQueryUI.getPos(), userQueryTargetPos, frac);
     m_userQueryUI.setPos(newUserQueryPos);
 

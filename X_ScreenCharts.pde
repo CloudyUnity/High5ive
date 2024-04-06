@@ -23,7 +23,7 @@ class ScreenCharts extends Screen {
 
   Widget m_selectedGraph;
 
-  private boolean m_initialised = false;
+  private boolean m_initialisedData = false;
 
   /**
    * F. Wright
@@ -43,7 +43,7 @@ class ScreenCharts extends Screen {
     m_userQuery.setRenderWorldUSButtons(false);
     m_userQuery.setOnLoadHandler(flights -> {
       loadData(flights);
-      if (m_initialised)
+      if (m_initialisedData)
       reloadData();
     }
     );
@@ -233,7 +233,7 @@ class ScreenCharts extends Screen {
     scatterRadio.setGrowScale(1.1f);
     group.addMember(scatterRadio);
 
-    m_initialised = true;
+    m_initialisedData = true;
   }
 
   /**

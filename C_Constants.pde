@@ -9,7 +9,7 @@ final String DATA_DIRECTOR_PATH = "/data/Preprocessed Data/";
 // Debug Options
 final boolean DEBUG_MODE = true; // Turns on various stats or console logging
 final int DEBUG_FPS_COUNTER_STORAGE = 30;
-final boolean DEBUG_FPS_ENABLED = false;
+final boolean DEBUG_FPS_ENABLED = true;
 final boolean DEBUG_QUICK_LOAD_3D = false; // Turns off the earth shader for quick 3D loading
 
 // Color Palette
@@ -33,7 +33,6 @@ final int COLOR_HIGHTLIGHT_5 = #3f5189;
 // final int COLOR_HIGHTLIGHT_7 = #e582d1;
 
 final int COLOR_BACKGROUND = #272838;
-// final int COLOR_FOREGROUND = #9e9fba;
 final int COLOR_FOREGROUND = COLOR_WHITE;
 final int COLOR_TEXT = #f9f8f8;
 final int COLOR_3D_MARKER = COLOR_HIGHTLIGHT_1;
@@ -41,7 +40,6 @@ final int COLOR_3D_ARC = COLOR_WHITE;
 
 // Scene
 final int DEFAULT_FOREGROUND_COLOUR = COLOR_WHITE;
-// final int DEFAULT_BACKGROUND_COLOUR = COLOR_BACKGROUND;
 final int DEFAULT_BACKGROUND_COLOUR = COLOR_BLACK;
 final int DEFAULT_OUTLINE_COLOUR = COLOR_FOREGROUND;
 final int DEFAULT_HIGHLIGHT_COLOR = COLOR_HIGHTLIGHT_2;
@@ -60,6 +58,7 @@ final float SWITCH_SCREEN_DUR_3D = 1000.0f;
 final PVector UQUI_TB_SCALE = new PVector(160, 40);
 final boolean HISTOGRAM_BAR_TEXT_ENABLED = false; 
 final int UQUI_3D_POS_Y = 100;
+final int OFFSCREEN_X_3D = -1000;
 
 // IDs
 final String SCREEN_1_ID = "Screen 1";

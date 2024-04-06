@@ -29,7 +29,7 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
 
   @ Override
     public void draw() {
-    super.draw();
+    super.draw();   
 
     if (!(m_onlyUseNeededHeight && neededHeight() == 0)) {
       fill(m_backgroundColour);

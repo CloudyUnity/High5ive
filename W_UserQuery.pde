@@ -39,6 +39,8 @@ class UserQueryUI extends Widget {
   private RadioButtonUI m_usRadio;
   private ButtonUI m_loadDataOtherScreenButton;
   private RadioButtonGroupTypeUI cancelDivertGroup;
+  
+  private PImage m_lockImg = loadImage("data/Images/Lock.png");
 
   /**
    * M.Poole:
@@ -462,7 +464,8 @@ class UserQueryUI extends Widget {
    * @param widget The widget to be added to the interface.
    */
   private void addWidget(Widget widget) {
-    m_screen.addWidget(widget);
+    if (m_screen != null)
+      m_screen.addWidget(widget);
     widget.setParent(this);
   }
 
@@ -477,7 +480,8 @@ class UserQueryUI extends Widget {
    * @param layer The layer of the widget draw order
    */
   private void addWidget(Widget widget, int layer) {
-    m_screen.addWidget(widget, layer);
+    if (m_screen != null)
+      m_screen.addWidget(widget, layer);
     widget.setParent(this);
   }
 
@@ -490,7 +494,8 @@ class UserQueryUI extends Widget {
   }
 
   private void addWidgetGroup(WidgetGroupType group) {
-    m_screen.addWidgetGroup(group);
+    if (m_screen != null)
+      m_screen.addWidgetGroup(group);
   }
 
   public LabelUI createLabel(int posX, int posY, int scaleX, int scaleY, String text) {
@@ -518,7 +523,7 @@ class UserQueryUI extends Widget {
     int lockPosX = int(posX + (265 * 0.5f) - 20);
     
     for (int i = 150; i < 550; i += 50){
-      ImageUI lock = new ImageUI("data/Images/Lock.png", lockPosX, i, 40, 40); 
+      ImageUI lock = new ImageUI(m_lockImg, lockPosX, i, 40, 40); 
       addWidget(lock);
       lock.setLayer(5);
       m_lockBoxesList.add(lock);
@@ -535,7 +540,7 @@ class UserQueryUI extends Widget {
     lockPosX = int(posX + (160 * 0.5f) - 20);
     
     for (int i = 650; i < 800; i += 50){
-      ImageUI lock = new ImageUI("data/Images/Lock.png", lockPosX, i, 40, 40); 
+      ImageUI lock = new ImageUI(m_lockImg, lockPosX, i, 40, 40); 
       addWidget(lock);
       lock.setLayer(5);
       m_lockBoxesList.add(lock);
@@ -550,7 +555,7 @@ class UserQueryUI extends Widget {
     }
     
     for (int i = 800; i < 950; i += 50){
-      ImageUI lock = new ImageUI("data/Images/Lock.png", posX, i, 40, 40); 
+      ImageUI lock = new ImageUI(m_lockImg, posX, i, 40, 40); 
       addWidget(lock);
       lock.setLayer(5);
       m_lockBoxesList.add(lock);
