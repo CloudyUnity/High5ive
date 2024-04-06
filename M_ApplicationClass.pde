@@ -45,9 +45,8 @@ class ApplicationClass {
 
     s_DebugProfiler.startProfileTimer();
     m_transManager.init();
-    m_transManager.startDetransition();
-    m_transManager.setOnTrans(o -> {
-      triggerSwitchScreen();
+    m_transManager.setOnTrans(o -> {      
+      triggerSwitchScreen();      
       m_transManager.startDetransition();      
     }
     );

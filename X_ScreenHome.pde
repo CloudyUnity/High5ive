@@ -97,9 +97,9 @@ class ScreenHome extends Screen {
     switchToCharts.setText("Charts");
     switchToCharts.setTextSize((int)((float)height/20.0));
 
-    // LabelUI name = createLabel(100, 100, 200, 100, "High5ive");
-    // name.setCentreAligned(true);
-    // name.setTextSize(40);
+     LabelUI name = createLabel(100, 100, 200, 100, "High5ive");
+     name.setCentreAligned(true);
+     name.setTextSize(40);
     
     LabelUI title = createLabel((int)oneSpacingUnit, (int)oneSpacingUnit, (int)((float)width/2.0), (int)((float)height/5.0), "High5ive");
     title.setCentreAligned(false);

@@ -1,3 +1,8 @@
+/**
+ * F.Wright:
+ * Represents a textbox with an attached operator dropdown for querying flight data.
+ */
+
 class TextboxWithOpType {
   public TextboxUI Textbox;
   public DropdownUI<QueryOperatorType> OpDropdown;
@@ -29,8 +34,9 @@ class UserQueryUI extends Widget {
 
   private TextboxUI m_originTB, m_destTB, m_airlineTB, m_flightNumTB, m_tailNumTB;
   private ArrayList<TextboxWithOpType> m_tbopList = new ArrayList<TextboxWithOpType>();
-  private ArrayList<TextboxUI> m_usOnlyTextboxesList = new ArrayList<TextboxUI>();
-  private ArrayList<ImageUI> m_lockBoxesList = new ArrayList<ImageUI>();
+  private ArrayList<Widget> m_lockBoxesList = new ArrayList<Widget>();
+  private ArrayList<Widget> m_usOnlyFields = new ArrayList<Widget>();
+
   private RadioButtonUI m_cancelledRadio;
   private RadioButtonUI m_divertedRadio;
   private RadioButtonUI m_successRadio;
@@ -38,10 +44,8 @@ class UserQueryUI extends Widget {
   private RadioButtonUI m_usRadio;
   private ButtonUI m_loadDataOtherScreenButton;
   private RadioButtonGroupTypeUI cancelDivertGroup;
-  private PImage m_longLock = loadImage("data/Images/Long_Lock.png");
-  private PImage m_normalLock = loadImage("data/Images/Normal_Lock.png");
 
-
+  private PImage m_lockImg = loadImage("data/Images/Lock.png");
 
   /**
    * M.Poole:
@@ -59,8 +63,6 @@ class UserQueryUI extends Widget {
 
     m_queryManager = queryManager;
     m_screen = screen;
-
-
 
     // LISTBOXES
 
@@ -96,6 +98,7 @@ class UserQueryUI extends Widget {
     m_loadDataOtherScreenButton.setText("Load into Charts");
     m_loadDataOtherScreenButton.setTextSize(textSize);
     m_loadDataOtherScreenButton.getOnClickEvent().addHandler(e -> loadDataOtherScreen());
+    m_usOnlyFields.add(m_loadDataOtherScreenButton);
 
     // WORLD - US RADIO BUTTONS
 
@@ -106,8 +109,8 @@ class UserQueryUI extends Widget {
     m_worldRadio = new RadioImageButtonUI(width - iconSize - 10, 20, iconSize, iconSize, "WORLD", "data/Images/GlobeIcon.png", "data/Images/GlobeIconOff.png");
     m_worldRadio.getOnCheckedEvent().addHandler(e -> {
       changeDataToWorld();
-      greyOutUSQueries();
-      
+      setLocksEnabled(true);
+      clearUSQueries();
     }
     );
     m_worldRadio.setGrowScale(1.1f);
@@ -115,8 +118,8 @@ class UserQueryUI extends Widget {
 
     m_usRadio = new RadioImageButtonUI(width - iconSize - 10, 50 + iconSize, iconSize, iconSize, "US", "data/Images/USIcon.png", "data/Images/USIconOff.png");
     m_usRadio.getOnCheckedEvent().addHandler(e -> {
-      activateUSQueries();
       changeDataToUS();
+      setLocksEnabled(false);
     }
     );
     m_usRadio.setGrowScale(1.1f);
@@ -126,7 +129,7 @@ class UserQueryUI extends Widget {
     // TEXTBOXES WITH OPERATORS
 
     int tbPosX = 220;
-    int tbPosY = 50;
+    int tbPosY = 150;
 
     createTextboxWithOp(tbPosX, tbPosY, "Distance", QueryType.KILOMETRES_DISTANCE);
     tbPosY += 50;
@@ -152,13 +155,13 @@ class UserQueryUI extends Widget {
     m_destTB = createTextboxUI(tbPosX, tbPosY, "Dest");
     tbPosY += 50;
     m_flightNumTB = createTextboxUI(tbPosX, tbPosY, "Flight Number");
-    m_usOnlyTextboxesList.add(m_flightNumTB);
+    m_usOnlyFields.add(m_flightNumTB);
     tbPosY += 50;
     m_airlineTB = createTextboxUI(tbPosX, tbPosY, "Airline");
-    m_usOnlyTextboxesList.add(m_airlineTB);
+    m_usOnlyFields.add(m_airlineTB);
     tbPosY += 50;
     m_tailNumTB = createTextboxUI(tbPosX, tbPosY, "Tail Number");
-    m_usOnlyTextboxesList.add(m_tailNumTB);
+    m_usOnlyFields.add(m_tailNumTB);
     tbPosY += 50;
 
     // CANCELLED - DIVERTED - SUCCESSFUL RADIO BUTTONS
@@ -170,6 +173,7 @@ class UserQueryUI extends Widget {
     addWidget(m_cancelledRadio);
     m_cancelledRadio.setUncheckable(true);
     cancelDivertGroup.addMember(m_cancelledRadio);
+    m_usOnlyFields.add(m_cancelledRadio);
 
     LabelUI cancelLabel = createLabel(tbPosX + 50, tbPosY - 5, 160, 40, "Cancelled");
     cancelLabel.setTextSize(20);
@@ -181,6 +185,7 @@ class UserQueryUI extends Widget {
     addWidget(m_divertedRadio);
     m_divertedRadio.setUncheckable(true);
     cancelDivertGroup.addMember(m_divertedRadio);
+    m_usOnlyFields.add(m_divertedRadio);
 
     LabelUI divertLabel = createLabel(tbPosX + 50, tbPosY - 5, 160, 40, "Diverted");
     divertLabel.setTextSize(20);
@@ -192,12 +197,14 @@ class UserQueryUI extends Widget {
     addWidget(m_successRadio);
     cancelDivertGroup.addMember(m_successRadio);
     m_successRadio.setUncheckable(true);
+    m_usOnlyFields.add(m_successRadio);
 
     LabelUI successLabel = createLabel(tbPosX + 50, tbPosY - 5, 160, 40, "Successful");
     successLabel.setTextSize(20);
     successLabel.setCentreAligned(false);
 
     // LOCKBOXES
+
     createLockBoxes();
   }
 
@@ -217,10 +224,12 @@ class UserQueryUI extends Widget {
     TextboxUI tb = new TextboxUI(posX, posY, (int)UQUI_TB_SCALE.x, (int)UQUI_TB_SCALE.y);
     addWidget(tb);
     tb.setPlaceholderText(placeholderTxt);
+    m_usOnlyFields.add(tb);
 
     DropdownUI<QueryOperatorType> opDD = new DropdownUI<QueryOperatorType>(posX + (int)UQUI_TB_SCALE.x, posY, 100, 400, 40, v -> formatText(v.toString()));
     addWidget(opDD, -posY);
     opDD.setTextboxText(formatText("LESS_THAN"));
+    m_usOnlyFields.add(opDD);
 
     opDD.add(QueryOperatorType.EQUAL);
     opDD.add(QueryOperatorType.NOT_EQUAL);
@@ -285,6 +294,13 @@ class UserQueryUI extends Widget {
     s_DebugProfiler.printTimeTakenMillis("User query event");
   }
 
+  /**
+   * F.Wright:
+   *
+   * Loads flight data to another screen based on the active queries. Queries the flight manager for relevant data
+   * based on user input queries and updates the displayed data accordingly.
+   */
+
   private void loadDataOtherScreen() {
     s_DebugProfiler.startProfileTimer();
     m_onLoadDataOtherScreenEvent.accept(createFlightTypeArr());
@@ -304,6 +320,8 @@ class UserQueryUI extends Widget {
 
     return result;
   }
+
+
 
   private void saveQuery(TextboxWithOpType tbop) {
     QueryOperatorType op = tbop.OpDropdown.getSelected();
@@ -383,6 +401,15 @@ class UserQueryUI extends Widget {
     }
   }
 
+
+  /**
+   * F. Wright
+   *
+   * Formats the specified text according to certain predefined cases.
+   *
+   * @param text The text to format.
+   * @return The formatted text.
+   */
   private String formatText(String text) {
     switch (text) {
     case "KILOMETRES_DISTANCE":
@@ -408,7 +435,15 @@ class UserQueryUI extends Widget {
       return text;
     }
   }
-
+  /**
+   * F. Wright
+   *
+   * Formats the specified value according to the query type.
+   *
+   * @param text The text to format.
+   * @param query The query type to determine the formatting.
+   * @return The formatted value.
+   */
   private String formatValue(String text, QueryType query) {
     switch (query) {
     case ARRIVAL_TIME:
@@ -461,7 +496,8 @@ class UserQueryUI extends Widget {
    * @param widget The widget to be added to the interface.
    */
   private void addWidget(Widget widget) {
-    m_screen.addWidget(widget);
+    if (m_screen != null)
+      m_screen.addWidget(widget);
     widget.setParent(this);
   }
 
@@ -476,96 +512,194 @@ class UserQueryUI extends Widget {
    * @param layer The layer of the widget draw order
    */
   private void addWidget(Widget widget, int layer) {
-    m_screen.addWidget(widget, layer);
+    if (m_screen != null)
+      m_screen.addWidget(widget, layer);
     widget.setParent(this);
   }
 
-  private void activateUSQueries() {
+  /**
+   * F. Wright
+   *
+   * Enables or disables the lock functionality for the specified fields and lock boxes.
+   *
+   * @param enabled True to enable locks, false to disable them.
+   */
 
-    
-    for (int textbox = 0; textbox < m_usOnlyTextboxesList.size(); textbox++) {
-      m_usOnlyTextboxesList.get(textbox).setUserModifiable(false);
-    }
-    for (int tbOp = 0; tbOp <  m_tbopList.size(); tbOp++ ) {
-      (m_tbopList.get(tbOp).Textbox).setUserModifiable(false);
-    }
-    for (int lockbox = 0; lockbox < 14; lockbox++) {
-      m_lockBoxesList.get(lockbox).setPos(-270, int(m_lockBoxesList.get(lockbox).m_pos.y) -100);
-    }
-     m_cancelledRadio.setActive(true);
-     m_divertedRadio.setActive(true);
-     m_successRadio.setActive(true);
-    
+  private void setLocksEnabled(boolean enabled) {
+    for (int i = 0; i < m_usOnlyFields.size(); i++)
+      m_usOnlyFields.get(i).setActive(!enabled);
+
+    for (int i = 0; i < m_lockBoxesList.size(); i++)
+      m_lockBoxesList.get(i).setActive(enabled);
   }
-
-
-
-  private void greyOutUSQueries() {
-
-    for (int textbox = 0; textbox < m_usOnlyTextboxesList.size(); textbox++) {
-      m_usOnlyTextboxesList.get(textbox).setUserModifiable(true);
-    }
-    for (int tbOp = 0; tbOp <  m_tbopList.size(); tbOp++ ) {
-      (m_tbopList.get(tbOp).Textbox).setUserModifiable(true);
-    }
-    for (int lockbox = 0; lockbox < 14; lockbox++) {
-      m_lockBoxesList.get(lockbox).setPos(220, int(m_lockBoxesList.get(lockbox).m_pos.y) - 100);
-    }
-     m_cancelledRadio.setActive(false);
-     m_divertedRadio.setActive(false);
-     m_successRadio.setActive(false);
-    
-  }
-
+  /**
+   * F. Wright
+   *
+   * Adds a widget group to the screen if the screen is not null.
+   *
+   * @param group The type of widget group to add.
+   */
 
   private void addWidgetGroup(WidgetGroupType group) {
-    m_screen.addWidgetGroup(group);
+    if (m_screen != null)
+      m_screen.addWidgetGroup(group);
   }
+  /**
+   * F. Wright
+   *
+   * Creates a label with the specified position, scale, and text, adds it to the widget group, and returns the label.
+   *
+   * @param posX The x-coordinate of the label.
+   * @param posY The y-coordinate of the label.
+   * @param scaleX The horizontal scale of the label.
+   * @param scaleY The vertical scale of the label.
+   * @param text The text to display on the label.
+   * @return The created label.
+   */
 
   public LabelUI createLabel(int posX, int posY, int scaleX, int scaleY, String text) {
     LabelUI label = new LabelUI(posX, posY, scaleX, scaleY, text);
     addWidget(label);
     return label;
   }
-
-  public void setLocksParent(Widget parent) {
-  }
+  /**
+   * F. Wright
+   *
+   * Sets the rendering status of the world and US radio buttons.
+   *
+   * @param enabled True to enable rendering, false to disable it.
+   */
 
   public void setRenderWorldUSButtons(boolean enabled) {
     m_worldRadio.setRendering(enabled);
     m_usRadio.setRendering(enabled);
   }
+  /**
+   * F. Wright
+   *
+   * Sets the parent widget for the world and US radio buttons.
+   *
+   * @param parent The parent widget to set.
+   */
 
   public void setWorldUSParent(Widget parent) {
     m_worldRadio.setParent(parent);
     m_usRadio.setParent(parent);
   }
 
+  /**
+   * F. Wright
+   *
+   * Sets the text for the load data to charts screen button.
+   *
+   * @param str The text to set.
+   */
+
   public void setLoadOtherScreenText(String str) {
     m_loadDataOtherScreenButton.setText(str);
   }
 
+
+  /**
+   * M.Poole & F.Wright:
+   *
+   *
+   * Creates LockBox sprites to block queries that connot be used on the world
+   * data set, and sets them offscreen as to not display when UQUI is first loaded
+   *
+   */
+
   private void createLockBoxes() {
+    int posX = 220;
+    int lockPosX = int(posX + (265 * 0.5f) - 20);
 
-    int lockboxYpos = 49;
-    int lockboxStartingXpos = -265;
-    for (int i = 0; i < 8; i++) {
+    // TBOPs
 
-      ImageUI longLockBox = new ImageUI(m_longLock, lockboxStartingXpos, lockboxYpos, 265, 43 );
-      addWidget(longLockBox);
-      m_lockBoxesList.add(longLockBox );
-      lockboxYpos += 50;
+    for (int i = 150; i < 550; i += 50) {
+      ImageUI lock = new ImageUI(m_lockImg, lockPosX, i, 40, 40);
+      addWidget(lock);
+      lock.setLayer(5);
+      m_lockBoxesList.add(lock);
+      lock.setActive(false);
+
+      ButtonUI bg = new ButtonUI(posX, i, 265, 40);
+      bg.setText("");
+      addWidget(bg);
+      bg.setHighlightOutlineOnEnter(false);
+      m_lockBoxesList.add(bg);
+      bg.setActive(false);
     }
 
-    lockboxYpos += 100;
+    lockPosX = int(posX + (160 * 0.5f) - 20);
 
+    // Textboxes
 
-    for (int i = 8; i < 14; i++ ) {
+    for (int i = 650; i < 800; i += 50) {
+      ImageUI lock = new ImageUI(m_lockImg, lockPosX, i, 40, 40);
+      addWidget(lock);
+      lock.setLayer(5);
+      m_lockBoxesList.add(lock);
+      lock.setActive(false);
 
-      ImageUI normalLockBox = new ImageUI(m_normalLock, lockboxStartingXpos, lockboxYpos, 160, 40 );
-      addWidget(normalLockBox, 50);
-      m_lockBoxesList.add(normalLockBox);
-      lockboxYpos += 50;
+      ButtonUI bg = new ButtonUI(posX, i, 160, 40);
+      bg.setText("");
+      addWidget(bg);
+      bg.setHighlightOutlineOnEnter(false);
+      m_lockBoxesList.add(bg);
+      bg.setActive(false);
+    }
+
+    // C/D/S
+
+    for (int i = 800; i < 950; i += 50) {
+      ImageUI lock = new ImageUI(m_lockImg, posX, i, 40, 40);
+      addWidget(lock);
+      lock.setLayer(5);
+      m_lockBoxesList.add(lock);
+      lock.setActive(false);
+
+      ButtonUI bg = new ButtonUI(posX, i, 40, 40);
+      bg.setText("");
+      addWidget(bg);
+      bg.setHighlightOutlineOnEnter(false);
+      m_lockBoxesList.add(bg);
+      bg.setActive(false);
+    }
+
+    // "Load Into Charts"
+
+    posX = 20;
+    lockPosX = int(posX + (150 * 0.5f) - 20);
+
+    ImageUI lock = new ImageUI(m_lockImg, lockPosX, 700, 40, 40);
+    addWidget(lock);
+    lock.setLayer(5);
+    m_lockBoxesList.add(lock);
+    lock.setActive(false);
+
+    ButtonUI bg = new ButtonUI(posX, 700, 150, 40);
+    bg.setText("");
+    addWidget(bg);
+    bg.setHighlightOutlineOnEnter(false);
+    m_lockBoxesList.add(bg);
+    bg.setActive(false);
+  }
+
+  /**
+   * F. Wright
+   *
+   * Removes all active queries related to US airports from the list of active queries and their associated query labels.
+   */
+
+  private void clearUSQueries() {
+    for (int i = 0; i < m_activeQueries.size(); i++) {
+      QueryType qType = m_activeQueries.get(i).Type;
+      boolean isOrigin = qType == QueryType.AIRPORT_ORIGIN_INDEX;
+      boolean isDest = qType == QueryType.AIRPORT_DEST_INDEX;
+      if (isOrigin || isDest)
+        continue;
+      m_activeQueries.remove(i);
+      m_queryLB.removeAt(i);
     }
   }
 }

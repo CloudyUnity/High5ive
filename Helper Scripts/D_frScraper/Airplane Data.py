@@ -1,3 +1,14 @@
+"""
+CKM
+
+Code to fetch information like type and age about a set of airplane registrations automatically
+
+// @param nnumbers: the table of airplane registrations (aka nnumbers) to look up
+// @param website: the website data is being sourced from
+// return output.csv: a version of the input table but with any information it could find in the relevant row
+
+"""
+
 import requests, unicodedata
 from bs4 import BeautifulSoup
 
@@ -18,14 +29,16 @@ session1.headers = headers1
 
 nnumbers = open("aircraft.csv", "r")
 output = open("output.csv", "a")
+website = "https://www.aircraftone.com/aircraft.asp?hn="
 planes = []
+
 for i in nnumbers:
     planes.append(i.strip())
 nnumbers.close()
 
 for i in planes:
     try:
-        response = session1.get(f"https://www.aircraftone.com/aircraft.asp?hn={i}")
+        response = session1.get(f"{website}{i}")
         content = response.content.decode('utf-8', errors='ignore')
         soup = BeautifulSoup(content, 'html.parser')
         trSoup = soup.body.find_all('tr')

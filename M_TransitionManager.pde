@@ -14,28 +14,25 @@ class TransitionManagerClass {
   private long m_startTimeTrans = 0;
   private float m_transDur = 500.0f;
   private float m_positionalOffset = 25f;
-  private boolean m_transitioning = true;
-  private boolean m_detransitioning = true;
-  private boolean m_inTransitionState = true;
+  private boolean m_transitioning = false;
+  private boolean m_detransitioning = false;
+  private boolean m_inTransitionState = false;
   private PVector m_squareSize;
 
   private Consumer m_onTrans;
 
-  TransSquareType[][] m_transSquareMatrix = new TransSquareType[20][10];
+  private TransSquareType[][] m_transSquareMatrix = new TransSquareType[20][10];
 
   public void init() {
     int columns = m_transSquareMatrix.length;
     int rows = m_transSquareMatrix[0].length;
     m_squareSize = new PVector(width/columns, height/rows);
 
-    // int color1 = COLOR_HIGHTLIGHT_1;
-    // int color2 = COLOR_HIGHTLIGHT_2;
-
     for (int i = 0; i < columns; i++) {
       for (int j = 0; j < rows; j++) {
         PVector pos = new PVector(i * m_squareSize.x, j * m_squareSize.y);
-        // int col = (i + j) % 2 == 0 ? color1 : color2;
-        m_transSquareMatrix[i][j] = new TransSquareType(pos, m_squareSize, getColor(j+i));
+        int seed = j + i;
+        m_transSquareMatrix[i][j] = new TransSquareType(pos, m_squareSize, getColor(seed));
       }
     }
   }
