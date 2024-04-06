@@ -1,12 +1,31 @@
+/**
+ * F. Wright
+ * 
+ * Represents a group of radio buttons in the user interface.
+ */
 class RadioButtonGroupTypeUI extends WidgetGroupType {
   public RadioButtonGroupTypeUI() {
     super();
   }
+/**
+ * F. Wright
+ * 
+ * Adds a radio button as a member to the group and sets up event handling for it.
+ *
+ * @param rb The radio button to add to the group.
+ */
 
   public void addMember(RadioButtonUI rb) {
     Members.add(rb);
     rb.getOnClickEvent().addHandler(e -> memberClicked(e));
   }
+/**
+ * F. Wright
+ * 
+ * Handles the click event of a radio button by unchecking all other members of the group.
+ *
+ * @param e The event information associated with the click event.
+ */
 
   private void memberClicked(EventInfoType e) {
     for (Widget member : Members) {
@@ -23,7 +42,6 @@ class RadioButtonGroupTypeUI extends WidgetGroupType {
  *
  * Represents a radio button user interface element that can be clicked to toggle its state.
  *
- 
  */
 
 class RadioButtonUI extends Widget implements IClickable {
