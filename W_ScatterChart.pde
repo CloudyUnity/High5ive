@@ -161,9 +161,9 @@ class ScatterChartUI<T> extends Widget implements IChart2Axis<T, Integer> {
     super.draw();
 
     fill(color(m_backgroundColour));
-    rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y);
+    rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y, DEFAULT_WIDGET_ROUNDNESS_1);
 
-    fill(255);
+    fill(getColor(0));
     text(m_labelX, m_pos.x, m_pos.y + m_scale.y - 20, m_scale.x, 100);
 
     pushMatrix();
@@ -173,10 +173,10 @@ class ScatterChartUI<T> extends Widget implements IChart2Axis<T, Integer> {
     text(m_labelY, 0, 0, m_scale.y, 100);
     popMatrix();
 
-    fill(255);
+    fill(getColor(1));
     text(m_maxValX + "", m_pos.x + m_scale.x, m_pos.y + m_scale.y, 100, 50);
 
-    fill(255);
+    fill(getColor(2));
     text(m_maxValY + "", m_pos.x - 60, m_pos.y, 100, 50);
 
     if (m_pointsShape == null)

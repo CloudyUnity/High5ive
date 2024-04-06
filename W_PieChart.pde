@@ -109,7 +109,7 @@ class PieChartUI<T, TData> extends Widget implements IChart<T, TData> {
     int i = 0;
     for (Map.Entry<TData, Integer> entry : m_map.entrySet()) {
       float arcSize = 2 * PI * (entry.getValue() / (float)total);
-      fill(randomColor(i));
+      fill(getColor(i));
 
       float diameterOfArc = m_scale.x * m_arcSizes.get(i);
 

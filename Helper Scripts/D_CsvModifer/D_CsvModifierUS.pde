@@ -1,4 +1,15 @@
-//CKM : code to pre process data
+/**
+ * CKM
+ *
+ * Replaces more complex text values in dataset with hexadecimal indexes
+ *
+ * @param airports: lookup table with values for each code
+ @ @param aircraft: lookup table with values for each registration
+ @ @param airlines: lookup table with values for each code
+ @ @param dataTable: original source data to edit
+ @ return fixList: list of aircraft with missing data in the lookup table
+ @ return hex_flight_data.csv: output file with hex values replacing text values
+ */
 
 Table airports;
 Table aircraft;
