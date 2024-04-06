@@ -1,3 +1,8 @@
+/**
+ * F.Wright:
+ * Represents a textbox with an attached operator dropdown for querying flight data. 
+ */
+
 class TextboxWithOpType {
   public TextboxUI Textbox;
   public DropdownUI<QueryOperatorType> OpDropdown;
@@ -288,6 +293,13 @@ class UserQueryUI extends Widget {
     m_onLoadDataEvent.accept(createFlightTypeArr());
     s_DebugProfiler.printTimeTakenMillis("User query event");
   }
+  
+  /**
+   * F.Wright:
+   *
+   * Loads flight data to another screen based on the active queries. Queries the flight manager for relevant data
+   * based on user input queries and updates the displayed data accordingly.
+   */
 
   private void loadDataOtherScreen() {
     s_DebugProfiler.startProfileTimer();
@@ -308,6 +320,8 @@ class UserQueryUI extends Widget {
 
     return result;
   }
+  
+  
 
   private void saveQuery(TextboxWithOpType tbop) {
     QueryOperatorType op = tbop.OpDropdown.getSelected();
@@ -387,6 +401,15 @@ class UserQueryUI extends Widget {
     }
   }
 
+
+/**
+ * F. Wright
+ *
+ * Formats the specified text according to certain predefined cases.
+ *
+ * @param text The text to format.
+ * @return The formatted text.
+ */
   private String formatText(String text) {
     switch (text) {
     case "KILOMETRES_DISTANCE":
@@ -412,7 +435,15 @@ class UserQueryUI extends Widget {
       return text;
     }
   }
-
+/**
+ * F. Wright
+ *
+ * Formats the specified value according to the query type.
+ *
+ * @param text The text to format.
+ * @param query The query type to determine the formatting.
+ * @return The formatted value.
+ */
   private String formatValue(String text, QueryType query) {
     switch (query) {
     case ARRIVAL_TIME:
@@ -486,6 +517,14 @@ class UserQueryUI extends Widget {
     widget.setParent(this);
   }
 
+/**
+ * F. Wright
+ *
+ * Enables or disables the lock functionality for the specified fields and lock boxes.
+ *
+ * @param enabled True to enable locks, false to disable them.
+ */
+ 
   private void setLocksEnabled(boolean enabled) {
     for (int i = 0; i < m_usOnlyFields.size(); i++)
       m_usOnlyFields.get(i).setActive(!enabled);
@@ -493,36 +532,87 @@ class UserQueryUI extends Widget {
     for (int i = 0; i < m_lockBoxesList.size(); i++)
       m_lockBoxesList.get(i).setActive(enabled);
   }
+  /**
+   * F. Wright
+   *
+   * Adds a widget group to the screen if the screen is not null.
+   *
+   * @param group The type of widget group to add.
+   */
 
   private void addWidgetGroup(WidgetGroupType group) {
     if (m_screen != null)
       m_screen.addWidgetGroup(group);
   }
+  /**
+ * F. Wright
+ *
+ * Creates a label with the specified position, scale, and text, adds it to the widget group, and returns the label.
+ *
+ * @param posX The x-coordinate of the label.
+ * @param posY The y-coordinate of the label.
+ * @param scaleX The horizontal scale of the label.
+ * @param scaleY The vertical scale of the label.
+ * @param text The text to display on the label.
+ * @return The created label.
+ */
 
   public LabelUI createLabel(int posX, int posY, int scaleX, int scaleY, String text) {
     LabelUI label = new LabelUI(posX, posY, scaleX, scaleY, text);
     addWidget(label);
     return label;
   }
+  /**
+ * F. Wright
+ *
+ * Sets the rendering status of the world and US radio buttons.
+ *
+ * @param enabled True to enable rendering, false to disable it.
+ */
 
   public void setRenderWorldUSButtons(boolean enabled) {
     m_worldRadio.setRendering(enabled);
     m_usRadio.setRendering(enabled);
   }
+  /**
+ * F. Wright
+ *
+ * Sets the parent widget for the world and US radio buttons.
+ *
+ * @param parent The parent widget to set.
+ */
 
   public void setWorldUSParent(Widget parent) {
     m_worldRadio.setParent(parent);
     m_usRadio.setParent(parent);
   }
+  
+  /**
+ * F. Wright
+ *
+ * Sets the text for the load data to charts screen button.
+ *
+ * @param str The text to set.
+ */
 
   public void setLoadOtherScreenText(String str) {
     m_loadDataOtherScreenButton.setText(str);
   }
 
+
+  /**
+   * M.Poole & F.Wright:
+   *
+   *
+   * Creates LockBox sprites to block queries that connot be used on the world
+   * data set, and sets them offscreen as to not display when UQUI is first loaded
+   *
+   */
+
   private void createLockBoxes() {
     int posX = 220;
     int lockPosX = int(posX + (265 * 0.5f) - 20);
-    
+
     // TBOPs
 
     for (int i = 150; i < 550; i += 50) {
@@ -541,7 +631,7 @@ class UserQueryUI extends Widget {
     }
 
     lockPosX = int(posX + (160 * 0.5f) - 20);
-    
+
     // Textboxes
 
     for (int i = 650; i < 800; i += 50) {
@@ -558,7 +648,7 @@ class UserQueryUI extends Widget {
       m_lockBoxesList.add(bg);
       bg.setActive(false);
     }
-    
+
     // C/D/S
 
     for (int i = 800; i < 950; i += 50) {
@@ -575,9 +665,9 @@ class UserQueryUI extends Widget {
       m_lockBoxesList.add(bg);
       bg.setActive(false);
     }
-    
+
     // "Load Into Charts"
-    
+
     posX = 20;
     lockPosX = int(posX + (150 * 0.5f) - 20);
 
@@ -594,6 +684,12 @@ class UserQueryUI extends Widget {
     m_lockBoxesList.add(bg);
     bg.setActive(false);
   }
+
+  /**
+   * F. Wright
+   *
+   * Removes all active queries related to US airports from the list of active queries and their associated query labels.
+   */
 
   private void clearUSQueries() {
     for (int i = 0; i < m_activeQueries.size(); i++) {
