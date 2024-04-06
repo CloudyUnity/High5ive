@@ -37,6 +37,7 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
 
       int drawIndex = 0;
       textAlign(LEFT, CENTER);
+      textSize(15);
 
       for (int i = 0; i < m_entries.size() && ((drawIndex + 1) * m_entryHeight) <= m_scale.y; i++) {
         int entry = i + m_scrollbar.getCurrentTop();
@@ -108,6 +109,16 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
 
   public void remove(T entry) {
     m_entries.remove(entry);
+    m_scrollbar.setNumberOfElements(getNumberOfShown());
+    if (m_scrollbar.getActive() && (getNumberOfShown() * m_entryHeight) <= m_scale.y) {
+      m_scrollbar.setActive(false);
+      m_entryWidth = (int)m_scale.x;
+      m_scrollbar.setCurrentTop(0);
+    }
+  }
+
+  public void removeAt(int index) {
+    m_entries.remove(index);
     m_scrollbar.setNumberOfElements(getNumberOfShown());
     if (m_scrollbar.getActive() && (getNumberOfShown() * m_entryHeight) <= m_scale.y) {
       m_scrollbar.setActive(false);
