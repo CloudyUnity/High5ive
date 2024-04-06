@@ -1,5 +1,17 @@
 // import processing.video.*;
 // Movie earth;
+
+class Star {
+  int X;
+  int Y;
+  int Diameter;
+  Star(int x, int y, int diameter) {
+    X = x;
+    Y = y;
+    Diameter = diameter;
+  }
+}
+
 /**
  * F. Wright
  *
@@ -9,10 +21,13 @@
 class ScreenHome extends Screen {
 
   PImage earthImage;
+  PImage starImage;
   ImageUI earth;
-  PVector lastMousePos;
-  PVector mousePos;
+  ImageUI star1;
+  ImageUI star2;
   PVector earthPos;
+  PVector starPos1;
+  PVector starPos2;
 
   /**
    * F. Wright
@@ -33,56 +48,67 @@ class ScreenHome extends Screen {
    */
 
   @Override
-    public void init() {
+  public void init() {
     super.init();
-    earthImage = loadImage("data/Images/earthTitleScreen.png");
+    earthImage = loadImage("data/Images/earthTitleScreenTrans.png");
+    starImage = loadImage("data/Images/stars_background.jpg");
+    starPos1 = new PVector(0, 0);
+    star1 = new ImageUI(starImage, (int)starPos1.x, (int)starPos1.y, (int)(((float)height/(float)starImage.height)*(float)starImage.width), (int)height);
+    starPos2 = new PVector(-(int)(((float)height/(float)starImage.height)*(float)starImage.width), 0);
+    star2 = new ImageUI(starImage, (int)starPos2.x, (int)starPos2.y, (int)(((float)height/(float)starImage.height)*(float)starImage.width), (int)height);
+    println((int)(((float)height/(float)starImage.height)*(float)starImage.width), (int)height);
+
+    addWidget(star1);
+    addWidget(star2);
+      
+    float growScale = 1.05f;
+    float totalSpacing = (float)height/4.0;
+    float totalButtonSize = height-totalSpacing;
+    float oneSpacingUnit = totalSpacing/4.0;
+    float oneHSpacingUnit = (float)width/12.0;
+    float oneButtonUnit = totalButtonSize/3.0;
 
     float imgScale = 0.7;
-    int pixelsFromSide = 75;
-    earthPos = new PVector(((width/2)-((earthImage.width*imgScale)/2)-100), (int)(height - (earthImage.height*imgScale))-pixelsFromSide);
+    earthPos = new PVector(((width/2)-((earthImage.width*imgScale)/2)-(oneHSpacingUnit)), (int)(height - (earthImage.height*imgScale))-(oneSpacingUnit*2));
     earth = new ImageUI(earthImage, (int)earthPos.x, (int)earthPos.y, (int)(earthImage.width*imgScale), (int)(earthImage.height*imgScale));
-    mousePos = new PVector(mouseX, mouseY);
-    lastMousePos = new PVector(mouseX, mouseY);
     addWidget(earth);
     earth.setGrowScale(1.1f);
 
-    float growScale = 1.05f;
-
-    ButtonUI switchTo2D = createButton((int)width-(width/4), 100, (int)width/4 - 100, 200);
+    ButtonUI switchTo2D = createButton((int)width-(width/4), (int)oneSpacingUnit, (int)width/4 - 100, (int)oneButtonUnit);
     switchTo2D.setBackgroundColour(COLOR_BLACK);
     switchTo2D.setOutlineColour(COLOR_WHITE);
     switchTo2D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_TWOD_MAP_ID));
     switchTo2D.setText("2D Map");
-    switchTo2D.setTextSize(50);
+    switchTo2D.setTextSize((int)((float)height/20.0));
     switchTo2D.setGrowScale(growScale);
 
-    ButtonUI switchTo3D = createButton((int)width-(width/4), 400, (int)width/4 - 100, 200);
+    ButtonUI switchTo3D = createButton((int)width-(width/4), (int)((oneSpacingUnit*2)+oneButtonUnit), (int)width/4 - 100, (int)oneButtonUnit);
     switchTo3D.setBackgroundColour(COLOR_BLACK);
     switchTo3D.setOutlineColour(COLOR_WHITE);
     switchTo3D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_FLIGHT_MAP_ID));
     switchTo3D.setText("3D Globe");
-    switchTo3D.setTextSize(50);
+    switchTo3D.setTextSize((int)((float)height/20.0));
     switchTo3D.setGrowScale(growScale);
 
-    ButtonUI switchToCharts = createButton((int)width-(width/4), 700, (int)width/4 - 100, 200);
+    ButtonUI switchToCharts = createButton((int)width-(width/4), (int)((oneSpacingUnit*3)+(oneButtonUnit*2)), (int)width/4 - 100, (int)oneButtonUnit);
     switchToCharts.setBackgroundColour(COLOR_BLACK);
     switchToCharts.setOutlineColour(COLOR_WHITE);
     switchToCharts.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_CHARTS_ID));
     switchToCharts.setText("Charts");
-    switchToCharts.setTextSize(50);
+    switchToCharts.setTextSize((int)((float)height/20.0));
 
      LabelUI name = createLabel(100, 100, 200, 100, "High5ive");
      name.setCentreAligned(true);
      name.setTextSize(40);
     
-    LabelUI title = createLabel(100, 100, (int)width/2, 200, "High5ive");
+    LabelUI title = createLabel((int)oneSpacingUnit, (int)oneSpacingUnit, (int)((float)width/2.0), (int)((float)height/5.0), "High5ive");
     title.setCentreAligned(false);
-    title.setTextSize(175);   
+    title.setTextSize((int)((float)height/10.0));   
 
-    LabelUI subTitle = createLabel(110, 300, (int)width/2, 100, "Flights :)");
+    LabelUI subTitle = createLabel((int)(oneSpacingUnit*1.1), (int)((float)height/4.0), (int)((float)width/2.0), (int)((float)height/10.0), "Flights :)");
     subTitle.setForegroundColour(COLOR_LIGHT_GRAY);
     subTitle.setCentreAligned(false);
-    subTitle.setTextSize(64); 
+    subTitle.setTextSize((int)((float)height/20.0)); 
 
     switchToCharts.setGrowScale(growScale);
   }
@@ -103,17 +129,24 @@ class ScreenHome extends Screen {
     return addition.mult(strength).add(earthPos);
   }
 
-  // public PVector idelEarthPos(PVector earthPos, float strength) {
-  //   PVector
-  // }
+  public PVector moveStar(PVector star) {
+    if (star.x > width) {
+      star.x = -(int)(((float)height/(float)starImage.height)*(float)starImage.width);
+    }
+    if (star.x < -(int)(((float)height/(float)starImage.height)*(float)starImage.width)) {
+      star.x = width;
+    }
+    star.x+=(10*((float)mouseX/(float)width))-5;
+    return star;
+  }
 
   @Override
   public void draw() {
     super.draw();
-    mousePos = new PVector(mouseX, mouseY); 
-    PVector temp = relitiveEarthPos(earthPos, 80);
-    earth.setPos(temp);
-    lastMousePos = mousePos;
+    earth.setPos(relitiveEarthPos(earthPos, 80));
+    star1.setPos(moveStar(starPos1));
+    star2.setPos(moveStar(starPos2));
+    // println(starPos1, starPos2);
   }
 }
 
