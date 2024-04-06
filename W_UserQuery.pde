@@ -29,8 +29,9 @@ class UserQueryUI extends Widget {
 
   private TextboxUI m_originTB, m_destTB, m_airlineTB, m_flightNumTB, m_tailNumTB;
   private ArrayList<TextboxWithOpType> m_tbopList = new ArrayList<TextboxWithOpType>();
-  private ArrayList<TextboxUI> m_usOnlyTextboxesList = new ArrayList<TextboxUI>();
-  private ArrayList<ImageUI> m_lockBoxesList = new ArrayList<ImageUI>();
+  private ArrayList<Widget> m_lockBoxesList = new ArrayList<Widget>();
+  private ArrayList<Widget> m_usOnlyFields = new ArrayList<Widget>();
+  
   private RadioButtonUI m_cancelledRadio;
   private RadioButtonUI m_divertedRadio;
   private RadioButtonUI m_successRadio;
@@ -38,10 +39,6 @@ class UserQueryUI extends Widget {
   private RadioButtonUI m_usRadio;
   private ButtonUI m_loadDataOtherScreenButton;
   private RadioButtonGroupTypeUI cancelDivertGroup;
-  private PImage m_longLock = loadImage("data/Images/Long_Lock.png");
-  private PImage m_normalLock = loadImage("data/Images/Normal_Lock.png");
-
-
 
   /**
    * M.Poole:
@@ -59,8 +56,6 @@ class UserQueryUI extends Widget {
 
     m_queryManager = queryManager;
     m_screen = screen;
-
-
 
     // LISTBOXES
 
@@ -106,8 +101,7 @@ class UserQueryUI extends Widget {
     m_worldRadio = new RadioImageButtonUI(width - iconSize - 10, 20, iconSize, iconSize, "WORLD", "data/Images/GlobeIcon.png", "data/Images/GlobeIconOff.png");
     m_worldRadio.getOnCheckedEvent().addHandler(e -> {
       changeDataToWorld();
-      greyOutUSQueries();
-      
+      setLocksEnabled(true);
     }
     );
     m_worldRadio.setGrowScale(1.1f);
@@ -115,8 +109,8 @@ class UserQueryUI extends Widget {
 
     m_usRadio = new RadioImageButtonUI(width - iconSize - 10, 50 + iconSize, iconSize, iconSize, "US", "data/Images/USIcon.png", "data/Images/USIconOff.png");
     m_usRadio.getOnCheckedEvent().addHandler(e -> {
-      activateUSQueries();
       changeDataToUS();
+      setLocksEnabled(false);
     }
     );
     m_usRadio.setGrowScale(1.1f);
@@ -152,13 +146,13 @@ class UserQueryUI extends Widget {
     m_destTB = createTextboxUI(tbPosX, tbPosY, "Dest");
     tbPosY += 50;
     m_flightNumTB = createTextboxUI(tbPosX, tbPosY, "Flight Number");
-    m_usOnlyTextboxesList.add(m_flightNumTB);
+    m_usOnlyFields.add(m_flightNumTB);
     tbPosY += 50;
     m_airlineTB = createTextboxUI(tbPosX, tbPosY, "Airline");
-    m_usOnlyTextboxesList.add(m_airlineTB);
+    m_usOnlyFields.add(m_airlineTB);
     tbPosY += 50;
     m_tailNumTB = createTextboxUI(tbPosX, tbPosY, "Tail Number");
-    m_usOnlyTextboxesList.add(m_tailNumTB);
+    m_usOnlyFields.add(m_tailNumTB);
     tbPosY += 50;
 
     // CANCELLED - DIVERTED - SUCCESSFUL RADIO BUTTONS
@@ -170,6 +164,7 @@ class UserQueryUI extends Widget {
     addWidget(m_cancelledRadio);
     m_cancelledRadio.setUncheckable(true);
     cancelDivertGroup.addMember(m_cancelledRadio);
+    m_usOnlyFields.add(m_cancelledRadio);
 
     LabelUI cancelLabel = createLabel(tbPosX + 50, tbPosY - 5, 160, 40, "Cancelled");
     cancelLabel.setTextSize(20);
@@ -181,6 +176,7 @@ class UserQueryUI extends Widget {
     addWidget(m_divertedRadio);
     m_divertedRadio.setUncheckable(true);
     cancelDivertGroup.addMember(m_divertedRadio);
+    m_usOnlyFields.add(m_divertedRadio);
 
     LabelUI divertLabel = createLabel(tbPosX + 50, tbPosY - 5, 160, 40, "Diverted");
     divertLabel.setTextSize(20);
@@ -192,12 +188,14 @@ class UserQueryUI extends Widget {
     addWidget(m_successRadio);
     cancelDivertGroup.addMember(m_successRadio);
     m_successRadio.setUncheckable(true);
+    m_usOnlyFields.add(m_successRadio);
 
     LabelUI successLabel = createLabel(tbPosX + 50, tbPosY - 5, 160, 40, "Successful");
     successLabel.setTextSize(20);
     successLabel.setCentreAligned(false);
-
+    
     // LOCKBOXES
+    
     createLockBoxes();
   }
 
@@ -217,10 +215,12 @@ class UserQueryUI extends Widget {
     TextboxUI tb = new TextboxUI(posX, posY, (int)UQUI_TB_SCALE.x, (int)UQUI_TB_SCALE.y);
     addWidget(tb);
     tb.setPlaceholderText(placeholderTxt);
+    m_usOnlyFields.add(tb);
 
     DropdownUI<QueryOperatorType> opDD = new DropdownUI<QueryOperatorType>(posX + (int)UQUI_TB_SCALE.x, posY, 100, 400, 40, v -> formatText(v.toString()));
     addWidget(opDD, -posY);
     opDD.setTextboxText(formatText("LESS_THAN"));
+    m_usOnlyFields.add(opDD);
 
     opDD.add(QueryOperatorType.EQUAL);
     opDD.add(QueryOperatorType.NOT_EQUAL);
@@ -480,43 +480,13 @@ class UserQueryUI extends Widget {
     widget.setParent(this);
   }
 
-  private void activateUSQueries() {
-
-    
-    for (int textbox = 0; textbox < m_usOnlyTextboxesList.size(); textbox++) {
-      m_usOnlyTextboxesList.get(textbox).setUserModifiable(false);
-    }
-    for (int tbOp = 0; tbOp <  m_tbopList.size(); tbOp++ ) {
-      (m_tbopList.get(tbOp).Textbox).setUserModifiable(false);
-    }
-    for (int lockbox = 0; lockbox < 14; lockbox++) {
-      m_lockBoxesList.get(lockbox).setPos(-270, int(m_lockBoxesList.get(lockbox).m_pos.y) -100);
-    }
-     m_cancelledRadio.setActive(true);
-     m_divertedRadio.setActive(true);
-     m_successRadio.setActive(true);
-    
+  private void setLocksEnabled(boolean enabled) {
+    for (int i = 0; i < m_usOnlyFields.size(); i++)
+      m_usOnlyFields.get(i).setActive(!enabled);
+      
+    for (int i = 0; i < m_lockBoxesList.size(); i++)
+      m_lockBoxesList.get(i).setActive(enabled);    
   }
-
-
-
-  private void greyOutUSQueries() {
-
-    for (int textbox = 0; textbox < m_usOnlyTextboxesList.size(); textbox++) {
-      m_usOnlyTextboxesList.get(textbox).setUserModifiable(true);
-    }
-    for (int tbOp = 0; tbOp <  m_tbopList.size(); tbOp++ ) {
-      (m_tbopList.get(tbOp).Textbox).setUserModifiable(true);
-    }
-    for (int lockbox = 0; lockbox < 14; lockbox++) {
-      m_lockBoxesList.get(lockbox).setPos(220, int(m_lockBoxesList.get(lockbox).m_pos.y) - 100);
-    }
-     m_cancelledRadio.setActive(false);
-     m_divertedRadio.setActive(false);
-     m_successRadio.setActive(false);
-    
-  }
-
 
   private void addWidgetGroup(WidgetGroupType group) {
     m_screen.addWidgetGroup(group);
@@ -526,9 +496,6 @@ class UserQueryUI extends Widget {
     LabelUI label = new LabelUI(posX, posY, scaleX, scaleY, text);
     addWidget(label);
     return label;
-  }
-
-  public void setLocksParent(Widget parent) {
   }
 
   public void setRenderWorldUSButtons(boolean enabled) {
@@ -546,26 +513,54 @@ class UserQueryUI extends Widget {
   }
 
   private void createLockBoxes() {
-
-    int lockboxYpos = 49;
-    int lockboxStartingXpos = -265;
-    for (int i = 0; i < 8; i++) {
-
-      ImageUI longLockBox = new ImageUI(m_longLock, lockboxStartingXpos, lockboxYpos, 265, 43 );
-      addWidget(longLockBox);
-      m_lockBoxesList.add(longLockBox );
-      lockboxYpos += 50;
+    int posX = 220;
+    int lockPosX = int(posX + (265 * 0.5f) - 20);
+    
+    for (int i = 50; i < 450; i += 50){
+      ImageUI lock = new ImageUI("data/Images/Lock.png", lockPosX, i, 40, 40); 
+      addWidget(lock);
+      lock.setLayer(5);
+      m_lockBoxesList.add(lock);
+      lock.setActive(false);
+      
+      ButtonUI bg = new ButtonUI(posX, i, 265, 40);
+      bg.setText("");
+      addWidget(bg);
+      bg.setHighlightOutlineOnEnter(false);      
+      m_lockBoxesList.add(bg);
+      bg.setActive(false);
     }
-
-    lockboxYpos += 100;
-
-
-    for (int i = 8; i < 14; i++ ) {
-
-      ImageUI normalLockBox = new ImageUI(m_normalLock, lockboxStartingXpos, lockboxYpos, 160, 40 );
-      addWidget(normalLockBox, 50);
-      m_lockBoxesList.add(normalLockBox);
-      lockboxYpos += 50;
+    
+    lockPosX = int(posX + (160 * 0.5f) - 20);
+    
+    for (int i = 550; i < 700; i += 50){
+      ImageUI lock = new ImageUI("data/Images/Lock.png", lockPosX, i, 40, 40); 
+      addWidget(lock);
+      lock.setLayer(5);
+      m_lockBoxesList.add(lock);
+      lock.setActive(false);
+      
+      ButtonUI bg = new ButtonUI(posX, i, 160, 40);
+      bg.setText("");
+      addWidget(bg);
+      bg.setHighlightOutlineOnEnter(false);      
+      m_lockBoxesList.add(bg);
+      bg.setActive(false);
+    }
+    
+    for (int i = 700; i < 850; i += 50){
+      ImageUI lock = new ImageUI("data/Images/Lock.png", posX, i, 40, 40); 
+      addWidget(lock);
+      lock.setLayer(5);
+      m_lockBoxesList.add(lock);
+      lock.setActive(false);
+      
+      ButtonUI bg = new ButtonUI(posX, i, 40, 40);
+      bg.setText("");
+      addWidget(bg);
+      bg.setHighlightOutlineOnEnter(false);      
+      m_lockBoxesList.add(bg);
+      bg.setActive(false);
     }
   }
 }

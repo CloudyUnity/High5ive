@@ -34,7 +34,7 @@ class Screen3DFM extends Screen {
     int dragWindowX = width - 400;
     int dragWindowY = height;
     m_flightMap3D = new FlightMap3D(200, 0, dragWindowX, dragWindowY);
-    addWidget(m_flightMap3D, -9999);
+    // addWidget(m_flightMap3D, -9999);
   }
 
   /**

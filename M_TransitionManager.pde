@@ -28,8 +28,8 @@ class TransitionManagerClass {
     int rows = m_transSquareMatrix[0].length;
     m_squareSize = new PVector(width/columns, height/rows);
 
-    int color1 = CP_BLUE;
-    int color2 = CP_LIGHT_BLUE;
+    int color1 = COLOR_BLUE;
+    int color2 = COLOR_LIGHT_BLUE;
 
     for (int i = 0; i < columns; i++) {
       for (int j = 0; j < rows; j++) {
@@ -96,7 +96,7 @@ class TransitionManagerClass {
     int columns = m_transSquareMatrix.length;
     int rows = m_transSquareMatrix[0].length;
 
-    stroke(CP_BLACK);   
+    stroke(COLOR_BLACK);   
 
     for (int i = 0; i < columns; i++) {
       for (int j = 0; j < rows; j++) {
