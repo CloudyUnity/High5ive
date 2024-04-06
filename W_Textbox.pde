@@ -11,6 +11,16 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
   private boolean m_drawBar = true;
   private boolean m_userModifiable = true;
   private String m_placeholderText = "";
+  
+  /**
+   * M.Poole & A.Robertson:
+   * Constructs an ImageUI object with the specified dimensions and position.
+   *
+   * @param scaleX The width of the textbox.
+   * @param scaleY The height of the textbox.
+   * @param posX   The x-coordinate of the textbox's position.
+   * @param posY   The y-coordinate of the textbox's position.
+   */
 
   public TextboxUI(int x, int y, int scaleX, int scaleY) {
     super(x, y, scaleX, scaleY);
