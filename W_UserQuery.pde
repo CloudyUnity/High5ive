@@ -120,7 +120,7 @@ class UserQueryUI extends Widget {
     // TEXTBOXES WITH OPERATORS
 
     int tbPosX = 220;
-    int tbPosY = 50;
+    int tbPosY = 150;
 
     createTextboxWithOp(tbPosX, tbPosY, "Distance", QueryType.KILOMETRES_DISTANCE);
     tbPosY += 50;
@@ -516,7 +516,7 @@ class UserQueryUI extends Widget {
     int posX = 220;
     int lockPosX = int(posX + (265 * 0.5f) - 20);
     
-    for (int i = 50; i < 450; i += 50){
+    for (int i = 150; i < 550; i += 50){
       ImageUI lock = new ImageUI("data/Images/Lock.png", lockPosX, i, 40, 40); 
       addWidget(lock);
       lock.setLayer(5);
@@ -533,7 +533,7 @@ class UserQueryUI extends Widget {
     
     lockPosX = int(posX + (160 * 0.5f) - 20);
     
-    for (int i = 550; i < 700; i += 50){
+    for (int i = 650; i < 800; i += 50){
       ImageUI lock = new ImageUI("data/Images/Lock.png", lockPosX, i, 40, 40); 
       addWidget(lock);
       lock.setLayer(5);
@@ -548,7 +548,7 @@ class UserQueryUI extends Widget {
       bg.setActive(false);
     }
     
-    for (int i = 700; i < 850; i += 50){
+    for (int i = 800; i < 950; i += 50){
       ImageUI lock = new ImageUI("data/Images/Lock.png", posX, i, 40, 40); 
       addWidget(lock);
       lock.setLayer(5);
