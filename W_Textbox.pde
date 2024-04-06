@@ -43,7 +43,7 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
       curText = m_placeholderText;
     }
 
-    text(curText, m_pos.x, m_pos.y, m_scale.x, m_scale.y);
+    text(" " + curText, m_pos.x, m_pos.y, m_scale.x, m_scale.y);
 
     if (!isFocused())
       return;

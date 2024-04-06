@@ -334,6 +334,7 @@ class ScreenCharts extends Screen {
       reloadScatterAsync();
       s_DebugProfiler.printTimeTakenMillis("Reloading data for scatter chart");
 
+      m_scatterPlot.setTranslationField(m_scatterQueryTypeX, m_scatterQueryTypeY);
       m_scatterEmptyLabel.setActive(false);
     }
     ).start();

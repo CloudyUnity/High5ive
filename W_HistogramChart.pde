@@ -93,7 +93,7 @@ class HistogramChartUI<T, TData> extends Widget implements IChart<T, TData> {
     super.draw();
 
     fill(color(m_backgroundColour));
-    rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y);
+    rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y, DEFAULT_WIDGET_ROUNDNESS_1);
 
     if (m_maxValue == -1 || m_barWidth == -1)
       return;
