@@ -7,7 +7,7 @@ final int WORLD_LINE_BYTE_SIZE = 6;
 final String DATA_DIRECTOR_PATH = "/data/Preprocessed Data/";
 
 // Debug Options
-final boolean DEBUG_MODE = true; // Turns on various stats or console logging
+final boolean DEBUG_MODE = false; // Turns on various stats or console logging
 final int DEBUG_FPS_COUNTER_STORAGE = 30;
 final boolean DEBUG_FPS_ENABLED = true;
 final boolean DEBUG_QUICK_LOAD_3D = false; // Turns off the earth shader for quick 3D loading
