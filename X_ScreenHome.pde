@@ -72,7 +72,7 @@ class ScreenHome extends Screen {
     earthPos = new PVector(((width/2)-((earthImage.width*imgScale)/2)-(oneHSpacingUnit)), (int)(height - (earthImage.height*imgScale))-(oneSpacingUnit*2));
     earth = new ImageUI(earthImage, (int)earthPos.x, (int)earthPos.y, (int)(earthImage.width*imgScale), (int)(earthImage.height*imgScale));
     addWidget(earth);
-    earth.setGrowScale(1.1f);
+    // earth.setGrowScale(1.1f);
 
     ButtonUI switchTo2D = createButton((int)width-(width/4), (int)oneSpacingUnit, (int)width/4 - 100, (int)oneButtonUnit);
     switchTo2D.setBackgroundColour(COLOR_BLACK);
@@ -132,7 +132,8 @@ class ScreenHome extends Screen {
     if (star.x < -(int)(((float)height/(float)starImage.height)*(float)starImage.width)) {
       star.x = width;
     }
-    star.x+=(10*((float)mouseX/(float)width))-5;
+    // star.x+=(10*((float)mouseX/(float)width))-5;
+    star.x+=1;
     return star;
   }
 
