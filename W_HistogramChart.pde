@@ -20,7 +20,7 @@ class HistogramChartUI<T, TData> extends Widget implements IChart<T, TData> {
     m_numberTextBoxHeight = m_bottomPadding = (int)((double)m_scale.y * 0.1);
     m_topPadding = (int)((double)m_scale.y * 0.1);
     m_numberTextBoxWidth = m_sidePadding = (int)((double)m_scale.x * 0.1);
-    m_foregroundColour = color(#F000CD);
+    m_foregroundColour = color(getColor());
   }
 
   public void addData(T[] data, Function<T, TData> getKey) {

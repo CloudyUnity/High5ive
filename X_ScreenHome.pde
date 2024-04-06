@@ -37,42 +37,39 @@ class ScreenHome extends Screen {
     super.init();
     earthImage = loadImage("data/Images/earthTitleScreen.png");
 
-    float imgScale = 0.5;
-    earthPos = new PVector(100, (int)(height - (earthImage.height*imgScale))-100);
+    float imgScale = 0.7;
+    int pixelsFromSide = 75;
+    earthPos = new PVector(((width/2)-((earthImage.width*imgScale)/2)-100), (int)(height - (earthImage.height*imgScale))-pixelsFromSide);
     earth = new ImageUI(earthImage, (int)earthPos.x, (int)earthPos.y, (int)(earthImage.width*imgScale), (int)(earthImage.height*imgScale));
-    // lastMouseX = (int)earth.getPos().x;
-    // lastMouseY = (int)earth.getPos().y;
     mousePos = new PVector(mouseX, mouseY);
     lastMousePos = new PVector(mouseX, mouseY);
     addWidget(earth);
+    earth.setGrowScale(1.1f);
 
     float growScale = 1.05f;
 
-    // earth = new Movie(s_theApp, "data/Videos/earth.mp4");
-    // earth.loop();
-
-    ButtonUI switchTo2D = createButton((int)width/2, 100, (int)width/2 - 100, 200);
+    ButtonUI switchTo2D = createButton((int)width-(width/4), 100, (int)width/4 - 100, 200);
     switchTo2D.setBackgroundColour(COLOR_BLACK);
     switchTo2D.setOutlineColour(COLOR_WHITE);
     switchTo2D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_TWOD_MAP_ID));
-    switchTo2D.setText("2D (WIP)");
-    switchTo2D.setTextSize(25);
+    switchTo2D.setText("2D Map");
+    switchTo2D.setTextSize(50);
     switchTo2D.setGrowScale(growScale);
 
-    ButtonUI switchTo3D = createButton((int)width/2, 400, (int)width/2 - 100, 200);
+    ButtonUI switchTo3D = createButton((int)width-(width/4), 400, (int)width/4 - 100, 200);
     switchTo3D.setBackgroundColour(COLOR_BLACK);
     switchTo3D.setOutlineColour(COLOR_WHITE);
     switchTo3D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_FLIGHT_MAP_ID));
-    switchTo3D.setText("3D");
-    switchTo3D.setTextSize(25);
+    switchTo3D.setText("3D Globe");
+    switchTo3D.setTextSize(50);
     switchTo3D.setGrowScale(growScale);
 
-    ButtonUI switchToCharts = createButton((int)width/2, 700, (int)width/2 - 100, 200);
+    ButtonUI switchToCharts = createButton((int)width-(width/4), 700, (int)width/4 - 100, 200);
     switchToCharts.setBackgroundColour(COLOR_BLACK);
     switchToCharts.setOutlineColour(COLOR_WHITE);
     switchToCharts.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_CHARTS_ID));
     switchToCharts.setText("Charts");
-    switchToCharts.setTextSize(25);
+    switchToCharts.setTextSize(50);
 
     // LabelUI name = createLabel(100, 100, 200, 100, "High5ive");
     // name.setCentreAligned(true);
@@ -90,10 +87,6 @@ class ScreenHome extends Screen {
     switchToCharts.setGrowScale(growScale);
   }
 
-  public PVector sinVec(PVector inpVec) {
-    return new PVector((int)sin(inpVec.x), (int)sin(inpVec.y));
-  }
-
   public PVector moveEarthPosInd(PVector earthPos, PVector mousePos, PVector lastMousePos, int wigglePower, int strength) {
     PVector wiggleStrength = mousePos.sub(lastMousePos).mult(wigglePower);
     PVector totalStrength = wiggleStrength.mult(strength).mult((sin(wiggleStrength.x) + sin(wiggleStrength.y))/2);
@@ -105,12 +98,20 @@ class ScreenHome extends Screen {
     return movement.normalize().mult(scaler).add(earthPos);
   }
 
+  public PVector relitiveEarthPos(PVector earthPos, float strength) {
+    PVector addition = new PVector(((float)mouseX/(float)width), ((float)mouseY/(float)height));
+    return addition.mult(strength).add(earthPos);
+  }
+
+  // public PVector idelEarthPos(PVector earthPos, float strength) {
+  //   PVector
+  // }
+
   @Override
   public void draw() {
     super.draw();
     mousePos = new PVector(mouseX, mouseY); 
-    PVector temp = moveEarthPos(earthPos, mousePos, lastMousePos, 2, 1);
-    println(temp);
+    PVector temp = relitiveEarthPos(earthPos, 80);
     earth.setPos(temp);
     lastMousePos = mousePos;
   }
