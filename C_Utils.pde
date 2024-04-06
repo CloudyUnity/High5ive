@@ -196,6 +196,32 @@ private color randomColor(int seed) {
   return result;
 }
 
+//tom
+private color getColor(int i) {
+  switch (i % 5) {
+  case 0:
+    return COLOR_HIGHTLIGHT_1;
+  case 1:
+    return COLOR_HIGHTLIGHT_2;
+  case 2:
+    return COLOR_HIGHTLIGHT_3;
+  case 3:
+    return COLOR_HIGHTLIGHT_4;
+  case 4:
+    return COLOR_HIGHTLIGHT_5;
+  // case 5:
+  //   return COLOR_HIGHTLIGHT_6;
+  // case 6:
+  //   return COLOR_HIGHTLIGHT_7;
+  default:
+    return COLOR_HIGHTLIGHT_1;
+  }
+}
+private color getColor() {
+  return getColor(0);
+}
+
+
 // Descending code authorship changes:
 // F. Wright, Created C_Math tab, clamp(), slerp(), approx() and rotateY() for global use, 3pm 08/03/24
 // F. Wright, Created sign(), rotateX(), 2pm 09/03/24

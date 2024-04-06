@@ -28,14 +28,14 @@ class TransitionManagerClass {
     int rows = m_transSquareMatrix[0].length;
     m_squareSize = new PVector(width/columns, height/rows);
 
-    int color1 = CP_BLUE;
-    int color2 = CP_LIGHT_BLUE;
+    // int color1 = COLOR_HIGHTLIGHT_1;
+    // int color2 = COLOR_HIGHTLIGHT_2;
 
     for (int i = 0; i < columns; i++) {
       for (int j = 0; j < rows; j++) {
         PVector pos = new PVector(i * m_squareSize.x, j * m_squareSize.y);
-        int col = (i + j) % 2 == 0 ? color1 : color2;
-        m_transSquareMatrix[i][j] = new TransSquareType(pos, m_squareSize, col);
+        // int col = (i + j) % 2 == 0 ? color1 : color2;
+        m_transSquareMatrix[i][j] = new TransSquareType(pos, m_squareSize, getColor(j+i));
       }
     }
   }
@@ -96,7 +96,7 @@ class TransitionManagerClass {
     int columns = m_transSquareMatrix.length;
     int rows = m_transSquareMatrix[0].length;
 
-    stroke(CP_BLACK);   
+    stroke(COLOR_BLACK);   
 
     for (int i = 0; i < columns; i++) {
       for (int j = 0; j < rows; j++) {

@@ -47,7 +47,7 @@ class CheckboxUI extends Widget implements IClickable {
     super.draw();
 
     fill(color(m_checked ? m_checkedColour : m_backgroundColour));
-    rect(m_pos.x, m_pos.y, m_scale.y, m_scale.y);
+    rect(m_pos.x, m_pos.y, m_scale.y, m_scale.y, DEFAULT_WIDGET_ROUNDNESS_1);
 
     m_label.draw();
   }

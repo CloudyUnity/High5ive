@@ -29,10 +29,10 @@ class SliderUI extends Widget implements IDraggable, IClickable {
     super.draw();
 
     fill(color(m_backgroundColour));
-    rect(m_pos.x, m_pos.y + m_labelSpace, m_scale.x, m_scale.y - m_labelSpace);
+    rect(m_pos.x, m_pos.y + m_labelSpace, m_scale.x, m_scale.y - m_labelSpace, DEFAULT_WIDGET_ROUNDNESS_3);
 
     fill(color(m_filledColour));
-    rect(m_pos.x, m_pos.y + m_labelSpace, (int)(m_scale.x * ((m_value - m_min) / (m_max - m_min))), m_scale.y - m_labelSpace);
+    rect(m_pos.x, m_pos.y + m_labelSpace, (int)(m_scale.x * ((m_value - m_min) / (m_max - m_min))), m_scale.y - m_labelSpace, DEFAULT_WIDGET_ROUNDNESS_1);
 
     m_label.draw();
   }
