@@ -25,7 +25,6 @@ class SliderUI extends Widget implements IDraggable, IClickable {
    * @param max The maximum value of the slider.
    * @param interval The interval between each step of the slider.
    */
-
   public SliderUI(int posX, int posY, int scaleX, int scaleY, double min, double max, double interval) {
     super(posX, posY, scaleX, scaleY);
     m_onDraggedEvent = new EventType<MouseDraggedEventInfoType>();
@@ -43,13 +42,13 @@ class SliderUI extends Widget implements IDraggable, IClickable {
     m_onDraggedEvent.addHandler(e -> onDraggedHandler(e));
     m_onClickEvent.addHandler(e -> onClickHandler(e));
   }
-
-  @ Override
+  
   /**
    * A. Robertson
    *
    * Draws the slider UI along with its label.
    */
+   @Override
     public void draw() {
     super.draw();
 
@@ -61,6 +60,7 @@ class SliderUI extends Widget implements IDraggable, IClickable {
 
     m_label.draw();
   }
+  
   /**
    * A. Robertson
    *
@@ -71,6 +71,7 @@ class SliderUI extends Widget implements IDraggable, IClickable {
   public void setLabelText(String text) {
     m_label.setText(text);
   }
+  
   /**
    * A. Robertson
    *
@@ -78,10 +79,10 @@ class SliderUI extends Widget implements IDraggable, IClickable {
    *
    * @return The current value of the slider.
    */
-
   public double getValue() {
     return m_value;
   }
+  
   /**
    * A. Robertson
    *
@@ -89,10 +90,10 @@ class SliderUI extends Widget implements IDraggable, IClickable {
    *
    * @return The event type for mouse dragged events.
    */
-
   public EventType<MouseDraggedEventInfoType> getOnDraggedEvent() {
     return m_onDraggedEvent;
   }
+  
   /**
    * A. Robertson
    *
@@ -100,7 +101,6 @@ class SliderUI extends Widget implements IDraggable, IClickable {
    *
    * @return The event type for click events.
    */
-
   public EventType<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
@@ -136,6 +136,7 @@ class SliderUI extends Widget implements IDraggable, IClickable {
 
     m_label.setText(String.format("Value: %.2f", m_value));
   }
+  
   /**
    * A. Robertson
    *
@@ -146,7 +147,6 @@ class SliderUI extends Widget implements IDraggable, IClickable {
    * @param max The maximum value of the range.
    * @return The clamped value.
    */
-
   private double clamp(double val, double min, double max) {
     return Math.max(min, Math.min(max, val));
   }

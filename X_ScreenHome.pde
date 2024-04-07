@@ -20,21 +20,20 @@ class ScreenHome extends Screen {
     super(screenId, DEFAULT_SCREEN_COLOUR);
   }
 
-
   /**
    * F. Wright
    *
    * Initializes the screen by adding UI elements and setting their properties.
    */
   @Override
-  public void init() {
-    super.init();        
+    public void init() {
+    super.init();
     m_starImage = new ImageUI("data/Images/Stars2k.jpg", 0, 0, width, height);
     m_starImageWrap = new ImageUI("data/Images/Stars2k.jpg", -width, 0, width, height);
 
     addWidget(m_starImage);
     addWidget(m_starImageWrap);
-      
+
     float growScale = 1.05f;
     float totalSpacing = (float)height/4.0;
     float totalButtonSize = height-totalSpacing;
@@ -70,26 +69,31 @@ class ScreenHome extends Screen {
     switchToCharts.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_ID_CHARTS));
     switchToCharts.setText("Charts");
     switchToCharts.setTextSize((int)((float)height/20.0));
-    
+
     LabelUI title = createLabel((int)oneSpacingUnit, (int)oneSpacingUnit, (int)((float)width/2.0), (int)((float)height/5.0), "High5ive");
     title.setCentreAligned(false);
-    title.setTextSize((int)((float)height/10.0));   
+    title.setTextSize((int)((float)height/10.0));
 
     LabelUI subTitle = createLabel((int)(oneSpacingUnit*1.1), (int)((float)height/4.0), (int)((float)width/2.0), (int)((float)height/10.0), "Flights :)");
     subTitle.setForegroundColour(COLOR_LIGHT_GRAY);
     subTitle.setCentreAligned(false);
-    subTitle.setTextSize((int)((float)height/20.0)); 
+    subTitle.setTextSize((int)((float)height/20.0));
 
     switchToCharts.setGrowScale(growScale);
   }
 
+  /**
+   * T. Creagh
+   *
+   * Changes the positions of the earth and stars over time
+   */
   @Override
-  public void draw() {
+    public void draw() {
     super.draw();
     float earthPosX = m_earthImage.getPos().x;
     float earthPosY = m_earthBasePosY + 10 * sin(millis() * 0.001);
     m_earthImage.setPos(earthPosX, earthPosY);
-    
+
     float newPosX = (m_starImage.getPos().x + s_deltaTime * 0.1f) % width;
     m_starImage.setPos(newPosX, 0);
     m_starImageWrap.setPos(newPosX - width, 0);

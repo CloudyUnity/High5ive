@@ -43,7 +43,15 @@ int sign(float val) {
     : 1;
 }
 
-float smoothstep(float t){
+/**
+ * F, Wright
+ *
+ * A sigmoid-like interpolation and clamping function
+ *
+ * @param t The interpolation parameter (between 0 and 1).
+ * @return The interpolated value.
+ */
+float smoothstep(float t) {
   return t * t * (3 - 2 * t);
 }
 
@@ -196,27 +204,30 @@ private color randomColor(int seed) {
   return result;
 }
 
-//tom
+/**
+ * T. Creagh
+ *
+ * Generates a color based on a given value which is modulated
+ *
+ * @param i The seed value for generating the color.
+ * @return The generated color.
+ */
 private color getColor(int i) {
   switch (i % 5) {
   case 0:
-    return COLOR_HIGHTLIGHT_1;
+    return COLOR_HIGHLIGHT_1;
   case 1:
-    return COLOR_HIGHTLIGHT_2;
+    return COLOR_HIGHLIGHT_2;
   case 2:
-    return COLOR_HIGHTLIGHT_3;
+    return COLOR_HIGHLIGHT_3;
   case 3:
-    return COLOR_HIGHTLIGHT_4;
+    return COLOR_HIGHLIGHT_4;
   case 4:
-    return COLOR_HIGHTLIGHT_5;
+    return COLOR_HIGHLIGHT_5;
   default:
-    return COLOR_HIGHTLIGHT_1;
+    return COLOR_HIGHLIGHT_1;
   }
 }
-private color getColor() {
-  return getColor(0);
-}
-
 
 // Descending code authorship changes:
 // F. Wright, Created C_Math tab, clamp(), slerp(), approx() and rotateY() for global use, 3pm 08/03/24

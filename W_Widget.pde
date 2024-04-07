@@ -3,7 +3,6 @@
  *
  * Class representing a group of widgets. Used for Radio Buttons.
  */
-
 class WidgetGroupType {
   protected ArrayList<Widget> Members;
 
@@ -34,7 +33,6 @@ class WidgetGroupType {
  * Abstract class representing a Widget. All controls included in a screen must extend Widget.
  */
 abstract class Widget {
-
   protected PVector m_pos, m_scale;
   protected PVector m_basePos, m_baseScale;
   protected int m_layer = -1;
@@ -55,7 +53,6 @@ abstract class Widget {
   private float m_growMult = 1.0f;
   protected boolean m_mouseHovered = false;
   protected boolean m_focused = false;
-  protected boolean m_rendered = true;
   protected boolean m_active = true;
 
   /**
@@ -124,10 +121,24 @@ abstract class Widget {
       child.setActive(active);
   }
 
+  /**
+   * F. Wright
+   *
+   * Retrieves the layer of the object.
+   *
+   * @return The layer of the object.
+   */
   public int getLayer() {
     return m_layer;
   }
 
+  /**
+   * F. Wright
+   *
+   * Sets the layer of the object.
+   *
+   * @param layer The layer to set.
+   */
   public void setLayer(int layer) {
     m_layer = layer;
   }
@@ -261,28 +272,6 @@ abstract class Widget {
   }
 
   /**
-   * F. Wright
-   *
-   * Sets if the widget should render.
-   *
-   * @param enabled A boolean representing if the widget should render.
-   */
-  public void setRendering(boolean enabled) {
-    m_rendered = enabled;
-  }
-
-  /**
-   * F. Wright
-   *
-   * Gets if the widget is rendering.
-   *
-   * @returns A boolean representing if the widget is rendering.
-   */
-  public boolean getRenderingEnabled() {
-    return m_rendered;
-  }
-
-  /**
    * A. Robertson
    *
    * Sets the x position of the widget.
@@ -379,7 +368,7 @@ abstract class Widget {
   }
 
   /**
-   * A. Robertson/F. Wright
+   * A. Robertson, F. Wright
    *
    * Draws the widget.
    */
@@ -502,6 +491,7 @@ abstract class Widget {
  * @extends Widget
  */
 class EmptyWidgetUI extends Widget {
+  
   /**
    * F. Wright
    *

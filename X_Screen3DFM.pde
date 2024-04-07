@@ -179,7 +179,7 @@ class Screen3DFM extends Screen {
       CheckboxUI crtCB = createCheckbox(20, currentUIPosY, 50, 50, "CRT");
       crtCB.getOnClickEvent().addHandler(e -> s_ApplicationClass.setCRT(crtCB.getChecked()));
       crtCB.setGrowScale(1.05);
-      crtCB.setChecked(true);
+      crtCB.setChecked(s_ApplicationClass.getCRT());
       crtCB.getLabel().setTextXOffset(0);
       crtCB.setTextSize(textSize);
       crtCB.getLabel().setCentreAligned(true);
@@ -217,10 +217,22 @@ class Screen3DFM extends Screen {
     m_flights  = flights;
   }
 
+  /**
+   * F. Wright
+   *
+   * Loads flights into the 3D flight map.
+   *
+   * @param flights The array of FlightType objects representing the flights to load.
+   */
   public void loadFlights(FlightType[] flights) {
     m_flightMap3D.loadFlights(flights, m_queryManager);
   }
 
+  /**
+   * F. Wright
+   *
+   * Overrides the draw method to implement custom drawing logic.
+   */
   @Override
     public void draw() {
     super.draw();

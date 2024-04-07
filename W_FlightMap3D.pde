@@ -14,7 +14,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   private PShape m_modelEarth, m_modelSun, m_modelSkySphere;
   private PImage m_texEarthDay, m_texEarthNight, m_texSun, m_texSkySphereStars;
   private PImage m_texEarthNormalMap, m_texEarthSpecularMap, m_texDitherNoise;
-  private PShader m_shaderEarth, m_shaderSun, m_shaderDitherPP, m_shaderCRTPP, m_shaderSkySphere;
+  private PShader m_shaderEarth, m_shaderSun, m_shaderDitherPP, m_shaderSkySphere;
 
   private PVector m_earthRotation = new PVector(0, 0, 0);
   private PVector m_earthRotationalVelocity = new PVector(0, 0, 0);
@@ -106,8 +106,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_shaderEarth = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
     m_shaderSun = loadShader("data/Shaders/SunFrag.glsl", "data/Shaders/BaseVert.glsl");
     m_shaderDitherPP = loadShader("data/Shaders/PPDither.glsl");
-    m_shaderCRTPP = loadShader("data/Shaders/PPCRT.glsl");
-    m_shaderSkySphere = loadShader("data/Shaders/SkyboxFrag.glsl", "data/Shaders/SkyboxVert.glsl");      
+    m_shaderSkySphere = loadShader("data/Shaders/SkyboxFrag.glsl", "data/Shaders/SkyboxVert.glsl");
 
     m_shaderEarth.set("texDay", m_texEarthDay);
     m_shaderEarth.set("texNight", m_texEarthNight);
@@ -116,8 +115,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_shaderSun.set("tex", m_texSun);
     m_shaderDitherPP.set("noise", m_texDitherNoise);
     m_shaderDitherPP.set("resolution", (float)width, (float)height);
-    m_shaderCRTPP.set("resolution", (float)width, (float)height);
-    m_shaderSkySphere.set("tex", m_texSkySphereStars);    
+    m_shaderSkySphere.set("tex", m_texSkySphereStars);
 
     setPermaDay(false);
     m_assetsLoaded = true;
@@ -322,7 +320,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_shaderEarth.set("lightDir", lightDir);
     m_shaderSun.set("texTranslation", 0, m_totalTimeElapsed * 0.5f);
     m_rotationYModified = m_earthRotation.y + m_totalTimeElapsed;
-    m_earthPos.z = EARTH_Z_3D + m_zoomLevel;    
+    m_earthPos.z = EARTH_Z_3D + m_zoomLevel;
 
     s_3D.beginDraw();
 
@@ -671,6 +669,13 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_dayCycleSpeed = speed;
   }
 
+  /**
+   * F. Wright
+   *
+   * Sets whether the dithering post processing effect is enabled
+   *
+   * @param enabled The state of the dithering shader
+   */
   public void setDitheringEnabled(boolean enabled) {
     m_ditheringEnabled = enabled;
   }

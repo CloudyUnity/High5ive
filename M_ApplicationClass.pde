@@ -21,7 +21,7 @@ class ApplicationClass {
   private TwoDMapScreen m_screen2DFM = null;
 
   private PShader m_crtShader;
-  private boolean m_crtEnabled = true;
+  private boolean m_crtEnabled = false;
 
   /**
    * F. Wright
@@ -204,6 +204,11 @@ class ApplicationClass {
     m_transManager.startTransition();
   }
 
+  /**
+   * F. Wright
+   *
+   * Changes the current screen and initialises it if uninitialised
+   */
   private void triggerSwitchScreen() {
     for (Screen screen : m_screens) {
       if (m_cachedSwitchScreenID.compareTo(screen.getScreenId()) != 0)
@@ -221,12 +226,33 @@ class ApplicationClass {
     }
   }
 
+  /**
+   * F. Wright
+   *
+   * Returns the current transition state of the transition manager
+   *
+   * @return The transition state
+   */
   public boolean getTransitionState() {
     return m_transManager.getTransitionState();
   }
-  
-  public void setCRT(boolean enabled){
+
+  /**
+   * F. Wright
+   *
+   * Sets whether the global CRT post processing effect is active
+   */
+  public void setCRT(boolean enabled) {
     m_crtEnabled = enabled;
+  }
+
+  /**
+   * F. Wright
+   *
+   * @return The current CRT state
+   */
+  public boolean getCRT() {
+    return m_crtEnabled;
   }
 }
 

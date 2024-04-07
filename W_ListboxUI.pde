@@ -5,19 +5,16 @@
  *
  * @param <T> The type of data stored in the listbox entries.
  */
-
-
 class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
   private EventType<EventInfoType> m_onClickEvent;
   private EventType<ListboxSelectedEntryChangedEventInfoType<T>> m_onSelectedEntryChangedEvent;
   private EventType<MouseWheelEventInfoType> m_mouseWheelMovedEvent;
-  private ArrayList<ListboxEntry<T>> m_entries;
+  private ArrayList<ListboxEntryType<T>> m_entries;
   private Function<T, String> m_getDisplayString;
   private int m_entryHeight;
   private int m_entryWidth;
   private boolean m_onlyUseNeededHeight = false;
   private ScrollbarUI m_scrollbar;
-
 
   /**
    * A. Robertson
@@ -31,15 +28,13 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
    * @param entryHeight    The height of each entry in the listbox.
    * @param getDisplayString A function to retrieve the display string for each entry.
    */
-
-
   public ListboxUI(int x, int y, int scaleX, int maxHeight, int entryHeight, Function<T, String> getDisplayString) {
     super(x, y, scaleX, maxHeight);
     m_getDisplayString = getDisplayString;
     m_onClickEvent = new EventType<EventInfoType>();
     m_onSelectedEntryChangedEvent = new EventType<ListboxSelectedEntryChangedEventInfoType<T>>();
     m_mouseWheelMovedEvent = new EventType<MouseWheelEventInfoType>();
-    m_entries = new ArrayList<ListboxEntry<T>>();
+    m_entries = new ArrayList<ListboxEntryType<T>>();
     m_entryHeight = entryHeight;
     m_entryWidth = (int)m_scale.x;
     m_scrollbar = new ScrollbarUI((int)m_pos.x + m_entryWidth - 10, (int)m_pos.y, 10, (int)m_scale.y, 0, (int)m_scale.y / entryHeight);
@@ -51,13 +46,12 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
     m_children.add(m_scrollbar);
   }
 
-  @ Override
   /**
    * A. Robertson
    *
    * Draws the listbox and its entries.
    */
-
+  @ Override
     public void draw() {
     super.draw();
 
@@ -87,6 +81,7 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
         m_scrollbar.draw();
     }
   }
+
   /**
    * A. Robertson
    *
@@ -94,10 +89,10 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
    *
    * @return The event type for click events.
    */
-
   public EventType<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
+
   /**
    * A. Robertson
    *
@@ -105,10 +100,10 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
    *
    * @return The event type for selected entry changed events.
    */
-
   public EventType<ListboxSelectedEntryChangedEventInfoType<T>> getOnSelectedEntryChangedEvent() {
     return m_onSelectedEntryChangedEvent;
   }
+
   /**
    * A. Robertson
    *
@@ -116,10 +111,10 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
    *
    * @return The event type for mouse wheel events.
    */
-
   public EventType<MouseWheelEventInfoType> getOnMouseWheelEvent() {
     return m_mouseWheelMovedEvent;
   }
+
   /**
    * A. Robertson
    *
@@ -131,7 +126,13 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
     m_onlyUseNeededHeight = onlyUseNeededHeight;
   }
 
-  // Returns true if one could be selected, false otherwise
+  /**
+   * A. Robertson
+   *
+   * Selects the first entry that is shown in the listbox.
+   *
+   * @return True if a shown entry is selected, false otherwise.
+   */
   public boolean selectFirstShown() {
     for (int i = 0; i < m_entries.size(); i++) {
       if (m_entries.get(i).getShown()) {
@@ -149,9 +150,8 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
    *
    * @param f The function used for filtering entries.
    */
-
   public void filterEntries(Function<T, Boolean> f) {
-    for (ListboxEntry<T> entry : m_entries)
+    for (ListboxEntryType<T> entry : m_entries)
       entry.setShown(f.apply(entry.getData()));
     m_scrollbar.setNumberOfElements(getNumberOfShown());
   }
@@ -161,9 +161,8 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
    *
    * Removes any filters applied to the listbox entries.
    */
-
   public void removeFilter() {
-    for (ListboxEntry<T> entry : m_entries)
+    for (ListboxEntryType<T> entry : m_entries)
       entry.setShown(true);
     m_scrollbar.setNumberOfElements(getNumberOfShown());
   }
@@ -176,7 +175,7 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
    * @param entry The entry to add.
    */
   public void add(T entry) {
-    m_entries.add(new ListboxEntry<T>(entry));
+    m_entries.add(new ListboxEntryType<T>(entry));
     m_scrollbar.setNumberOfElements(getNumberOfShown());
     if (!m_scrollbar.getActive() && (getNumberOfShown() * m_entryHeight) > m_scale.y) {
       m_scrollbar.setActive(true);
@@ -192,7 +191,6 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
    *
    * @param entry The entry to remove.
    */
-
   public void remove(T entry) {
     m_entries.remove(entry);
     m_scrollbar.setNumberOfElements(getNumberOfShown());
@@ -202,16 +200,14 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
       m_scrollbar.setCurrentTop(0);
     }
   }
+
   /**
-   
    * A. Robertson
    *
    * Removes the entry at the specified index from the listbox.
    *
    * @param index The index of the entry to remove.
    */
-
-
   public void removeAt(int index) {
     m_entries.remove(index);
     m_scrollbar.setNumberOfElements(getNumberOfShown());
@@ -227,9 +223,8 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
    *
    * Clears all selected entries from the listbox.
    */
-
   private void clearSelected() {
-    for (var entry : m_entries) {
+    for (ListboxEntryType entry : m_entries) {
       entry.setSelected(false);
     }
   }
@@ -240,8 +235,8 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
    * Removes all selected entries from the listbox.
    */
   public void removeSelected() {
-    for (Iterator<ListboxEntry<T>> it = m_entries.iterator(); it.hasNext(); ) {
-      ListboxEntry<T> e = it.next();
+    for (Iterator<ListboxEntryType<T>> it = m_entries.iterator(); it.hasNext(); ) {
+      ListboxEntryType<T> e = it.next();
       if (e.getSelected())
         it.remove();
     }
@@ -258,9 +253,8 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
    *
    * Removes all selected entries from the listbox.
    */
-
   public void clear() {
-    m_entries = new ArrayList<ListboxEntry<T>>();
+    m_entries = new ArrayList<ListboxEntryType<T>>();
     m_scrollbar.setActive(false);
     m_scrollbar.setCurrentTop(0);
     m_scrollbar.setNumberOfElements(0);
@@ -276,12 +270,12 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
    * @param index The index of the entry.
    * @return The data of the entry.
    */
-
   public T getEntry(int index) {
-    ListboxEntry<T> entry = m_entries.get(index);
+    ListboxEntryType<T> entry = m_entries.get(index);
     if (entry == null) return null;
     return entry.getData();
   }
+
   /**
    * A. Robertson
    *
@@ -289,14 +283,14 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
    *
    * @return The data of the selected entry.
    */
-
   public T getSelectedEntry() {
-    for (var entry : m_entries) {
+    for (ListboxEntryType entry : m_entries) {
       if (entry.getSelected())
         return entry.getData();
     }
     return null;
   }
+
   /**
    * A. Robertson
    *
@@ -304,7 +298,6 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
    *
    * @return The index of the selected entry.
    */
-
   public int getSelectedIndex() {
     for (int i = 0; i < m_entries.size(); i++) {
       if (m_entries.get(i).getSelected())
@@ -312,6 +305,7 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
     }
     return -1;
   }
+
   /**
    * A. Robertson
    *
@@ -319,10 +313,10 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
    *
    * @param h The height of each entry.
    */
-
   public void setEntryHeight(int h) {
     m_entryHeight = h;
   }
+
   /**
    * A. Robertson
    *
@@ -330,12 +324,10 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
    *
    * @param getDisplayString The function to retrieve display strings.
    */
-
   public void setDisplayFunction(Function<T, String> getDisplayString) {
     m_getDisplayString = getDisplayString;
   }
 
-  @ Override
   /**
    * A. Robertson
    *
@@ -345,86 +337,86 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
    * @param my The y-coordinate.
    * @return True if the position is inside the listbox, false otherwise.
    */
-
+  @ Override
     public boolean isPositionInside(int mx, int my) {
     return
       mx >= m_pos.x && mx <= (m_pos.x + m_entryWidth) &&
       my >= m_pos.y && my <= (m_pos.y + shownHeight());
   }
-/**
- * A. Robertson
- * 
- * Handles the click event on the listbox.
- *
- * @param e The event information.
- */
-
+  
+  /**
+   * A. Robertson
+   *
+   * Handles the click event on the listbox.
+   *
+   * @param e The event information.
+   */
   private void onClick(EventInfoType e) {
     int i = (e.Y - (int)m_pos.y) / m_entryHeight + m_scrollbar.getCurrentTop();
     selectEntry(i);
   }
-/**
- * A. Robertson
- * 
- * Selects the entry at the specified index.
- *
- * @param index The index of the entry to select.
- */
-
+  
+  /**
+   * A. Robertson
+   *
+   * Selects the entry at the specified index.
+   *
+   * @param index The index of the entry to select.
+   */
   private void selectEntry(int index) {
     if (index < m_entries.size()) {
       clearSelected();
-      ListboxEntry<T> entry = m_entries.get(index);
+      ListboxEntryType<T> entry = m_entries.get(index);
       if (!entry.getSelected()) {
         m_onSelectedEntryChangedEvent.raise(new ListboxSelectedEntryChangedEventInfoType<T>(0, 0, entry.getData(), this));
         entry.setSelected(true);
       }
     }
   }
-/**
- * A. Robertson
- * 
- * Handles the mouse wheel movement event.
- *
- * @param e The mouse wheel event information.
- */
-
+  
+  /**
+   * A. Robertson
+   *
+   * Handles the mouse wheel movement event.
+   *
+   * @param e The mouse wheel event information.
+   */
   private void onMouseWheelMoved(MouseWheelEventInfoType e) {
     m_scrollbar.getOnMouseWheelEvent().raise(e);
   }
-/**
- * A. Robertson
- * 
- * Calculates the total height needed to display all entries.
- *
- * @return The total height needed.
- */
-
+  
+  /**
+   * A. Robertson
+   *
+   * Calculates the total height needed to display all entries.
+   *
+   * @return The total height needed.
+   */
   private int neededHeight() {
     return m_entryHeight * m_entries.size();
   }
-/**
- * A. Robertson
- * 
- * Calculates the height of the listbox that should be shown.
- *
- * @return The height of the listbox to be shown.
- */
-
+  
+  /**
+   * A. Robertson
+   *
+   * Calculates the height of the listbox that should be shown.
+   *
+   * @return The height of the listbox to be shown.
+   */
   public int shownHeight() {
     return m_onlyUseNeededHeight ? Math.min(neededHeight(), (int)m_scale.y) : (int)m_scale.y;
   }
-/**
- * A. Robertson
- * 
- * Gets the number of entries that are currently shown.
- *
- * @return The number of shown entries.
- */
-
+  
+  /**
+   * A. Robertson
+   *
+   * Gets the number of entries that are currently shown.
+   *
+   * @return The number of shown entries.
+   */
   private int getNumberOfShown() {
     int sum = 0;
-    for (var entry : m_entries)
+    for (ListboxEntryType entry : m_entries)
       if (entry.getShown())
         sum++;
     return sum;
@@ -438,8 +430,7 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
  *
  * @param <T> The type of data stored in the entry.
  */
-
-class ListboxEntry<T> {
+class ListboxEntryType<T> {
   private T m_data;
   private int m_textColour = 0;
   private int m_backgroundColour = #FFFFFF;
@@ -454,8 +445,7 @@ class ListboxEntry<T> {
    *
    * @param data The data of the entry.
    */
-
-  public ListboxEntry(T data) {
+  public ListboxEntryType(T data) {
     m_data = data;
   }
 
@@ -466,10 +456,10 @@ class ListboxEntry<T> {
    *
    * @return The data of the entry.
    */
-
   public T getData() {
     return m_data;
   }
+  
   /**
    * A. Robertson
    *
@@ -477,10 +467,10 @@ class ListboxEntry<T> {
    *
    * @param textColour The text color to set.
    */
-
   public void setTextColour(int textColour) {
     m_textColour = textColour;
   }
+  
   /**
    * A. Robertson
    *
@@ -488,10 +478,10 @@ class ListboxEntry<T> {
    *
    * @return The text color of the entry.
    */
-
   public int getTextColour() {
     return m_textColour;
   }
+  
   /**
    * A. Robertson
    *
@@ -499,10 +489,10 @@ class ListboxEntry<T> {
    *
    * @param backgroundColour The background color to set.
    */
-
   public void setBackgroundColour(int backgroundColour) {
     m_backgroundColour = backgroundColour;
   }
+  
   /**
    * A. Robertson
    *
@@ -510,10 +500,10 @@ class ListboxEntry<T> {
    *
    * @return The background color of the entry.
    */
-
   public int getBackgroundColour() {
     return m_backgroundColour;
   }
+  
   /**
    * A. Robertson
    *
@@ -521,10 +511,10 @@ class ListboxEntry<T> {
    *
    * @return The background color of the entry.
    */
-
   public void setSelected(boolean selected) {
     m_selected = selected;
   }
+  
   /**
    * A. Robertson
    *
@@ -532,10 +522,10 @@ class ListboxEntry<T> {
    *
    * @param selected True to set the entry as selected, false otherwise.
    */
-
   public boolean getSelected() {
     return m_selected;
   }
+  
   /**
    * A. Robertson
    *
@@ -543,11 +533,10 @@ class ListboxEntry<T> {
    *
    * @param selectedColour The selected color to set.
    */
-
-
   public void setSelectedColour(int selectedColour) {
     m_selectedColour = selectedColour;
   }
+  
   /**
    * A. Robertson
    *
@@ -555,10 +544,10 @@ class ListboxEntry<T> {
    *
    * @return The selected color of the entry.
    */
-
   public int getSelectedColour() {
     return m_selectedColour;
   }
+  
   /**
    * A. Robertson
    *
@@ -566,10 +555,10 @@ class ListboxEntry<T> {
    *
    * @param shown True to show the entry, false to hide it.
    */
-
   public void setShown(boolean shown) {
     m_shown = shown;
   }
+  
   /**
    * A. Robertson
    *
@@ -577,7 +566,6 @@ class ListboxEntry<T> {
    *
    * @return True if the entry is shown, false otherwise.
    */
-
   public boolean getShown() {
     return m_shown;
   }

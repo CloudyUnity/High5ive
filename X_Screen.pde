@@ -57,12 +57,12 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
     background(m_backgroundColor);
 
     for (Widget child : m_children)
-      if (child.getRenderingEnabled() && child.getActive())
+      if (child.getActive())
         child.draw();
 
     for (WidgetGroupType group : m_groups) {
       for (Widget child : group.getMembers())
-        if (child.getRenderingEnabled() && child.getActive())
+        if (child.getActive())
           child.draw();
     }
   }
@@ -76,18 +76,6 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
     m_initialised = true;
   }
 
-  // public color getBackgroundColor() {
-  //   return m_backgroundColor;
-  // }
-
-  // public ArrayList<WidgetGroupType> getGroups() {
-  //   return m_groups;
-  // }
-
-  // public ArrayList<Widget> getChildren() {
-  //   return m_children;
-  // }
-
   /**
    * A. Robertson
    *
@@ -98,20 +86,28 @@ abstract class Screen extends Widget implements IClickable, IWheelInput {
   public void addWidget(Widget widget) {
     addWidget(widget, widget.getLayer());
   }
-  
+
+  /**
+   * A. Robertson, F. Wright
+   *
+   * Adds a widget to the screen at the specified layer.
+   *
+   * @param widget The widget to add.
+   * @param layer The layer at which to add the widget.
+   */
   public void addWidget(Widget widget, int layer) {
     if (widget == null)
       return;
-      
+
     widget.setLayer(layer);
-    for (int i = 0; i < m_children.size(); i++){
-      if (m_children.get(i).getLayer() > layer){
+    for (int i = 0; i < m_children.size(); i++) {
+      if (m_children.get(i).getLayer() > layer) {
         m_children.add(i, widget);
         return;
       }
     }
-    
-    m_children.add(widget);    
+
+    m_children.add(widget);
   }
 
   /**
