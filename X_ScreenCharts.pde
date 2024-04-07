@@ -76,7 +76,7 @@ class ScreenCharts extends Screen {
       CheckboxUI crtCB = createCheckbox(220, 50, 40, 40, "CRT");
       crtCB.getOnClickEvent().addHandler(e -> s_ApplicationClass.setCRT(crtCB.getChecked()));
       crtCB.setGrowScale(1.05);
-      crtCB.setChecked(true);
+      crtCB.setChecked(s_ApplicationClass.getCRT());
       crtCB.getLabel().setTextXOffset(0);
       crtCB.setTextSize(20);
       crtCB.getLabel().setCentreAligned(true);
@@ -351,6 +351,11 @@ class ScreenCharts extends Screen {
     ).start();
   }
 
+  /**
+   * F. Wright
+   *
+   * Reloads the scatter plot data asychrously using the cached flights.
+   */
   public void reloadScatterAsync() {
     m_scatterPlot.removeData();
     m_scatterPlot.addData(m_cachedFlights,

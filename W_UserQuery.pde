@@ -1,8 +1,8 @@
 /**
- * F.Wright:
+ * F.Wright
+ *
  * Represents a textbox with an attached operator dropdown for querying flight data.
  */
-
 class TextboxWithOpType {
   public TextboxUI Textbox;
   public DropdownUI<QueryOperatorType> OpDropdown;
@@ -16,7 +16,8 @@ class TextboxWithOpType {
 }
 
 /**
- * M.Poole:
+ * M.Poole
+ *
  * Represents a user interface for querying flight data. Manages user inputs and interactions
  * for querying flight data and displaying results.
  */
@@ -48,7 +49,8 @@ class UserQueryUI extends Widget {
   private PImage m_lockImg = loadImage("data/Images/Lock.png");
 
   /**
-   * M.Poole:
+   * M.Poole
+   *
    * Constructs a UserQueryUI object with the specified position, dimensions, query manager, and screen.
    *
    * @param posX         The x-coordinate of the user interface position.
@@ -243,6 +245,16 @@ class UserQueryUI extends Widget {
     return tbop;
   }
 
+  /**
+   * F. Wright
+   *
+   * Creates a new textbox UI element and adds it to the manager.
+   *
+   * @param posX The x-coordinate of the textbox.
+   * @param posY The y-coordinate of the textbox.
+   * @param placeholderTxt The placeholder text for the textbox.
+   * @return The created textbox UI element.
+   */
   private TextboxUI createTextboxUI(int posX, int posY, String placeholderTxt) {
     TextboxUI tb =  new TextboxUI(posX, posY, (int)UQUI_TB_SCALE.x, (int)UQUI_TB_SCALE.y);
     addWidget(tb);
@@ -251,7 +263,8 @@ class UserQueryUI extends Widget {
   }
 
   /**
-   * M.Poole:
+   * M.Poole
+   *
    * Inserts base flight data into the user interface for further querying and analysis.
    *
    * @param flightData The flight data to be inserted into the interface.
@@ -262,7 +275,8 @@ class UserQueryUI extends Widget {
   }
 
   /**
-   * M.Poole:
+   * M.Poole
+   *
    * Sets the handler for the data load event. This event occurs when flight data needs to be loaded.
    *
    * @param dataEvent The event handler for loading flight data.
@@ -272,7 +286,8 @@ class UserQueryUI extends Widget {
   }
 
   /**
-   * M.Poole:
+   * M.Poole
+   *
    * Sets the handler for the data load event. This event occurs when flight data needs to be loaded.
    *
    * @param dataEvent The event handler for loading flight data.
@@ -283,7 +298,7 @@ class UserQueryUI extends Widget {
 
 
   /**
-   * M.Poole:
+   * M.Poole
    *
    * Loads flight data based on the active queries. Queries the flight manager for relevant data
    * based on user input queries and updates the displayed data accordingly.
@@ -295,18 +310,24 @@ class UserQueryUI extends Widget {
   }
 
   /**
-   * F.Wright:
+   * F.Wright
    *
    * Loads flight data to another screen based on the active queries. Queries the flight manager for relevant data
    * based on user input queries and updates the displayed data accordingly.
    */
-
   private void loadDataOtherScreen() {
     s_DebugProfiler.startProfileTimer();
     m_onLoadDataOtherScreenEvent.accept(createFlightTypeArr());
     s_DebugProfiler.printTimeTakenMillis("Loading data into other screen");
   }
 
+  /**
+   * M. Poole
+   *
+   * Creates a flight type array based on the active queries and current location.
+   *
+   * @return The created flight type array.
+   */
   private FlightType[] createFlightTypeArr() {
     FlightType[] result;
     if (m_location == QueryLocationType.US)
@@ -321,8 +342,13 @@ class UserQueryUI extends Widget {
     return result;
   }
 
-
-
+  /**
+   * M. Poole
+   *
+   * Saves a query based on the provided textbox with operator.
+   *
+   * @param tbop The textbox with operator to save the query from.
+   */
   private void saveQuery(TextboxWithOpType tbop) {
     QueryOperatorType op = tbop.OpDropdown.getSelected();
     if (op == null)
@@ -355,20 +381,28 @@ class UserQueryUI extends Widget {
       return;
 
     FlightQueryType fqt = new FlightQueryType(queryType, op, m_location);
-    fqt.setQueryValue(val);
+    fqt.QueryValue = val;
 
     String queryTypeStr = formatText(queryType.toString());
     String opStr = formatText(op.toString());
     addToQueryList(fqt, queryTypeStr + " " + opStr + " " + formatValue(text, queryType));
   }
 
+  /**
+   * F. Wright
+   *
+   * Adds a flight query type to the active query list and its corresponding text to the query listbox.
+   *
+   * @param query The flight query type to add.
+   * @param text The text to add to the query listbox.
+   */
   private void addToQueryList(FlightQueryType query, String text) {
     m_activeQueries.add(query);
     m_queryLB.add(text);
   }
 
   /**
-   * M.Poole:
+   * M.Poole
    *
    * Saves all active queries entered by the user. Collects and stores all active queries
    * for loading data.
@@ -385,7 +419,7 @@ class UserQueryUI extends Widget {
 
     if (m_cancelledRadio.getChecked()) {
       FlightQueryType fqt = new FlightQueryType(QueryType.CANCELLED, QueryOperatorType.EQUAL, m_location);
-      addToQueryList(fqt, "Cancelled");     
+      addToQueryList(fqt, "Cancelled");
       m_cancelledRadio.setChecked(false);
     }
 
@@ -401,7 +435,7 @@ class UserQueryUI extends Widget {
       addToQueryList(fqtC, "Not Cancelled");
       addToQueryList(fqtD, "Not Diverted");
       m_successRadio.setChecked(false);
-    }            
+    }
   }
 
   /**
@@ -453,7 +487,7 @@ class UserQueryUI extends Widget {
       return text;
     }
   }
-  
+
   /**
    * F. Wright
    *
@@ -470,7 +504,7 @@ class UserQueryUI extends Widget {
     case DEPARTURE_TIME:
     case SCHEDULED_DEPARTURE_TIME:
       if (text.length() < 3)
-        return "0"; 
+        return "0";
       String cleanTxt = text.replace(":", "");
       if (cleanTxt.length() == 3)
         return cleanTxt.charAt(0) + ":" + cleanTxt.substring(1, 3);
@@ -482,7 +516,8 @@ class UserQueryUI extends Widget {
   }
 
   /**
-   * M.Poole:
+   * M.Poole
+   *
    * Clears all currently saved user queries. Resets the interface by removing all
    * saved queries and resetting input fields.
    */
@@ -492,7 +527,8 @@ class UserQueryUI extends Widget {
   }
 
   /**
-   * M.Poole:
+   * M.Poole
+   *
    * Changes the data location to US. Updates the interface to reflect data relevant
    * to the United States.
    */
@@ -501,7 +537,8 @@ class UserQueryUI extends Widget {
   }
 
   /**
-   * M.Poole:
+   * M.Poole
+   *
    * Changes the data location to World. Updates the interface to reflect global data.
    */
   private void changeDataToWorld() {
@@ -509,7 +546,7 @@ class UserQueryUI extends Widget {
   }
 
   /**
-   * M.Poole:
+   * M.Poole
    *
    * Adds a widget to the user interface. Incorporates a new widget into the interface layout
    * for user interaction and data display.
@@ -522,9 +559,8 @@ class UserQueryUI extends Widget {
     widget.setParent(this);
   }
 
-
   /**
-   * F.Wright:
+   * F.Wright
    *
    * Adds a widget to the user interface. Incorporates a new widget into the interface layout
    * for user interaction and assigns it to a specific layer.
@@ -552,7 +588,7 @@ class UserQueryUI extends Widget {
     for (int i = 0; i < m_lockBoxesList.size(); i++)
       m_lockBoxesList.get(i).setActive(enabled);
   }
-  
+
   /**
    * F. Wright
    *
@@ -564,7 +600,7 @@ class UserQueryUI extends Widget {
     if (m_screen != null)
       m_screen.addWidgetGroup(group);
   }
-  
+
   /**
    * F. Wright
    *
@@ -582,7 +618,7 @@ class UserQueryUI extends Widget {
     addWidget(label);
     return label;
   }
-  
+
   /**
    * F. Wright
    *
@@ -594,7 +630,7 @@ class UserQueryUI extends Widget {
     m_worldRadio.setRendering(enabled);
     m_usRadio.setRendering(enabled);
   }
-  
+
   /**
    * F. Wright
    *

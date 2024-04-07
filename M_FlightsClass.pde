@@ -3,6 +3,7 @@ class FlightsManagerClass {
 
   /**
    * T.Creagh
+   *
    * Loads the flight data from the given file paths.
    *
    * @param usFileName       The filename for US flight data.
@@ -10,7 +11,6 @@ class FlightsManagerClass {
    * @param threadCount      The number of threads to use for processing.
    * @param onTaskComplete  A consumer to be called when the task is complete.
    */
-  // Loads the flight data from the given file paths
   public void loadUSAndWorldFromFiles(String usFileName, String worldFileName, int threadCount, Consumer<FlightMultiDataType> onTaskComplete) {
     boolean result = convertBinaryFileToFlightType(usFileName, worldFileName, US_LINE_BYTE_SIZE, WORLD_LINE_BYTE_SIZE, threadCount, onTaskComplete);
     if (!result)
@@ -19,6 +19,7 @@ class FlightsManagerClass {
 
   /**
    * T.Creagh
+   *
    * Converts a binary file to an array of FlightType asynchronously.
    *
    * @param filename         The name of the binary file.
@@ -54,6 +55,7 @@ class FlightsManagerClass {
 
   /**
    * T.Creagh
+   *
    * Converts a binary file to an array of FlightType asynchronously.
    *
    * @param filename         The name of the binary file.
@@ -114,6 +116,7 @@ class FlightsManagerClass {
 
   /**
    * T.Creagh
+   *
    * Processes a chunk of flight data from a binary file for world flights.
    *
    * @param flightsList     The array to store processed flights.
@@ -151,6 +154,7 @@ class FlightsManagerClass {
 
   /**
    * T.Creagh
+   *
    * Processes a chunk of flight data from a binary file for world flights.
    *
    * @param flightsList     The array to store processed flights.
@@ -173,6 +177,7 @@ class FlightsManagerClass {
 
   /**
    * T.Creagh
+   *
    * Prints the given array of flights based on the query type.
    *
    * @param flights    The array of flights to print.
@@ -186,6 +191,7 @@ class FlightsManagerClass {
 
   /**
    * T.Creagh
+   *
    * Prints a single flight based on the given query type.
    *
    * @param flight     The flight to print.

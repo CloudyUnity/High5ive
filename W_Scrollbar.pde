@@ -4,8 +4,6 @@
  * Represents the scrollbar UI along with addign the functionality of
  * the scroll bar itself.
  */
-
-
 class ScrollbarUI extends Widget implements IClickable, IWheelInput, IDraggable {
   private int m_numberOfElements;
   private int m_currentTopElement;
@@ -26,7 +24,6 @@ class ScrollbarUI extends Widget implements IClickable, IWheelInput, IDraggable 
    * @param numElements The total number of elements.
    * @param numViewed The number of elements visible at a time.
    */
-
   public ScrollbarUI(int x, int y, int scaleX, int scaleY, int numElements, int numViewed) {
     super(x, y, scaleX, scaleY);
 
@@ -46,13 +43,12 @@ class ScrollbarUI extends Widget implements IClickable, IWheelInput, IDraggable 
     m_onMouseDraggedEvent.addHandler(e -> onMouseDragged(e));
   }
 
-  @ Override
   /**
    * A. Robertson
    *
    * Draws the scrollbar UI along with the scroll bar.
    */
-
+  @ Override
     public void draw() {
     super.draw();
 
@@ -73,10 +69,10 @@ class ScrollbarUI extends Widget implements IClickable, IWheelInput, IDraggable 
    *
    * @return The event type for mouse wheel events.
    */
-
   public EventType<MouseWheelEventInfoType> getOnMouseWheelEvent() {
     return m_onMouseWheelEvent;
   }
+  
   /**
    * A. Robertson
    *
@@ -84,11 +80,10 @@ class ScrollbarUI extends Widget implements IClickable, IWheelInput, IDraggable 
    *
    * @return The event type for click events.
    */
-
-
   public EventType<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
+  
   /**
    * A. Robertson
    *
@@ -96,11 +91,10 @@ class ScrollbarUI extends Widget implements IClickable, IWheelInput, IDraggable 
    *
    * @return The event type for dragged events.
    */
-
-
   public EventType<MouseDraggedEventInfoType> getOnDraggedEvent() {
     return m_onMouseDraggedEvent;
   }
+  
   /**
    * A. Robertson
    *
@@ -108,11 +102,10 @@ class ScrollbarUI extends Widget implements IClickable, IWheelInput, IDraggable 
    *
    * @param top The index of the top element to set.
    */
-
-
   public int getCurrentTop() {
     return m_currentTopElement;
   }
+  
   /**
    * A. Robertson
    *
@@ -120,10 +113,10 @@ class ScrollbarUI extends Widget implements IClickable, IWheelInput, IDraggable 
    *
    * @param top The index of the top element to set.
    */
-
   public void setCurrentTop(int top) {
     m_currentTopElement = top;
   }
+  
   /**
    * A. Robertson
    *
@@ -131,10 +124,10 @@ class ScrollbarUI extends Widget implements IClickable, IWheelInput, IDraggable 
    *
    * @param num The total number of elements.
    */
-
   public void setNumberOfElements(int num) {
     m_numberOfElements = num;
   }
+  
   /**
    * A. Robertson
    *
@@ -142,7 +135,6 @@ class ScrollbarUI extends Widget implements IClickable, IWheelInput, IDraggable 
    *
    * @param num The number of elements visible.
    */
-
   public void setNumberOfViewedElements(int num) {
     m_numberOfViewedElements = num;
   }
@@ -154,9 +146,7 @@ class ScrollbarUI extends Widget implements IClickable, IWheelInput, IDraggable 
    *
    * @param e The mouse wheel event information.
    */
-  
-
-    private void onMouseWheel(MouseWheelEventInfoType e) {
+  private void onMouseWheel(MouseWheelEventInfoType e) {
     if (getActive()) {
       boolean wheelCountNegative = e.WheelCount < 0;
       boolean wheelCountPositive = e.WheelCount > 0;
@@ -168,6 +158,7 @@ class ScrollbarUI extends Widget implements IClickable, IWheelInput, IDraggable 
         m_currentTopElement++;
     }
   }
+  
   /**
    * A. Robertson
    *
@@ -175,12 +166,11 @@ class ScrollbarUI extends Widget implements IClickable, IWheelInput, IDraggable 
    *
    * @param e The click event information.
    */
-
-
   private void onClick(EventInfoType e) {
     double percentage = (e.Y - m_pos.y) / m_scale.y;
     m_currentTopElement = Math.max(0, Math.min((int)(percentage * (double)m_numberOfElements) - 1, m_numberOfElements - m_numberOfViewedElements));
   }
+  
   /**
    * A. Robertson
    *
@@ -188,8 +178,6 @@ class ScrollbarUI extends Widget implements IClickable, IWheelInput, IDraggable 
    *
    * @param e The mouse dragged event information.
    */
-
-
   private void onMouseDragged(MouseDraggedEventInfoType e) {
     onClick(new EventInfoType(0, e.Y, this));
   }

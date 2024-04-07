@@ -76,10 +76,10 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
   @ Override
     public void draw() {
     super.draw();
-    
+
     m_textbox.draw();
     m_dropdownButton.draw();
-    
+
     m_listbox.setActive(m_isOpen);
     if (m_isOpen)
       m_listbox.draw();
@@ -309,6 +309,13 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
     m_dropdownButton.setText("+ ");
   }
 
+  /**
+   * F. Wright
+   *
+   * Override to add parent to all subwidgets of the dropdown
+   *
+   * @param parent The widget to be the parent
+   */
   @Override
     public void setParent(Widget parent) {
     super.setParent(parent);
@@ -317,6 +324,13 @@ class DropdownUI<T> extends Widget implements IClickable, IWheelInput {
     m_listbox.setParent(parent);
   }
 
+  /**
+   * F. Wright
+   *
+   * Sets the text in the textbox
+   *
+   * @param text The text as a string
+   */
   public void setTextboxText(String text) {
     m_textbox.setText(text);
   }

@@ -10,6 +10,11 @@ class TransSquareType {
   }
 }
 
+/**
+ * F. Wright
+ *
+ * Class for managing transitions between screens
+ */
 class TransitionManagerClass {
   private long m_startTimeTrans = 0;
   private float m_transDur = 500.0f;
@@ -23,6 +28,13 @@ class TransitionManagerClass {
 
   private TransSquareType[][] m_transSquareMatrix = new TransSquareType[20][10];
 
+  /**
+   * F. Wright
+   *
+   * Initializes the TransitionManagerClass instance.
+   * Sets up the transition square matrix based on the specified dimensions and fills it with TransSquareType objects.
+   * Initializes the square size based on the width and height of the display window.
+   */
   public void init() {
     int columns = m_transSquareMatrix.length;
     int rows = m_transSquareMatrix[0].length;
@@ -37,6 +49,12 @@ class TransitionManagerClass {
     }
   }
 
+  /**
+   * F. Wright
+   *
+   * Initiates a transition.
+   * Sets the start time of the transition, flags the instance as transitioning, and indicates it is in the transition state.
+   */
   public void startTransition() {
     m_startTimeTrans = millis();
     m_transitioning = true;
@@ -44,16 +62,35 @@ class TransitionManagerClass {
     m_inTransitionState = true;
   }
 
+  /**
+   * F. Wright
+   *
+   * Initiates a detransition.
+   * Sets the start time of the detransition and flags the instance as transitioning and detrainsitioning.
+   */
   public void startDetransition() {
     m_startTimeTrans = millis();
     m_transitioning = true;
     m_detransitioning = true;
   }
 
+  /**
+   * F. Wright
+   *
+   * Sets a Consumer function to be called upon transition completion.
+   *
+   * @param onTr The Consumer function to be called.
+   */
   public void setOnTrans(Consumer onTr) {
     m_onTrans = onTr;
   }
 
+  /**
+   * F. Wright
+   *
+   * Updates the transition frame.
+   * Performs scaling animation on the transition squares based on transition state and duration.
+   */
   public void frame() {
     if (!m_transitioning)
       return;
@@ -80,20 +117,25 @@ class TransitionManagerClass {
       if (m_detransitioning) {
         m_inTransitionState = false;
         m_detransitioning = false;
-      } 
-      else
+      } else
         m_onTrans.accept(null);
     }
   }
 
+  /**
+   * F. Wright
+   *
+   * Renders the transition squares if the instance is in a transition state.
+   * Draws rectangles representing the transition squares on the display window.
+   */
   public void render() {
     if (!m_inTransitionState)
       return;
-      
+
     int columns = m_transSquareMatrix.length;
     int rows = m_transSquareMatrix[0].length;
 
-    stroke(COLOR_BLACK);   
+    stroke(COLOR_BLACK);
 
     for (int i = 0; i < columns; i++) {
       for (int j = 0; j < rows; j++) {
@@ -105,9 +147,16 @@ class TransitionManagerClass {
         fill(col);
         rect(pos.x, pos.y, scale.x, scale.y);
       }
-    }       
+    }
   }
 
+  /**
+   * F. Wright
+   *
+   * Retrieves the current transition state.
+   *
+   * @return True if the instance is in a transition state, false otherwise.
+   */
   public boolean getTransitionState() {
     return m_inTransitionState;
   }

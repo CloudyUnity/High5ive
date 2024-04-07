@@ -11,7 +11,7 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
   private boolean m_drawBar = true;
   private boolean m_userModifiable = true;
   private String m_placeholderText = "";
-  
+
   /**
    * M.Poole & A.Robertson:
    * Constructs an ImageUI object with the specified dimensions and position.
@@ -21,7 +21,6 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
    * @param posX   The x-coordinate of the textbox's position.
    * @param posY   The y-coordinate of the textbox's position.
    */
-
   public TextboxUI(int x, int y, int scaleX, int scaleY) {
     super(x, y, scaleX, scaleY);
     m_backgroundColour = #FFFFFF;
@@ -34,6 +33,11 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
     m_onKeyPressedEvent.addHandler(e -> onKeyPressed(e));
   }
 
+  /**
+   * A. Robertson & F. Wright & M. Poole
+   *
+   * Draws the textbox
+   */
   void draw() {
     super.draw();
 
@@ -65,24 +69,60 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
     }
   }
 
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Sets the placeholder text for the text input.
+   *
+   * @param txt The placeholder text to set.
+   */
   public void setPlaceholderText(String txt) {
     m_placeholderText = txt;
   }
 
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Sets the text content of the text input.
+   *
+   * @param text The text to set.
+   */
   public void setText(String text) {
     m_text.setLength(0);
     m_text.append(text);
-    m_cursorPosition = text.length() /* - 1 */;  // -TO ALEX: Changed this from -1 since it broke when i tried to reset Search boxes, if this was necessary you can change it back
+    m_cursorPosition = text.length();
   }
 
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Retrieves the text content of the text input.
+   *
+   * @return The text content.
+   */
   public String getText() {
     return m_text.toString();
   }
 
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Retrieves the length of the text content of the text input.
+   *
+   * @return The length of the text content.
+   */
   public int getTextLength() {
     return m_text.length();
   }
 
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Checks if a character is printable.
+   *
+   * @param c The character to check.
+   * @return True if the character is printable, false otherwise.
+   */
   private boolean isPrintable(char c) {
     Character.UnicodeBlock block = Character.UnicodeBlock.of( c );
     return (!Character.isISOControl(c)) &&
@@ -91,6 +131,13 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
       block != Character.UnicodeBlock.SPECIALS;
   }
 
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Handles the key pressed event.
+   *
+   * @param e The key pressed event information.
+   */
   private void onKeyPressed(KeyPressedEventInfoType e) {
     if (m_userModifiable) {
       if (e.PressedKey == BACKSPACE) {
@@ -116,22 +163,57 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
     }
   }
 
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Sets whether the text input is user modifiable or not.
+   *
+   * @param userModifiable True if the text input is user modifiable, false otherwise.
+   */
   public void setUserModifiable(boolean userModifiable) {
     m_userModifiable = userModifiable;
   }
 
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Retrieves whether the text input is user modifiable or not.
+   *
+   * @return True if the text input is user modifiable, false otherwise.
+   */
   public boolean getUserModifiable() {
     return m_userModifiable;
   }
 
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Retrieves the onClick event associated with the text input.
+   *
+   * @return The onClick event.
+   */
   public EventType<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
 
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Retrieves the onStringEntered event associated with the text input.
+   *
+   * @return The onStringEntered event.
+   */
   public EventType<StringEnteredEventInfoType> getOnStringEnteredEvent() {
     return m_onStringEnteredEvent;
   }
 
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Retrieves the onKeyPressed event associated with the text input.
+   *
+   * @return The onKeyPressed event.
+   */
   public EventType<KeyPressedEventInfoType> getOnKeyPressedEvent() {
     return m_onKeyPressedEvent;
   }

@@ -11,7 +11,8 @@ varying vec4 vertTexCoord;
 
 const float scanlineIntensity = 0.1f;
 const int scanlineSpacing = 3;
-const float bleedIntensity = 0.003f;
+// const float bleedIntensity = 0.003f;
+const float bleedIntensity = 0.0f;
 const float curvatureIntensity = 0.025f;
 
 void main() {

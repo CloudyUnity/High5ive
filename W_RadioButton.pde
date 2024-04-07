@@ -1,32 +1,32 @@
 /**
- * F. Wright
- * 
+ * A. Robertson
+ *
  * Represents a group of radio buttons in the user interface.
  */
 class RadioButtonGroupTypeUI extends WidgetGroupType {
   public RadioButtonGroupTypeUI() {
     super();
   }
-/**
- * F. Wright
- * 
- * Adds a radio button as a member to the group and sets up event handling for it.
- *
- * @param rb The radio button to add to the group.
- */
 
+  /**
+   * A. Robertson
+   *
+   * Adds a radio button as a member to the group and sets up event handling for it.
+   *
+   * @param rb The radio button to add to the group.
+   */
   public void addMember(RadioButtonUI rb) {
     Members.add(rb);
     rb.getOnClickEvent().addHandler(e -> memberClicked(e));
   }
-/**
- * F. Wright
- * 
- * Handles the click event of a radio button by unchecking all other members of the group.
- *
- * @param e The event information associated with the click event.
- */
 
+  /**
+   * A. Robertson
+   *
+   * Handles the click event of a radio button by unchecking all other members of the group.
+   *
+   * @param e The event information associated with the click event.
+   */
   private void memberClicked(EventInfoType e) {
     for (Widget member : Members) {
       RadioButtonUI rb = (RadioButtonUI)member;
@@ -37,13 +37,12 @@ class RadioButtonGroupTypeUI extends WidgetGroupType {
     }
   }
 }
+
 /**
  * A. Robertson
  *
  * Represents a radio button user interface element that can be clicked to toggle its state.
- *
  */
-
 class RadioButtonUI extends Widget implements IClickable {
   private EventType<EventInfoType> m_onClickEvent;
   private EventType<EventInfoType> m_onCheckedEvent;
@@ -52,7 +51,6 @@ class RadioButtonUI extends Widget implements IClickable {
   private boolean m_uncheckable;
   private color m_checkedColour = DEFAULT_RADIOBUTTON_CHECKED_COLOUR;
   private boolean m_drawCircle = true;
-
 
   /**
    * A. Robertson
@@ -65,7 +63,6 @@ class RadioButtonUI extends Widget implements IClickable {
    * @param scaleY The vertical scale of the radio button.
    * @param label The label text to display next to the radio button.
    */
-
   public RadioButtonUI(int posX, int posY, int scaleX, int scaleY, String label) {
     super(posX, posY, scaleX, scaleY);
     m_label = new LabelUI(posX + scaleY, posY, scaleX - scaleY, scaleY, label);
@@ -88,13 +85,12 @@ class RadioButtonUI extends Widget implements IClickable {
     );
   }
 
-  @ Override
   /**
    * A. Robertson
    *
    * Draws the radio button on the screen.
    */
-
+  @ Override
     public void draw() {
     super.draw();
 
@@ -106,6 +102,7 @@ class RadioButtonUI extends Widget implements IClickable {
 
     m_label.draw();
   }
+
   /**
    * A. Robertson
    *
@@ -113,10 +110,10 @@ class RadioButtonUI extends Widget implements IClickable {
    *
    * @return The event type for click events.
    */
-
   public EventType<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
+
   /**
    * A. Robertson
    *
@@ -124,10 +121,10 @@ class RadioButtonUI extends Widget implements IClickable {
    *
    * @param uncheckable True if the radio button can be unchecked, false otherwise.
    */
-
   public EventType<EventInfoType> getOnCheckedEvent() {
     return m_onCheckedEvent;
   }
+
   /**
    * A. Robertson
    *
@@ -135,19 +132,19 @@ class RadioButtonUI extends Widget implements IClickable {
    *
    * @param uncheckable True if the radio button cant be checked, false otherwise.
    */
-
   public void setUncheckable(boolean uncheckable) {
     m_uncheckable = uncheckable;
   }
+
   /**
    * A. Robertson
    *
    * Checks the radio button, triggering any associated events.
    */
-
   public void check() {
     m_onClickEvent.raise(new EventInfoType((int)m_pos.x, (int)m_pos.y, this));
   }
+
   /**
    * A. Robertson
    *
@@ -155,7 +152,6 @@ class RadioButtonUI extends Widget implements IClickable {
    *
    * @param checked True to check the radio button, false to uncheck it.
    */
-
   public void setChecked(boolean checked) {
     m_checked = checked;
   }
@@ -167,10 +163,10 @@ class RadioButtonUI extends Widget implements IClickable {
    *
    * @return True if the radio button is checked, false otherwise.
    */
-
   public boolean getChecked() {
     return m_checked;
   }
+
   /**
    * A. Robertson
    *
@@ -178,7 +174,6 @@ class RadioButtonUI extends Widget implements IClickable {
    *
    * @param text The text to set.
    */
-
   public void setText(String text) {
     m_label.setText(text);
   }
@@ -190,10 +185,11 @@ class RadioButtonUI extends Widget implements IClickable {
    *
    * @param  textSize The size of the text.
    * @throws IllegalArgumentException when the size argument is negative.
-   **/
+   */
   public void setTextSize(int textSize) {
     m_label.setTextSize(textSize);
   }
+
   /**
    * A. Robertson
    *
@@ -201,10 +197,10 @@ class RadioButtonUI extends Widget implements IClickable {
    *
    * @return The label component.
    */
-
   public LabelUI getLabel() {
     return m_label;
   }
+
   /**
    * A. Robertson
    *
@@ -212,7 +208,6 @@ class RadioButtonUI extends Widget implements IClickable {
    *
    * @param enabled True to draw, false otherwise.
    */
-
   public void setDrawCircle(boolean enabled) {
     m_drawCircle = enabled;
   }
@@ -222,7 +217,6 @@ class RadioButtonUI extends Widget implements IClickable {
  * F. Wright
  *
  * Extends the radio button element with an image changes depending on its state.
- *
  */
 class RadioImageButtonUI extends RadioButtonUI {
   public PImage m_enabledImage;
@@ -241,13 +235,13 @@ class RadioImageButtonUI extends RadioButtonUI {
    * @param enImg The image to display when the radio button is enabled.
    * @param disenImg The image to display when the radio button is disabled.
    */
-
   public RadioImageButtonUI(int posX, int posY, int scaleX, int scaleY, String label, PImage enImg, PImage disenImg) {
     super(posX, posY, scaleX, scaleY, label);
     m_enabledImage = enImg;
     m_disabledImage = disenImg;
     setDrawCircle(false);
   }
+
   /**
    * F. Wright
    *
@@ -262,7 +256,6 @@ class RadioImageButtonUI extends RadioButtonUI {
    * @param enImgPath The path to image to display when the radio button is enabled.
    * @param disenImgPath The path to the image to display when the radio button is disabled.
    */
-
   public RadioImageButtonUI(int posX, int posY, int scaleX, int scaleY, String label, String enImgPath, String disenImgPath) {
     super(posX, posY, scaleX, scaleY, label);
     m_enabledImage = loadImage(enImgPath);
@@ -270,12 +263,12 @@ class RadioImageButtonUI extends RadioButtonUI {
     setDrawCircle(false);
   }
 
-  @Override
   /**
    * F. Wright
    *
    * Draws the radio button with images on the screen.
    */
+  @Override
     public void draw() {
     super.draw();
 

@@ -3,7 +3,6 @@
  *
  * Represents a histogram chart in the user interface.
  */
-
 class HistogramChartUI<T, TData> extends Widget implements IChart<T, TData> {
   private TreeMap<TData, Integer> m_map;
   private Integer m_maxValue = -1; // Can be null
@@ -20,7 +19,6 @@ class HistogramChartUI<T, TData> extends Widget implements IChart<T, TData> {
   private QueryType m_translationField = null;
   private QueryManagerClass m_queryManager = null;
 
-
   /**
    * A. Robertson
    *
@@ -35,7 +33,7 @@ class HistogramChartUI<T, TData> extends Widget implements IChart<T, TData> {
     m_numberTextBoxHeight = m_bottomPadding = (int)((double)m_scale.y * 0.1);
     m_topPadding = (int)((double)m_scale.y * 0.1);
     m_numberTextBoxWidth = m_sidePadding = (int)((double)m_scale.x * 0.1);
-    m_foregroundColour = color(getColor());
+    m_foregroundColour = color(COLOR_HIGHLIGHT_1);
   }
 
   /**
@@ -60,6 +58,14 @@ class HistogramChartUI<T, TData> extends Widget implements IChart<T, TData> {
     setUpAfterDataAdded();
   }
 
+  /**
+   * A. Robertson
+   *
+   * Adds data to the histogram chart using an iterable collection of elements and a function to extract keys.
+   *
+   * @param data An iterable collection of data elements.
+   * @param getKey A function to extract keys from the data elements.
+   */
   public <I extends Iterable<T>> void addData(I data, Function<T, TData> getKey) {
     for (var value : data) {
       TData k = getKey.apply(value);
@@ -79,7 +85,6 @@ class HistogramChartUI<T, TData> extends Widget implements IChart<T, TData> {
    *
    * Performs setup tasks after data has been added to the histogram chart.
    */
-
   private void setUpAfterDataAdded() {
     m_barWidth = (int)((m_scale.y - m_sidePadding) / (float)m_map.size());
 
@@ -103,7 +108,6 @@ class HistogramChartUI<T, TData> extends Widget implements IChart<T, TData> {
    *
    * Removes all data from the histogram chart.
    */
-
   public void removeData() {
     m_map = new TreeMap<TData, Integer>();
     m_maxValue = -1;
@@ -117,7 +121,6 @@ class HistogramChartUI<T, TData> extends Widget implements IChart<T, TData> {
    *
    * @param title The title of the histogram chart.
    */
-
   public void setTitle(String title) {
     m_title = title;
   }
@@ -129,10 +132,10 @@ class HistogramChartUI<T, TData> extends Widget implements IChart<T, TData> {
    *
    * @param name The label for the X-axis.
    */
-
   public void setXAxisLabel(String name) {
     m_labelX = name;
   }
+
   /**
    * A. Robertson
    *
@@ -141,20 +144,17 @@ class HistogramChartUI<T, TData> extends Widget implements IChart<T, TData> {
    * @param queryType The query type to be used for translation.
    * @param queryManager The query manager class for translation.
    */
-
-
   public void setTranslationField(QueryType queryType, QueryManagerClass queryManager) {
     m_translationField = queryType;
     m_queryManager = queryManager;
   }
 
-  @ Override
   /**
- * A. Robertson
- * 
- * Draws the histogram chart on the screen.
- */
-
+   * A. Robertson
+   *
+   * Draws the histogram chart on the screen.
+   */
+  @ Override
     public void draw() {
     super.draw();
 
@@ -214,15 +214,14 @@ class HistogramChartUI<T, TData> extends Widget implements IChart<T, TData> {
     }
   }
 
-/**
- * A. Robertson
- * 
- * Translates the X-axis values based on the specified translation field.
- *
- * @param val The value to be translated.
- * @return The translated value.
- */
-
+  /**
+   * A. Robertson
+   *
+   * Translates the X-axis values based on the specified translation field.
+   *
+   * @param val The value to be translated.
+   * @return The translated value.
+   */
   public String translateXValues(String val) {
     if (m_translationField == null)
       return val;
