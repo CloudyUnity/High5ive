@@ -27,7 +27,7 @@ class TwoDMapScreen extends Screen {
     //  m_userQueryUI.insertBaseData(m_flights);
 
 
-    m_flightMap = new FlightMap2DUI(0, 0, 100, 100);
+    m_flightMap = new FlightMap2DUI(0, 0, 100);
     addWidget(m_flightMap);
 
     LabelUI label = createLabel(20, currentUIPosY, 150, 40, "2D Flight Map");
