@@ -385,12 +385,14 @@ class UserQueryUI extends Widget {
 
     if (m_cancelledRadio.getChecked()) {
       FlightQueryType fqt = new FlightQueryType(QueryType.CANCELLED, QueryOperatorType.EQUAL, m_location);
-      addToQueryList(fqt, "Cancelled");
+      addToQueryList(fqt, "Cancelled");     
+      m_cancelledRadio.setChecked(false);
     }
 
     if (m_divertedRadio.getChecked()) {
       FlightQueryType fqt = new FlightQueryType(QueryType.DIVERTED, QueryOperatorType.EQUAL, m_location);
       addToQueryList(fqt, "Diverted");
+      m_divertedRadio.setChecked(false);
     }
 
     if (m_successRadio.getChecked()) {
@@ -398,9 +400,9 @@ class UserQueryUI extends Widget {
       FlightQueryType fqtD = new FlightQueryType(QueryType.DIVERTED, QueryOperatorType.NOT_EQUAL, m_location);
       addToQueryList(fqtC, "Not Cancelled");
       addToQueryList(fqtD, "Not Diverted");
-    }
+      m_successRadio.setChecked(false);
+    }            
   }
-
 
   /**
    * F. Wright
@@ -418,6 +420,22 @@ class UserQueryUI extends Widget {
       return "Origin";
     case "AIRPORT_DEST_INDEX":
       return "Dest";
+    case "ARRIVAL_TIME":
+      return "ArrTime";
+    case "SCHEDULED_ARRIVAL_TIME":
+      return "SchArr";
+    case "ARRIVAL_DELAY":
+      return "ArrDel";
+    case "DEPARTURE_TIME":
+      return "DepTime";
+    case "SCHEDULED_DEPARTURE_TIME":
+      return "SchDep";
+    case "DEPARTURE_DELAY":
+      return "DepDel";
+    case "CARRIER_CODE_INDEX":
+      return "Carrier";
+    case "FLIGHT_NUMBER":
+      return "Flight";
 
     case "GREATER_THAN":
       return " >";
@@ -435,6 +453,7 @@ class UserQueryUI extends Widget {
       return text;
     }
   }
+  
   /**
    * F. Wright
    *
@@ -450,6 +469,8 @@ class UserQueryUI extends Widget {
     case SCHEDULED_ARRIVAL_TIME:
     case DEPARTURE_TIME:
     case SCHEDULED_DEPARTURE_TIME:
+      if (text.length() < 3)
+        return "0"; 
       String cleanTxt = text.replace(":", "");
       if (cleanTxt.length() == 3)
         return cleanTxt.charAt(0) + ":" + cleanTxt.substring(1, 3);
@@ -524,7 +545,6 @@ class UserQueryUI extends Widget {
    *
    * @param enabled True to enable locks, false to disable them.
    */
-
   private void setLocksEnabled(boolean enabled) {
     for (int i = 0; i < m_usOnlyFields.size(); i++)
       m_usOnlyFields.get(i).setActive(!enabled);
@@ -532,6 +552,7 @@ class UserQueryUI extends Widget {
     for (int i = 0; i < m_lockBoxesList.size(); i++)
       m_lockBoxesList.get(i).setActive(enabled);
   }
+  
   /**
    * F. Wright
    *
@@ -539,11 +560,11 @@ class UserQueryUI extends Widget {
    *
    * @param group The type of widget group to add.
    */
-
   private void addWidgetGroup(WidgetGroupType group) {
     if (m_screen != null)
       m_screen.addWidgetGroup(group);
   }
+  
   /**
    * F. Wright
    *
@@ -556,12 +577,12 @@ class UserQueryUI extends Widget {
    * @param text The text to display on the label.
    * @return The created label.
    */
-
   public LabelUI createLabel(int posX, int posY, int scaleX, int scaleY, String text) {
     LabelUI label = new LabelUI(posX, posY, scaleX, scaleY, text);
     addWidget(label);
     return label;
   }
+  
   /**
    * F. Wright
    *
@@ -569,11 +590,11 @@ class UserQueryUI extends Widget {
    *
    * @param enabled True to enable rendering, false to disable it.
    */
-
   public void setRenderWorldUSButtons(boolean enabled) {
     m_worldRadio.setRendering(enabled);
     m_usRadio.setRendering(enabled);
   }
+  
   /**
    * F. Wright
    *
@@ -581,7 +602,6 @@ class UserQueryUI extends Widget {
    *
    * @param parent The parent widget to set.
    */
-
   public void setWorldUSParent(Widget parent) {
     m_worldRadio.setParent(parent);
     m_usRadio.setParent(parent);
@@ -594,11 +614,9 @@ class UserQueryUI extends Widget {
    *
    * @param str The text to set.
    */
-
   public void setLoadOtherScreenText(String str) {
     m_loadDataOtherScreenButton.setText(str);
   }
-
 
   /**
    * M.Poole & F.Wright:
@@ -608,7 +626,6 @@ class UserQueryUI extends Widget {
    * data set, and sets them offscreen as to not display when UQUI is first loaded
    *
    */
-
   private void createLockBoxes() {
     int posX = 220;
     int lockPosX = int(posX + (265 * 0.5f) - 20);
@@ -690,7 +707,6 @@ class UserQueryUI extends Widget {
    *
    * Removes all active queries related to US airports from the list of active queries and their associated query labels.
    */
-
   private void clearUSQueries() {
     for (int i = 0; i < m_activeQueries.size(); i++) {
       QueryType qType = m_activeQueries.get(i).Type;
