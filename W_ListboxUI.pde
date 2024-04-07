@@ -178,6 +178,7 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
     m_entries.add(new ListboxEntryType<T>(entry));
     m_scrollbar.setNumberOfElements(getNumberOfShown());
     if (!m_scrollbar.getActive() && (getNumberOfShown() * m_entryHeight) > m_scale.y) {
+      println("Enabling scrollbar. Number of shown * entry height = " + (getNumberOfShown() * m_entryHeight) + " m_scale.y = " + m_scale.y);
       m_scrollbar.setActive(true);
       m_scrollbar.setCurrentTop(0);
       m_entryWidth = (int)m_scale.x - 10;
