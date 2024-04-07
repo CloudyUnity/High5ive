@@ -47,6 +47,15 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
   }
 
   /**
+  * Sets the activeness of the widget.
+  * Overridden to prevent it affecting the activeness of the scroll bar when the listbox is set to active.
+  */
+  @ Override
+  public void setActive(boolean active) {
+    m_active = active;
+  }
+
+  /**
    * A. Robertson
    *
    * Draws the listbox and its entries.
