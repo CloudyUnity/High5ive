@@ -17,6 +17,7 @@ class ImageUI extends Widget {
    */
   ImageUI(int posX, int posY, int scaleX, int scaleY) {
     super(posX, posY, scaleX, scaleY);
+    m_backgroundColour = #ffffff;
   }
 
   /**
@@ -33,9 +34,6 @@ class ImageUI extends Widget {
     this(posX, posY, scaleX, scaleY);
 
     m_displayedImage = inputImage;
-  }
-
-  public void behindImage() {
   }
   
   ImageUI(String inputImagePath, int posX, int posY, int scaleX, int scaleY) {
@@ -54,8 +52,8 @@ class ImageUI extends Widget {
     super.draw();
     if (m_displayedImage == null)
       return;
-    behindImage();
 
+    tint(m_backgroundColour);
     image(m_displayedImage, m_pos.x, m_pos.y, m_scale.x, m_scale.y);
   }
 

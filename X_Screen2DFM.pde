@@ -36,7 +36,7 @@ class TwoDMapScreen extends Screen {
     currentUIPosY += 60;
 
     ButtonUI returnBttn = createButton(20, currentUIPosY, 160, 50);
-    returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
+    returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_ID_HOME));
     returnBttn.setBackgroundColour(color(COLOR_BACKGROUND));
     returnBttn.setText("Return");
     returnBttn.setTextSize(textSize);

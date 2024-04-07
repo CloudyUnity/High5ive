@@ -123,12 +123,12 @@ abstract class Widget {
     for (Widget child : m_children)
       child.setActive(active);
   }
-  
-  public int getLayer(){
+
+  public int getLayer() {
     return m_layer;
   }
-  
-  public void setLayer(int layer){
+
+  public void setLayer(int layer) {
     m_layer = layer;
   }
 
@@ -290,6 +290,18 @@ abstract class Widget {
    * @param  x The new x position.
    **/
   public void setPos(int x, int y) {
+    m_basePos = new PVector(x, y);
+    m_pos = m_basePos.copy();
+  }
+
+  /**
+   * A. Robertson
+   *
+   * Sets the x position of the widget.
+   *
+   * @param  x The new x position.
+   **/
+  public void setPos(float x, float y) {
     m_basePos = new PVector(x, y);
     m_pos = m_basePos.copy();
   }

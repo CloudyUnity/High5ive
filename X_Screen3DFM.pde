@@ -62,7 +62,7 @@ class Screen3DFM extends Screen {
     int textSize = 20;
 
     ButtonUI returnBttn = createButton(20, currentUIPosY, 160, 50);
-    returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
+    returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_ID_HOME));
     returnBttn.setGrowScale(1.05);
     returnBttn.setText("Return");
     returnBttn.setTextSize(textSize);
@@ -71,7 +71,7 @@ class Screen3DFM extends Screen {
     currentUIPosY += 60;
 
     ButtonUI switchToCharts = createButton(20, currentUIPosY, 160, 50);
-    switchToCharts.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_CHARTS_ID));
+    switchToCharts.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_ID_CHARTS));
     returnBttn.setGrowScale(1.05);
     switchToCharts.setText("Charts");
     switchToCharts.setTextSize(textSize);
@@ -175,18 +175,20 @@ class Screen3DFM extends Screen {
 
     currentUIPosY += 60;
 
-    CheckboxUI crtCB = createCheckbox(20, currentUIPosY, 50, 50, "CRT");
-    crtCB.getOnClickEvent().addHandler(e -> m_flightMap3D.setCRTEnabled(crtCB.getChecked()));
-    crtCB.setGrowScale(1.05);
-    crtCB.setChecked(false);
-    crtCB.getLabel().setTextXOffset(0);
-    crtCB.setTextSize(textSize);
-    crtCB.getLabel().setCentreAligned(true);
-    crtCB.getLabel().setScale(130, 50);
-    crtCB.getLabel().setParent(m_flightMapUIParent);
-    crtCB.setParent(m_flightMapUIParent);
+    if (GLOBAL_CRT_SHADER) {
+      CheckboxUI crtCB = createCheckbox(20, currentUIPosY, 50, 50, "CRT");
+      crtCB.getOnClickEvent().addHandler(e -> s_ApplicationClass.setCRT(crtCB.getChecked()));
+      crtCB.setGrowScale(1.05);
+      crtCB.setChecked(true);
+      crtCB.getLabel().setTextXOffset(0);
+      crtCB.setTextSize(textSize);
+      crtCB.getLabel().setCentreAligned(true);
+      crtCB.getLabel().setScale(130, 50);
+      crtCB.getLabel().setParent(m_flightMapUIParent);
+      crtCB.setParent(m_flightMapUIParent);
 
-    currentUIPosY += 60;
+      currentUIPosY += 60;
+    }
 
     SliderUI dayCycleSlider = createSlider(20, currentUIPosY, 160, 50, 0.00005f, 0.005f, 0.00001f);
     dayCycleSlider.getOnDraggedEvent().addHandler(e -> m_flightMap3D.setDayCycleSpeed((float)dayCycleSlider.getValue()));
@@ -226,7 +228,7 @@ class Screen3DFM extends Screen {
     float frac = (millis() - m_switchUIStartTimeMillis) / SWITCH_SCREEN_DUR_3D;
     frac = clamp(frac, 0, 1);
     frac *= frac;
-    
+
     m_userQueryUI.setActive(m_isQueryDisplayed || frac <= 1);
 
     PVector flightMapTargetPos = m_isQueryDisplayed ? new PVector(OFFSCREEN_X_3D, 0) : new PVector(0, 0);
