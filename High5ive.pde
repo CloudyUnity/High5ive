@@ -27,7 +27,7 @@ int s_deltaTime;
  * @param p The processing object representing the sketch.
  */
 void setup() {
-  fullScreen(P2D, SPAN);
+  fullScreen(P2D, 1);
 
   s_DebugProfiler.startProfileTimer();
 
