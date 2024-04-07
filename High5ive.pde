@@ -1,3 +1,6 @@
+//=====================================================
+// IMPORTS
+//=====================================================
 import java.util.*;
 import java.nio.*;
 import java.io.*;
@@ -7,6 +10,9 @@ import java.util.function.Function;
 import java.util.function.Consumer;
 import java.nio.channels.FileChannel;
 
+//=====================================================
+// STATIC VARIABLES
+//=====================================================
 ApplicationClass s_ApplicationClass = new ApplicationClass();
 DebugProfilerClass s_DebugProfiler = new DebugProfilerClass();
 PGraphics s_3D;
@@ -64,10 +70,6 @@ void draw() {
 void keyPressed() {
   s_ApplicationClass.onKeyPressed(key, keyCode);
 }
-
-// void movieEvent(Movie movie) {
-//   movie.read();
-// }
 
 /**
  * F. Wright

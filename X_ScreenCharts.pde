@@ -61,16 +61,27 @@ class ScreenCharts extends Screen {
     super.init();
 
     ButtonUI returnBttn = createButton(20, 50, 150, 40);
-    returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
+    returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_ID_HOME));
     returnBttn.setText("Return");
     returnBttn.setTextSize(20);
     returnBttn.setGrowScale(1.05f);
 
     ButtonUI switchTo3D = createButton(20, 100, 150, 40);
-    switchTo3D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_FLIGHT_MAP_ID));
+    switchTo3D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_ID_3DFM));
     switchTo3D.setText("3D");
     switchTo3D.setTextSize(20);
     switchTo3D.setGrowScale(1.05f);
+
+    if (GLOBAL_CRT_SHADER) {
+      CheckboxUI crtCB = createCheckbox(220, 50, 40, 40, "CRT");
+      crtCB.getOnClickEvent().addHandler(e -> s_ApplicationClass.setCRT(crtCB.getChecked()));
+      crtCB.setGrowScale(1.05);
+      crtCB.setChecked(true);
+      crtCB.getLabel().setTextXOffset(0);
+      crtCB.setTextSize(20);
+      crtCB.getLabel().setCentreAligned(true);
+      crtCB.getLabel().setScale(80, 40);
+    }
 
     int chartScale = 850;
     int halfChartScale = (int)(chartScale * 0.5f);

@@ -30,7 +30,6 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   private boolean m_lockTime = false;
 
   private boolean m_ditheringEnabled = false;
-  private boolean m_crtEnabled = false;
 
   private boolean m_assetsLoaded = false;
   private boolean m_drawnLoadingScreen = false;
@@ -337,9 +336,6 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
       s_3D.filter(m_shaderDitherPP);
 
     drawSkybox();
-
-    if (m_crtEnabled)
-      s_3D.filter(m_shaderCRTPP);
 
     s_3D.endDraw();
 
@@ -677,10 +673,6 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
 
   public void setDitheringEnabled(boolean enabled) {
     m_ditheringEnabled = enabled;
-  }
-
-  public void setCRTEnabled(boolean enabled) {
-    m_crtEnabled = enabled;
   }
 }
 

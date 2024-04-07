@@ -11,10 +11,15 @@ varying vec4 vertTexCoord;
 
 const float scanlineIntensity = 0.1f;
 const int scanlineSpacing = 3;
-const float bleedIntensity = 0.004f;
+const float bleedIntensity = 0.003f;
+const float curvatureIntensity = 0.025f;
 
 void main() {
   	vec2 uv = gl_FragCoord.xy / resolution.xy;
+    uv = uv * 2.0 - 1.0;
+    float r = length(uv);
+    uv *= 1.0 + curvatureIntensity * r * r;
+    uv = (uv + 1.0) / 2.0;
 
     int index = int(gl_FragCoord.y) / scanlineSpacing;
     float scanline = mod(float(index), 2.0f) * scanlineIntensity;

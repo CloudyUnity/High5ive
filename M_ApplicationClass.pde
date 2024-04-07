@@ -16,9 +16,12 @@ class ApplicationClass {
   private EventType<SwitchScreenEventInfoType> m_onSwitchEvent = new EventType<SwitchScreenEventInfoType>();
   private String m_cachedSwitchScreenID;
 
-  ScreenCharts m_screenCharts = null;
-  Screen3DFM m_screen3DFM = null;
-  TwoDMapScreen m_screen2DFM = null;
+  private ScreenCharts m_screenCharts = null;
+  private Screen3DFM m_screen3DFM = null;
+  private TwoDMapScreen m_screen2DFM = null;
+
+  private PShader m_crtShader;
+  private boolean m_crtEnabled = true;
 
   /**
    * F. Wright
@@ -45,12 +48,17 @@ class ApplicationClass {
 
     s_DebugProfiler.startProfileTimer();
     m_transManager.init();
-    m_transManager.setOnTrans(o -> {      
-      triggerSwitchScreen();      
-      m_transManager.startDetransition();      
+    m_transManager.setOnTrans(o -> {
+      triggerSwitchScreen();
+      m_transManager.startDetransition();
     }
     );
     s_DebugProfiler.printTimeTakenMillis("Trans manager initialisation");
+
+    if (GLOBAL_CRT_SHADER) {
+      m_crtShader = loadShader("data/Shaders/PPCRT.glsl");
+      m_crtShader.set("resolution", float(width), float(height));
+    }
   }
 
   /**
@@ -61,26 +69,26 @@ class ApplicationClass {
   private void createScreens() {
     Consumer<FlightType[]> loadDataChartsTo3D = (flights -> {
       m_screen3DFM.loadFlights(flights);
-      switchScreen(new SwitchScreenEventInfoType(0, 0, SCREEN_FLIGHT_MAP_ID, null));
+      switchScreen(new SwitchScreenEventInfoType(0, 0, SCREEN_ID_3DFM, null));
     }
     );
 
     Consumer<FlightType[]> loadData3DToCharts = (flights -> {
       m_screenCharts.loadData(flights);
-      switchScreen(new SwitchScreenEventInfoType(0, 0, SCREEN_CHARTS_ID, null));
+      switchScreen(new SwitchScreenEventInfoType(0, 0, SCREEN_ID_CHARTS, null));
     }
     );
 
-    ScreenHome screenHome = new ScreenHome(SCREEN_1_ID);
+    ScreenHome screenHome = new ScreenHome(SCREEN_ID_HOME);
     m_screens.add(screenHome);
 
-    m_screen2DFM = new TwoDMapScreen(SCREEN_TWOD_MAP_ID, m_queryManager);
+    m_screen2DFM = new TwoDMapScreen(SCREEN_ID_2DFM, m_queryManager);
     m_screens.add(m_screen2DFM);
 
-    m_screen3DFM = new Screen3DFM(SCREEN_FLIGHT_MAP_ID, m_queryManager, loadData3DToCharts);
+    m_screen3DFM = new Screen3DFM(SCREEN_ID_3DFM, m_queryManager, loadData3DToCharts);
     m_screens.add(m_screen3DFM);
 
-    m_screenCharts = new ScreenCharts(SCREEN_CHARTS_ID, m_queryManager, loadDataChartsTo3D);
+    m_screenCharts = new ScreenCharts(SCREEN_ID_CHARTS, m_queryManager, loadDataChartsTo3D);
     m_screens.add(m_screenCharts);
 
     m_currentScreen = screenHome;
@@ -100,6 +108,9 @@ class ApplicationClass {
 
     m_transManager.frame();
     m_transManager.render();
+
+    if (GLOBAL_CRT_SHADER && m_crtEnabled)
+      filter(m_crtShader);
 
     if (DEBUG_MODE && DEBUG_FPS_ENABLED) {
       fill(255, 0, 0, 255);
@@ -185,10 +196,10 @@ class ApplicationClass {
   private void switchScreen(SwitchScreenEventInfoType e) {
     if (m_cachedSwitchScreenID != null)
       return;
-      
+
     if (e.Widget != null)
       e.Widget.getOnMouseExitEvent().raise((EventInfoType)e);
-      
+
     m_cachedSwitchScreenID = e.NewScreenId;
     m_transManager.startTransition();
   }
@@ -209,9 +220,13 @@ class ApplicationClass {
       return;
     }
   }
-  
-  public boolean getTransitionState(){
+
+  public boolean getTransitionState() {
     return m_transManager.getTransitionState();
+  }
+  
+  public void setCRT(boolean enabled){
+    m_crtEnabled = enabled;
   }
 }
 
