@@ -108,8 +108,6 @@ final float MARKER_SIZE_3D = 1f;
 final int TEXT_SIZE_3D = 12;
 final PVector TEXT_DISPLACEMENT_3D = new PVector(0, 10, 10);
 
-final int LOADING_THREAD_COUNT_3D = 1;
-
 // Descending code authorship changes:
 // F. Wright, Set up constants for the Engine and Debug, 8pm 23/02/24
 // F. Wright, Added InputClass related constants such as INPUT_ARRAY_LENGTH, 9pm 23/02/24

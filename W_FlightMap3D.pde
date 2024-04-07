@@ -159,52 +159,15 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
    * @param queries The QueryManagerClass object for querying airport data.
    */
   public void loadFlightsAsync(FlightType[] flights, QueryManagerClass queries) {
-    ExecutorService executor = Executors.newFixedThreadPool(LOADING_THREAD_COUNT_3D);
-    CountDownLatch latch = new CountDownLatch(LOADING_THREAD_COUNT_3D);
-
     int count = flights.length;
-    int chunkSize = count / LOADING_THREAD_COUNT_3D;
 
-    for (int i = 0; i < LOADING_THREAD_COUNT_3D; i++) {
-      int startPosition = i * chunkSize;
-      int endPosition = (i == LOADING_THREAD_COUNT_3D - 1) ? count : (i + 1) * chunkSize;
-
-      executor.submit(() -> {
-        int arcSegments = 4;
-        if (count <= 6_000)
+    for (int i = 0; i < count; i++) {
+      int arcSegments = 4;
+      if (count <= 6_000)
         arcSegments = 15;
-        else if (count <= 12_000)
+      else if (count <= 12_000)
         arcSegments = 10;
 
-        loadFlightsAsyncChunk(flights, queries, arcSegments, startPosition, endPosition);
-        latch.countDown();
-      }
-      );
-    }
-
-    try {
-      latch.await();
-    }
-    catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-
-    executor.shutdown();
-  }
-
-  /**
-   * F. Wright
-   *
-   * Converts flight data to cached points in chunks
-   *
-   * @param flights The array of FlightType containing flight data.
-   * @param queries The QueryManagerClass object for querying airport data.
-   * @param arcSegments Amount of lines to be drawn for each arc
-   * @param startIndex Starting index of the array to convert
-   * @param endIndex Ending index of the array to convert
-   */
-  private void loadFlightsAsyncChunk(FlightType[] flights, QueryManagerClass queries, int arcSegments, int startIndex, int endIndex) {
-    for (int i = startIndex; i < endIndex; i++) {
       String originCode = queries.getCode(flights[i].AirportOriginIndex);
       String destCode = queries.getCode(flights[i].AirportDestIndex);
       AirportPoint3DType origin, dest;
@@ -213,14 +176,16 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
         float latitude = queries.getLatitudeFromIndex(flights[i].AirportOriginIndex);
         float longitude = -queries.getLongitudeFromIndex(flights[i].AirportOriginIndex);
         origin = manualAddPoint(latitude, longitude, originCode);
-      } else
+      } 
+      else
         origin = m_airportHashmap.get(originCode);
 
       if (!m_airportHashmap.containsKey(destCode)) {
         float latitude = queries.getLatitudeFromIndex(flights[i].AirportDestIndex);
         float longitude = -queries.getLongitudeFromIndex(flights[i].AirportDestIndex);
         dest = manualAddPoint(latitude, longitude, destCode);
-      } else
+      } 
+      else
         dest = m_airportHashmap.get(destCode);
 
       boolean originConnected = origin.Connections.contains(destCode);

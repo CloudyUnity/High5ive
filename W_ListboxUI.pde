@@ -286,7 +286,7 @@ class ListboxUI<T> extends Widget implements IClickable, IWheelInput {
   public T getSelectedEntry() {
     for (ListboxEntryType entry : m_entries) {
       if (entry.getSelected())
-        return entry.getData();
+        return (T)entry.getData();
     }
     return null;
   }
