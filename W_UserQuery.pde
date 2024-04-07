@@ -627,8 +627,8 @@ class UserQueryUI extends Widget {
    * @param enabled True to enable rendering, false to disable it.
    */
   public void setRenderWorldUSButtons(boolean enabled) {
-    m_worldRadio.setRendering(enabled);
-    m_usRadio.setRendering(enabled);
+    m_worldRadio.setActive(enabled);
+    m_usRadio.setActive(enabled);
   }
 
   /**
