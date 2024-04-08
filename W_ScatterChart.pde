@@ -220,7 +220,8 @@ class ScatterChartUI<T> extends Widget implements IChart2Axis<T, Integer> {
       String cleanTxt = val.replace(":", "");
       if (cleanTxt.length() == 3)
         return cleanTxt.charAt(0) + ":" + cleanTxt.substring(1, 3);
-      return cleanTxt.substring(0, 2) + ":" + cleanTxt.substring(2, 4);
+      else if (cleanTxt.length() == 4)
+        return cleanTxt.substring(0, 2) + ":" + cleanTxt.substring(2, 4);
 
     default:
       return val;

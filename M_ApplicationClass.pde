@@ -18,7 +18,6 @@ class ApplicationClass {
 
   private ScreenCharts m_screenCharts = null;
   private Screen3DFM m_screen3DFM = null;
-  private TwoDMapScreen m_screen2DFM = null;
 
   private PShader m_crtShader;
   private boolean m_crtEnabled = false;
@@ -41,7 +40,6 @@ class ApplicationClass {
 
     m_flightsManager.loadUSAndWorldFromFiles("hex_flight_data.bin", "hex_world_data.bin", 4, list -> {
       m_screen3DFM.insertFlightData(list);
-      m_screen2DFM.insertFlightData(list);
       m_screenCharts.insertBaseData(list);
     }
     );
@@ -81,9 +79,6 @@ class ApplicationClass {
 
     ScreenHome screenHome = new ScreenHome(SCREEN_ID_HOME);
     m_screens.add(screenHome);
-
-    m_screen2DFM = new TwoDMapScreen(SCREEN_ID_2DFM, m_queryManager);
-    m_screens.add(m_screen2DFM);
 
     m_screen3DFM = new Screen3DFM(SCREEN_ID_3DFM, m_queryManager, loadData3DToCharts);
     m_screens.add(m_screen3DFM);
