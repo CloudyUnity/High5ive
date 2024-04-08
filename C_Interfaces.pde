@@ -77,6 +77,7 @@ interface IChart<T, U> {
    * @param getKey A lambda to get the key to be group the data by.
    */
   public void addData(T[] data, Function<T, U> getKey);
+
   /**
    * A. Robertson
    *
@@ -86,12 +87,48 @@ interface IChart<T, U> {
    * @param getKey A lambda to get the key to be group the data by.
    */
   public <I extends Iterable<T>> void addData(I data, Function<T, U> getKey);
+
+  /**
+   * A. Robertson
+   *
+   * Removes data
+   */
   public void removeData();
 }
 
+/**
+ * F. Wright
+ *
+ * Interface for a chart widget with 2 axis. Such as a scatter plot.
+ */
 interface IChart2Axis<T, U> {
+  /**
+   * F. Wright
+   *
+   * Add data to the chart. Does *not* overwrite existing data. Exists as arrays are not Iteratable.
+   *
+   * @param data The data to be added
+   * @param getKeyX A lambda to get the key to be group the X-axis data by.
+   * @param getKeyY A lambda to get the key to be group the Y-axis data by.
+   */
   public void addData(T[] data, Function<T, U> getKeyX, Function<T, U> getKeyY);
+
+  /**
+   * F. Wright
+   *
+   * Add data to the chart. Does *not* overwrite existing data.
+   *
+   * @param data The data to be added
+   * @param getKeyX A lambda to get the key to be group the X-axis data by.
+   * @param getKeyY A lambda to get the key to be group the Y-axis data by.
+   */
   public <I extends Iterable<T>> void addData(I data, Function<T, U> getKeyX, Function<T, U> getKeyY);
+
+  /**
+   * F. Wright
+   *
+   * Removes data
+   */
   public void removeData();
 }
 

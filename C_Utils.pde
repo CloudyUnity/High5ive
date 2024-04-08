@@ -43,7 +43,15 @@ int sign(float val) {
     : 1;
 }
 
-float smoothstep(float t){
+/**
+ * F, Wright
+ *
+ * A sigmoid-like interpolation and clamping function
+ *
+ * @param t The interpolation parameter (between 0 and 1).
+ * @return The interpolated value.
+ */
+float smoothstep(float t) {
   return t * t * (3 - 2 * t);
 }
 
@@ -194,6 +202,31 @@ private color randomColor(int seed) {
   color result = color(random(360), random(100), random(100));
   colorMode(RGB, 255, 255, 255);
   return result;
+}
+
+/**
+ * T. Creagh
+ *
+ * Generates a color based on a given value which is modulated
+ *
+ * @param i The seed value for generating the color.
+ * @return The generated color.
+ */
+private color getColor(int i) {
+  switch (i % 5) {
+  case 0:
+    return COLOR_HIGHLIGHT_1;
+  case 1:
+    return COLOR_HIGHLIGHT_2;
+  case 2:
+    return COLOR_HIGHLIGHT_3;
+  case 3:
+    return COLOR_HIGHLIGHT_4;
+  case 4:
+    return COLOR_HIGHLIGHT_5;
+  default:
+    return COLOR_HIGHLIGHT_1;
+  }
 }
 
 // Descending code authorship changes:

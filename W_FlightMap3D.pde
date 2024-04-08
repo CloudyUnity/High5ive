@@ -14,7 +14,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   private PShape m_modelEarth, m_modelSun, m_modelSkySphere;
   private PImage m_texEarthDay, m_texEarthNight, m_texSun, m_texSkySphereStars;
   private PImage m_texEarthNormalMap, m_texEarthSpecularMap, m_texDitherNoise;
-  private PShader m_shaderEarth, m_shaderSun, m_shaderDitherPP, m_shaderCRTPP, m_shaderSkySphere;
+  private PShader m_shaderEarth, m_shaderSun, m_shaderDitherPP, m_shaderSkySphere;
 
   private PVector m_earthRotation = new PVector(0, 0, 0);
   private PVector m_earthRotationalVelocity = new PVector(0, 0, 0);
@@ -30,7 +30,6 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
   private boolean m_lockTime = false;
 
   private boolean m_ditheringEnabled = false;
-  private boolean m_crtEnabled = false;
 
   private boolean m_assetsLoaded = false;
   private boolean m_drawnLoadingScreen = false;
@@ -107,7 +106,6 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_shaderEarth = loadShader("data/Shaders/EarthFrag.glsl", "data/Shaders/BaseVert.glsl");
     m_shaderSun = loadShader("data/Shaders/SunFrag.glsl", "data/Shaders/BaseVert.glsl");
     m_shaderDitherPP = loadShader("data/Shaders/PPDither.glsl");
-    m_shaderCRTPP = loadShader("data/Shaders/PPCRT.glsl");
     m_shaderSkySphere = loadShader("data/Shaders/SkyboxFrag.glsl", "data/Shaders/SkyboxVert.glsl");
 
     m_shaderEarth.set("texDay", m_texEarthDay);
@@ -117,7 +115,6 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_shaderSun.set("tex", m_texSun);
     m_shaderDitherPP.set("noise", m_texDitherNoise);
     m_shaderDitherPP.set("resolution", (float)width, (float)height);
-    m_shaderCRTPP.set("resolution", (float)width, (float)height);
     m_shaderSkySphere.set("tex", m_texSkySphereStars);
 
     setPermaDay(false);
@@ -162,52 +159,15 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
    * @param queries The QueryManagerClass object for querying airport data.
    */
   public void loadFlightsAsync(FlightType[] flights, QueryManagerClass queries) {
-    ExecutorService executor = Executors.newFixedThreadPool(LOADING_THREAD_COUNT_3D);
-    CountDownLatch latch = new CountDownLatch(LOADING_THREAD_COUNT_3D);
-
     int count = flights.length;
-    int chunkSize = count / LOADING_THREAD_COUNT_3D;
 
-    for (int i = 0; i < LOADING_THREAD_COUNT_3D; i++) {
-      int startPosition = i * chunkSize;
-      int endPosition = (i == LOADING_THREAD_COUNT_3D - 1) ? count : (i + 1) * chunkSize;
-
-      executor.submit(() -> {
-        int arcSegments = 4;
-        if (count <= 6_000)
+    for (int i = 0; i < count; i++) {
+      int arcSegments = 4;
+      if (count <= 6_000)
         arcSegments = 15;
-        else if (count <= 12_000)
+      else if (count <= 12_000)
         arcSegments = 10;
 
-        loadFlightsAsyncChunk(flights, queries, arcSegments, startPosition, endPosition);
-        latch.countDown();
-      }
-      );
-    }
-
-    try {
-      latch.await();
-    }
-    catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-
-    executor.shutdown();
-  }
-
-  /**
-   * F. Wright
-   *
-   * Converts flight data to cached points in chunks
-   *
-   * @param flights The array of FlightType containing flight data.
-   * @param queries The QueryManagerClass object for querying airport data.
-   * @param arcSegments Amount of lines to be drawn for each arc
-   * @param startIndex Starting index of the array to convert
-   * @param endIndex Ending index of the array to convert
-   */
-  private void loadFlightsAsyncChunk(FlightType[] flights, QueryManagerClass queries, int arcSegments, int startIndex, int endIndex) {
-    for (int i = startIndex; i < endIndex; i++) {
       String originCode = queries.getCode(flights[i].AirportOriginIndex);
       String destCode = queries.getCode(flights[i].AirportDestIndex);
       AirportPoint3DType origin, dest;
@@ -216,14 +176,16 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
         float latitude = queries.getLatitudeFromIndex(flights[i].AirportOriginIndex);
         float longitude = -queries.getLongitudeFromIndex(flights[i].AirportOriginIndex);
         origin = manualAddPoint(latitude, longitude, originCode);
-      } else
+      } 
+      else
         origin = m_airportHashmap.get(originCode);
 
       if (!m_airportHashmap.containsKey(destCode)) {
         float latitude = queries.getLatitudeFromIndex(flights[i].AirportDestIndex);
         float longitude = -queries.getLongitudeFromIndex(flights[i].AirportDestIndex);
         dest = manualAddPoint(latitude, longitude, destCode);
-      } else
+      } 
+      else
         dest = m_airportHashmap.get(destCode);
 
       boolean originConnected = origin.Connections.contains(destCode);
@@ -323,7 +285,7 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_shaderEarth.set("lightDir", lightDir);
     m_shaderSun.set("texTranslation", 0, m_totalTimeElapsed * 0.5f);
     m_rotationYModified = m_earthRotation.y + m_totalTimeElapsed;
-    m_earthPos.z = EARTH_Z_3D + m_zoomLevel;    
+    m_earthPos.z = EARTH_Z_3D + m_zoomLevel;
 
     s_3D.beginDraw();
 
@@ -337,9 +299,6 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
       s_3D.filter(m_shaderDitherPP);
 
     drawSkybox();
-
-    if (m_crtEnabled)
-      s_3D.filter(m_shaderCRTPP);
 
     s_3D.endDraw();
 
@@ -675,12 +634,15 @@ class FlightMap3D extends Widget implements IDraggable, IWheelInput {
     m_dayCycleSpeed = speed;
   }
 
+  /**
+   * F. Wright
+   *
+   * Sets whether the dithering post processing effect is enabled
+   *
+   * @param enabled The state of the dithering shader
+   */
   public void setDitheringEnabled(boolean enabled) {
     m_ditheringEnabled = enabled;
-  }
-
-  public void setCRTEnabled(boolean enabled) {
-    m_crtEnabled = enabled;
   }
 }
 

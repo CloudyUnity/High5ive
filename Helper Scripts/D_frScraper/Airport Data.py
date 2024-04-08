@@ -1,3 +1,15 @@
+"""
+CKM
+
+Code to fetch information like type and age about a set of airplane registrations automatically
+
+// @param iata: the table of IATA codes to look up
+// @param website: the website data is being sourced from
+// @param latTest: select which of the different categories of airports which have different styles to test
+// return output.csv: a version of the input table but with any information it could find in the relevant row
+
+"""
+
 import requests, time, string, random
 from bs4 import BeautifulSoup
 
@@ -18,13 +30,15 @@ session1.headers = headers1
 
 iata = open("dataneeded.csv", "r")
 output = open("output.csv", "a")
+website = "http://www.gcmap.com/airport/"
+latTest = 13
 airports = []
 for i in iata:
     airports.append(i.strip())
 iata.close()
 
 for i in airports:
-    response = session1.get(f"http://www.gcmap.com/airport/{i}")
+    response = session1.get(f"{website}{i}")
     content = response.content.decode('utf-8', errors='ignore')
     soup = BeautifulSoup(content, 'html.parser')
     print(i)
@@ -37,8 +51,8 @@ for i in airports:
         countrySection = str(trTables[4].find_all(class_='country-name'))[28:-8]
         nameSection = str(trTables[7].find_all(class_='fn org'))[32:-6]
         try:
-            latSection = str(trTables[13].find_all(class_='latitude'))[31:-10]
-            longSection = str(trTables[14].find_all(class_="longitude"))[32:-10]
+            latSection = str(trTables[latTest].find_all(class_='latitude'))[31:-10]
+            longSection = str(trTables[latTest+1].find_all(class_="longitude"))[32:-10]
         except:
             latSection = ""
             longSection = ""

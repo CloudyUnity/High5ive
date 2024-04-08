@@ -4,9 +4,11 @@
  * Scatter plot for representing data
  */
 class ScatterChartUI<T> extends Widget implements IChart2Axis<T, Integer> {
-  PShape m_pointsShape = null;
-  String m_labelX = "X-axis", m_labelY = "Y-axis";
-  int m_maxValX, m_maxValY;
+  private PShape m_pointsShape = null;
+  private String m_labelX = "X-axis", m_labelY = "Y-axis";
+  private int m_maxValX, m_maxValY;
+
+  private QueryType m_qtX = null, m_qtY = null;
 
   /**
    * F. Wright
@@ -55,18 +57,18 @@ class ScatterChartUI<T> extends Widget implements IChart2Axis<T, Integer> {
 
     float strokeWeight = lerp(8.0f, 2.0f, data.length / 650_000.0f);
     m_pointsShape.strokeWeight(strokeWeight);
-    
+
     HashSet<PVector> vectorHashSet = new HashSet<PVector>();
 
     for (var value : data) {
       Integer x = getKeyX.apply(value) + 1;
       Integer y = getKeyY.apply(value) + 1;
-      
+
       PVector vec = new PVector(x, y);
       if (vectorHashSet.contains(vec))
         continue;
       vectorHashSet.add(vec);
-      
+
       float fracX = x / (float)m_maxValX;
       float fracY = y / (float)m_maxValY;
       m_pointsShape.vertex(fracX * m_scale.x, (1 - fracY) * m_scale.y);
@@ -107,18 +109,18 @@ class ScatterChartUI<T> extends Widget implements IChart2Axis<T, Integer> {
     s_DebugProfiler.startProfileTimer();
 
     m_pointsShape.beginShape(POINTS);
-    
+
     HashSet<PVector> vectorHashSet = new HashSet<PVector>();
 
     for (var value : data) {
       Integer x = getKeyX.apply(value) + 1;
       Integer y = getKeyY.apply(value) + 1;
-      
+
       PVector vec = new PVector(x, y);
       if (vectorHashSet.contains(vec))
         continue;
       vectorHashSet.add(vec);
-      
+
       float fracX = x / (float)m_maxValX;
       float fracY = y / (float)m_maxValY;
       m_pointsShape.vertex(fracX * m_scale.x, (1 - fracY) * m_scale.y);
@@ -154,6 +156,19 @@ class ScatterChartUI<T> extends Widget implements IChart2Axis<T, Integer> {
   /**
    * F. Wright
    *
+   * Sets the translation field and query manager for translating X values of the pie chart.
+   *
+   * @param query The query type for translation.
+   * @param queryManager The query manager for fetching translation data.
+   */
+  public void setTranslationField(QueryType queryX, QueryType queryY) {
+    m_qtX = queryX;
+    m_qtY = queryY;
+  }
+
+  /**
+   * F. Wright
+   *
    * Draws the scatter plot
    */
   @ Override
@@ -161,9 +176,9 @@ class ScatterChartUI<T> extends Widget implements IChart2Axis<T, Integer> {
     super.draw();
 
     fill(color(m_backgroundColour));
-    rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y);
+    rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y, DEFAULT_WIDGET_ROUNDNESS_1);
 
-    fill(255);
+    fill(getColor(0));
     text(m_labelX, m_pos.x, m_pos.y + m_scale.y - 20, m_scale.x, 100);
 
     pushMatrix();
@@ -173,16 +188,43 @@ class ScatterChartUI<T> extends Widget implements IChart2Axis<T, Integer> {
     text(m_labelY, 0, 0, m_scale.y, 100);
     popMatrix();
 
-    fill(255);
-    text(m_maxValX + "", m_pos.x + m_scale.x, m_pos.y + m_scale.y, 100, 50);
+    fill(getColor(1));
+    text(formatValue(m_maxValX + "", m_qtX), m_pos.x + m_scale.x, m_pos.y + m_scale.y, 100, 50);
 
-    fill(255);
-    text(m_maxValY + "", m_pos.x - 60, m_pos.y, 100, 50);
+    fill(getColor(2));
+    text(formatValue(m_maxValY + "", m_qtY), m_pos.x - 80, m_pos.y - 50, 100, 50);
 
     if (m_pointsShape == null)
       return;
 
     shape(m_pointsShape, m_pos.x, m_pos.y);
+  }
+
+  /**
+   * F. Wright
+   *
+   * Translates X-axis values of the pie chart based on the set translation field and query manager.
+   *
+   * @param val The value to translate.
+   * @return The translated value.
+   */
+  public String formatValue(String val, QueryType qt) {
+    if (qt == null)
+      return val;
+
+    switch (qt) {
+    case ARRIVAL_TIME:
+    case SCHEDULED_ARRIVAL_TIME:
+    case DEPARTURE_TIME:
+    case SCHEDULED_DEPARTURE_TIME:
+      String cleanTxt = val.replace(":", "");
+      if (cleanTxt.length() == 3)
+        return cleanTxt.charAt(0) + ":" + cleanTxt.substring(1, 3);
+      return cleanTxt.substring(0, 2) + ":" + cleanTxt.substring(2, 4);
+
+    default:
+      return val;
+    }
   }
 }
 

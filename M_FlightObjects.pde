@@ -79,16 +79,6 @@ class FlightQueryType {
     Operator = operator;
     Location = location;
   }
-
-  // Preferably this will be refactored out once multi querying is implemented - Finn
-  public void setOperator(QueryOperatorType inputOperator) {
-    //Needed since Ill be declaring all FlightQueries at the start then adjusting them to user input
-    Operator = inputOperator;
-  }
-
-  public void setQueryValue(int val) {
-    QueryValue = val;
-  }
 }
 
 // Data type for making a range query on a FlightType[]

@@ -8,7 +8,7 @@ class ScreenCharts extends Screen {
   PieChartUI m_pieChart;
   ScatterChartUI m_scatterPlot;
 
-  DropdownUI m_freqDD, m_scatterDDX, m_scatterDDY;
+  DropdownUI m_histDD, m_pieDD, m_scatterDDX, m_scatterDDY;
   LabelUI m_scatterLabelX, m_scatterLabelY;
   LabelUI m_histEmptyLabel, m_pieEmptyLabel, m_scatterEmptyLabel;
 
@@ -16,13 +16,14 @@ class ScreenCharts extends Screen {
   UserQueryUI m_userQuery;
   FlightType[] m_cachedFlights = null;
 
-  QueryType m_freqQueryType = null;
+  QueryType m_histQueryType = null;
+  QueryType m_pieQueryType = null;
   QueryType m_scatterQueryTypeX = null;
   QueryType m_scatterQueryTypeY = null;
 
   Widget m_selectedGraph;
 
-  private boolean m_initialised = false;
+  private boolean m_initialisedData = false;
 
   /**
    * F. Wright
@@ -42,7 +43,7 @@ class ScreenCharts extends Screen {
     m_userQuery.setRenderWorldUSButtons(false);
     m_userQuery.setOnLoadHandler(flights -> {
       loadData(flights);
-      if (m_initialised)
+      if (m_initialisedData)
       reloadData();
     }
     );
@@ -60,16 +61,27 @@ class ScreenCharts extends Screen {
     super.init();
 
     ButtonUI returnBttn = createButton(20, 50, 150, 40);
-    returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
+    returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_ID_HOME));
     returnBttn.setText("Return");
     returnBttn.setTextSize(20);
     returnBttn.setGrowScale(1.05f);
 
     ButtonUI switchTo3D = createButton(20, 100, 150, 40);
-    switchTo3D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_FLIGHT_MAP_ID));
+    switchTo3D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_ID_3DFM));
     switchTo3D.setText("3D");
     switchTo3D.setTextSize(20);
     switchTo3D.setGrowScale(1.05f);
+
+    if (GLOBAL_CRT_SHADER) {
+      CheckboxUI crtCB = createCheckbox(220, 50, 40, 40, "CRT");
+      crtCB.getOnClickEvent().addHandler(e -> s_ApplicationClass.setCRT(crtCB.getChecked()));
+      crtCB.setGrowScale(1.05);
+      crtCB.setChecked(s_ApplicationClass.getCRT());
+      crtCB.getLabel().setTextXOffset(0);
+      crtCB.setTextSize(20);
+      crtCB.getLabel().setCentreAligned(true);
+      crtCB.getLabel().setScale(80, 40);
+    }
 
     int chartScale = 850;
     int halfChartScale = (int)(chartScale * 0.5f);
@@ -101,30 +113,52 @@ class ScreenCharts extends Screen {
     m_scatterEmptyLabel.setTextSize(40);
     m_scatterEmptyLabel.setCentreAligned(true);
 
-    m_freqDD = new DropdownUI<QueryType>(width-400, 200, 300, 300, 50, v -> v.toString());
-    addWidget(m_freqDD);
-    m_freqDD.getOnSelectionChanged().addHandler(e -> {
+    m_histDD = new DropdownUI<QueryType>(width-400, 200, 300, 300, 50, v -> v.toString());
+    addWidget(m_histDD);
+    m_histDD.getOnSelectionChanged().addHandler(e -> {
 
       ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
-      m_freqQueryType = (QueryType)elistbox.Data;
+      m_histQueryType = (QueryType)elistbox.Data;
 
-      if (m_freqQueryType == null || m_cachedFlights == null) {
+      if (m_histQueryType == null || m_cachedFlights == null) {
         println("Flight data not ready for charts yet, or invalid query");
         return;
       }
 
       m_histEmptyLabel.setActive(false);
-      m_pieEmptyLabel.setActive(false);
-      reloadFreq();
+      reloadHist();
     }
     );
 
-    m_freqDD.add(QueryType.DAY);
-    m_freqDD.add(QueryType.CARRIER_CODE_INDEX);
-    m_freqDD.add(QueryType.AIRPORT_ORIGIN_INDEX);
-    m_freqDD.add(QueryType.AIRPORT_DEST_INDEX);
-    m_freqDD.add(QueryType.CANCELLED);
-    m_freqDD.add(QueryType.DIVERTED);
+    m_histDD.add(QueryType.DAY);
+    m_histDD.add(QueryType.CARRIER_CODE_INDEX);
+    m_histDD.add(QueryType.CANCELLED);
+    m_histDD.add(QueryType.DIVERTED);
+
+    m_pieDD = new DropdownUI<QueryType>(width-400, 200, 300, 300, 50, v -> v.toString());
+    addWidget(m_pieDD);
+    m_pieDD.setActive(false);
+    m_pieDD.getOnSelectionChanged().addHandler(e -> {
+
+      ListboxSelectedEntryChangedEventInfoType elistbox = (ListboxSelectedEntryChangedEventInfoType)e;
+      m_pieQueryType = (QueryType)elistbox.Data;
+
+      if (m_pieQueryType == null || m_cachedFlights == null) {
+        println("Flight data not ready for charts yet, or invalid query");
+        return;
+      }
+
+      m_pieEmptyLabel.setActive(false);
+      reloadPie();
+    }
+    );
+
+    m_pieDD.add(QueryType.DAY);
+    m_pieDD.add(QueryType.CARRIER_CODE_INDEX);
+    m_pieDD.add(QueryType.AIRPORT_ORIGIN_INDEX);
+    m_pieDD.add(QueryType.AIRPORT_DEST_INDEX);
+    m_pieDD.add(QueryType.CANCELLED);
+    m_pieDD.add(QueryType.DIVERTED);
 
     m_scatterDDX = new DropdownUI<QueryType>(width-400, 200, 300, 300, 50, v -> v.toString());
     addWidget(m_scatterDDX);
@@ -159,7 +193,7 @@ class ScreenCharts extends Screen {
 
       if (m_scatterQueryTypeX == null)
       return;
-      
+
       reloadScatter();
     }
     );
@@ -210,7 +244,7 @@ class ScreenCharts extends Screen {
     scatterRadio.setGrowScale(1.1f);
     group.addMember(scatterRadio);
 
-    m_initialised = true;
+    m_initialisedData = true;
   }
 
   /**
@@ -246,7 +280,8 @@ class ScreenCharts extends Screen {
       return;
 
     s_DebugProfiler.startProfileTimer();
-    reloadFreq();
+    reloadHist();
+    reloadPie();
     reloadScatter();
     s_DebugProfiler.printTimeTakenMillis("Reloading data for charts");
   }
@@ -254,30 +289,44 @@ class ScreenCharts extends Screen {
   /**
    * F. Wright
    *
-   * Reloads the frequency data (histogram and pie chart) using the cached flights.
+   * Reloads the frequency histogram data using the cached flights.
    */
-  public void reloadFreq() {
-    if (m_cachedFlights == null || m_freqQueryType == null)
+  public void reloadHist() {
+    if (m_cachedFlights == null || m_histQueryType == null)
       return;
 
     s_DebugProfiler.startProfileTimer();
 
     m_histogram.removeData();
     m_histogram.addData(m_cachedFlights, f -> {
-      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_freqQueryType);
+      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_histQueryType);
     }
     );
-    m_histogram.setXAxisLabel(m_freqQueryType.toString());
-    m_histogram.setTranslationField(m_freqQueryType, m_queryRef);
+    m_histogram.setXAxisLabel(m_histQueryType.toString());
+    m_histogram.setTranslationField(m_histQueryType, m_queryRef);
+
+    s_DebugProfiler.printTimeTakenMillis("Reloading data for Histogram charts");
+  }
+
+  /**
+   * F. Wright
+   *
+   * Reloads the frequency pie chart data using the cached flights.
+   */
+  public void reloadPie() {
+    if (m_cachedFlights == null || m_pieQueryType == null)
+      return;
+
+    s_DebugProfiler.startProfileTimer();
 
     m_pieChart.removeData();
     m_pieChart.addData(m_cachedFlights, f -> {
-      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_freqQueryType);
+      return m_queryRef.getFlightTypeFieldFromQueryType((FlightType)f, m_pieQueryType);
     }
     );
-    m_pieChart.setTranslationField(m_freqQueryType, m_queryRef);
+    m_pieChart.setTranslationField(m_pieQueryType, m_queryRef);
 
-    s_DebugProfiler.printTimeTakenMillis("Reloading data for frequency charts");
+    s_DebugProfiler.printTimeTakenMillis("Reloading data for pie charts");
   }
 
   /**
@@ -288,18 +337,25 @@ class ScreenCharts extends Screen {
   public void reloadScatter() {
     if (m_cachedFlights == null || m_scatterQueryTypeX == null || m_scatterQueryTypeY == null)
       return;
-      
+
     m_scatterEmptyLabel.setText("Loading...");
-      
+
     new Thread(() -> {
       s_DebugProfiler.startProfileTimer();
       reloadScatterAsync();
       s_DebugProfiler.printTimeTakenMillis("Reloading data for scatter chart");
-      
+
+      m_scatterPlot.setTranslationField(m_scatterQueryTypeX, m_scatterQueryTypeY);
       m_scatterEmptyLabel.setActive(false);
-    }).start();             
+    }
+    ).start();
   }
 
+  /**
+   * F. Wright
+   *
+   * Reloads the scatter plot data asychrously using the cached flights.
+   */
   public void reloadScatterAsync() {
     m_scatterPlot.removeData();
     m_scatterPlot.addData(m_cachedFlights,
@@ -324,12 +380,13 @@ class ScreenCharts extends Screen {
     m_selectedGraph = m_histogram;
     m_selectedGraph.setActive(true);
 
-    m_freqDD.setActive(true);
+    m_histDD.setActive(true);
+    m_pieDD.setActive(false);
     m_scatterDDX.setActive(false);
     m_scatterDDY.setActive(false);
     m_scatterLabelX.setActive(false);
     m_scatterLabelY.setActive(false);
-    if (m_freqQueryType == null)
+    if (m_histQueryType == null)
       m_histEmptyLabel.setActive(true);
     m_pieEmptyLabel.setActive(false);
     m_scatterEmptyLabel.setActive(false);
@@ -345,12 +402,13 @@ class ScreenCharts extends Screen {
     m_selectedGraph = m_pieChart;
     m_selectedGraph.setActive(true);
 
-    m_freqDD.setActive(true);
+    m_pieDD.setActive(true);
+    m_histDD.setActive(false);
     m_scatterDDX.setActive(false);
     m_scatterDDY.setActive(false);
     m_scatterLabelX.setActive(false);
     m_scatterLabelY.setActive(false);
-    if (m_freqQueryType == null)
+    if (m_pieQueryType == null)
       m_pieEmptyLabel.setActive(true);
     m_histEmptyLabel.setActive(false);
     m_scatterEmptyLabel.setActive(false);
@@ -366,7 +424,8 @@ class ScreenCharts extends Screen {
     m_selectedGraph = m_scatterPlot;
     m_selectedGraph.setActive(true);
 
-    m_freqDD.setActive(false);
+    m_histDD.setActive(false);
+    m_pieDD.setActive(false);
     m_scatterDDX.setActive(true);
     m_scatterDDY.setActive(true);
     m_scatterLabelX.setActive(true);

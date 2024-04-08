@@ -1,3 +1,6 @@
+//=====================================================
+// IMPORTS
+//=====================================================
 import java.util.*;
 import java.nio.*;
 import java.io.*;
@@ -7,9 +10,13 @@ import java.util.function.Function;
 import java.util.function.Consumer;
 import java.nio.channels.FileChannel;
 
+//=====================================================
+// STATIC VARIABLES
+//=====================================================
 ApplicationClass s_ApplicationClass = new ApplicationClass();
 DebugProfilerClass s_DebugProfiler = new DebugProfilerClass();
 PGraphics s_3D;
+PGraphics s_roundedRectImage8;
 int s_deltaTime;
 
 /**
@@ -20,20 +27,26 @@ int s_deltaTime;
  * @param p The processing object representing the sketch.
  */
 void setup() {
-  fullScreen(P2D, SPAN);
+  fullScreen(P2D, 1);
 
   s_DebugProfiler.startProfileTimer();
 
   surface.setTitle("High5ive Flight Sim");
 
   frameRate(FRAME_RATE);
-  textFont(createFont("Century Gothic Bold", 48, true));
+  textFont(createFont("Century Gothic Bold", 200, true));
 
   s_3D = createGraphics(width, height, P3D);
   s_3D.hint(ENABLE_DEPTH_SORT);
   if (!s_3D.isGL()) {
     println("OpenGL is not available. Make sure hardware acceleration is enabled.");
   }
+
+  s_roundedRectImage8 = createGraphics(160, 40, P2D);
+  s_roundedRectImage8.beginDraw();
+  s_roundedRectImage8.fill(COLOR_WHITE);
+  s_roundedRectImage8.rect(0, 0, 160, 40, 8);
+  s_roundedRectImage8.endDraw(); 
 
   s_ApplicationClass.init();
 

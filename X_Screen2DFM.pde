@@ -27,7 +27,7 @@ class TwoDMapScreen extends Screen {
     //  m_userQueryUI.insertBaseData(m_flights);
 
 
-    m_flightMap = new FlightMap2DUI(0, 0, 100, 100);
+    m_flightMap = new FlightMap2DUI(0, 0, 100);
     addWidget(m_flightMap);
 
     LabelUI label = createLabel(20, currentUIPosY, 150, 40, "2D Flight Map");
@@ -36,7 +36,7 @@ class TwoDMapScreen extends Screen {
     currentUIPosY += 60;
 
     ButtonUI returnBttn = createButton(20, currentUIPosY, 160, 50);
-    returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_1_ID));
+    returnBttn.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_ID_HOME));
     returnBttn.setBackgroundColour(color(COLOR_BACKGROUND));
     returnBttn.setText("Return");
     returnBttn.setTextSize(textSize);

@@ -4,6 +4,10 @@
  * Screen representing the home screen of the application.
  */
 class ScreenHome extends Screen {
+  ImageUI m_earthImage;
+  ImageUI m_starImage;
+  ImageUI m_starImageWrap;
+  int m_earthBasePosY;
 
   /**
    * F. Wright
@@ -16,7 +20,6 @@ class ScreenHome extends Screen {
     super(screenId, DEFAULT_SCREEN_COLOUR);
   }
 
-
   /**
    * F. Wright
    *
@@ -25,31 +28,75 @@ class ScreenHome extends Screen {
   @Override
     public void init() {
     super.init();
+    m_starImage = new ImageUI("data/Images/Stars2k.jpg", 0, 0, width, height);
+    m_starImageWrap = new ImageUI("data/Images/Stars2k.jpg", -width, 0, width, height);
+
+    addWidget(m_starImage);
+    addWidget(m_starImageWrap);
 
     float growScale = 1.05f;
+    float totalSpacing = (float)height/4.0;
+    float totalButtonSize = height-totalSpacing;
+    float oneSpacingUnit = totalSpacing/4.0;
+    float oneButtonUnit = totalButtonSize/3.0;
 
-    ButtonUI switchTo2D = createButton(500, 100, width - 600, 200);
-    switchTo2D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_TWOD_MAP_ID));
-    switchTo2D.setText("2D (WIP)");
-    switchTo2D.setTextSize(25);
-    switchTo2D.setGrowScale(growScale);
+    String earthImagePath = "data/Images/earthTitleScreenTrans.png";
+    int earthScale = 800;
+    int earthPosX = int((width * 0.4f) - (earthScale * 0.5f));
+    m_earthBasePosY = int(height * 0.2f);
+    m_earthImage = new ImageUI(earthImagePath, earthPosX, m_earthBasePosY, earthScale, earthScale);
+    addWidget(m_earthImage);
 
-    ButtonUI switchTo3D = createButton(500, 400, width - 600, 200);
-    switchTo3D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_FLIGHT_MAP_ID));
-    switchTo3D.setText("3D");
-    switchTo3D.setTextSize(25);
+    //ButtonUI switchTo2D = createButton((int)width-(width/4), (int)oneSpacingUnit, (int)width/4 - 100, (int)oneButtonUnit);
+    //switchTo2D.setBackgroundColour(COLOR_BLACK);
+    //switchTo2D.setOutlineColour(COLOR_WHITE);
+    //switchTo2D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_ID_2DFM));
+    //switchTo2D.setText("2D Map");
+    //switchTo2D.setTextSize((int)((float)height/20.0));
+    //switchTo2D.setGrowScale(growScale);
+
+    ButtonUI switchTo3D = createButton((int)width-(width/4), (int)((oneSpacingUnit*2)+oneButtonUnit), (int)width/4 - 100, (int)oneButtonUnit);
+    switchTo3D.setBackgroundColour(COLOR_BLACK);
+    switchTo3D.setOutlineColour(COLOR_WHITE);
+    switchTo3D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_ID_3DFM));
+    switchTo3D.setText("3D Globe");
+    switchTo3D.setTextSize((int)((float)height/20.0));
     switchTo3D.setGrowScale(growScale);
 
-    ButtonUI switchToCharts = createButton(500, 700, width - 600, 200);
-    switchToCharts.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_CHARTS_ID));
+    ButtonUI switchToCharts = createButton((int)width-(width/4), (int)((oneSpacingUnit*3)+(oneButtonUnit*2)), (int)width/4 - 100, (int)oneButtonUnit);
+    switchToCharts.setBackgroundColour(COLOR_BLACK);
+    switchToCharts.setOutlineColour(COLOR_WHITE);
+    switchToCharts.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_ID_CHARTS));
     switchToCharts.setText("Charts");
-    switchToCharts.setTextSize(25);
+    switchToCharts.setTextSize((int)((float)height/20.0));
 
-    LabelUI name = createLabel(100, 100, 200, 100, "High5ive");
-    name.setCentreAligned(true);
-    name.setTextSize(40);
+    LabelUI title = createLabel((int)oneSpacingUnit, (int)oneSpacingUnit, (int)((float)width/2.0), (int)((float)height/5.0), "High5ive");
+    title.setCentreAligned(false);
+    title.setTextSize((int)((float)height/10.0));
+
+    LabelUI subTitle = createLabel((int)(oneSpacingUnit*1.1), (int)((float)height/4.0), (int)((float)width/2.0), (int)((float)height/10.0), "Flights :)");
+    subTitle.setForegroundColour(COLOR_LIGHT_GRAY);
+    subTitle.setCentreAligned(false);
+    subTitle.setTextSize((int)((float)height/20.0));
 
     switchToCharts.setGrowScale(growScale);
+  }
+
+  /**
+   * T. Creagh
+   *
+   * Changes the positions of the earth and stars over time
+   */
+  @Override
+    public void draw() {
+    super.draw();
+    float earthPosX = m_earthImage.getPos().x;
+    float earthPosY = m_earthBasePosY + 10 * sin(millis() * 0.001);
+    m_earthImage.setPos(earthPosX, earthPosY);
+
+    float newPosX = (m_starImage.getPos().x + s_deltaTime * 0.1f) % width;
+    m_starImage.setPos(newPosX, 0);
+    m_starImageWrap.setPos(newPosX - width, 0);
   }
 }
 

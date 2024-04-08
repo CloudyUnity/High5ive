@@ -10,10 +10,19 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
   private int m_timer = 30;
   private boolean m_drawBar = true;
   private boolean m_userModifiable = true;
-  private String m_emptyText = "";
+  private String m_placeholderText = "";
 
-  public TextboxUI(int x, int y, int width, int height) {
-    super(x, y, width, height);
+  /**
+   * M.Poole & A.Robertson:
+   * Constructs an ImageUI object with the specified dimensions and position.
+   *
+   * @param scaleX The width of the textbox.
+   * @param scaleY The height of the textbox.
+   * @param posX   The x-coordinate of the textbox's position.
+   * @param posY   The y-coordinate of the textbox's position.
+   */
+  public TextboxUI(int x, int y, int scaleX, int scaleY) {
+    super(x, y, scaleX, scaleY);
     m_backgroundColour = #FFFFFF;
     m_foregroundColour = 0;
     m_text = new StringBuilder();
@@ -24,51 +33,96 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
     m_onKeyPressedEvent.addHandler(e -> onKeyPressed(e));
   }
 
+  /**
+   * A. Robertson & F. Wright & M. Poole
+   *
+   * Draws the textbox
+   */
   void draw() {
     super.draw();
-    fill(m_backgroundColour);
-    rect(m_pos.x, m_pos.y, m_scale.x, m_scale.y);
-    // DRAWING THE TEXT ITSELF
-    textAlign(LEFT, CENTER);
+
+    image(s_roundedRectImage8, m_pos.x, m_pos.y, m_scale.x, m_scale.y);
+
+    String curText = m_text.toString();
+
+    if (isFocused() && m_drawBar && m_userModifiable)
+      curText += "|";
+
     fill(m_foregroundColour);
+    textAlign(LEFT, CENTER);
     textSize(fontSize);
-    if (!isFocused() && m_text.toString() != "") {
-      text(m_text.toString(), m_pos.x, m_pos.y, m_scale.x, m_scale.y);
-    } else if (!isFocused() && m_text.toString() == "") {
+
+    if (!isFocused() && curText.isEmpty()) {
       fill(120);
-      text(m_emptyText, m_pos.x, m_pos.y, m_scale.x, m_scale.y);
-    } else {
-      m_timer -= 1;
-      if (m_timer == 0) {
-        m_timer = 30;
-        m_drawBar = !m_drawBar;
-      }
-      StringBuilder output = new StringBuilder();
-      output.append(m_text.toString());
-      if (m_userModifiable)
-        output.insert(m_cursorPosition, m_drawBar ? "|" : " ");
-      text(output.toString(), m_pos.x, m_pos.y, m_scale.x, m_scale.y);
+      curText = m_placeholderText;
+    }
+
+    text(" " + curText, m_pos.x, m_pos.y, m_scale.x, m_scale.y);
+
+    if (!isFocused())
+      return;
+
+    m_timer -= 1;
+    if (m_timer <= 0) {
+      m_timer = 30;
+      m_drawBar = !m_drawBar;
     }
   }
 
-  public void setPlaceholderText(String EmptyText) {
-
-    m_emptyText = EmptyText;
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Sets the placeholder text for the text input.
+   *
+   * @param txt The placeholder text to set.
+   */
+  public void setPlaceholderText(String txt) {
+    m_placeholderText = txt;
   }
 
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Sets the text content of the text input.
+   *
+   * @param text The text to set.
+   */
   public void setText(String text) {
     m_text.setLength(0);
     m_text.append(text);
-    m_cursorPosition = text.length() /* - 1 */;  // -TO ALEX: Changed this from -1 since it broke when i tried to reset Search boxes, if this was necessary you can change it back
+    m_cursorPosition = text.length();
   }
 
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Retrieves the text content of the text input.
+   *
+   * @return The text content.
+   */
   public String getText() {
     return m_text.toString();
   }
+
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Retrieves the length of the text content of the text input.
+   *
+   * @return The length of the text content.
+   */
   public int getTextLength() {
     return m_text.length();
   }
 
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Checks if a character is printable.
+   *
+   * @param c The character to check.
+   * @return True if the character is printable, false otherwise.
+   */
   private boolean isPrintable(char c) {
     Character.UnicodeBlock block = Character.UnicodeBlock.of( c );
     return (!Character.isISOControl(c)) &&
@@ -77,6 +131,13 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
       block != Character.UnicodeBlock.SPECIALS;
   }
 
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Handles the key pressed event.
+   *
+   * @param e The key pressed event information.
+   */
   private void onKeyPressed(KeyPressedEventInfoType e) {
     if (m_userModifiable) {
       if (e.PressedKey == BACKSPACE) {
@@ -102,22 +163,57 @@ public class TextboxUI extends Widget implements IKeyInput, IClickable {
     }
   }
 
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Sets whether the text input is user modifiable or not.
+   *
+   * @param userModifiable True if the text input is user modifiable, false otherwise.
+   */
   public void setUserModifiable(boolean userModifiable) {
     m_userModifiable = userModifiable;
   }
 
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Retrieves whether the text input is user modifiable or not.
+   *
+   * @return True if the text input is user modifiable, false otherwise.
+   */
   public boolean getUserModifiable() {
     return m_userModifiable;
   }
 
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Retrieves the onClick event associated with the text input.
+   *
+   * @return The onClick event.
+   */
   public EventType<EventInfoType> getOnClickEvent() {
     return m_onClickEvent;
   }
 
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Retrieves the onStringEntered event associated with the text input.
+   *
+   * @return The onStringEntered event.
+   */
   public EventType<StringEnteredEventInfoType> getOnStringEnteredEvent() {
     return m_onStringEnteredEvent;
   }
 
+  /**
+   * M.Poole & A.Robertson:
+   *
+   * Retrieves the onKeyPressed event associated with the text input.
+   *
+   * @return The onKeyPressed event.
+   */
   public EventType<KeyPressedEventInfoType> getOnKeyPressedEvent() {
     return m_onKeyPressedEvent;
   }
