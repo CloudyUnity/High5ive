@@ -35,10 +35,6 @@ final int COLOR_HIGHLIGHT_2 = #f3de8a;
 final int COLOR_HIGHLIGHT_3 = #4e8ed8;
 final int COLOR_HIGHLIGHT_4 = #d62c5a;
 final int COLOR_HIGHLIGHT_5 = #3f5189;
-// final int COLOR_HIGHTLIGHT_4 = #4aa54d;
-// final int COLOR_HIGHTLIGHT_5 = #dd8e2e;
-// final int COLOR_HIGHTLIGHT_6 = #9c5dba;
-// final int COLOR_HIGHTLIGHT_7 = #e582d1;
 
 final int COLOR_BACKGROUND = #272838;
 final int COLOR_FOREGROUND = COLOR_WHITE;
@@ -75,8 +71,7 @@ final boolean GLOBAL_CRT_SHADER = true;
 //=====================================================
 // IDs
 //=====================================================
-final String SCREEN_ID_HOME = "Screen 1";
-final String SCREEN_ID_2DFM = "Screen Flight Map 2D";
+final String SCREEN_ID_HOME = "Screen Home";
 final String SCREEN_ID_3DFM = "Screen Flight Map";
 final String SCREEN_ID_CHARTS = "Screen Charts";
 
