@@ -200,14 +200,21 @@ class HistogramChartUI<T, TData> extends Widget implements IChart<T, TData> {
       int valTextYTop = Math.min((int)(m_pos.y + m_scale.y - m_bottomPadding - m_numberTextBoxHeight), barTop); // Write the value of each bar inside it if possible, else just above the bottom
 
       fill(color(m_foregroundColour));
-      rect(m_pos.x + m_sidePadding + i * m_barWidth, m_pos.y + m_scale.y - barHeight - m_bottomPadding, m_barWidth, barHeight);
+      float barPosX = m_pos.x + m_sidePadding + i * m_barWidth;
+      float barPosY = m_pos.y + m_scale.y - barHeight - m_bottomPadding;
+      rect(barPosX, barPosY, m_barWidth, barHeight);
+      
+      boolean isHovered = mouseX < barPosX + m_barWidth && mouseX > barPosX && mouseY > barPosY && mouseY < barPosY + barHeight;
 
       String key = entry.getKey().toString();
       fill(255);
       text(translateXValues(key), m_pos.x + m_sidePadding + i * m_barWidth, m_pos.y + m_scale.y - m_bottomPadding, m_barWidth, m_bottomPadding);
-      if (HISTOGRAM_BAR_TEXT_ENABLED) {
-        fill(0);
-        text(entry.getValue().toString(), m_pos.x + m_sidePadding + i * m_barWidth, valTextYTop, m_barWidth, m_numberTextBoxHeight);
+      if (isHovered) {
+        fill(255);
+        textSize(20);
+        String str = entry.getValue().toString(); 
+        float size = textWidth(str);
+        text(str, m_pos.x + m_sidePadding + (i * m_barWidth), valTextYTop - 150, size + 1, m_numberTextBoxHeight);
       }
 
       i++;
