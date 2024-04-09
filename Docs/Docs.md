@@ -114,6 +114,10 @@ Inside the project files we have some interesting things to note
         Legacy from when Finn thought it might be a game
     - Screen2
         Used to test the widget framework
+    - W_FlightMap2D
+        Used to draw the 2D flight map, not present in the final program
+    - X_Screen2DFM
+        Contained the user interface for the 2D flight map, not present in the final program
     - Z_DebugFPS
         Replaced with more accurate native processing function
 - Docs
