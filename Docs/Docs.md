@@ -1,7 +1,7 @@
 # THE DOCS
 
 - Written by Finn Wright 09/03/24
-- Edited by Kyara (Cosmo) McWilliam
+- Edited by Kyara (Cosmo) McWilliam and Mateusz Orlowski
 
 This file contains a short explanation on how the overall project structure works.  
 I recommend going over the README.md first for the general coding standard.  
@@ -11,7 +11,7 @@ Try to look through these tabs as I'm explaining them to get the best understand
 ### Why do the tabs start with weird letters?
 
 This is because Processing is not an IDE for humans and doesn't have proper project structure. We are stuck with tabs that are ordered alphabetically. For this reason all tabs start with different letters to group similar ones together.  
-- FATMKM should always be the first tab  
+- High5ive should always be the first tab  
 - C_ is more global/misc/important stuff  
 - M_ is for managers. The classes in charge  
 - N_ is for more general classes which have multiple instances across the program  
@@ -142,3 +142,4 @@ Inside the project files we have some interesting things to note
 
 // CKM added some details, 14:00 12/03
 // CKM added more details, 16:00 12/03
+// MO updated doc, 12:00 09/04
