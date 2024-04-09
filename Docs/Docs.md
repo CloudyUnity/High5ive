@@ -58,7 +58,7 @@ Widget is meant to be inherited by various UI elements and implement interfaces 
 
 ## ButtonUI
 
-This is an example of a Widget that implements IClickable. I recommend reading up on how interfaces work if you're rusty.  
+This is an example of a Widget that implements IClickable.
 ButtonUI contains a Widget of its own! How cute. Widgetception. It's a LabelUI which is manually drawn from within ButtonUI's draw(). The LabelUI allows the ButtonUI to have text on it automatically.  
 Because ButtonUI implements IClickable it has an m_onClickEvent. You can subscribe as many functions as you want to this event and when the button is clicked all of them will be called, one by one.  
 
@@ -67,22 +67,21 @@ Because ButtonUI implements IClickable it has an m_onClickEvent. You can subscri
 Tom took over here a while ago so he'd be best at explaining this tab.  
 In the meanwhile this class basically loads pre-processed flight data and modifies the resulting list based on user queries  
 
+## QueryManager
+
+A series of functions firstly to convert numerical keys into more useful information - like country, name, type or age - followed by ones to pass through the list of flights and only return those flights that meet the criteria listed.
+
 ## Minor tabs
 
-InputClass is intended to give accurate keyboard input information but it was made when this project was a game. It hasn't been needed since, can be ignored unless you want keyboard inputs.  
-
-Constants contain all the constants, self-explanitory  
+Constants contain all the constants 
 
 Interfaces contains all interfaces in the program because they are pretty small overall.  
 
-Math contains useful math functions I wanted for my 3D stuff. Feel free to add stuff missing from Processing/math libraries if you want.  
+Math contains some minor functions used to calculate 3D points
 
-DebugFPS calculates the average FPS of the last 30 frames when DEBUG_FPS_ENABLED is true in Constants  
+TransitionManager controls the fancy scene changes between different parts of the program
 
-DebugProfiler allows you to check the time taken by various bits of code. It's very simple to use.  
-s_DebugProfiler.startProfileTimer() starts the timer  
-s_DebugProfiler.printTimeTakenMillis("Example") ends the timer and prints the result to the console  
-This class uses a stack so you can nest multiple profilers and it will still work. Multithreading may cause issues however.  
+DebugProfiler measures the time taken to run sections of the program, for performance measurement
 
 ### What else is in this project?
 
@@ -115,11 +114,12 @@ Inside the project files we have some interesting things to note
     - Screen2
         Used to test the widget framework
     - W_FlightMap2D
-        Used to draw the 2D flight map, not present in the final program
+        Used to draw the 2D flight map, partially complete by point of submission
     - X_Screen2DFM
-        Contained the user interface for the 2D flight map, not present in the final program
+        Contained the user interface for the 2D flight map, partially complete by point of submission
     - Z_DebugFPS
         Replaced with more accurate native processing function
+
 - Docs
     - Docs.md  
         Hey, that's me! ^-^
