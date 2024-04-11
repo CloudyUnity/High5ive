@@ -47,14 +47,6 @@ class ScreenHome extends Screen {
     m_earthImage = new ImageUI(earthImagePath, earthPosX, m_earthBasePosY, earthScale, earthScale);
     addWidget(m_earthImage);
 
-    ButtonUI switchTo2D = createButton((int)width-(width/4), (int)oneSpacingUnit, (int)width/4 - 100, (int)oneButtonUnit);
-    switchTo2D.setBackgroundColour(COLOR_BLACK);
-    switchTo2D.setOutlineColour(COLOR_WHITE);
-    switchTo2D.getOnClickEvent().addHandler(e -> switchScreen(e, SCREEN_ID_2DFM));
-    switchTo2D.setText("2D Map");
-    switchTo2D.setTextSize((int)((float)height/20.0));
-    switchTo2D.setGrowScale(growScale);
-
     ButtonUI switchTo3D = createButton((int)width-(width/4), (int)((oneSpacingUnit*2)+oneButtonUnit), (int)width/4 - 100, (int)oneButtonUnit);
     switchTo3D.setBackgroundColour(COLOR_BLACK);
     switchTo3D.setOutlineColour(COLOR_WHITE);
