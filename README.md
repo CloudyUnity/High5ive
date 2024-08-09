@@ -8,7 +8,9 @@
 - Kyara (Cosmo) McWilliam (Kya-ra)  
 - Mateusz Orlowski (MO1805)  
 - Matthew Poole (MPoole1105)  
-- Thomas Creagh (ThomasCreagh)  
+- Thomas Creagh (ThomasCreagh)
+
+High5ive was the name of the team
 
 ## Troubleshooting
 
