@@ -12,8 +12,6 @@
 
 ## Coding Standard
 
-Feel free to disagree with any of these. We can put it up to a vote.  
-
 ### Variables/Classes
 
 - All member variables look like "m_varName".  
@@ -44,72 +42,8 @@ Feel free to disagree with any of these. We can put it up to a vote.
 - Keep stuff indented properly! Use Ctrl-T to do it automatically.  
 - "var" is BANNED except for during foreach loops.  
 
-## Using the UI
-
-- Create Widgets then add them to your screen using the `addWidget` method.
-- Create methods then link them to your widgets with the `widget.getEvent().addHandler(e -> eventHandler(e));` pattern.
-- If you're creating a new widget with child widgets, they **must** be added to the `m_children` ArrayList.
-    - Events will be called on child widgets.
-    - Parent widgets are responsible for calling the `draw` method on child widgets. This is so that the parent can control the order
-    they get drawn in and if they get drawn at all. This may change in the future.
-
-## How to commit your changes to github using Git Bash  
-
-Note that you might be able to do this using a git extension for processing, cmd or otherwise but I'll explain how I do it.  
-
-1. Open up Git Bash  
-2. Change to the directory. For me it's:  
-    cd "C:\Users\finnw\OneDrive\Documents\Trinity\CS\Project\FATMKM"  
-3. Add all your changes to the current working commit  
-    git add .  
-4. Make a commit  
-    git commit -m "Commit message describing what was changed"  
-5. Push your changes to the remote branch  
-    git push origin master      
-6. If you get no error messages, congrats you have pushed your changes successfully! Go check the github to make sure it worked. If you get an error message like this then continue following these instructions:  
-     ! [rejected]        master -> master (fetch first)  
-    error: failed to push some refs to 'https://github.com/CloudyUnity/ProcessingFATMKM.git'  
-
-### How to merge your local repo with the master branch:
-
-7. Pull the master branch changes into your local repo  
-    git pull --rebase origin master  
-8. You might be asked to resolve some conflicts. If you can get git working with some text editors it can make your life easier.   
-9. Conflict with missing file. For example if a file was removed in the master branch but you were making changes to it. Move all your changes outside of the file and then delete it  
-    git rm fileNameExample.txt  
-10. Other conflicts. I don't have experience here but try your best. Don't accidentaly delete everything without a backup. Try doing this to add new files to the commit:  
-    git add .  
-11. Now that you have resolved all conflicts you can continue  
-    git rebase --continue  
-12. You'll be asked to make a commit message again. If you're not familiar with vim text editors this may help:  
-    "i" enters insert mode where you can add text to your message  
-    "Esc" exits insert mode to allow you to use the following commands  
-    ":w" writes and saves the changes   
-    ":q" quits the editor. Make sure to do ":w" first   
-    You should see this message:  
-        Successfully rebased and updated refs/heads/master.  
-13. Now that your local repo is synced up it's time to push your changes again
-    git push origin master  
-14. Once committed to master, delete your branch or local repo to prevent it getting behind.
-
 ## Troubleshooting
 
-- Cannot get working directory:
-    - Use `sketchPath()`
-- Fill not working with a variable of type `color`:
-    - Store the colour as an `int` then call fill as `fill(color(variable));`
 - Getting the error "The nested type ApplicationClass cannot hide an enclosing type.":
     - Delete "sketch.properties" file.
     - Ensure project directory is named "High5ive".
-
-## Jobs:
-
-- Preprocess data into binary (Kyara (Cosmo) McWilliam (Cajm0))
-- Read data very efficiently (Thomas Creagh (Thomas Creagh))
-- Query data (Thomas Creagh (Thomas Creagh) & Kyara (Cosmo) McWilliam (Cajm0))
-- Manipulate data (Thomas Creagh (Thomas Creagh) & Kyara (Cosmo) McWilliam (Cajm0))
-- Conjoin data with other dataset (Thomas Creagh (Thomas Creagh) & Kyara (Cosmo) McWilliam (Cajm0))
-- Create GUI widgets (Alex Robertson (roberta1tcd))
-- 3D flight map (Finn Wright (CloudyUnity))
-- 2D flight map (Mateusz Orlowski (MO1805))
-- Design the gui place widgets (Matthew Poole (MPoole1105))
